@@ -1,0 +1,7 @@
+[flake8]
+# use black default line length.
+max-line-length=88
+# exclude python packages files.
+extend-exclude=*site-packages*
+# ignore E501, E203, as the black formatter takes care of that.
+extend-ignore=E501,E203
