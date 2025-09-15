@@ -1,0 +1,30 @@
+flowchart TD
+  subgraph Client
+    C[Attacker Client]
+  end
+  subgraph Resolver
+    R[Recursive Resolver]
+    subgraph BenignCache[Benign Cache]
+      B1[(CNAME el.attack.com -> e2.attack.com)]
+      B2[(CNAME e2.attack.com -> e3.attack.com)]
+      Bn[(CNAMEs ... up to 17)]
+    end
+    subgraph NegativeCache[Negative Cache]
+      N0[(unchanged)]
+    end
+  end
+  subgraph Authoritative
+    A[Authoritative Name Server\n(attacker-controlled)]
+  end
+
+  C -->|1. Query: A el.attack.com| R
+  R -->|2. Query: el.attack.com| A
+  A -->|3. Response: CNAME chain (17)| R
+  R -->|4. Store first CNAME| B1
+  R -->|5. Query: e2.attack.com (continues chain)| A
+  A -->|6. Response: CNAME e2.attack.com -> e3.attack.com| R
+  R -->|7. Store next CNAME| B2
+  R -->|8-10. Repeat until limit p=17| A
+  R -->|Store remaining CNAMEs| Bn
+  R -. no insertions .-> N0
+  R -->|Final: A record or failure| C
