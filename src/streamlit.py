@@ -1,9 +1,65 @@
 import os
+import html as _html
 from typing import List, Dict
 
 import streamlit as st
 from core import generate_diagram
 from messages import create_message_from_bytes
+
+
+def _sanitize_mermaid(code: str) -> str:
+    """
+    Remove Markdown code fences if present and return the raw Mermaid definition.
+    """
+    if not code:
+        return ""
+    text = code.strip()
+    if text.startswith("```"):
+        lines = text.splitlines()
+        # Drop the opening fence (e.g., ``` or ```mermaid)
+        if lines and lines[0].startswith("```"):
+            lines = lines[1:]
+        # Drop the closing fence if present
+        if lines and lines[-1].startswith("```"):
+            lines = lines[:-1]
+        text = "\n".join(lines).strip()
+    return text
+
+
+def _render_mermaid(code: str, *, height: int = 500):
+    """
+    Render Mermaid code using an embedded HTML component.
+    """
+    if not code:
+        st.info("No diagram to render yet. Generate or enter Mermaid text.")
+        return
+
+    escaped = _html.escape(code)
+    html_doc = f"""
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=\"utf-8\" />
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />
+    <style>
+      html, body {{ margin: 0; padding: 0; }}
+      .mermaid {{ margin: 0; }}
+    </style>
+  </head>
+  <body>
+    <div class=\"mermaid\">{escaped}</div>
+    <script src=\"https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js\"></script>
+    <script>
+      try {{
+        // Try to follow Streamlit theme when possible
+        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        mermaid.initialize({{ startOnLoad: true, theme: prefersDark ? 'dark' : 'default' }});
+      }} catch (e) {{ console.error(e); }}
+    </script>
+  </body>
+</html>
+"""
+    st.components.v1.html(html_doc, height=height, scrolling=True)
 
 
 def main():
@@ -83,12 +139,20 @@ def main():
 
             st.session_state["diagram_text"] = diagram
 
-    st.text_area(
-        "Diagram (editable)",
-        value=st.session_state.get("diagram_text", ""),
-        height=300,
-        key="diagram_text",
-    )
+    tab_preview, tab_text = st.tabs(["Preview", "Mermaid Text"])
+
+    with tab_text:
+        st.text_area(
+            "Diagram (editable)",
+            value=st.session_state.get("diagram_text", ""),
+            height=320,
+            key="diagram_text",
+        )
+
+    with tab_preview:
+        code = st.session_state.get("diagram_text", "").strip()
+        code = _sanitize_mermaid(code)
+        _render_mermaid(code, height=600)
 
 
 if __name__ == "__main__":
