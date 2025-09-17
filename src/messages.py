@@ -1,6 +1,6 @@
-from __future__ import annotations
-
 import base64
+import pcap
+from io import BytesIO
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
@@ -9,19 +9,10 @@ from typing import Dict, List, Optional, Tuple
 TEXT_EXTS = {".txt", ".md", ".csv", ".json", ".log", ".yaml", ".yml"}
 CODE_EXTS = {".py", ".sh", ".conf", ".ini"}
 IMG_EXTS = {".png", ".jpg", ".jpeg", ".webp"}
-
-MAX_TEXT_CHARS = 80_000
-
-
-def _truncate_text(text: str) -> str:
-    if len(text) > MAX_TEXT_CHARS:
-        head = text[:MAX_TEXT_CHARS]
-        tail_note = f"\n\n[TRUNCATED: {len(text) - MAX_TEXT_CHARS} more chars]"
-        return head + tail_note
-    return text
+PCAP_EXTS = {".pcap"}
 
 
-def create_message_from_path(path: Path) -> Optional[Dict]:
+def create_message_from_path(path: Path, pcap_mode: str = "full") -> Optional[Dict]:
     ext = path.suffix.lower()
 
     if ext in TEXT_EXTS or ext in CODE_EXTS:
@@ -30,7 +21,7 @@ def create_message_from_path(path: Path) -> Optional[Dict]:
         except Exception as e:
             print(f"failed to parse text: {e}")
             return None
-        text = _truncate_text(text)
+
         return {
             "role": "user",
             "content": f"Supporting file: {path.name}\n\n{text}",
@@ -44,6 +35,7 @@ def create_message_from_path(path: Path) -> Optional[Dict]:
             return None
         b64 = base64.b64encode(data).decode("utf-8")
         fmt = ext.lstrip(".")
+        data_url = f"data:image/{fmt};base64,{b64}"
         return {
             "role": "user",
             "content": [
@@ -51,14 +43,33 @@ def create_message_from_path(path: Path) -> Optional[Dict]:
                     "type": "input_text",
                     "text": f"Supporting image ({path.name}). Use only if relevant to the network flow.",
                 },
-                {"type": "input_image", "image_data": b64, "image_format": fmt},
+                {
+                    "type": "input_image",
+                    "image_url": data_url,
+                    "detail": "auto",
+                },
             ],
+        }
+
+    if ext in PCAP_EXTS:
+        try:
+            with path.open(mode="rb") as r:
+                text = pcap.prompt(path.name, r, mode=pcap_mode)
+        except Exception as e:
+            print(f"failed to parse pcap: {e}")
+            return None
+
+        return {
+            "role": "user",
+            "content": text,
         }
 
     return None
 
 
-def create_message_from_bytes(name: str, data: bytes) -> Optional[Dict]:
+def create_message_from_bytes(
+    name: str, data: bytes, pcap_mode: str = "full"
+) -> Optional[Dict]:
     lower = name.lower()
     ext = lower[lower.rfind(".") :] if "." in lower else ""
 
@@ -67,12 +78,13 @@ def create_message_from_bytes(name: str, data: bytes) -> Optional[Dict]:
             text = data.decode("utf-8", errors="ignore")
         except Exception:
             return None
-        text = _truncate_text(text)
+
         return {"role": "user", "content": f"Supporting file: {name}\n\n{text}"}
 
     if ext in IMG_EXTS:
         b64 = base64.b64encode(data).decode("utf-8")
         fmt = ext.lstrip(".")
+        data_url = f"data:image/{fmt};base64,{b64}"
         return {
             "role": "user",
             "content": [
@@ -80,8 +92,24 @@ def create_message_from_bytes(name: str, data: bytes) -> Optional[Dict]:
                     "type": "input_text",
                     "text": f"Supporting image ({name}). Use only if relevant to the network flow.",
                 },
-                {"type": "input_image", "image_data": b64, "image_format": fmt},
+                {
+                    "type": "input_image",
+                    "image_url": data_url,
+                    "detail": "auto",
+                },
             ],
+        }
+
+    if ext in PCAP_EXTS:
+        try:
+            text = pcap.prompt(name, BytesIO(data), mode=pcap_mode)
+        except Exception as e:
+            print(f"failed to parse pcap: {e}")
+            return None
+
+        return {
+            "role": "user",
+            "content": text,
         }
 
     return None

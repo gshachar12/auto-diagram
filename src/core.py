@@ -1,24 +1,30 @@
 import os
-from typing import List, Dict, Optional
+from typing import List, Optional
+from messages import build_messages_from_dir
 
 from openai import OpenAI
 
 # ---- Configuration / prompt guardrails ----
 INSTRUCTIONS = """
-You are a networking and mermaid diagram syntax expert.
-Your job is to generate a mermaid diagram that explains the network flow
-described in the prompt and any supporting files.
+You are a networking and Mermaid diagram syntax expert.
+Your job is to generate a Mermaid diagram that explains the network flow
+described in the user’s input (and any supporting files, if provided).
+
+Choose the diagram type that best represents the described network flow.
+If uncertain, default to: sequenceDiagram.
+
 STRICT RULES:
-- ONLY output a single valid Mermaid definition (no backticks, no prose).
-- Do not include explanations or comments.
-- If a diagram type is ambiguous, default to a flowchart: `flowchart TD`.
+- Output ONLY a single valid Mermaid definition.
+- Do NOT wrap the output in backticks or quotes.
+- Do NOT add explanations, comments, or prose.
+- All node/edge labels MUST be wrapped in double quotes ("...").
+  - This ensures special characters such as (), [], {}, :, -, and spaces are handled safely.
+  - Do not use " inside labels (replace or omit if present).
+- The output must be syntactically correct Mermaid that renders without modification.
 """
 
 # Create client (uses OPENAI_API_KEY env var if not provided)
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
-
-# ---- Helpers ----
-from messages import build_messages_from_dir
 
 
 def generate_diagram(messages: List, model: str = "gpt-5") -> str:

@@ -2,7 +2,6 @@ import base64
 import html as _html
 import json
 import os
-import urllib.parse
 import uuid
 import zlib
 
@@ -174,18 +173,18 @@ def show_history():
             msg = chat_msg.get("msg", None)
             content = msg.get("content", "")
             with st.chat_message("user"):
-                st.write(content[:300] + "...")
+                st.text(content[:300] + "...")
                 if len(user_messages) > 0:
                     with st.expander("Messages", expanded=False):
-                        st.write("\n".join(user_messages))
-                        st.write("---")
-                        st.write(content)
+                        st.text("\n".join(user_messages))
+                        st.text("---")
+                        st.text(content)
                     user_messages = []
         else:
             if len(user_messages) > 0:
                 with st.chat_message("..."):
                     with st.expander("user", expanded=False):
-                        st.write("\n".join(user_messages))
+                        st.text("\n".join(user_messages))
                     user_messages = []
             with st.chat_message("ai"):
                 msg = chat_msg.get("msg", None)
@@ -193,11 +192,11 @@ def show_history():
                 with st.expander("AI", expanded=False):
                     st.code(content, language="text")
 
-        if len(user_messages) > 0:
-            with st.chat_message("user"):
-                with st.expander("...", expanded=False):
-                    st.write("\n".join(user_messages))
-                user_messages = []
+    if len(user_messages) > 0:
+        with st.chat_message("user"):
+            with st.expander("...", expanded=False):
+                st.text("\n".join(user_messages))
+            user_messages = []
 
 
 def create_turn_messages(turn_text, turn_attachments):
@@ -213,7 +212,10 @@ def create_turn_messages(turn_text, turn_attachments):
                 except Exception:
                     pass
             name = getattr(up, "name", None) or "attachment"
-            msg = create_message_from_bytes(name, data)
+            msg = create_message_from_bytes(
+                name, data, st.session_state["pcap_parse_mode"]
+            )
+
             if msg is None:
                 unsupported.append(name)
             else:
@@ -250,6 +252,8 @@ def main():
         st.session_state["chat_history"] = []  # list[Dict(role, content)]
     if "diagram_text" not in st.session_state:
         st.session_state["diagram_text"] = ""
+    if "pcap_parse_mode" not in st.session_state:
+        st.session_state["pcap_parse_mode"] = "full"
 
     with st.sidebar:
         st.title("Auto Diagram")
@@ -262,6 +266,14 @@ def main():
         )
         if api_key:
             os.environ["OPENAI_API_KEY"] = api_key
+
+        pcap_mode_box_label = "Do full pcap analysis, if unchecked only send packet summaries to reduce request tokens"
+        pcap_mode_box = st.checkbox(pcap_mode_box_label, value=True)
+        if pcap_mode_box:
+            st.session_state["pcap_parse_mode"] = "full"
+        else:
+            st.session_state["pcap_parse_mode"] = "summary"
+
         st.markdown("---")
         if st.button("Clear Conversation", help="Reset chat and diagram"):
             st.session_state["chat_history"] = []
@@ -296,9 +308,9 @@ def main():
                 # If the diagram was edited, keep the last assistant message in sync
                 if (
                     st.session_state["chat_history"]
-                    and st.session_state["chat_history"][-1]["role"] == "assistant"
+                    and st.session_state["chat_history"][-1]["msg"]["role"] == "assistant"
                 ):
-                    st.session_state["chat_history"][-1]["content"] = st.session_state[
+                    st.session_state["chat_history"][-1]["msg"]["content"] = st.session_state[
                         "diagram_text"
                     ]
 
