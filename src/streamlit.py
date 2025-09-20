@@ -4,8 +4,8 @@ import json
 import os
 import uuid
 import zlib
-
 import streamlit as st
+import time
 
 from typing import Dict, List, Optional
 from core import generate_diagram
@@ -53,7 +53,7 @@ def _render_mermaid(code: str, *, height: int = 500):
   </head>
   <body>
     <div class=\"mermaid\">{escaped}</div>
-    <script src=\"https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js\"></script>
+    <script src=\"https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js\"></script>
     <script>
       try {{
         // Try to follow Streamlit theme when possible
@@ -123,6 +123,53 @@ def _copy_button(text: str, *, label: str, key: Optional[str] = None) -> None:
     st.components.v1.html(component_html, height=60)
 
 
+def _download_mermaid_svg(code: str):
+    download_button_html = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    </head>
+    <body>
+        <button id="download-svg-btn" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">
+            Download as SVG
+        </button>
+
+        <script>
+            // Must initialize mermaid to use the render function
+            mermaid.initialize({{ startOnLoad: false }});
+
+            document.getElementById('download-svg-btn').addEventListener('click', async function() {{
+                // The mermaid code is passed from Python into this JS block
+                const mermaidCode = `{code}`;
+
+                try {{
+                    const {{ svg }} = await mermaid.render('headless-diagram', mermaidCode);
+
+                    // Create a Blob and trigger the download
+                    const blob = new Blob([svg], {{ type: 'image/svg+xml;charset=utf-8' }});
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'diagram_{int(time.time())}.svg';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+
+                }} catch (e) {{
+                    console.error("Error rendering Mermaid diagram:", e);
+                    alert("Could not render the Mermaid diagram. Check the console for errors and ensure the syntax is correct.");
+                }}
+            }});
+        </script>
+    </body>
+    </html>
+    """
+
+    st.components.v1.html(download_button_html, height=500, scrolling=True)
+
+
 def diagram_viewer():
     viewer, editor, export = st.tabs(["Viewer", "Editor", "Export"])
     code = st.session_state.get("diagram_text", "").strip()
@@ -140,7 +187,7 @@ def diagram_viewer():
             key="diagram_text",
         )
     with export:
-        mermaid_live, drawio = st.tabs(["mermaid.live", "draw.io"])
+        mermaid_live, drawio, svg = st.tabs(["mermaid.live", "draw.io", "svg"])
         has_code = bool(code)
 
         with mermaid_live:
@@ -159,6 +206,8 @@ See [documentation](https://www.drawio.com/blog/mermaid-diagrams)
 2. Arrange -> Insert -> Mermaid… (Copy mermaid text)
 """
             )
+        with svg:
+            _download_mermaid_svg(code)
 
 
 def show_history():
@@ -308,11 +357,12 @@ def main():
                 # If the diagram was edited, keep the last assistant message in sync
                 if (
                     st.session_state["chat_history"]
-                    and st.session_state["chat_history"][-1]["msg"]["role"] == "assistant"
+                    and st.session_state["chat_history"][-1]["msg"]["role"]
+                    == "assistant"
                 ):
-                    st.session_state["chat_history"][-1]["msg"]["content"] = st.session_state[
-                        "diagram_text"
-                    ]
+                    st.session_state["chat_history"][-1]["msg"]["content"] = (
+                        st.session_state["diagram_text"]
+                    )
 
                 turn_messages, unsupported = create_turn_messages(
                     turn_text, turn_attachments

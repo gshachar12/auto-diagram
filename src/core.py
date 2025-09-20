@@ -10,8 +10,8 @@ You are a networking and Mermaid diagram syntax expert.
 Your job is to generate a Mermaid diagram that explains the network flow
 described in the user’s input (and any supporting files, if provided).
 
-Choose the diagram type that best represents the described network flow.
-If uncertain, default to: sequenceDiagram.
+If the user specifies a diagram type (e.g., "ZenUML", "flowchart"), you MUST use that type.
+Otherwise, choose the diagram type that best represents the described network flow, defaulting to "sequenceDiagram" if you are uncertain.
 
 STRICT RULES:
 - Output ONLY a single valid Mermaid definition.
@@ -37,6 +37,7 @@ def generate_diagram(messages: List, model: str = "gpt-5") -> str:
         model=model,
         instructions=INSTRUCTIONS,
         input=messages,
+        tools=[{"type": "web_search"}],
         # You can force plain text (no tool calls) if you want:
         # temperature=0.1,
     )
