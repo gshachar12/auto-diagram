@@ -3,33 +3,14 @@
 
 *Figure 1: “Delegation server” variant of the NRDelegationAttack flow overview, focused on the resolver requests and responses.*
 
----
-
-## Details
-
-- The attacker queries `xyz.referral.com`.  
-- Resolver contacts `referral.com`.  
-- `referral.com` responds with a **Large Referral Response (LRR)** containing up to 1,500 NS names.  
-- Resolver processes the LRR:
-  - Performs **2n cache/ADB lookups** (heavy CPU/memory cost).  
-  - Resolves `k` NS names at a time (`k=5` in BIND9).  
-  - Sets the `No_Fetch` flag.  
-- Each of the `k` names leads to a **delegation to a non-responsive server**.  
-- Each delegation triggers a **restart event**, which clears the `No_Fetch` flag and loops back.  
-- Loop continues until:
-  - restart-limit = 100, or  
-  - timeout.  
-- Final outcome: resolver returns **FAIL** to client.  
-
----
 
 ## Phases of the NRDelegationAttack
 
 ### Phase I — Large Referral Response (LRR) Received
 
-1. Attacker’s client queries the victim resolver about `xyz.referral.com`.
-2. Victim resolver queries `referral.com`.
-3. `referral.com` responds with a **Large Referral Response (LRR)** containing many NS records.
+1. Attacker’s client queries the victim resolver about `attack0.home.lan`.
+2. Victim resolver queries `home.lan`.
+3. `home.lan` responds with a **Large Referral Response (LRR)** containing many NS records.
 
 ### Phase II — Resolver Processes the LRR
 
