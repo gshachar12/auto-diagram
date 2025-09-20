@@ -6,9 +6,9 @@
 
 ## Details
 
-- The attacker queries `xyz.referral.com`.  
-- Resolver contacts `referral.com`.  
-- `referral.com` responds with a **Large Referral Response (LRR)** containing up to 1,500 NS names.  
+- The attacker queries `attack0.home.lan`.  
+- Resolver contacts `home.lan`.  
+- `home.lan` responds with a **Large Referral Response (LRR)** containing up to 1,500 NS names.  
 - Resolver processes the LRR:
   - Performs **2n cache/ADB lookups** (heavy CPU/memory cost).  
   - Resolves `k` NS names at a time (`k=5` in BIND9).  
