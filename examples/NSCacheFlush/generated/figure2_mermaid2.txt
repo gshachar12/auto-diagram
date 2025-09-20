@@ -1,0 +1,18 @@
+sequenceDiagram
+autonumber
+participant "Client" as C
+participant "Recursive Resolver" as R
+participant "Authoritative attack.com NS" as A
+C->>R: "Query A e1.attack.com"
+R->>A: "Query A e1.attack.com"
+A-->>R: "Answer CNAME e1.attack.com -> e2.attack.com"
+R->>R: "Store CNAME e1->e2 in benign cache"
+loop "CNAME chain expansion up to limit 17"
+  R->>A: "Query A eN.attack.com"
+  A-->>R: "Answer CNAME eN.attack.com -> eN+1.attack.com"
+  R->>R: "Store CNAME eN->eN+1 in benign cache"
+end
+note over R: "Total of 17 CNAME records are stored in benign cache"
+note over R: "Vendor limits BIND 17 Unbound 9 Google 15 Cloudflare 20"
+R-->>C: "Reply contains CNAME chain of length 17"
+note over C,R: "Attack consumes resolver processing and cache space with fewer entries per query than NS variant"
