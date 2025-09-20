@@ -168,7 +168,7 @@ def show_history():
     for chat_msg in st.session_state["chat_history"]:
         metadata = chat_msg.get("metadata")
         if metadata["type"] == "chat_attachment":
-            user_messages.append(f"Attachment: {metadata["name"]}")
+            user_messages.append(f"Attachment: {metadata['name']}")
         elif metadata["type"] == "chat_text":
             msg = chat_msg.get("msg", None)
             content = msg.get("content", "")
