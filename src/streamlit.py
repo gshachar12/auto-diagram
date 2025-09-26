@@ -215,8 +215,9 @@ See [documentation](https://www.drawio.com/blog/mermaid-diagrams)
 @st.dialog("User messages", width="large")
 def show_messages(data_fnc):
     user_messages, content = data_fnc()
-    st.code("\n".join(user_messages))
-    st.code("---")
+    if len(user_messages) > 0:
+        st.code("\n".join(user_messages))
+        st.code("---")
     st.code(content)
 
 
@@ -227,10 +228,10 @@ def show_ai_diagram(data_fnc):
 
 
 def show_history():
-    st.write("Messages History")
-    st.write("")
+    st.subheader("History")
     chat_history = st.session_state["current"].messages
     user_messages = []
+    diagrams_counter = 1
     for msg_id, chat_msg in enumerate(chat_history):
         metadata = chat_msg.get("metadata")
         if metadata["type"] == "chat_attachment":
@@ -239,30 +240,32 @@ def show_history():
             msg = chat_msg.get("msg", None)
             content = msg.get("content", "")
             with st.chat_message("user"):
-                st.write(content[:25] + "...")
                 curr_messages = user_messages
-                if st.button("View", key=f"view_messages_{msg_id}"):
+                if st.button(
+                    content[:25] + "...",
+                    key=f"view_messages_{msg_id}",
+                    icon=":material/expand_content:",
+                    type="tertiary",
+                ):
                     show_messages(lambda: (curr_messages, content))
                 user_messages = []
         else:
             if len(user_messages) > 0:
-                with st.chat_message("..."):
-                    curr_messages = user_messages
-                    if st.button("View", key=f"view_messages_{msg_id}"):
-                        show_messages(lambda: (curr_messages, ""))
-                    user_messages = []
-            with st.chat_message("ai"):
+                print("Got user messages instead out of order")
+            with st.chat_message("ai", avatar=":material/flowchart:"):
                 msg = chat_msg.get("msg", None)
                 content = msg.get("content", "")
-                if st.button("View diagram code", key=f"ai_diagram_{msg_id}"):
+                if st.button(
+                    f"Generated diagram {diagrams_counter}",
+                    key=f"ai_diagram_{msg_id}",
+                    icon=":material/expand_content:",
+                    type="tertiary",
+                ):
                     show_ai_diagram(lambda: content)
+            diagrams_counter += 1
 
     if len(user_messages) > 0:
-        with st.chat_message("..."):
-            curr_messages = user_messages
-            if st.button("View", key=f"view_messages_last"):
-                show_messages(lambda: (curr_messages, ""))
-            user_messages = []
+        print("got dangling user messages")
 
 
 def create_turn_messages(turn_text, turn_attachments):
@@ -318,91 +321,95 @@ def update_state():
     state.write(sessions)
 
 
+def chatbox():
+    st.caption(
+        "Chat to generate and refine Mermaid diagrams with optional supporting files."
+    )
+    chat_value = st.chat_input(
+        "Type a prompt or refinement and press Enter…",
+        accept_file="multiple",
+    )
+
+    submitted = False
+    turn_text = ""
+    turn_attachments = []
+
+    if chat_value is not None:
+        # Extract text and files
+        turn_text = chat_value.get("text", "")
+        turn_attachments = chat_value.get("files", [])
+        submitted = True
+
+    if submitted:
+        curr_session = st.session_state["current"]
+        if not turn_text.strip() and not turn_attachments:
+            st.warning("Enter a message or attach files.")
+        elif not os.environ.get("OPENAI_API_KEY"):
+            st.error("OPENAI_API_KEY not set. Provide it in the sidebar.")
+        else:
+            # If the diagram was edited, keep the last assistant message in sync
+            if (
+                len(curr_session.messages) > 0
+                and curr_session.messages[-1]["msg"]["role"] == "assistant"
+            ):
+                curr_session.messages[-1]["msg"]["content"] = st.session_state[
+                    "diagram_text"
+                ]
+
+            turn_messages, unsupported = create_turn_messages(
+                turn_text, turn_attachments
+            )
+            # Build full message list: persistent + prior conversation + this turn's files + user text
+            messages: List[Dict] = []
+            messages.extend(
+                to_openai_messages(curr_session.messages)
+            )  # persistent context
+            messages.extend(to_openai_messages(turn_messages))
+
+            with st.spinner("Generating diagram…"):
+                try:
+                    diagram = generate_diagram(messages=messages)
+                except Exception as e:
+                    st.error(f"Generation failed: {e}")
+                else:
+                    if len(turn_messages) > 0:
+                        curr_session.messages.extend(turn_messages)
+
+                    # Reflect skipped files info to the UI
+                    if unsupported:
+                        st.info(
+                            "Unsupported files were skipped: " + ", ".join(unsupported)
+                        )
+                    curr_session.messages.append(
+                        {
+                            "msg": {"role": "assistant", "content": diagram},
+                            "metadata": {"type": "response"},
+                        }
+                    )
+                    curr_session.diagram_text = diagram
+                    curr_session.updated = datetime.datetime.now().timestamp()
+
+            update_state()
+            st.rerun()
+
+
 def app():
     with st.container(vertical_alignment="top"):
-        st.caption(
-            "Chat to generate and refine Mermaid diagrams with optional supporting files."
-        )
-        chat_value = st.chat_input(
-            "Type a prompt or refinement and press Enter…",
-            accept_file="multiple",
-        )
-
-        submitted = False
-        turn_text = ""
-        turn_attachments = []
-
-        if chat_value is not None:
-            # Extract text and files
-            turn_text = chat_value.get("text", "")
-            turn_attachments = chat_value.get("files", [])
-            submitted = True
-
-        if submitted:
-            curr_session = st.session_state["current"]
-            if not turn_text.strip() and not turn_attachments:
-                st.warning("Enter a message or attach files.")
-            elif not os.environ.get("OPENAI_API_KEY"):
-                st.error("OPENAI_API_KEY not set. Provide it in the sidebar.")
-            else:
-                # If the diagram was edited, keep the last assistant message in sync
-                if (
-                    len(curr_session.messages) > 0
-                    and curr_session.messages[-1]["msg"]["role"] == "assistant"
-                ):
-                    curr_session.messages[-1]["msg"]["content"] = st.session_state[
-                        "diagram_text"
-                    ]
-
-                turn_messages, unsupported = create_turn_messages(
-                    turn_text, turn_attachments
-                )
-                # Build full message list: persistent + prior conversation + this turn's files + user text
-                messages: List[Dict] = []
-                messages.extend(
-                    to_openai_messages(curr_session.messages)
-                )  # persistent context
-                messages.extend(to_openai_messages(turn_messages))
-
-                with st.spinner("Generating diagram…"):
-                    try:
-                        diagram = generate_diagram(messages=messages)
-                    except Exception as e:
-                        st.error(f"Generation failed: {e}")
-                    else:
-                        if len(turn_messages) > 0:
-                            curr_session.messages.extend(turn_messages)
-
-                        # Reflect skipped files info to the UI
-                        if unsupported:
-                            st.info(
-                                "Unsupported files were skipped: "
-                                + ", ".join(unsupported)
-                            )
-                        curr_session.messages.append(
-                            {
-                                "msg": {"role": "assistant", "content": diagram},
-                                "metadata": {"type": "response"},
-                            }
-                        )
-                        curr_session.diagram_text = diagram
-                        curr_session.updated = datetime.datetime.now().timestamp()
-
-                update_state()
-                st.rerun()
+        chatbox()
 
     with st.container():
-        chat_col, diagram_col = st.columns([0.35, 0.65], gap="small")
+        chat_col, diagram_col = st.columns([0.32, 0.68], gap="small")
 
-        with chat_col.container(height=500):
+        with chat_col.container(height=600):
             show_history()
 
-        with diagram_col.container(height=500):
+        with diagram_col.container(height=600):
             diagram_viewer()
 
 
 def main():
     init()
+
     with st.sidebar:
         sidebar()
 
@@ -430,45 +437,46 @@ def sidebar():
         else:
             st.session_state["pcap_parse_mode"] = "summary"
 
+    st.header("Sessions")
     if st.button("New", icon=":material/open_in_new:", type="primary"):
         curr = state.ChatSession()
         st.session_state["current"] = curr
 
-    st.divider()
-    st.write("Sessions")
-
+    label_col, edit_col = st.columns([3,1])
     for session in state.sorted_state(st.session_state["sessions"]):
-        with st.container(border=True):
-            label = session.title
-            icon = None
-            if session.id == st.session_state["current"].id:
-                label = f"__{label}__"
-                icon = ":material/arrow_right:"
-            if st.button(
-                label, key=f"session_{session.id}", type="tertiary", icon=icon
-            ):
-                st.session_state["current"] = session
-                st.rerun()
+        label = session.title
+        if len(label) > 20:
+            label = label[:17] + "..."
+        icon = None
+        if session.id == st.session_state["current"].id:
+            label = f"__{label}__"
+            icon = ":material/arrow_right:"
+        
+        if label_col.button(
+            label, key=f"session_{session.id}", type="tertiary", icon=icon
+        ):
+            st.session_state["current"] = session
+            st.rerun()
 
-            icon = ":material/more_horiz:"
-            with st.popover("", icon=icon):
-                name = st.text_input(
-                    "Rename",
-                    key=f"session_rename_{session.id}",
-                    value=session.title,
-                )
-                if name != session.title:
-                    st.session_state["sessions"][session.id].title = name
-                    update_state()
-                    st.rerun()
+        icon = ":material/more_horiz:"
+        col_pp = edit_col.popover("", icon=icon)
+        name = col_pp.text_input(
+            "Rename",
+            key=f"session_rename_{session.id}",
+            value=session.title,
+        )
+        if name != session.title:
+            st.session_state["sessions"][session.id].title = name
+            update_state()
+            st.rerun()
 
-                icon = ":material/delete:"
-                if st.button(
-                    "", key=f"session_del_{session.id}", type="tertiary", icon=icon
-                ):
-                    del st.session_state["sessions"][session.id]
-                    update_state()
-                    st.rerun()
+        icon = ":material/delete:"
+        if col_pp.button(
+            "", key=f"session_del_{session.id}", type="tertiary", icon=icon
+        ):
+            del st.session_state["sessions"][session.id]
+            update_state()
+            st.rerun()
 
 
 def init():
