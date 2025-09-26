@@ -6,6 +6,8 @@ import uuid
 import zlib
 import streamlit as st
 import time
+import state
+import datetime
 
 from typing import Dict, List, Optional
 from core import generate_diagram
@@ -132,7 +134,7 @@ def _download_mermaid_svg(code: str):
     </head>
     <body>
         <button id="download-svg-btn" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">
-            Download as SVG
+            Download SVG
         </button>
 
         <script>
@@ -172,7 +174,7 @@ def _download_mermaid_svg(code: str):
 
 def diagram_viewer():
     viewer, editor, export = st.tabs(["Viewer", "Editor", "Export"])
-    code = st.session_state.get("diagram_text", "").strip()
+    code = st.session_state["current"].diagram_text
     with viewer:
         code = _sanitize_mermaid(code)
         _render_mermaid(code, height=520)
@@ -210,11 +212,26 @@ See [documentation](https://www.drawio.com/blog/mermaid-diagrams)
             _download_mermaid_svg(code)
 
 
+@st.dialog("User messages", width="large")
+def show_messages(data_fnc):
+    user_messages, content = data_fnc()
+    st.code("\n".join(user_messages))
+    st.code("---")
+    st.code(content)
+
+
+@st.dialog("AI diagram", width="large")
+def show_ai_diagram(data_fnc):
+    diagram_text = data_fnc()
+    st.code(diagram_text)
+
+
 def show_history():
-    st.write("Messages history")
+    st.write("Messages History")
     st.write("")
+    chat_history = st.session_state["current"].messages
     user_messages = []
-    for chat_msg in st.session_state["chat_history"]:
+    for msg_id, chat_msg in enumerate(chat_history):
         metadata = chat_msg.get("metadata")
         if metadata["type"] == "chat_attachment":
             user_messages.append(f"Attachment: {metadata['name']}")
@@ -222,29 +239,29 @@ def show_history():
             msg = chat_msg.get("msg", None)
             content = msg.get("content", "")
             with st.chat_message("user"):
-                st.text(content[:300] + "...")
-                if len(user_messages) > 0:
-                    with st.expander("Messages", expanded=False):
-                        st.text("\n".join(user_messages))
-                        st.text("---")
-                        st.text(content)
-                    user_messages = []
+                st.write(content[:25] + "...")
+                curr_messages = user_messages
+                if st.button("View", key=f"view_messages_{msg_id}"):
+                    show_messages(lambda: (curr_messages, content))
+                user_messages = []
         else:
             if len(user_messages) > 0:
                 with st.chat_message("..."):
-                    with st.expander("user", expanded=False):
-                        st.text("\n".join(user_messages))
+                    curr_messages = user_messages
+                    if st.button("View", key=f"view_messages_{msg_id}"):
+                        show_messages(lambda: (curr_messages, ""))
                     user_messages = []
             with st.chat_message("ai"):
                 msg = chat_msg.get("msg", None)
                 content = msg.get("content", "")
-                with st.expander("AI", expanded=False):
-                    st.code(content, language="text")
+                if st.button("View diagram code", key=f"ai_diagram_{msg_id}"):
+                    show_ai_diagram(lambda: content)
 
     if len(user_messages) > 0:
-        with st.chat_message("user"):
-            with st.expander("...", expanded=False):
-                st.text("\n".join(user_messages))
+        with st.chat_message("..."):
+            curr_messages = user_messages
+            if st.button("View", key=f"view_messages_last"):
+                show_messages(lambda: (curr_messages, ""))
             user_messages = []
 
 
@@ -293,42 +310,15 @@ def to_openai_messages(msgs):
     return result
 
 
-def main():
-    st.set_page_config(page_title="Auto Diagram", page_icon="🗺️", layout="wide")
+def update_state():
+    curr = st.session_state["current"]
+    sessions = st.session_state["sessions"]
+    if curr.id not in sessions and len(curr.messages) > 0:
+        sessions[curr.id] = curr
+    state.write(sessions)
 
-    # Session state
-    if "chat_history" not in st.session_state:
-        st.session_state["chat_history"] = []  # list[Dict(role, content)]
-    if "diagram_text" not in st.session_state:
-        st.session_state["diagram_text"] = ""
-    if "pcap_parse_mode" not in st.session_state:
-        st.session_state["pcap_parse_mode"] = "full"
 
-    with st.sidebar:
-        st.title("Auto Diagram")
-        st.subheader("Settings")
-        api_key = st.text_input(
-            "OpenAI API Key",
-            type="password",
-            help="If not set via environment, provide your key here.",
-            value=os.environ.get("OPENAI_API_KEY", ""),
-        )
-        if api_key:
-            os.environ["OPENAI_API_KEY"] = api_key
-
-        pcap_mode_box_label = "Do full pcap analysis, if unchecked only send packet summaries to reduce request tokens"
-        pcap_mode_box = st.checkbox(pcap_mode_box_label, value=True)
-        if pcap_mode_box:
-            st.session_state["pcap_parse_mode"] = "full"
-        else:
-            st.session_state["pcap_parse_mode"] = "summary"
-
-        st.markdown("---")
-        if st.button("Clear Conversation", help="Reset chat and diagram"):
-            st.session_state["chat_history"] = []
-            st.session_state["diagram_text"] = ""
-            st.toast("Conversation cleared")
-
+def app():
     with st.container(vertical_alignment="top"):
         st.caption(
             "Chat to generate and refine Mermaid diagrams with optional supporting files."
@@ -349,6 +339,7 @@ def main():
             submitted = True
 
         if submitted:
+            curr_session = st.session_state["current"]
             if not turn_text.strip() and not turn_attachments:
                 st.warning("Enter a message or attach files.")
             elif not os.environ.get("OPENAI_API_KEY"):
@@ -356,13 +347,12 @@ def main():
             else:
                 # If the diagram was edited, keep the last assistant message in sync
                 if (
-                    st.session_state["chat_history"]
-                    and st.session_state["chat_history"][-1]["msg"]["role"]
-                    == "assistant"
+                    len(curr_session.messages) > 0
+                    and curr_session.messages[-1]["msg"]["role"] == "assistant"
                 ):
-                    st.session_state["chat_history"][-1]["msg"]["content"] = (
-                        st.session_state["diagram_text"]
-                    )
+                    curr_session.messages[-1]["msg"]["content"] = st.session_state[
+                        "diagram_text"
+                    ]
 
                 turn_messages, unsupported = create_turn_messages(
                     turn_text, turn_attachments
@@ -370,7 +360,7 @@ def main():
                 # Build full message list: persistent + prior conversation + this turn's files + user text
                 messages: List[Dict] = []
                 messages.extend(
-                    to_openai_messages(st.session_state["chat_history"])
+                    to_openai_messages(curr_session.messages)
                 )  # persistent context
                 messages.extend(to_openai_messages(turn_messages))
 
@@ -381,7 +371,7 @@ def main():
                         st.error(f"Generation failed: {e}")
                     else:
                         if len(turn_messages) > 0:
-                            st.session_state["chat_history"].extend(turn_messages)
+                            curr_session.messages.extend(turn_messages)
 
                         # Reflect skipped files info to the UI
                         if unsupported:
@@ -389,24 +379,109 @@ def main():
                                 "Unsupported files were skipped: "
                                 + ", ".join(unsupported)
                             )
-                        st.session_state["chat_history"].append(
+                        curr_session.messages.append(
                             {
                                 "msg": {"role": "assistant", "content": diagram},
                                 "metadata": {"type": "response"},
                             }
                         )
-                        st.session_state["diagram_text"] = diagram
+                        curr_session.diagram_text = diagram
+                        curr_session.updated = datetime.datetime.now().timestamp()
 
+                update_state()
                 st.rerun()
 
     with st.container():
-        chat_col, diagram_col = st.columns([0.3, 0.7], gap="medium", border=True)
+        chat_col, diagram_col = st.columns([0.35, 0.65], gap="small")
 
-        with chat_col:
+        with chat_col.container(height=500):
             show_history()
 
-        with diagram_col:
+        with diagram_col.container(height=500):
             diagram_viewer()
+
+
+def main():
+    init()
+    with st.sidebar:
+        sidebar()
+
+    app()
+
+
+def sidebar():
+    st.title("Auto Diagram")
+    with st.popover("", icon=":material/settings:"):
+        api_key = st.text_input(
+            "OpenAI API Key",
+            type="password",
+            help="If not set via environment, provide your key here.",
+            value=os.environ.get("OPENAI_API_KEY", ""),
+        )
+        if api_key:
+            os.environ["OPENAI_API_KEY"] = api_key
+
+        pcap_mode_box_label = "Provide full .pcap trace if unchecked only send packet summaries to reduce request tokens"
+        pcap_mode_box = st.checkbox(
+            "Full pcap trace", help=pcap_mode_box_label, value=True
+        )
+        if pcap_mode_box:
+            st.session_state["pcap_parse_mode"] = "full"
+        else:
+            st.session_state["pcap_parse_mode"] = "summary"
+
+    if st.button("New", icon=":material/open_in_new:", type="primary"):
+        curr = state.ChatSession()
+        st.session_state["current"] = curr
+
+    st.divider()
+    st.write("Sessions")
+
+    for session in state.sorted_state(st.session_state["sessions"]):
+        with st.container(border=True):
+            label = session.title
+            icon = None
+            if session.id == st.session_state["current"].id:
+                label = f"__{label}__"
+                icon = ":material/arrow_right:"
+            if st.button(
+                label, key=f"session_{session.id}", type="tertiary", icon=icon
+            ):
+                st.session_state["current"] = session
+                st.rerun()
+
+            icon = ":material/more_horiz:"
+            with st.popover("", icon=icon):
+                name = st.text_input(
+                    "Rename",
+                    key=f"session_rename_{session.id}",
+                    value=session.title,
+                )
+                if name != session.title:
+                    st.session_state["sessions"][session.id].title = name
+                    update_state()
+                    st.rerun()
+
+                icon = ":material/delete:"
+                if st.button(
+                    "", key=f"session_del_{session.id}", type="tertiary", icon=icon
+                ):
+                    del st.session_state["sessions"][session.id]
+                    update_state()
+                    st.rerun()
+
+
+def init():
+    st.set_page_config(page_title="Auto Diagram", page_icon="🗺️", layout="wide")
+    if "sessions" not in st.session_state:
+        st.session_state["sessions"] = state.load()
+
+    if "current" not in st.session_state:
+        st.session_state["current"] = state.ChatSession()
+
+    # Session state
+    if "pcap_parse_mode" not in st.session_state:
+        st.session_state["pcap_parse_mode"] = "full"
 
 
 if __name__ == "__main__":

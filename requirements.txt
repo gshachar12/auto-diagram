@@ -3,3 +3,5 @@ typer
 openai
 streamlit>=1.49.1
 tiktoken>=0.11.0
+platformdirs
+pydantic
