@@ -1,8 +1,8 @@
 scapy>=2.5.0
-typer
-openai
+typer==0.17.3
+openai>=1.107.1
 streamlit>=1.49.1
 tiktoken>=0.11.0
-platformdirs
-pydantic
-google-genai
+platformdirs==4.4.0
+pydantic>=2.11.7
+google-genai>=1.39.1

@@ -7,10 +7,22 @@ from typing import List, Dict, Iterable
 
 APP_NAME = "auto_diagram"
 STATE_FILE_NAME = "state.json"
+WORKDIR_ENV_VAR = "AUTO_DIAGRAM_WORKDIR"
 
-work_dir = platformdirs.user_data_dir(
-    APP_NAME, appauthor=False, version="0.1", ensure_exists=True
-)
+
+def _work_dir() -> str:
+    """Return the directory used to persist chat state."""
+    override = os.getenv(WORKDIR_ENV_VAR)
+    if override:
+        path = os.path.abspath(os.path.expanduser(override))
+        os.makedirs(path, exist_ok=True)
+        return path
+    return platformdirs.user_data_dir(
+        APP_NAME, appauthor=False, version="0.1", ensure_exists=True
+    )
+
+
+work_dir = _work_dir()
 state_file = os.path.join(work_dir, STATE_FILE_NAME)
 print(f"Work dir: {work_dir}")
 print(f"State file: {state_file}")

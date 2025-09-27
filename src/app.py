@@ -441,7 +441,7 @@ def sidebar():
             help="If not set via environment, provide your key here.",
             value=os.environ.get("GEMINI_API_KEY", ""),
         )
-        if open_ai_api_key:
+        if gemini_api_key:
             os.environ["GEMINI_API_KEY"] = gemini_api_key
 
         pcap_mode_box_label = "Provide full .pcap trace if unchecked only send packet summaries to reduce request tokens"
@@ -464,7 +464,7 @@ def sidebar():
         )
 
         st.session_state["model"] = model
-        if model == "OpenAI GPT-5":
+        if model == "gpt-5":
             st.session_state["api_key"] = open_ai_api_key
         else:
             st.session_state["api_key"] = gemini_api_key
