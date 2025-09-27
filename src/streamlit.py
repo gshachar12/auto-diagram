@@ -255,8 +255,9 @@ def show_history():
             with st.chat_message("ai", avatar=":material/flowchart:"):
                 msg = chat_msg.get("msg", None)
                 content = msg.get("content", "")
+                model = metadata.get("model", "gpt-5")
                 if st.button(
-                    f"Generated diagram {diagrams_counter}",
+                    f"**{model}** generated [{diagrams_counter}]",
                     key=f"ai_diagram_{msg_id}",
                     icon=":material/expand_content:",
                     type="tertiary",
@@ -321,6 +322,10 @@ def update_state():
     state.write(sessions)
 
 
+def model_config():
+    return st.session_state["api_key"], st.session_state["model"]
+
+
 def chatbox():
     st.caption(
         "Chat to generate and refine Mermaid diagrams with optional supporting files."
@@ -344,8 +349,6 @@ def chatbox():
         curr_session = st.session_state["current"]
         if not turn_text.strip() and not turn_attachments:
             st.warning("Enter a message or attach files.")
-        elif not os.environ.get("OPENAI_API_KEY"):
-            st.error("OPENAI_API_KEY not set. Provide it in the sidebar.")
         else:
             # If the diagram was edited, keep the last assistant message in sync
             if (
@@ -366,11 +369,15 @@ def chatbox():
             )  # persistent context
             messages.extend(to_openai_messages(turn_messages))
 
+            api_key, model = model_config()
             with st.spinner("Generating diagram…"):
                 try:
-                    diagram = generate_diagram(messages=messages)
+                    diagram = generate_diagram(
+                        messages=messages, api_key=api_key, model=model
+                    )
                 except Exception as e:
                     st.error(f"Generation failed: {e}")
+                    time.sleep(15)
                 else:
                     if len(turn_messages) > 0:
                         curr_session.messages.extend(turn_messages)
@@ -383,7 +390,7 @@ def chatbox():
                     curr_session.messages.append(
                         {
                             "msg": {"role": "assistant", "content": diagram},
-                            "metadata": {"type": "response"},
+                            "metadata": {"type": "response", "model": model},
                         }
                     )
                     curr_session.diagram_text = diagram
@@ -419,14 +426,23 @@ def main():
 def sidebar():
     st.title("Auto Diagram")
     with st.popover("", icon=":material/settings:"):
-        api_key = st.text_input(
+        open_ai_api_key = st.text_input(
             "OpenAI API Key",
             type="password",
             help="If not set via environment, provide your key here.",
             value=os.environ.get("OPENAI_API_KEY", ""),
         )
-        if api_key:
-            os.environ["OPENAI_API_KEY"] = api_key
+        if open_ai_api_key:
+            os.environ["OPENAI_API_KEY"] = open_ai_api_key
+
+        gemini_api_key = st.text_input(
+            "Gemini API Key",
+            type="password",
+            help="If not set via environment, provide your key here.",
+            value=os.environ.get("GEMINI_API_KEY", ""),
+        )
+        if open_ai_api_key:
+            os.environ["GEMINI_API_KEY"] = gemini_api_key
 
         pcap_mode_box_label = "Provide full .pcap trace if unchecked only send packet summaries to reduce request tokens"
         pcap_mode_box = st.checkbox(
@@ -437,12 +453,28 @@ def sidebar():
         else:
             st.session_state["pcap_parse_mode"] = "summary"
 
+        model = st.radio(
+            "Choose model",
+            ["gpt-5", "gemini-2.5-flash", "gemini-2.5-pro"],
+            captions=[
+                "Open AI GPT-5 requires Open AI API Key",
+                "Gemini 2.5 Flash requires Gemini API Key (Free tier)",
+                "Gemini 2.5 Pro requires Gemini API Key",
+            ],
+        )
+
+        st.session_state["model"] = model
+        if model == "OpenAI GPT-5":
+            st.session_state["api_key"] = open_ai_api_key
+        else:
+            st.session_state["api_key"] = gemini_api_key
+
     st.header("Sessions")
     if st.button("New", icon=":material/open_in_new:", type="primary"):
         curr = state.ChatSession()
         st.session_state["current"] = curr
 
-    label_col, edit_col = st.columns([3,1])
+    label_col, edit_col = st.columns([3, 1])
     for session in state.sorted_state(st.session_state["sessions"]):
         label = session.title
         if len(label) > 20:
@@ -451,7 +483,7 @@ def sidebar():
         if session.id == st.session_state["current"].id:
             label = f"__{label}__"
             icon = ":material/arrow_right:"
-        
+
         if label_col.button(
             label, key=f"session_{session.id}", type="tertiary", icon=icon
         ):
