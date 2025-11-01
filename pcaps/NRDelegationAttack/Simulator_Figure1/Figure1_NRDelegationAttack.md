@@ -14,10 +14,11 @@
 
 ### Phase II — Resolver Processes the LRR
 
-1. The resolver performs **2n cache lookups** (for each NS name and corresponding A/AAAA).
-2. Begins resolving up to `k` referral-limit NS names (e.g., `k=5` in BIND9).
-3. Sets `No_Fetch` flag to avoid excessive NS processing.
-4. Queries the first batch of referral-limit NS names.
+1. For each of the **n NS names** from the LRR, the resolver looks up each of them to see if any one of them is already cached.
+2. The resolver performs **2n cache lookups** (for each NS name and corresponding A/AAAA).
+3. Begins resolving up to `k` referral-limit NS names (e.g., `k=5` in BIND9).
+4. Sets `No_Fetch` flag to avoid excessive NS processing.
+5. Queries the first batch of referral-limit NS names.
 
 ### Phase III — Delegation Loop and Restart
 
