@@ -6,210 +6,16 @@ import uuid
 import zlib
 import streamlit as st
 import time
+from user_auth import authenticate
 import state
 import datetime
-
+import re
 from typing import Dict, List, Optional
 from core import generate_diagram
 from messages import create_message_from_bytes
-
-
-def _sanitize_mermaid(code: str) -> str:
-    """
-    Remove Markdown code fences if present and return the raw Mermaid definition.
-    """
-    if not code:
-        return ""
-    text = code.strip()
-    if text.startswith("```"):
-        lines = text.splitlines()
-        # Drop the opening fence (e.g., ``` or ```mermaid)
-        if lines and lines[0].startswith("```"):
-            lines = lines[1:]
-        # Drop the closing fence if present
-        if lines and lines[-1].startswith("```"):
-            lines = lines[:-1]
-        text = "\n".join(lines).strip()
-    return text
-
-
-def _render_mermaid(code: str, *, height: int = 500):
-    """
-    Render Mermaid code using an embedded HTML component.
-    """
-    if not code:
-        st.info("No diagram to render yet. Generate or enter Mermaid text.")
-        return
-
-    escaped = _html.escape(code)
-    html_doc = f"""
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset=\"utf-8\" />
-    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />
-    <style>
-      html, body {{ margin: 0; padding: 0; }}
-      .mermaid {{ margin: 0; }}
-    </style>
-  </head>
-  <body>
-    <div class=\"mermaid\">{escaped}</div>
-    <script src=\"https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js\"></script>
-    <script>
-      try {{
-        // Try to follow Streamlit theme when possible
-        const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-        mermaid.initialize({{ startOnLoad: true, theme: prefersDark ? 'dark' : 'default' }});
-      }} catch (e) {{ console.error(e); }}
-    </script>
-  </body>
-</html>
-"""
-    st.components.v1.html(html_doc, height=height, scrolling=True)
-
-
-def _mermaid_live_url(code: str) -> str:
-    if not code:
-        return ""
-    code = _sanitize_mermaid(code)
-    code_json = json.dumps({"code": code})
-    compressed = zlib.compress(code_json.encode("utf-8"), level=9)
-    encoded = base64.urlsafe_b64encode(compressed).decode("ascii").rstrip("=")
-    return f"https://mermaid.live/edit#pako:{encoded}"
-
-
-def _copy_button(text: str, *, label: str, key: Optional[str] = None) -> None:
-    if not text:
-        return
-
-    button_id = key or f"copy-btn-{uuid.uuid4().hex}"
-    escaped_label = _html.escape(label)
-    json_text = json.dumps(text)
-    component_html = f"""
-<div style=\"display:flex;gap:0.5rem;align-items:center;\">
-  <button id=\"{button_id}\" style=\"padding:0.25rem 0.65rem;border:1px solid #6c757d;border-radius:4px;background:transparent;cursor:pointer;\">{escaped_label}</button>
-  <span id=\"{button_id}-status\" style=\"font-size:0.85rem;color:#6c757d;\"></span>
-</div>
-<script>
-(function() {{
-  const btn = document.getElementById('{button_id}');
-  const status = document.getElementById('{button_id}-status');
-  if (!btn) {{ return; }}
-  btn.addEventListener('click', async () => {{
-    if (!navigator.clipboard || !navigator.clipboard.writeText) {{
-      if (status) {{
-        status.textContent = 'Clipboard unavailable';
-        status.style.color = '#dc3545';
-      }}
-      return;
-    }}
-    try {{
-      await navigator.clipboard.writeText({json_text});
-      if (status) {{
-        status.textContent = 'Copied!';
-        status.style.color = '#198754';
-        setTimeout(() => {{ status.textContent = ''; }}, 2000);
-      }}
-    }} catch (err) {{
-      console.error(err);
-      if (status) {{
-        status.textContent = 'Copy failed';
-        status.style.color = '#dc3545';
-      }}
-    }}
-  }});
-}})();
-</script>
-"""
-    st.components.v1.html(component_html, height=60)
-
-
-def _download_mermaid_svg(code: str):
-    download_button_html = f"""
-    <!DOCTYPE html>
-    <html>
-    <head>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
-    </head>
-    <body>
-        <button id="download-svg-btn" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">
-            Download SVG
-        </button>
-
-        <script>
-            // Must initialize mermaid to use the render function
-            mermaid.initialize({{ startOnLoad: false }});
-
-            document.getElementById('download-svg-btn').addEventListener('click', async function() {{
-                // The mermaid code is passed from Python into this JS block
-                const mermaidCode = `{code}`;
-
-                try {{
-                    const {{ svg }} = await mermaid.render('headless-diagram', mermaidCode);
-
-                    // Create a Blob and trigger the download
-                    const blob = new Blob([svg], {{ type: 'image/svg+xml;charset=utf-8' }});
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'diagram_{int(time.time())}.svg';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-
-                }} catch (e) {{
-                    console.error("Error rendering Mermaid diagram:", e);
-                    alert("Could not render the Mermaid diagram. Check the console for errors and ensure the syntax is correct.");
-                }}
-            }});
-        </script>
-    </body>
-    </html>
-    """
-
-    st.components.v1.html(download_button_html, height=500, scrolling=True)
-
-
-def diagram_viewer():
-    viewer, editor, export = st.tabs(["Viewer", "Editor", "Export"])
-    code = st.session_state["current"].diagram_text
-    with viewer:
-        code = _sanitize_mermaid(code)
-        _render_mermaid(code, height=520)
-    with editor:
-        if code:
-            _copy_button(code, label="Copy to clipboard", key="clipboard-mermaid")
-
-        st.text_area(
-            "Mermaid definition (editable)",
-            value=code,
-            height=360,
-            key="diagram_text",
-        )
-    with export:
-        mermaid_live, drawio, svg = st.tabs(["mermaid.live", "draw.io", "svg"])
-        has_code = bool(code)
-
-        with mermaid_live:
-            if not has_code:
-                st.info("Generate a diagram to open it in mermaid.live.")
-            else:
-                mermaid_live_url = _mermaid_live_url(code)
-                st.link_button("Open in mermaid.live", mermaid_live_url)
-
-        with drawio:
-            st.markdown(
-                """
-See [documentation](https://www.drawio.com/blog/mermaid-diagrams)
-### tl;dr
-1. Go to: [app.diagrams.net](https://app.diagrams.net)
-2. Arrange -> Insert -> Mermaid… (Copy mermaid text)
-"""
-            )
-        with svg:
-            _download_mermaid_svg(code)
+from user_auth import authenticate
+from diagram_viewer import diagram_viewer
+from pcap import parse_with_indices, parse, prompt
 
 
 @st.dialog("User messages", width="large")
@@ -287,11 +93,9 @@ def create_turn_messages(turn_text, turn_attachments):
             )
 
             if msg is None:
-                unsupported.append(name)
-            else:
-                turn_messages.append(
-                    {"msg": msg, "metadata": {"type": "chat_attachment", "name": name}}
-                )
+                unsupported.append(name) # track unsupported files to inform the user
+            else:  
+                turn_messages.append(msg) # only add supported files to the messages for generation
 
     if turn_text.strip():
         turn_messages.append(
@@ -344,8 +148,9 @@ def chatbox():
         turn_text = chat_value.get("text", "")
         turn_attachments = chat_value.get("files", [])
         submitted = True
-
     if submitted:
+        print(f"Turn text: {turn_text}")
+        print(f"Turn attachments: {[getattr(f, 'name', 'unknown') for f in turn_attachments]}")
         curr_session = st.session_state["current"]
         if not turn_text.strip() and not turn_attachments:
             st.warning("Enter a message or attach files.")
@@ -358,10 +163,13 @@ def chatbox():
                 curr_session.messages[-1]["msg"]["content"] = st.session_state[
                     "diagram_text"
                 ]
-
+            #*****
             turn_messages, unsupported = create_turn_messages(
                 turn_text, turn_attachments
             )
+            
+            for m in turn_messages:
+                print(m["msg"]["content"][:50] if "msg" in m and "content" in m["msg"] else "No content")
             # Build full message list: persistent + prior conversation + this turn's files + user text
             messages: List[Dict] = []
             messages.extend(
@@ -370,34 +178,83 @@ def chatbox():
             messages.extend(to_openai_messages(turn_messages))
 
             api_key, model = model_config()
-            with st.spinner("Generating diagram…"):
-                try:
-                    diagram = generate_diagram(
+            print(f"Using model: {model} with API key: {'set' if api_key else 'not set'}")
+
+            # Create placeholders for dynamic UI updates
+            progress_placeholder = st.empty()
+            status_placeholder = st.empty()
+
+            with progress_placeholder:
+                # Initialize the progress bar at 0%
+                progress_bar = st.progress(0)
+
+            try:
+                # Step 1: Preparation
+                status_placeholder.markdown("🔍 **Step 1/3:** Preparing context and files...")
+                progress_bar.progress(15)
+                
+                # Step 2: Generation with Spinner
+                # : Wrap the core API call in a spinner for visual feedback
+                with st.spinner("Gemini is analyzing data..."):
+                    status_placeholder.markdown("🧠 **Step 2/3:** Gemini is generating the diagram...")
+                    progress_bar.progress(40)
+                    
+                    response = generate_diagram(
                         messages=messages, api_key=api_key, model=model
                     )
-                except Exception as e:
-                    st.error(f"Generation failed: {e}")
-                    time.sleep(15)
+                    print(f"Raw response from model:\n{response[:500]}")  # Log the raw response for debugging
+                # Step 3: Finalizing
+                progress_bar.progress(90)
+                status_placeholder.markdown("📝 **Step 3/3:** Finalizing response...")
+
+            except Exception as e:
+                # : Clean up UI on error
+                progress_placeholder.empty()
+                status_placeholder.empty()
+                st.error(f"Generation failed: {e}")
+                time.sleep(5)
+            else:
+                # Success cleanup
+                progress_bar.progress(100)
+                time.sleep(0.4)
+                progress_placeholder.empty()
+                status_placeholder.empty()
+
+                if len(turn_messages) > 0:
+                    curr_session.messages.extend(turn_messages)
+
+                # Save to history
+                curr_session.messages.append(
+                    {
+                        "msg": {"role": "assistant", "content": response},
+                        "metadata": {"type": "response", "model": model},
+                    }
+                )
+
+                # : Robust regex matching for the diagram
+                diag_match = re.search(r"<DIAGRAM>(.*?)</DIAGRAM>", response, re.DOTALL)
+                ent_match = re.search(r"<ENTITIES>(.*?)</ENTITIES>", response, re.DOTALL)
+
+                # SAFETY CHECK: If no tags found, check if the response contains Mermaid syntax directly
+                if diag_match:
+                    diagram_code = diag_match.group(1).strip()
+                elif "sequenceDiagram" in response:
+                    # : Fallback if LLM forgot tags but wrote the code
+                    diagram_code = response.strip()
                 else:
-                    if len(turn_messages) > 0:
-                        curr_session.messages.extend(turn_messages)
+                    diagram_code = "sequenceDiagram\n    Note over VR: Error: Failed to generate valid Mermaid code."
 
-                    # Reflect skipped files info to the UI
-                    if unsupported:
-                        st.info(
-                            "Unsupported files were skipped: " + ", ".join(unsupported)
-                        )
-                    curr_session.messages.append(
-                        {
-                            "msg": {"role": "assistant", "content": diagram},
-                            "metadata": {"type": "response", "model": model},
-                        }
-                    )
-                    curr_session.diagram_text = diagram
-                    curr_session.updated = datetime.datetime.now().timestamp()
+                
+                entities_json = ent_match.group(1).strip() if ent_match else "[]"
+                
+                # Store with the separator for the renderer
+                combined_content = f"{diagram_code}|||{entities_json}"
 
-            update_state()
-            st.rerun()
+                curr_session.diagram_text = combined_content
+                curr_session.updated = datetime.datetime.now().timestamp()
+
+                update_state()
+                st.rerun()
 
 
 def app():
@@ -415,14 +272,21 @@ def app():
 
 
 def main():
-    init()
+    init() # cite: app.py
+    
+    #logged_in = authenticate() 
+    
+    # with st.sidebar:
+    #     if logged_in:
+    #         # This is your original sessions history
+    #         sidebar() 
+    #     else:
+    #         # This shows ONLY if not logged in
+    #         st.info("Log in to see history")
 
     with st.sidebar:
         sidebar()
-
-    app()
-
-
+    app() # cite: app.py
 def sidebar():
     st.title("Auto Diagram")
     with st.popover("", icon=":material/settings:"):

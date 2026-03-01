@@ -11,106 +11,143 @@ CODE_EXTS = {".py", ".sh", ".conf", ".ini"}
 IMG_EXTS = {".png", ".jpg", ".jpeg", ".webp"}
 PCAP_EXTS = {".pcap"}
 
-
 def create_message_from_path(path: Path, pcap_mode: str = "full") -> Optional[Dict]:
     ext = path.suffix.lower()
 
+    # 1. Handle Text and Code files
     if ext in TEXT_EXTS or ext in CODE_EXTS:
         try:
             text = path.read_text(encoding="utf-8", errors="ignore")
+            # : Returning standardized structure with msg and metadata
+            return {
+                "msg": {
+                    "role": "user",
+                    "content": f"Supporting file: {path.name}\n\n{text}",
+                },
+                "metadata": {"type": "chat_attachment", "name": path.name, "content": text}
+            }
         except Exception as e:
             print(f"failed to parse text: {e}")
             return None
 
-        return {
-            "role": "user",
-            "content": f"Supporting file: {path.name}\n\n{text}",
-        }
-
+    # 2. Handle Image files
     if ext in IMG_EXTS:
         try:
             data = path.read_bytes()
+            b64 = base64.b64encode(data).decode("utf-8")
+            fmt = ext.lstrip(".")
+            data_url = f"data:image/{fmt};base64,{b64}"
+            return {
+                "msg": {
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "input_text",
+                            "text": f"Supporting image ({path.name}). Use only if relevant to the network flow.",
+                        },
+                        {
+                            "type": "input_image",
+                            "image_url": data_url,
+                            "detail": "auto",
+                        },
+                    ],
+                },
+                "metadata": {"type": "chat_attachment", "name": path.name}
+            }
         except Exception as e:
             print(f"failed to parse image: {e}")
             return None
-        b64 = base64.b64encode(data).decode("utf-8")
-        fmt = ext.lstrip(".")
-        data_url = f"data:image/{fmt};base64,{b64}"
-        return {
-            "role": "user",
-            "content": [
-                {
-                    "type": "input_text",
-                    "text": f"Supporting image ({path.name}). Use only if relevant to the network flow.",
-                },
-                {
-                    "type": "input_image",
-                    "image_url": data_url,
-                    "detail": "auto",
-                },
-            ],
-        }
 
+    # 3. Handle PCAP files
     if ext in PCAP_EXTS:
         try:
             with path.open(mode="rb") as r:
-                text = pcap.prompt(path.name, r, mode=pcap_mode)
+                # IMPORTANT: Unpacking the tuple (text, packet_data)
+                text, packet_data = pcap.prompt(path.name, r, mode=pcap_mode)
+                
+            return {
+                "msg": {
+                    "role": "user",
+                    "content": text,
+                },
+                "metadata": {
+                    "type": "chat_attachment", 
+                    "name": path.name,
+                    "packets_list": packet_data # Crucial for the Analysis tab
+                }
+            }
         except Exception as e:
             print(f"failed to parse pcap: {e}")
             return None
 
-        return {
-            "role": "user",
-            "content": text,
-        }
-
     return None
-
 
 def create_message_from_bytes(
     name: str, data: bytes, pcap_mode: str = "full"
 ) -> Optional[Dict]:
+    # : Ensure all return types follow the {msg: ..., metadata: ...} structure
     lower = name.lower()
     ext = lower[lower.rfind(".") :] if "." in lower else ""
 
+    # 1. Handle Text and Code files
     if ext in TEXT_EXTS or ext in CODE_EXTS:
         try:
             text = data.decode("utf-8", errors="ignore")
+            return {
+                "msg": {
+                    "role": "user", 
+                    "content": f"Supporting file: {name}\n\n{text}"
+                },
+                "metadata": {"type": "chat_attachment", "name": name, "content": text}
+            }
         except Exception:
             return None
 
-        return {"role": "user", "content": f"Supporting file: {name}\n\n{text}"}
-
+    # 2. Handle Image files
     if ext in IMG_EXTS:
-        b64 = base64.b64encode(data).decode("utf-8")
-        fmt = ext.lstrip(".")
-        data_url = f"data:image/{fmt};base64,{b64}"
-        return {
-            "role": "user",
-            "content": [
-                {
-                    "type": "input_text",
-                    "text": f"Supporting image ({name}). Use only if relevant to the network flow.",
+        try:
+            b64 = base64.b64encode(data).decode("utf-8")
+            fmt = ext.lstrip(".")
+            data_url = f"data:image/{fmt};base64,{b64}"
+            return {
+                "msg": {
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "input_text",
+                            "text": f"Supporting image ({name}). Use only if relevant to the network flow.",
+                        },
+                        {
+                            "type": "input_image",
+                            "image_url": data_url,
+                            "detail": "auto",
+                        },
+                    ],
                 },
-                {
-                    "type": "input_image",
-                    "image_url": data_url,
-                    "detail": "auto",
-                },
-            ],
-        }
+                "metadata": {"type": "chat_attachment", "name": name}
+            }
+        except Exception:
+            return None
 
+    # 3. Handle PCAP files
     if ext in PCAP_EXTS:
         try:
-            text = pcap.prompt(name, BytesIO(data), mode=pcap_mode)
+            # Unpack the tuple from pcap.prompt
+            text, packet_data = pcap.prompt(name, BytesIO(data), mode=pcap_mode)
+            return {
+                "msg": {
+                    "role": "user",
+                    "content": text
+                },
+                "metadata": {
+                    "type": "chat_attachment",
+                    "name": name,
+                    "packets_list": packet_data  # Structured data for UI
+                }
+            }
         except Exception as e:
             print(f"failed to parse pcap: {e}")
             return None
-
-        return {
-            "role": "user",
-            "content": text,
-        }
 
     return None
 

@@ -4,30 +4,14 @@ from google import genai
 from typing import List, Optional, Dict
 from messages import build_messages_from_dir
 import base64
+import re
 from openai import OpenAI
 
 
-# ---- Configuration / prompt guardrails ----
-INSTRUCTIONS = """
-You are a networking and Mermaid diagram syntax expert.
-Your job is to generate a Mermaid diagram that explains the network flow
-described in the user’s input (and any supporting files, if provided).
 
-If the user specifies a diagram type (e.g., "ZenUML", "flowchart"), you MUST use that type.
-Otherwise, choose the diagram type that best represents the described network flow, defaulting to "sequenceDiagram" if you are uncertain.
-
-STRICT RULES:
-- Output ONLY a single valid Mermaid definition.
-- Do NOT wrap the output in backticks or quotes.
-- Do NOT add explanations, comments, or prose.
-- All node/edge labels MUST be wrapped in double quotes ("...").
-  - This ensures special characters such as (), [], {}, :, -, and spaces are handled safely.
-  - Do not use " inside labels (replace or omit if present).
-- The output must be syntactically correct Mermaid that renders without modification.
-"""
-
-# Create client (uses OPENAI_API_KEY env var if not provided)
-
+with open("instructions.txt", "r", encoding="utf-8") as f: 
+    # Load instructions from a file to keep them separate from code and easily editable
+    INSTRUCTIONS = f.read()
 
 def generate_diagram(messages: List, api_key: str, model: str = "gpt-5") -> str:
     if model == "gpt-5":
@@ -76,40 +60,51 @@ def convert_openai_to_gemini(msg: Dict) -> genai.types.Part | None:
                     inline_data=genai.types.Blob(mime_type=f"image/{mime}", data=data)
                 )
     else:
-        raise Exception("invalid msg type")
-
+        raise ValueError(f"Unsupported message content format: {msg['content']}")
 
 def generate_diagram_gemini(
-    messages: List, api_key: str, model: str = "gemini-2.5-flash"
+    messages: List, api_key: str, model: str = "gemini-2.0-flash" # Note: version check
 ) -> str:
     client = genai.Client(api_key=api_key)
-
-    parts = []
     contents = []
+
+    #  as requested: Simplify history building
     for msg in messages:
-        if msg["role"] == "user":
-            parts.append(convert_openai_to_gemini(msg))
-        else:  # This is AI response
-            contents.append(genai.types.Content(parts=parts, role="user"))
-            parts = []
-            contents.append(
-                genai.types.Content(
-                    parts=[genai.types.Part(text=msg["content"])], role="model"
-                )
+        role = "user" if msg["role"] == "user" else "model"
+        
+        # Ensure content is string and not too large
+        content_text = msg.get("content", "")
+        
+        # Create a clean content object for Gemini
+        contents.append(
+            genai.types.Content(
+                parts=[genai.types.Part(text=content_text)], 
+                role=role
             )
-    if len(parts) > 0:
-        contents.append(genai.types.Content(parts=parts, role="user"))
+        )
 
-    config = genai.types.GenerateContentConfig(system_instruction=INSTRUCTIONS)
-    response = client.models.generate_content(
-        model=model, contents=contents, config=config
+    # Adding safety config to handle long responses
+    config = genai.types.GenerateContentConfig(
+        system_instruction=INSTRUCTIONS,
+        max_output_tokens=8192, # Prevent getting stuck in infinite loops
+        temperature=0.1 # Keep diagram generation deterministic
     )
-    """Generate a Mermaid diagram using Google Gemini."""
 
-    resp = response.text
-    if resp is None:
-        raise Exception("Got empty reponse from Gemini")
-    return resp
+    try:
+        response = client.models.generate_content(
+            model=model, 
+            contents=contents, 
+            config=config
+        )
+        
+        if not response or not response.text:
+            raise Exception("Got empty response from Gemini")
+            
+        return response.text
+        
+    except Exception as e:
+        print(f"Gemini Error: {e}")
+        raise e
 
 
 def create_diagram(
@@ -127,14 +122,23 @@ def create_diagram(
     # Main prompt last, so it’s freshest in context.
     messages.append({"role": "user", "content": prompt})
 
-    diagram = generate_diagram(
+    response = generate_diagram(
         messages=messages, api_key=os.environ.get("OPENAI_API_KEY")
     )
+    
+    resp = response.text
+    diag_match = re.search(r"<DIAGRAM>(.*?)</DIAGRAM>", resp, re.DOTALL)
+    ent_match = re.search(r"<ENTITIES>(.*?)</ENTITIES>", resp, re.DOTALL)
 
+    diagram_code = diag_match.group(1).strip() if diag_match else resp
+    entities_json = ent_match.group(1).strip() if ent_match else "[]"
+    
     print("Generated diagram")
 
     # Save as UTF-8 plain text
     with open(output_path, "w+", encoding="utf-8") as w:
-        w.write(diagram)
+        w.write(diagram_code)
 
-    print(f"diagram saved to {output_path}")
+    diagram_code = diag_match.group(1).strip() if diag_match else resp
+    
+    return f"{diagram_code}|||{entities_json}"
