@@ -32,15 +32,15 @@ pip install -r requirements.txt
 Mac/Linux:
 
 ```bash
-export OPENAI_API_KEY="sk-..."      # Required for OpenAI
-export GEMINI_API_KEY="..."         # Optional: set if using Gemini
+export OPENAI_API_KEY="your_api_key_here"      # Required for OpenAI
+export GEMINI_API_KEY="your_api_key_here"         # Optional: set if using Gemini
 ```
 
 Windows (PowerShell):
 
 ```powershell
-$env:OPENAI_API_KEY = "sk-..."
-$env:GEMINI_API_KEY = "..."
+$env:OPENAI_API_KEY = "your_api_key_here"
+$env:GEMINI_API_KEY = "your_api_key_here"
 ```
 
 The code uses these environment variables when calling providers (see `src/core.py`).
@@ -71,7 +71,7 @@ Tabs:
 docker build -t auto-diagram .
 docker run --rm \
   -p 8501:8501 \
-  -e OPENAI_API_KEY=sk-... \
+  -e OPENAI_API_KEY=... \
   -e GEMINI_API_KEY=... \
   -v path/to/local/dir:/data/auto-diagram \
   auto-diagram

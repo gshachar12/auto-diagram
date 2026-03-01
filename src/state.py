@@ -36,6 +36,7 @@ class ChatSession(BaseModel):
     updated: float = Field(default_factory=lambda: datetime.now().timestamp())
     messages: List[Dict] = Field(default_factory=list)
     diagram_text: str = ""
+    metadata: Dict = Field(default_factory=dict)
 
 
 def _sorted_sessions(sessions: Iterable[ChatSession]) -> List[ChatSession]:
@@ -49,7 +50,7 @@ def sorted_state(sessions: Dict[float, ChatSession]) -> List[ChatSession]:
 def load():
     if not os.path.exists(state_file):
         return {}
-    with open(state_file, "r+") as r:
+    with open(state_file, "r+", encoding="utf-8") as r:
         raw = json.load(r)
         sessions = [ChatSession.model_validate(item) for item in raw]
         mappings = {}
@@ -61,5 +62,5 @@ def load():
 def write(sessions: Dict[float, ChatSession]):
     payload = sorted_state(sessions)
     payload = [x.model_dump() for x in payload]
-    with open(state_file, "w+") as w:
+    with open(state_file, "w+", encoding="utf-8") as w:
         json.dump(payload, w, ensure_ascii=False, indent=2)

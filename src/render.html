@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { 
+            margin: 0; padding: 0; background: #ffffff; 
+            display: flex; flex-direction: column; 
+            font-family: 'Segoe UI', sans-serif;
+            height: 100vh; width: 100vw; overflow: hidden;
+        }
+        #controls-panel {
+            display: flex; align-items: center; gap: 15px;
+            padding: 10px 20px; background: #f8f9fa; border-bottom: 1px solid #eee;
+            z-index: 1000;
+        }
+        #diagram-viewport { 
+            flex-grow: 1; position: relative; width: 100%; height: 100%;
+            overflow: hidden; cursor: grab;
+        }
+        #mermaid-container { width: 100%; height: 100%; }
+        
+        /* Enhanced Tooltip for Packet Evidence */
+        #evidence-tooltip {
+            position: absolute; display: none; background: rgba(33, 37, 41, 0.95);
+            color: white; padding: 10px; border-radius: 6px;
+            font-size: 12px; pointer-events: none; z-index: 2000;
+            max-width: 300px; border: 1px solid #444;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div id="controls-panel">
+        <i class="fas fa-search-plus"></i>
+        <input type="range" id="zoom-range" min="1" max="100" value="10">
+        <div style="font-weight: 600;">{{TITLE}}</div>
+        <div style="margin-left: auto;">Step {{CURRENT_STEP}}/{{TOTAL_STEPS}}</div>
+    </div>
+
+    <div id="diagram-viewport">
+        <div id="evidence-tooltip"></div>
+        <div id="mermaid-container" class="mermaid">
+            {{SLICED_CODE}}
+        </div>
+    </div>
+
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        
+        /* English comments: Injected packet data from Python */
+        const packetLookup = {{PACKETS_JSON}};
+
+        mermaid.initialize({ 
+            startOnLoad: true, 
+            theme: 'default',
+            securityLevel: 'loose',
+            sequence: { autonumber: true, useMaxWidth: false } 
+        });
+
+        const zoomSlider = document.getElementById('zoom-range');
+        const tooltip = document.getElementById('evidence-tooltip');
+
+        function setupInteractivity() {
+            const svg = document.querySelector('#mermaid-container svg');
+            if (!svg) { setTimeout(setupInteractivity, 200); return; }
+
+            svg.style.width = '100%'; svg.style.height = '100%';
+            window.panZoom = svgPanZoom(svg, {
+                zoomEnabled: true, controlIconsEnabled: false, fit: true, center: true,
+                onZoom: (val) => { zoomSlider.value = val * 10; }
+            });
+
+            zoomSlider.oninput = function() { window.panZoom.zoom(this.value / 10); };
+
+            /* English comments: Select both message lines and notes */
+            const elements = document.querySelectorAll('g.messageGroup, g.noteGroup');
+            elements.forEach(el => {
+                el.style.cursor = 'pointer';
+                
+                el.addEventListener('mouseover', (e) => {
+                    const text = el.textContent;
+                    const match = text.match(/Packet #(\d+)/);
+                    if (match) {
+                        const pId = match[1];
+                        const summary = packetLookup[pId] || "Click to see details";
+                        tooltip.style.display = 'block';
+                        tooltip.innerHTML = `<b>📦 Packet #${pId}</b><br/>${summary}`;
+                    }
+                });
+
+                el.addEventListener('mousemove', (e) => {
+                    tooltip.style.left = (e.clientX + 15) + 'px';
+                    tooltip.style.top = (e.clientY + 15) + 'px';
+                });
+
+                el.addEventListener('mouseout', () => { tooltip.style.display = 'none'; });
+                
+                el.addEventListener('mousedown', () => {
+                    const match = el.textContent.match(/Packet #(\d+)/);
+                    if (match) {
+                        /* English comments: Send message back to Streamlit */
+                        window.parent.postMessage({
+                            type: 'streamlit:setComponentValue',
+                            value: match[1]
+                        }, '*');
+                    }
+                });
+            });
+        }
+        setTimeout(setupInteractivity, 800);
+    </script>
+</body>
+</html>
