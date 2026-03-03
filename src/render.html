@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -22,7 +21,6 @@
         }
         #mermaid-container { width: 100%; height: 100%; }
         
-        /* Enhanced Tooltip for Packet Evidence */
         #evidence-tooltip {
             position: absolute; display: none; background: rgba(33, 37, 41, 0.95);
             color: white; padding: 10px; border-radius: 6px;
@@ -31,14 +29,17 @@
             box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
             line-height: 1.4;
         }
+        /* Styling for the smaller source text */
+        small { font-size: 0.85em; color: #666; }
     </style>
 </head>
 <body>
+
+    
     <div id="controls-panel">
         <i class="fas fa-search-plus"></i>
         <input type="range" id="zoom-range" min="1" max="100" value="10">
         <div style="font-weight: 600;">{{TITLE}}</div>
-        <div style="margin-left: auto;">Step {{CURRENT_STEP}}/{{TOTAL_STEPS}}</div>
     </div>
 
     <div id="diagram-viewport">
@@ -47,71 +48,82 @@
             {{SLICED_CODE}}
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
 
-    <script type="module">
-        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+<script type="module">
+    // Update the ESM import to the latest version
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.esm.min.mjs';
+    const packetLookup = {{PACKETS_JSON}};
+    mermaid.initialize({ 
+        startOnLoad: true, 
+        theme: 'default',
+        securityLevel: 'loose', 
+        htmlLabels: true,       
+        sequence: { 
+            autonumber: true, 
+            useMaxWidth: false,
+            // REQUIRED: This allows <br/> and <small> tags to work inside the diagram
+            useHtmlLabels: true, 
+            wrap: true, 
+            width: 200,
+            messageFontWeight: 400
+        } 
+    });
+
+    const zoomSlider = document.getElementById('zoom-range');
+    const tooltip = document.getElementById('evidence-tooltip');
+    console.log("mermaid version:", mermaid.version);
+
+    function setupInteractivity() {
+        const svg = document.querySelector('#mermaid-container svg');
+        if (!svg) { 
+            setTimeout(setupInteractivity, 200); 
+            return; 
+        }
+
+        svg.style.height = '100%';
+        svg.style.width = '100%';
         
-        /* English comments: Injected packet data from Python */
-        const packetLookup = {{PACKETS_JSON}};
-
-        mermaid.initialize({ 
-            startOnLoad: true, 
-            theme: 'default',
-            securityLevel: 'loose',
-            sequence: { autonumber: true, useMaxWidth: false } 
+        window.panZoom = svgPanZoom(svg, {
+            zoomEnabled: true, controlIconsEnabled: false, fit: true, center: true,
+            onZoom: (val) => { zoomSlider.value = val * 10; }
         });
 
-        const zoomSlider = document.getElementById('zoom-range');
-        const tooltip = document.getElementById('evidence-tooltip');
+        zoomSlider.oninput = function() { window.panZoom.zoom(this.value / 10); };
 
-        function setupInteractivity() {
-            const svg = document.querySelector('#mermaid-container svg');
-            if (!svg) { setTimeout(setupInteractivity, 200); return; }
+        const interactiveElements = svg.querySelectorAll('.messageGroup, .noteGroup, .messageText, .noteText, foreignObject');
 
-            svg.style.width = '100%'; svg.style.height = '100%';
-            window.panZoom = svgPanZoom(svg, {
-                zoomEnabled: true, controlIconsEnabled: false, fit: true, center: true,
-                onZoom: (val) => { zoomSlider.value = val * 10; }
-            });
-
-            zoomSlider.oninput = function() { window.panZoom.zoom(this.value / 10); };
-
-            /* English comments: Select both message lines and notes */
-            const elements = document.querySelectorAll('g.messageGroup, g.noteGroup');
-            elements.forEach(el => {
-                el.style.cursor = 'pointer';
+        interactiveElements.forEach(el => {
+            el.style.cursor = 'help';
+            
+            el.addEventListener('mouseenter', (e) => {
+                const text = el.textContent || "";
+                // Extract numbers from the text (works even if # was removed)
+                const matches = text.match(/\d+/g); 
                 
-                el.addEventListener('mouseover', (e) => {
-                    const text = el.textContent;
-                    const match = text.match(/Packet #(\d+)/);
-                    if (match) {
-                        const pId = match[1];
-                        const summary = packetLookup[pId] || "Click to see details";
+                if (matches) {
+                    const htmlContent = matches
+                        .filter(id => packetLookup[id])
+                        .map(id => `<strong>📦 Packet #${id}</strong>: ${packetLookup[id]}`)
+                        .join('<hr style="border:0; border-top:1px solid #555; margin:5px 0;">');
+
+                    if (htmlContent) {
                         tooltip.style.display = 'block';
-                        tooltip.innerHTML = `<b>📦 Packet #${pId}</b><br/>${summary}`;
+                        tooltip.innerHTML = htmlContent;
                     }
-                });
-
-                el.addEventListener('mousemove', (e) => {
-                    tooltip.style.left = (e.clientX + 15) + 'px';
-                    tooltip.style.top = (e.clientY + 15) + 'px';
-                });
-
-                el.addEventListener('mouseout', () => { tooltip.style.display = 'none'; });
-                
-                el.addEventListener('mousedown', () => {
-                    const match = el.textContent.match(/Packet #(\d+)/);
-                    if (match) {
-                        /* English comments: Send message back to Streamlit */
-                        window.parent.postMessage({
-                            type: 'streamlit:setComponentValue',
-                            value: match[1]
-                        }, '*');
-                    }
-                });
+                }
             });
-        }
-        setTimeout(setupInteractivity, 800);
-    </script>
+
+            el.addEventListener('mousemove', (e) => {
+                tooltip.style.left = (e.clientX + 15) + 'px';
+                tooltip.style.top = (e.clientY + 15) + 'px';
+            });
+
+            el.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; });
+        });
+    }
+
+    setTimeout(setupInteractivity, 1000);
+</script>
 </body>
 </html>

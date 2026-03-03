@@ -18,7 +18,7 @@ def create_message_from_path(path: Path, pcap_mode: str = "full") -> Optional[Di
     if ext in TEXT_EXTS or ext in CODE_EXTS:
         try:
             text = path.read_text(encoding="utf-8", errors="ignore")
-            # : Returning standardized structure with msg and metadata
+            #  Returning standardized structure with msg and metadata
             return {
                 "msg": {
                     "role": "user",
@@ -85,7 +85,7 @@ def create_message_from_path(path: Path, pcap_mode: str = "full") -> Optional[Di
 def create_message_from_bytes(
     name: str, data: bytes, pcap_mode: str = "full"
 ) -> Optional[Dict]:
-    # : Ensure all return types follow the {msg: ..., metadata: ...} structure
+    #  Ensure all return types follow the {msg: ..., metadata: ...} structure
     lower = name.lower()
     ext = lower[lower.rfind(".") :] if "." in lower else ""
 

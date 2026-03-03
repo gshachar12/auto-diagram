@@ -34,7 +34,7 @@ def show_ai_diagram(data_fnc):
 
 
 def show_history():
-    st.subheader("History")
+    st.subheader("Diagram Content")
     chat_history = st.session_state["current"].messages
     user_messages = []
     diagrams_counter = 1
@@ -149,8 +149,6 @@ def chatbox():
         turn_attachments = chat_value.get("files", [])
         submitted = True
     if submitted:
-        print(f"Turn text: {turn_text}")
-        print(f"Turn attachments: {[getattr(f, 'name', 'unknown') for f in turn_attachments]}")
         curr_session = st.session_state["current"]
         if not turn_text.strip() and not turn_attachments:
             st.warning("Enter a message or attach files.")
@@ -163,13 +161,11 @@ def chatbox():
                 curr_session.messages[-1]["msg"]["content"] = st.session_state[
                     "diagram_text"
                 ]
-            #*****
+            
             turn_messages, unsupported = create_turn_messages(
                 turn_text, turn_attachments
             )
             
-            for m in turn_messages:
-                print(m["msg"]["content"][:50] if "msg" in m and "content" in m["msg"] else "No content")
             # Build full message list: persistent + prior conversation + this turn's files + user text
             messages: List[Dict] = []
             messages.extend(
@@ -194,7 +190,7 @@ def chatbox():
                 progress_bar.progress(15)
                 
                 # Step 2: Generation with Spinner
-                # : Wrap the core API call in a spinner for visual feedback
+                #  Wrap the core API call in a spinner for visual feedback
                 with st.spinner("Gemini is analyzing data..."):
                     status_placeholder.markdown("🧠 **Step 2/3:** Gemini is generating the diagram...")
                     progress_bar.progress(40)
@@ -202,13 +198,16 @@ def chatbox():
                     response = generate_diagram(
                         messages=messages, api_key=api_key, model=model
                     )
-                    print(f"Raw response from model:\n{response[:500]}")  # Log the raw response for debugging
+                    
+                                        
+                    print(f"Length of response: {len(response) if response else 0}")  # Check if response is empty or None
+                
                 # Step 3: Finalizing
                 progress_bar.progress(90)
                 status_placeholder.markdown("📝 **Step 3/3:** Finalizing response...")
 
             except Exception as e:
-                # : Clean up UI on error
+                #  Clean up UI on error
                 progress_placeholder.empty()
                 status_placeholder.empty()
                 st.error(f"Generation failed: {e}")
@@ -231,7 +230,7 @@ def chatbox():
                     }
                 )
 
-                # : Robust regex matching for the diagram
+                #  Robust regex matching for the diagram
                 diag_match = re.search(r"<DIAGRAM>(.*?)</DIAGRAM>", response, re.DOTALL)
                 ent_match = re.search(r"<ENTITIES>(.*?)</ENTITIES>", response, re.DOTALL)
 
@@ -239,7 +238,7 @@ def chatbox():
                 if diag_match:
                     diagram_code = diag_match.group(1).strip()
                 elif "sequenceDiagram" in response:
-                    # : Fallback if LLM forgot tags but wrote the code
+                    #  Fallback if LLM forgot tags but wrote the code
                     diagram_code = response.strip()
                 else:
                     diagram_code = "sequenceDiagram\n    Note over VR: Error: Failed to generate valid Mermaid code."
@@ -272,6 +271,8 @@ def app():
 
 
 def main():
+    
+    print("--------------------------------------------------------------------------")
     init() # cite: app.py
     
     #logged_in = authenticate() 
@@ -319,11 +320,12 @@ def sidebar():
 
         model = st.radio(
             "Choose model",
-            ["gpt-5", "gemini-2.5-flash", "gemini-2.5-pro"],
+            [ "gemini-2.5-flash", "gemini-2.5-pro", "gpt-5"],
             captions=[
-                "Open AI GPT-5 requires Open AI API Key",
                 "Gemini 2.5 Flash requires Gemini API Key (Free tier)",
                 "Gemini 2.5 Pro requires Gemini API Key",
+                "Open AI GPT-5 requires Open AI API Key",
+
             ],
         )
 

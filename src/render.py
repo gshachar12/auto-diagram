@@ -1,12 +1,7 @@
 import json
 import os
+import re
 import streamlit as st
-from typing import List, Optional
-from core import generate_diagram
-import streamlit as st
-import streamlit as st
-import json
-import os
 
 def _render_mermaid(sliced_code: str, current_step: int, total_steps: int, title: str = "", container=None):
     """
@@ -16,8 +11,15 @@ def _render_mermaid(sliced_code: str, current_step: int, total_steps: int, title
         st.info("No diagram to view")
         return 
 
-    # English comments: Retrieve packets list from session state
-    packets_data = {}
+    # Step 1: Replace '#' with bold Markdown to avoid Mermaid ID conflicts
+    # This turns #123 into **123**
+    sliced_code = re.sub(r"#(\d+)", r"<b>\1</b>", sliced_code) 
+
+    # Step 2: Format the Source metadata
+
+
+
+    packets_data = {} 
     if "current" in st.session_state:
         for msg in reversed(st.session_state["current"].messages):
             metadata = msg.get("metadata", {})
@@ -25,14 +27,11 @@ def _render_mermaid(sliced_code: str, current_step: int, total_steps: int, title
                 packets_data = {str(p["id"]): p["summary"] for p in metadata["packets_list"]}
                 break
 
-    # English comments: Load the HTML template
     try:
-        # Using utf-8 encoding to ensure emojis in the HTML file are read correctly
         template_path = os.path.join(os.path.dirname(__file__), "render.html")
         with open(template_path, "r", encoding="utf-8") as f:
             html_template = f.read()
             
-        # English comments: Inject dynamic data into the template
         mermaid_html = html_template.replace("{{SLICED_CODE}}", sliced_code) \
                                    .replace("{{TITLE}}", title) \
                                    .replace("{{CURRENT_STEP}}", str(current_step)) \
@@ -40,7 +39,6 @@ def _render_mermaid(sliced_code: str, current_step: int, total_steps: int, title
                                    .replace("{{PACKETS_JSON}}", json.dumps(packets_data))
         
         dynamic_height = 800
-
         if container:
             with container:
                 res = st.components.v1.html(mermaid_html, height=dynamic_height)

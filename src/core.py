@@ -1,5 +1,5 @@
 import os
-
+import streamlit as st
 from google import genai
 from typing import List, Optional, Dict
 from messages import build_messages_from_dir
@@ -34,7 +34,6 @@ def generate_diagram_openai(messages: List, api_key: str, model: str = "gpt-5") 
         instructions=INSTRUCTIONS,
         input=messages,
         tools=[{"type": "web_search"}],
-        # You can force plain text (no tool calls) if you want:
         # temperature=0.1,
     )
 
@@ -68,7 +67,7 @@ def generate_diagram_gemini(
     client = genai.Client(api_key=api_key)
     contents = []
 
-    #  as requested: Simplify history building
+    # English comments as requested: Simplify history building
     for msg in messages:
         role = "user" if msg["role"] == "user" else "model"
         
@@ -83,13 +82,12 @@ def generate_diagram_gemini(
             )
         )
 
-    # Adding safety config to handle long responses
-    config = genai.types.GenerateContentConfig(
-        system_instruction=INSTRUCTIONS,
-        max_output_tokens=8192, # Prevent getting stuck in infinite loops
-        temperature=0.1 # Keep diagram generation deterministic
-    )
-
+        # Updating your config
+        config = genai.types.GenerateContentConfig(
+            system_instruction=INSTRUCTIONS,
+            max_output_tokens=8192,
+            temperature=0.7,
+        )
     try:
         response = client.models.generate_content(
             model=model, 
@@ -99,6 +97,20 @@ def generate_diagram_gemini(
         
         if not response or not response.text:
             raise Exception("Got empty response from Gemini")
+        
+        print(f"DEBUG: Finish Reason Code = {response.candidates[0].finish_reason}")
+
+        # Extract the finish reason from the first candidate
+        # 1 = SUCCESS, 2 = MAX_TOKENS, 3 = SAFETY, 4 = RECITATION, 5 = OTHER
+        finish_reason = response.candidates[0].finish_reason
+
+        print(f"Finish reason: {finish_reason}")
+        if finish_reason != 1:
+            print(f"⚠️ Generation stopped early! Reason: {finish_reason}")
+            if finish_reason == 3:
+                print("Reason 3 (SAFETY): A filter was triggered. Check your packet payloads.")
+            elif finish_reason == 2:
+                print("Reason 2 (MAX_TOKENS): The diagram is too long for the 8k token limit.")
             
         return response.text
         
