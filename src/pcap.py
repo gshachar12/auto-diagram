@@ -6,8 +6,6 @@ import re
 import os
 
 MAX_PCAP_TOKENS = 200_000
-
-
 """ pcap.py - Functions to parse pcap files and generate prompts for LLMs. """
 
 

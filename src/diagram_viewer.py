@@ -164,7 +164,7 @@ def create_drawio_xml(mermaid_code):
 def _drawio_url(code: str) -> str:
     """
     FIXED: Removed JSON wrapping. Draw.io needs RAW Mermaid text.
-    Uses  as requested.
+    Uses English comments as requested.
     """
     if not code:
         return ""
@@ -352,7 +352,6 @@ Note right of B: 🧠 Internal Logic
                 # Strategy B: Manual extraction from diagram text
                 lines = diagram_code.split('\n')
                 for line in lines:
-                    print (line)
                     p_match = re.search(r"Packet #(\d+)", line)
                     if p_match:
                         evidence_found = True
@@ -362,14 +361,14 @@ Note right of B: 🧠 Internal Logic
                         if p_data:
                             is_selected = (str(p_id) == str(selected_id))
                             
-                            # : 1. Remove Mermaid arrows and Source tags
+                            #  1. Remove Mermaid arrows and Source tags
                             clean_title = re.sub(r'\(Source:.*?\)', '', line)
                             clean_title = clean_title.replace("->>", " to ").replace("->", " to ")
                             
-                            # : 2. Remove any <br/> or other HTML tags from the title
+                            #  2. Remove any <br/> or other HTML tags from the title
                             clean_title = re.sub(r'<[^>]*>', ' ', clean_title).strip()
                             
-                            # : 3. Highlight the Packet ID in the label
+                            #  3. Highlight the Packet ID in the label
                             # We add a 📦 icon and bold the ID for better visibility
                             display_label = f"📦 **Packet #{p_id}** | {clean_title}"
                             
