@@ -15,7 +15,7 @@ from core import generate_diagram
 from messages import create_message_from_bytes
 from user_auth import authenticate
 from diagram_viewer import diagram_viewer
-from pcap import parse_with_indices, parse, prompt
+from pcap import parse_with_indices, parse, prompt, extract_relevant_packets   
 
 
 @st.dialog("User messages", width="large")
@@ -191,8 +191,9 @@ def chatbox():
                 
                 # Step 2: Generation with Spinner
                 #  Wrap the core API call in a spinner for visual feedback
-                with st.spinner("Gemini is analyzing data..."):
-                    status_placeholder.markdown("🧠 **Step 2/3:** Gemini is generating the diagram...")
+                model_string = "Gemini" if model.startswith("gemini") else "ChatGPT"
+                with st.spinner(f" {model_string} is analyzing data..."):
+                    status_placeholder.markdown(f"🧠 **Step 2/3:** {model_string} is generating the diagram...")
                     progress_bar.progress(40)
                     
                     response = generate_diagram(
