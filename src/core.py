@@ -82,7 +82,6 @@ def generate_diagram_gemini(
             )
         )
 
-        # Updating your config
         config = genai.types.GenerateContentConfig(
             system_instruction=INSTRUCTIONS,
             max_output_tokens=8192,

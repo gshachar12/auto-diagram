@@ -1,12 +1,77 @@
 import argparse
 import tokens
 from scapy.all import PcapReader
+from scapy.all import rdpcap, TCP, UDP, DNS, Raw
 import streamlit as st
 import re
 import os
 
 MAX_PCAP_TOKENS = 200_000
 """ pcap.py - Functions to parse pcap files and generate prompts for LLMs. """
+
+
+def extract_relevant_packets(pcap_path, max_packets=200):
+    packets = rdpcap(pcap_path)
+
+    relevant = []
+    seen_queries = {}
+
+    for i, pkt in enumerate(packets):
+
+        # ---------- DNS traffic ----------
+        if pkt.haslayer(DNS):
+            dns = pkt[DNS]
+
+            if dns.qr == 0:  # query
+                qname = str(dns.qd.qname) if dns.qd else "unknown"
+
+                seen_queries[qname] = seen_queries.get(qname, 0) + 1
+
+                relevant.append({
+                    "pkt": i,
+                    "type": "DNS_QUERY",
+                    "query": qname
+                })
+
+            else:  # response
+                relevant.append({
+                    "pkt": i,
+                    "type": "DNS_RESPONSE"
+                })
+
+        # ---------- TCP packets ----------
+        elif pkt.haslayer(TCP):
+
+            flags = pkt[TCP].flags
+
+            # ignore pure ACK
+            if flags == "A":
+                continue
+
+            # ignore SYN/ACK handshake noise
+            if flags in ["S", "SA"]:
+                continue
+
+            relevant.append({
+                "pkt": i,
+                "type": "TCP_EVENT",
+                "flags": str(flags)
+            })
+
+        # ---------- UDP with payload ----------
+        elif pkt.haslayer(UDP) and pkt.haslayer(Raw):
+
+            relevant.append({
+                "pkt": i,
+                "type": "UDP_PAYLOAD",
+                "size": len(pkt[Raw].load)
+            })
+
+        if len(relevant) >= max_packets:
+            break
+
+    return relevant
+
 
 
 def pcap_analysis_tab():
@@ -114,6 +179,8 @@ def parse(pcap_file, mode=""):
                 packets.append(packet.show(dump=True))
             else:
                 packets.append(packet.summary())
+                
+                print (f"Parsed packet: {packet.summary()}")  # Debug print for each packet summary
     return packets
 
 
