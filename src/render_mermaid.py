@@ -60,7 +60,7 @@ def _render_mermaid(sliced_code: str, current_step: int, total_steps: int, title
                 break
 
     try:
-        template_path = os.path.join(os.path.dirname(__file__), "render.html")
+        template_path = os.path.join(os.path.dirname(__file__), "render_d2.html")
         with open(template_path, "r", encoding="utf-8") as f:
             html_template = f.read()
 
@@ -84,4 +84,4 @@ def _render_mermaid(sliced_code: str, current_step: int, total_steps: int, title
             st.components.v1.html(mermaid_html, height=dynamic_height)
 
     except FileNotFoundError:
-        st.error("Could not find render.html template file.")
+        st.error("Could not find render_d2.html template file.")

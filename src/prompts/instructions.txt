@@ -1,0 +1,175 @@
+14. Icons for Entities (Mandatory)
+
+Every entity in the diagram must include an icon.
+
+Icons help visually distinguish between:
+
+* attackers
+* clients
+* servers
+* DNS infrastructure
+* victims
+* internal systems
+* attack activity
+
+The icon must appear in the entity definition.
+
+Example:
+
+resolver: "Victim Resolver" {
+icon: "https://img.icons8.com/color/96/dns.png"
+}
+
+---
+
+15. Entity Type → Icon Mapping
+
+Use the following icon mapping whenever possible.
+
+Attacker
+
+icon: https://img.icons8.com/color/96/hacker.png
+
+Example:
+
+attacker: "Attacker Client" {
+icon: "https://img.icons8.com/color/96/hacker.png"
+}
+
+---
+
+Client / User Machine
+
+icon: https://img.icons8.com/color/96/laptop.png
+
+Example:
+
+client: "Client Machine" {
+icon: "https://img.icons8.com/color/96/laptop.png"
+}
+
+---
+
+Server
+
+icon: https://img.icons8.com/color/96/server.png
+
+Example:
+
+web_server: "Web Server" {
+icon: "https://img.icons8.com/color/96/server.png"
+}
+
+---
+
+DNS Resolver
+
+icon: https://img.icons8.com/color/96/dns.png
+
+Example:
+
+resolver: "DNS Resolver" {
+icon: "https://img.icons8.com/color/96/dns.png"
+}
+
+---
+
+Authoritative DNS
+
+icon: https://img.icons8.com/color/96/dns.png
+
+Example:
+
+auth_server: "Authoritative DNS" {
+icon: "https://img.icons8.com/color/96/dns.png"
+}
+
+---
+
+Victim Server
+
+icon: https://img.icons8.com/color/96/error.png
+
+Example:
+
+victim: "Victim Server" {
+icon: "https://img.icons8.com/color/96/error.png"
+}
+
+---
+
+Cloud Infrastructure
+
+icon: https://img.icons8.com/color/96/cloud.png
+
+Example:
+
+cloud_service: "Cloud Service" {
+icon: "https://img.icons8.com/color/96/cloud.png"
+}
+
+---
+
+Database
+
+icon: https://img.icons8.com/color/96/database.png
+
+Example:
+
+database: "Database Server" {
+icon: "https://img.icons8.com/color/96/database.png"
+}
+
+---
+
+16. Icon Usage Rule
+
+Every entity definition must follow this structure:
+
+entity_id: "Entity Label" {
+icon: "ICON_URL"
+}
+
+Example:
+
+attacker: "Attacker Client" {
+icon: "https://img.icons8.com/color/96/hacker.png"
+}
+
+resolver: "Victim Resolver" {
+icon: "https://img.icons8.com/color/96/dns.png"
+}
+
+auth_referral: "Authoritative referral.com" {
+icon: "https://img.icons8.com/color/96/dns.png"
+}
+
+---
+
+17. Fallback Rule
+
+If the entity type cannot be determined from the PCAP data, use a generic server icon.
+
+Fallback icon:
+
+https://img.icons8.com/color/96/server.png
+
+Example:
+
+unknown_host: "Unknown Host" {
+icon: "https://img.icons8.com/color/96/server.png"
+}
+
+---
+
+18. Visual Diversity Rule
+
+The generator should try to maximize visual diversity by using different icons for:
+
+• attackers
+• clients
+• DNS servers
+• web servers
+• infrastructure
+
+Do not use the same icon for all entities if their roles differ.

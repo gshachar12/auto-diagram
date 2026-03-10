@@ -1,0 +1,16 @@
+sequenceDiagram
+    autonumber
+    participant A as 😈 ATTACKER
+    participant VR as 🛡️ RESOLVER
+    participant S as 🌐 AUTH
+    Note over A,VR: Phase I #FFF0F0
+    A->>VR: query attack0.home.lan 🔍
+    VR->>S: upstream referral lookup 🔍
+    S-->>VR: large referral LRR 🚩
+    Note over VR,S: Phase II #FFFFE0
+    VR->>VR: pre-check NS list 🧠
+    VR->>VR: No_Fetch enabled 🛡️
+    VR->>S: resolve five NS ⚙️
+    Note over VR,S: Phase III #F0F8FF
+    S-->>VR: NS IP 127.0.0.89 🔥
+    VR-->>A: return SERVFAIL 📦

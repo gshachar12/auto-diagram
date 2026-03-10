@@ -1,4 +1,3 @@
-# English comments: Optimized for Streamlit tables - Step keys removed, full descriptions enabled
 SYSTEM_INSTRUCTIONS = """
 You are a Cybersecurity Technical Illustrator. Your goal is a COMPLETE, non-truncated response.
 

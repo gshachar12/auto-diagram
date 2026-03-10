@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://streamlit-component-lib.s3.amazonaws.com/index.js"></script>
+    <style>
+        svg { width: 100%; height: auto; cursor: pointer; }
+        .d2-node:hover { filter: brightness(0.9); }
+    </style>
+</head>
+<body>
+    <div id="diagram-container">
+        {{SVG_CONTENT}}
+    </div>
+
+    <script>
+        // Listen for clicks on D2 nodes
+        document.querySelectorAll('.d2-node').forEach(node => {
+            node.addEventListener('click', () => {
+                const packetId = node.id; // D2 allows setting IDs
+                Streamlit.setComponentValue(packetId);
+            });
+        });
+    </script>
+</body>
+</html>
