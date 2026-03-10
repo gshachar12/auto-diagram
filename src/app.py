@@ -70,7 +70,6 @@ def show_history():
                 ):
                     show_ai_diagram(lambda: content)
             diagrams_counter += 1
-
     if len(user_messages) > 0:
         print("got dangling user messages")
 
@@ -91,6 +90,8 @@ def create_turn_messages(turn_text, turn_attachments):
             msg = create_message_from_bytes(
                 name, data, st.session_state["pcap_parse_mode"]
             )
+            
+            
 
             if msg is None:
                 unsupported.append(name) # track unsupported files to inform the user
@@ -231,20 +232,32 @@ def chatbox():
                     }
                 )
 
-                #  Robust regex matching for the diagram
-                diag_match = re.search(r"<DIAGRAM>(.*?)</DIAGRAM>", response, re.DOTALL)
-                ent_match = re.search(r"<ENTITIES>(.*?)</ENTITIES>", response, re.DOTALL)
+            diag_match = re.search(r"<DIAGRAM>(.*?)</DIAGRAM>", response, re.DOTALL)
+            ent_match = re.search(r"<ENTITIES>(.*?)</ENTITIES>", response, re.DOTALL)
 
-                # SAFETY CHECK: If no tags found, check if the response contains Mermaid syntax directly
-                if diag_match:
-                    diagram_code = diag_match.group(1).strip()
-                elif "sequenceDiagram" in response:
-                    #  Fallback if LLM forgot tags but wrote the code
-                    diagram_code = response.strip()
-                else:
-                    diagram_code = "sequenceDiagram\n    Note over VR: Error: Failed to generate valid Mermaid code."
-
+            if diag_match:
+                diagram_code = diag_match.group(1).strip()
                 
+                # If the LLM wrapped it in markdown code blocks inside the tags, clean it
+                if "```" in diagram_code:
+                    diagram_code = re.sub(r"```[a-z0-9]*\n", "", diagram_code)
+                    diagram_code = diagram_code.replace("```", "").strip()
+                    
+            elif st.session_state["diagram_format"] == "Mermaid" and "sequenceDiagram" in response:
+                diagram_code = response.strip()
+            elif st.session_state["diagram_format"] == "D2" and ("shape:" in response or "direction:" in response):
+                diagram_code = response.strip()
+                # Clean up markdown if present
+                match = re.search(r"```d2(.*?)```", diagram_code, re.DOTALL | re.IGNORECASE)
+                if match:
+                    diagram_code = match.group(1).strip()
+            else:
+                # Generic error based on format
+                if st.session_state.get("diagram_format") == "D2":
+                    diagram_code = 'shape: sequence_diagram\nERROR: "Failed to generate valid D2 code."'
+                else:
+                    diagram_code = "sequenceDiagram\n Note over AI: Error: Failed to generate valid Mermaid code."
+                            
                 entities_json = ent_match.group(1).strip() if ent_match else "[]"
                 
                 # Store with the separator for the renderer
@@ -336,6 +349,15 @@ def sidebar():
         else:
             st.session_state["api_key"] = gemini_api_key
 
+        # In sidebar() function, after the model selection:
+        st.divider()
+        diagram_format = st.radio(
+            "Diagram Engine",
+            ["D2", "Mermaid"],
+            index=0,
+            help="D2 supports advanced styling and icons; Mermaid is faster for simple flows."
+        )
+        st.session_state["diagram_format"] = diagram_format
     st.header("Sessions")
     if st.button("New", icon=":material/open_in_new:", type="primary"):
         curr = state.ChatSession()
@@ -386,10 +408,12 @@ def init():
     if "current" not in st.session_state:
         st.session_state["current"] = state.ChatSession()
 
-    # Session state
+    # Default to D2
+    if "diagram_format" not in st.session_state:
+        st.session_state["diagram_format"] = "D2"
+
     if "pcap_parse_mode" not in st.session_state:
         st.session_state["pcap_parse_mode"] = "full"
-
 
 if __name__ == "__main__":
     main()

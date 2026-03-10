@@ -179,7 +179,6 @@ def parse(pcap_file, mode=""):
                 packets.append(packet.show(dump=True))
             else:
                 packets.append(packet.summary())
-                
                 print (f"Parsed packet: {packet.summary()}")  # Debug print for each packet summary
     return packets
 

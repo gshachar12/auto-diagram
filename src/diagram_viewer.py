@@ -13,10 +13,10 @@ from core import generate_diagram
 from messages import create_message_from_bytes
 import streamlit.components.v1 as components 
 from animation import _create_animation_section
-from render import _render_mermaid
+from render_mermaid import _render_mermaid
+from render_d2 import _render_d2
 
-
-def _sanitize_mermaid(code: str) -> str:
+def _sanitize_diagram_code(code: str) -> str:
     """
     Remove Markdown code fences if present and return the raw Mermaid definition.
     """
@@ -37,7 +37,7 @@ def _sanitize_mermaid(code: str) -> str:
 def _mermaid_live_url(code: str) -> str:
     if not code:
         return ""
-    code = _sanitize_mermaid(code)
+    code = _sanitize_diagram_code(code)
     code_json = json.dumps({"code": code})
     compressed = zlib.compress(code_json.encode("utf-8"), level=9)
     encoded = base64.urlsafe_b64encode(compressed).decode("ascii").rstrip("=")
@@ -170,7 +170,7 @@ def _drawio_url(code: str) -> str:
         return ""
     
     mermaid_text = code.strip()
-    mermaid_text = _sanitize_mermaid(mermaid_text)
+    mermaid_text = _sanitize_diagram_code(mermaid_text)
     payload = mermaid_text.encode("utf-8")
     compressor = zlib.compressobj(level=9, method=zlib.DEFLATED, wbits=-15)
     compressed = compressor.compress(payload) + compressor.flush()
@@ -196,8 +196,8 @@ def diagram_viewer():
         ent_list = []
 
     with viewer:
-        clean_code = _sanitize_mermaid(code)
-        _render_mermaid(clean_code, current_step=0, total_steps=0, title="Full Diagram")
+        #clean_code = _sanitize_diagram_code(code)
+        _render_d2(code, current_step=0, total_steps=0, title="Full Diagram View")
 
     with editor:
         if code:
@@ -294,7 +294,6 @@ Note right of B: 🧠 Internal Logic
             _create_animation_section(clean_code)
         else:
             st.info("Generate a diagram first to see the animation.")
-    # diagram_viewer.py
 
     with pcap_analysis:
             st.subheader("🔍 Pcap Packet Evidence")
@@ -378,7 +377,6 @@ Note right of B: 🧠 Internal Logic
                             with st.expander(display_label, expanded=is_selected):
                                 st.code(p_data["details"] or p_data["summary"], language="text")
 
-                # 4. Strategy C: Final Fallback - Show all packets if no evidence links found
                 if not evidence_found:
                     st.write("Full packet list (No specific evidence links found):")
                     for p in packets:

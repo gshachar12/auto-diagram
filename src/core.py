@@ -9,7 +9,24 @@ from openai import OpenAI
 
 
 
-with open("instructions.txt", "r", encoding="utf-8") as f: 
+# Define the absolute path to your assets folder
+ASSETS_DIR = os.path.join(os.getcwd(), "assets").replace("\\", "/")
+
+ICON_LIBRARY = {
+    "server": f"{ASSETS_DIR}/server.png",
+    "client": f"{ASSETS_DIR}/laptop.png",
+    "router": f"{ASSETS_DIR}/router.png",
+    "switch": f"{ASSETS_DIR}/switch.png",
+    "dns": f"{ASSETS_DIR}/dns.png",
+    "attack": f"{ASSETS_DIR}/attacker.png"
+    
+}
+
+def _get_icon_path(key):
+    return ICON_LIBRARY.get(key.lower(), ICON_LIBRARY["server"])
+
+    
+with open("./prompts/instructions.txt", "r", encoding="utf-8") as f: 
     # Load instructions from a file to keep them separate from code and easily editable
     INSTRUCTIONS = f.read()
 
