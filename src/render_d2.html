@@ -1,25 +1,28 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <script src="https://streamlit-component-lib.s3.amazonaws.com/index.js"></script>
-    <style>
-        svg { width: 100%; height: auto; cursor: pointer; }
-        .d2-node:hover { filter: brightness(0.9); }
-    </style>
-</head>
-<body>
-    <div id="diagram-container">
-        {{SVG_CONTENT}}
+<div style="background-color: white; border: 1px solid #eee; border-radius: 10px;">
+    <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+    
+    <div id="container" style="width: 100%; height: 750px; overflow: hidden;">
+        {{svg_content}}
     </div>
 
     <script>
-        // Listen for clicks on D2 nodes
-        document.querySelectorAll('.d2-node').forEach(node => {
-            node.addEventListener('click', () => {
-                const packetId = node.id; // D2 allows setting IDs
-                Streamlit.setComponentValue(packetId);
-            });
-        });
+        window.onload = function() {
+            var svgElement = document.querySelector('#container svg');
+            if (svgElement) {
+                svgElement.setAttribute('id', 'd2-svg');
+                svgElement.style.width = '100%';
+                svgElement.style.height = '100%';
+
+                svgPanZoom('#d2-svg', {
+                    zoomEnabled: true,
+                    controlIconsEnabled: true,
+                    fit: true,
+                    center: true,
+                    minZoom: 0.1,
+                    maxZoom: 10,
+                    mouseWheelZoomEnabled: true
+                });
+            }
+        };
     </script>
-</body>
-</html>
+</div>

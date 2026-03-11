@@ -231,43 +231,43 @@ def chatbox():
                         "metadata": {"type": "response", "model": model},
                     }
                 )
+                print(f"Storing full response in session state with length {len(response)}")
+                diag_match = re.search(r"<diagram>(.*?)</diagram>", response, re.DOTALL)
+                ent_match = re.search(r"<entities>(.*?)</entities>", response, re.DOTALL)
 
-            diag_match = re.search(r"<DIAGRAM>(.*?)</DIAGRAM>", response, re.DOTALL)
-            ent_match = re.search(r"<ENTITIES>(.*?)</ENTITIES>", response, re.DOTALL)
-
-            if diag_match:
-                diagram_code = diag_match.group(1).strip()
-                
-                # If the LLM wrapped it in markdown code blocks inside the tags, clean it
-                if "```" in diagram_code:
-                    diagram_code = re.sub(r"```[a-z0-9]*\n", "", diagram_code)
-                    diagram_code = diagram_code.replace("```", "").strip()
-                    
-            elif st.session_state["diagram_format"] == "Mermaid" and "sequenceDiagram" in response:
-                diagram_code = response.strip()
-            elif st.session_state["diagram_format"] == "D2" and ("shape:" in response or "direction:" in response):
-                diagram_code = response.strip()
-                # Clean up markdown if present
-                match = re.search(r"```d2(.*?)```", diagram_code, re.DOTALL | re.IGNORECASE)
-                if match:
-                    diagram_code = match.group(1).strip()
-            else:
-                # Generic error based on format
-                if st.session_state.get("diagram_format") == "D2":
-                    diagram_code = 'shape: sequence_diagram\nERROR: "Failed to generate valid D2 code."'
-                else:
-                    diagram_code = "sequenceDiagram\n Note over AI: Error: Failed to generate valid Mermaid code."
+                if diag_match and ent_match:
+                    diagram_code = diag_match.group(1).strip()
+                    entities_json = ent_match.group(1).strip()
+                    #     # If the LLM wrapped it in markdown code blocks inside the tags, clean it
+                    #     if "```" in diagram_code:
+                    #         diagram_code = re.sub(r"```[a-z0-9]*\n", "", diagram_code)
+                    #         diagram_code = diagram_code.replace("```", "").strip()
                             
-                entities_json = ent_match.group(1).strip() if ent_match else "[]"
-                
-                # Store with the separator for the renderer
-                combined_content = f"{diagram_code}|||{entities_json}"
+                    # elif st.session_state["diagram_format"] == "Mermaid" and "sequenceDiagram" in response:
+                    #     diagram_code = response.strip()
+                    # elif st.session_state["diagram_format"] == "D2" and ("shape:" in response or "direction:" in response):
+                    #     diagram_code = response.strip()
+                    #     # Clean up markdown if present
+                    #     match = re.search(r"```d2(.*?)```", diagram_code, re.DOTALL | re.IGNORECASE)
+                    #     if match:
+                    #         diagram_code = match.group(1).strip()
+                    
+                    # Store with the separator for the renderer
+                    combined_content = f"{diagram_code}|||{entities_json}"
+                    print (f"Storing diagram and entities in session state with length {len(combined_content)}")
+                    curr_session.diagram_text = combined_content
+                    curr_session.updated = datetime.datetime.now().timestamp()
 
-                curr_session.diagram_text = combined_content
-                curr_session.updated = datetime.datetime.now().timestamp()
+                    update_state()
+                    st.rerun()
 
-                update_state()
-                st.rerun()
+                else:
+                    if st.session_state.get("diagram_format") == "D2":
+                        st.error('shape: sequence_diagram\nERROR: "Failed to generate valid D2 code."')
+                    else:
+                        st.error("sequenceDiagram\n Note over AI: Error: Failed to generate valid Mermaid code.")
+                                
+                    
 
 
 def app():
@@ -288,16 +288,6 @@ def main():
     
     print("--------------------------------------------------------------------------")
     init() # cite: app.py
-    
-    #logged_in = authenticate() 
-    
-    # with st.sidebar:
-    #     if logged_in:
-    #         # This is your original sessions history
-    #         sidebar() 
-    #     else:
-    #         # This shows ONLY if not logged in
-    #         st.info("Log in to see history")
 
     with st.sidebar:
         sidebar()

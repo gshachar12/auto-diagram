@@ -183,8 +183,6 @@ def diagram_viewer():
     viewer, animation, editor, entities_tab, pcap_analysis, export, files_tab= st.tabs(["Viewer", "Animation", "Editor", "Entities", "PCAP Analysis", "Export", "Files"])
     
     raw_content = st.session_state["current"].diagram_text
-    
-
     if "|||" in raw_content:
         code, ent_json = raw_content.split("|||", 1)
         try:
@@ -194,6 +192,7 @@ def diagram_viewer():
     else:
         code = raw_content
         ent_list = []
+        
 
     with viewer:
         #clean_code = _sanitize_diagram_code(code)
@@ -315,6 +314,8 @@ Note right of B: 🧠 Internal Logic
             # Split diagram and entities
             if "|||" in curr_session.diagram_text:
                 diagram_code, ent_json = curr_session.diagram_text.split("|||", 1)
+                
+                print("entities_json:", ent_json)  # Debug log for raw JSON string
                 try:
                     entities_data = json.loads(ent_json)
                 except Exception:
