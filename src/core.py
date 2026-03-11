@@ -24,7 +24,6 @@ ICON_LIBRARY = {
 
 def _get_icon_path(key):
     return ICON_LIBRARY.get(key.lower(), ICON_LIBRARY["server"])
-
     
 with open("./prompts/instructions.txt", "r", encoding="utf-8") as f: 
     # Load instructions from a file to keep them separate from code and easily editable
@@ -122,7 +121,7 @@ def generate_diagram_gemini(
 
         print(f"Finish reason: {finish_reason}")
         if finish_reason != 1:
-            print(f"⚠️ Generation stopped early! Reason: {finish_reason}")
+            print(f"Finish reason: {finish_reason}")
             if finish_reason == 3:
                 print("Reason 3 (SAFETY): A filter was triggered. Check your packet payloads.")
             elif finish_reason == 2:
