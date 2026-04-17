@@ -10,8 +10,17 @@ from openai import OpenAI
 
 
 # Define the absolute path to your assets folder
-ASSETS_DIR = os.path.join(os.getcwd(), "assets").replace("\\", "/")
+# Get the directory where the current script (in /src) is located
+current_script_dir = os.path.dirname(os.path.abspath(__file__))
 
+# Go up one level to the root, then into assets
+ASSETS_DIR = os.path.join(current_script_dir, "..", "assets")
+
+# Standardize for D2 or web usage (forward slashes)
+ASSETS_DIR = os.path.normpath(ASSETS_DIR).replace("\\", "/")
+existing_icons = [f for f in os.listdir(ASSETS_DIR) if f.endswith('.png')]
+
+icons_instruction = "\n8. Existing Icons: \n The following icons are available for use in the diagram: " + ", ".join(existing_icons) + ". Use these icons to represent different entities in the network diagram."
 ICON_LIBRARY = {
     "server": f"{ASSETS_DIR}/server.png",
     "client": f"{ASSETS_DIR}/laptop.png",
@@ -27,7 +36,9 @@ def _get_icon_path(key):
     
 with open("./prompts/instructions.txt", "r", encoding="utf-8") as f: 
     # Load instructions from a file to keep them separate from code and easily editable
-    INSTRUCTIONS = f.read()
+    INSTRUCTIONS = f.read() 
+    if existing_icons: # If there are icons in the assets folder, add them to the instructions
+        INSTRUCTIONS += icons_instruction
 
 def generate_diagram(messages: List, api_key: str, model: str = "gpt-5") -> str:
     if model == "gpt-5":
@@ -50,7 +61,7 @@ def generate_diagram_openai(messages: List, api_key: str, model: str = "gpt-5") 
         instructions=INSTRUCTIONS,
         input=messages,
         tools=[{"type": "web_search"}],
-        # temperature=0.1,
+        #temperature=0.1,
     )
 
     diagram = response.output_text.strip()
@@ -101,7 +112,7 @@ def generate_diagram_gemini(
         config = genai.types.GenerateContentConfig(
             system_instruction=INSTRUCTIONS,
             max_output_tokens=8192,
-            temperature=0.7,
+            temperature=0.1,
         )
     try:
         response = client.models.generate_content(

@@ -15,8 +15,8 @@ import streamlit.components.v1 as components
 from animation import _create_animation_section
 from render_mermaid import _render_mermaid
 from render_d2 import _render_d2
-
-def _sanitize_diagram_code(code: str) -> str:
+from datetime import datetime
+def _sanitize_diagram_text(code: str) -> str:
     """
     Remove Markdown code fences if present and return the raw Mermaid definition.
     """
@@ -37,7 +37,7 @@ def _sanitize_diagram_code(code: str) -> str:
 def _mermaid_live_url(code: str) -> str:
     if not code:
         return ""
-    code = _sanitize_diagram_code(code)
+    code = _sanitize_diagram_text(code)
     code_json = json.dumps({"code": code})
     compressed = zlib.compress(code_json.encode("utf-8"), level=9)
     encoded = base64.urlsafe_b64encode(compressed).decode("ascii").rstrip("=")
@@ -170,32 +170,43 @@ def _drawio_url(code: str) -> str:
         return ""
     
     mermaid_text = code.strip()
-    mermaid_text = _sanitize_diagram_code(mermaid_text)
+    mermaid_text = _sanitize_diagram_text(mermaid_text)
     payload = mermaid_text.encode("utf-8")
     compressor = zlib.compressobj(level=9, method=zlib.DEFLATED, wbits=-15)
     compressed = compressor.compress(payload) + compressor.flush()
-    
     encoded = base64.b64encode(compressed).decode("ascii")    
     return f"https://app.diagrams.net/?type=mermaid&data={urllib.parse.quote(encoded)}"
 
 
 def diagram_viewer():
-    viewer, animation, editor, entities_tab, pcap_analysis, export, files_tab= st.tabs(["Viewer", "Animation", "Editor", "Entities", "PCAP Analysis", "Export", "Files"])
     
-    raw_content = st.session_state["current"].diagram_text
-    if "|||" in raw_content:
-        code, ent_json = raw_content.split("|||", 1)
-        try:
-            ent_list = json.loads(ent_json)
-        except:
-            ent_list = []
-    else:
-        code = raw_content
-        ent_list = []
-        
+    focus_step = st.query_params.get("focus_step")
+    all_labels = ["Viewer", "Animation", "Editor", "Entities", "PCAP Analysis", "Export", "Files"]
 
+    # If there is a focus_step, move "PCAP Analysis" to the front of the list
+    if focus_step:
+        # Remove it from its original spot and insert at index 0
+        all_labels.insert(0, all_labels.pop(all_labels.index("PCAP Analysis")))
+
+    tabs = st.tabs(all_labels)
+
+    # We use a dictionary to map the labels back to their variables safely
+    tab_map = {label: tabs[i] for i, label in enumerate(all_labels)}
+
+    viewer = tab_map["Viewer"]
+    animation = tab_map["Animation"]
+    editor = tab_map["Editor"]
+    entities_tab = tab_map["Entities"]
+    pcap_analysis = tab_map["PCAP Analysis"]
+    export = tab_map["Export"]
+    files_tab = tab_map["Files"]
+    code = st.session_state["current"].diagram_text
+    entities_json = st.session_state["current"].entities_json
+    steps_json = st.session_state["current"].steps_json
+
+        
     with viewer:
-        #clean_code = _sanitize_diagram_code(code)
+        #clean_code = _sanitize_diagram_text(code)
         _render_d2(code, current_step=0, total_steps=0, title="Full Diagram View")
 
     with editor:
@@ -211,6 +222,13 @@ def diagram_viewer():
 
     with entities_tab:
         st.subheader("Network Entities & Roles")
+        try:
+            ent_list = json.loads(entities_json)
+        except json.JSONDecodeError:
+            st.error("Error parsing entities JSON.")
+            st.info("No entities identified yet. Generate a new diagram to see extracted roles.")
+            ent_list = []
+
         if ent_list:
             st.table(ent_list)
         else:
@@ -219,7 +237,6 @@ def diagram_viewer():
     with export:
         mermaid_live, drawio, download = st.tabs(["mermaid.live", "draw.io", "download image"])
         has_code = bool(code)
-
         with mermaid_live:
             if not has_code:
                 st.info("Generate a diagram to open it in mermaid.live.")
@@ -295,96 +312,112 @@ Note right of B: 🧠 Internal Logic
             st.info("Generate a diagram first to see the animation.")
 
     with pcap_analysis:
+
+            try: 
+                steps_list = json.loads(steps_json)
+            except:
+                print("Error parsing steps JSON")
+                steps_list = []
             st.subheader("🔍 Pcap Packet Evidence")
-            
-            curr_session = st.session_state["current"]
-            
-            # 1. Safely retrieve the structured packets list and entities JSON
+                        
             packets = None
-            entities_data = []
-            diagram_code = ""
+            diagram_text = ""
             
             # Extract packets from message history
-            for msg in reversed(curr_session.messages):
+            for msg in reversed(st.session_state["current"].messages):
                 metadata = msg.get("metadata", {})
-                if isinstance(metadata, dict) and "packets_list" in metadata:
-                    packets = metadata["packets_list"]
-                    break
+                # 1. Skip if metadata is just a string or not a dict
+                if not isinstance(metadata, dict):
+                    print("Skipping: Metadata is not a dictionary")
+                    continue
                     
-            # Split diagram and entities
-            if "|||" in curr_session.diagram_text:
-                diagram_code, ent_json = curr_session.diagram_text.split("|||", 1)
-                
-                print("entities_json:", ent_json)  # Debug log for raw JSON string
-                try:
-                    entities_data = json.loads(ent_json)
-                except Exception:
-                    entities_data = []
-            else:
-                diagram_code = curr_session.diagram_text
-
+                # 2. ONLY stop the loop if 'packets_data' is actually present
+                if "packets_data" in metadata:
+                    packets = metadata["packets_data"]
+                    print(f"Found metadata with 'packets_data' key. Number of packets: {len(packets)}")
+                    print("✅ Found packet evidence!")
+                    break
             if packets is None:
                 st.warning("⚠️ No structured PCAP data found. Ensure you uploaded a PCAP file.")
             else:
                 selected_id = st.session_state.get("selected_packet_id")
                 evidence_found = False
-
-                # 2. Strategy A: Use AI-provided ENTITIES mapping
-                if entities_data and any("EVIDENCE" in e for e in entities_data):
-                    st.info("Evidence organized by AI Step-Mapping")
+                if steps_list and any("EVIDENCE" in step for step in steps_list):
+                    st.info(f"✅ Found packet evidence! Total packets: {len(packets)}")
                     evidence_found = True
-                    for item in entities_data:
+                else:
+                    st.warning("⚠️ No packet evidence linked to diagram steps. Generate a new diagram with PCAP data to see evidence here.")
+                if evidence_found:
+                    for item in steps_list:
                         step_num = item.get("STEP", "?")
-                        entity_name = item.get("ENTITY", "Action")
-                        evidence_str = str(item.get("EVIDENCE", ""))
                         
-                        p_id_match = re.search(r"(\d+)", evidence_str)
-                        if p_id_match:
-                            p_id = int(p_id_match.group(1))
-                            p_data = next((p for p in packets if p["id"] == p_id), None)
-                            if p_data:
+                        is_focused = (step_num == str(focus_step))
+                            
+                        
+                        description = item.get("DESCRIPTION", "?")
+                    
+                        # Handle EVIDENCE correctly (whether it's a string or a list)
+                        raw_evidence = item.get('EVIDENCE', [])
+                        if isinstance(raw_evidence, str):
+                            # If it's a string like "Pkt 3", wrap it in a list
+                            evidence_list = [raw_evidence]
+                        else:
+                            evidence_list = raw_evidence
+                            
+                        # Extract the numbers from the list of strings
+                        target_ids = []
+                        for s in evidence_list:
+                            match = re.search(r"(\d+)", str(s))
+                            if match:
+                                target_ids.append(int(match.group(1)))
+
+                        # Find the actual packet objects that match these IDs
+                        matched_packets = [p for p in packets if int(p.get("id", -1)) in target_ids]
+                        
+                        with st.expander(f"**Step {step_num}**: {description} ", expanded=is_focused):
+                            if is_focused:
+                                st.markdown("🎯 **Direct Link Focus**")
+                            if item.get("INSIGHT"):
+                                st.subheader(f"**Step Description:**")
+                                st.info(f"{item['INSIGHT']}")
+                                
+                            st.subheader(f"**Linked Packet Evidence:**")
+                            # Loop through the matched packets to display them
+                            for packet_obj in matched_packets:
+                                p_id = packet_obj.get("id")
                                 is_selected = (str(p_id) == str(selected_id))
-                                with st.expander(f"Step {step_num}: {entity_name} (Packet #{p_id})", expanded=is_selected):
-                                    if item.get("INSIGHT"):
-                                        st.markdown(f"**AI Insight:** {item['INSIGHT']}")
-                                    st.code(p_data["details"] or p_data["summary"], language="text")
+                                # Show the Wireshark-style timestamp we created earlier
+                                ts = packet_obj.get("timestamp", "0.000000")
+                               
+                                # Show the packet details
+                                content = packet_obj.get("details") or packet_obj.get("summary") or "No details"
+                                
+                                with st.expander(f"**📦Packet Number:`#{p_id}` | ⏱ Timestamp: `{ts}s`**"):
+                                    st.markdown(f"**Packet source: `{packet_obj.get('src', 'Unknown')}`**")
+                                    st.markdown(f"**Packet destination: `{packet_obj.get('dst', 'Unknown')}`**")
+                                    st.markdown(f"**Packet protocol: `{packet_obj.get('protocol', 'Unknown')}`**")
+                                    st.markdown (f"**Packet length: `{packet_obj.get('length', 'Unknown')}` bytes**")
+                                    st.markdown(f"**Packet info: `{packet_obj.get('info', 'No info available')}`**")
+                                    with st.expander("**Full Packet Content**"):
+                                        st.code(content, language="text")
+                if focus_step:
+                    st.components.v1.html(
+                        f"""
+                        <script>
+                            setTimeout(() => {{
+                                window.parent.document.querySelectorAll('[data-testid="stExpander"]').forEach(el => {{
+                                    // Look for the specific Step number in the expander header
+                                    if (el.innerText.includes("Step {focus_step}:") || el.innerText.includes("Step {focus_step} ")) {{
+                                        el.scrollIntoView({{behavior: "smooth", block: "start"}});
+                                    }}
+                                }});
+                            }}, 500); // Small delay to allow Streamlit to finish rendering the 'expanded' state
+                        </script>
+                        """,
+                        height=0,
+                    )
 
-                # Strategy B: Manual extraction from diagram text
-                lines = diagram_code.split('\n')
-                for line in lines:
-                    p_match = re.search(r"Packet #(\d+)", line)
-                    if p_match:
-                        evidence_found = True
-                        p_id = p_match.group(1)
-                        p_data = next((p for p in packets if str(p["id"]) == p_id), None)
-                        
-                        if p_data:
-                            is_selected = (str(p_id) == str(selected_id))
-                            
-                            #  1. Remove Mermaid arrows and Source tags
-                            clean_title = re.sub(r'\(Source:.*?\)', '', line)
-                            clean_title = clean_title.replace("->>", " to ").replace("->", " to ")
-                            
-                            #  2. Remove any <br/> or other HTML tags from the title
-                            clean_title = re.sub(r'<[^>]*>', ' ', clean_title).strip()
-                            
-                            #  3. Highlight the Packet ID in the label
-                            # We add a 📦 icon and bold the ID for better visibility
-                            display_label = f"📦 **Packet #{p_id}** | {clean_title}"
-                            
-                            if is_selected:
-                                display_label = f"🎯 {display_label} (SELECTED)"
-                            
-                            with st.expander(display_label, expanded=is_selected):
-                                st.code(p_data["details"] or p_data["summary"], language="text")
 
-                if not evidence_found:
-                    st.write("Full packet list (No specific evidence links found):")
-                    for p in packets:
-                        p_id = str(p["id"])
-                        is_selected = (p_id == str(selected_id))
-                        with st.expander(f"Packet #{p_id}: {p['summary']}", expanded=is_selected):
-                            st.code(p["details"], language="text")
     with files_tab:
         st.subheader("📂 Session Attachments")
         chat_history = st.session_state["current"].messages

@@ -2,7 +2,6 @@ import base64
 import html as _html
 import json
 import os
-import uuid
 import zlib
 import streamlit as st
 import time
@@ -15,7 +14,7 @@ from core import generate_diagram
 from messages import create_message_from_bytes
 from user_auth import authenticate
 from diagram_viewer import diagram_viewer
-from pcap import parse_with_indices, parse, prompt, extract_relevant_packets   
+from pcap import parse_with_indices, prompt, extract_relevant_packets   
 
 
 @st.dialog("User messages", width="large")
@@ -90,8 +89,6 @@ def create_turn_messages(turn_text, turn_attachments):
             msg = create_message_from_bytes(
                 name, data, st.session_state["pcap_parse_mode"]
             )
-            
-            
 
             if msg is None:
                 unsupported.append(name) # track unsupported files to inform the user
@@ -204,7 +201,6 @@ def chatbox():
                                         
                     print(f"Length of response: {len(response) if response else 0}")  # Check if response is empty or None
                 
-                # Step 3: Finalizing
                 progress_bar.progress(90)
                 status_placeholder.markdown("📝 **Step 3/3:** Finalizing response...")
 
@@ -231,31 +227,19 @@ def chatbox():
                         "metadata": {"type": "response", "model": model},
                     }
                 )
-                print(f"Storing full response in session state with length {len(response)}")
                 diag_match = re.search(r"<diagram>(.*?)</diagram>", response, re.DOTALL)
                 ent_match = re.search(r"<entities>(.*?)</entities>", response, re.DOTALL)
+                step_match = re.search(r"<steps>(.*?)</steps>", response, re.DOTALL)
+                print(f"\033[91mEntities match: {'found' if ent_match else 'not found'}, Diagram match: {'found' if diag_match else 'not found'}, Steps match: {'found' if step_match else 'not found'}\033[0m")
 
                 if diag_match and ent_match:
                     diagram_code = diag_match.group(1).strip()
                     entities_json = ent_match.group(1).strip()
-                    #     # If the LLM wrapped it in markdown code blocks inside the tags, clean it
-                    #     if "```" in diagram_code:
-                    #         diagram_code = re.sub(r"```[a-z0-9]*\n", "", diagram_code)
-                    #         diagram_code = diagram_code.replace("```", "").strip()
-                            
-                    # elif st.session_state["diagram_format"] == "Mermaid" and "sequenceDiagram" in response:
-                    #     diagram_code = response.strip()
-                    # elif st.session_state["diagram_format"] == "D2" and ("shape:" in response or "direction:" in response):
-                    #     diagram_code = response.strip()
-                    #     # Clean up markdown if present
-                    #     match = re.search(r"```d2(.*?)```", diagram_code, re.DOTALL | re.IGNORECASE)
-                    #     if match:
-                    #         diagram_code = match.group(1).strip()
-                    
+                    steps_json = step_match.group(1).strip() if step_match else "[]"
                     # Store with the separator for the renderer
-                    combined_content = f"{diagram_code}|||{entities_json}"
-                    print (f"Storing diagram and entities in session state with length {len(combined_content)}")
-                    curr_session.diagram_text = combined_content
+                    curr_session.diagram_text = diagram_code
+                    curr_session.entities_json = entities_json
+                    curr_session.steps_json = steps_json
                     curr_session.updated = datetime.datetime.now().timestamp()
 
                     update_state()
@@ -312,15 +296,24 @@ def sidebar():
         )
         if gemini_api_key:
             os.environ["GEMINI_API_KEY"] = gemini_api_key
-
-        pcap_mode_box_label = "Provide full .pcap trace if unchecked only send packet summaries to reduce request tokens"
-        pcap_mode_box = st.checkbox(
-            "Full pcap trace", help=pcap_mode_box_label, value=True
+        
+        pcap_selection = st.selectbox(
+            label="Choose Analysis Depth", # This is the visible label
+            options=["Summary", "Full", "Extraction"],
+            help="Summary: Overview stats | Full: Every packet | Extraction: Filtered attack patterns",
+            index=0
         )
-        if pcap_mode_box:
+
+        # 2. Logic to update session state based on selection
+        if pcap_selection == "Extraction":
+            st.session_state["pcap_parse_mode"] = "extraction"
+        elif pcap_selection == "Full":
             st.session_state["pcap_parse_mode"] = "full"
         else:
             st.session_state["pcap_parse_mode"] = "summary"
+
+        # 3. Usage example in your app
+        st.info(f"Active Mode: **{st.session_state['pcap_parse_mode'].upper()}**")
 
         model = st.radio(
             "Choose model",
@@ -392,13 +385,22 @@ def sidebar():
 
 def init():
     st.set_page_config(page_title="Auto Diagram", page_icon="🗺️", layout="wide")
+    
     if "sessions" not in st.session_state:
         st.session_state["sessions"] = state.load()
 
     if "current" not in st.session_state:
         st.session_state["current"] = state.ChatSession()
 
-    # Default to D2
+    curr = st.session_state["current"]
+    if "diagram_text" not in st.session_state:
+        st.session_state["diagram_text"] = curr.diagram_text
+    if "entities_json" not in st.session_state:
+        st.session_state["entities_json"] = curr.entities_json
+    if "steps_json" not in st.session_state:
+        st.session_state["steps_json"] = curr.steps_json
+    # ------------------------------------------
+
     if "diagram_format" not in st.session_state:
         st.session_state["diagram_format"] = "D2"
 

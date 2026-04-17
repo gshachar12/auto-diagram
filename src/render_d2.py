@@ -9,13 +9,13 @@ def _render_d2(d2_code: str, current_step: int = 0, total_steps: int = 0, title:
         st.warning("No code provided for rendering.")
         return
 
-    # --- 1. Tooltip Injection ---
+    # --- Tooltip Injection ---
     packets_data = {}
     if "current" in st.session_state:
         for msg in reversed(st.session_state["current"].messages):
             metadata = msg.get("metadata", {})
-            if isinstance(metadata, dict) and "packets_list" in metadata:
-                packets_data = {str(p["id"]): p["summary"] for p in metadata["packets_list"]}
+            if isinstance(metadata, dict) and "packets_data" in metadata:
+                packets_data = {str(p["id"]): p["summary"] for p in metadata["packets_data"]}
                 break
 
     for p_id, summary in packets_data.items():
@@ -26,7 +26,7 @@ def _render_d2(d2_code: str, current_step: int = 0, total_steps: int = 0, title:
             d2_code
         )
 
-    # --- 2. Rendering Process ---
+    # --- Rendering Process ---
     svg_content = None
     d2_file = "temp_render.d2"
     svg_file = "temp_render.svg"
@@ -58,7 +58,7 @@ def _render_d2(d2_code: str, current_step: int = 0, total_steps: int = 0, title:
         st.error(f"Unexpected Error: {e}")
         return
 
-    # --- 3. UI Display with Zoom Logic ---
+    # --- UI Display with Zoom Logic ---
     if svg_content:
         def _display_output():
             st.markdown(f"### {title}")
