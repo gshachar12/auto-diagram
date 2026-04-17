@@ -24,8 +24,8 @@ def _work_dir() -> str:
 
 work_dir = _work_dir()
 state_file = os.path.join(work_dir, STATE_FILE_NAME)
-print(f"Work dir: {work_dir}")
-print(f"State file: {state_file}")
+print(f"\033[94mWork dir: {work_dir}\033[0m")
+print(f"\033[94mState file: {state_file}\033[0m")
 
 
 class ChatSession(BaseModel):
@@ -34,8 +34,10 @@ class ChatSession(BaseModel):
     )
     id: float = Field(default_factory=lambda: datetime.now().timestamp())
     updated: float = Field(default_factory=lambda: datetime.now().timestamp())
-    messages: List[Dict] = Field(default_factory=list)
+    messages: List[Dict] = Field(default_factory=list)  
     diagram_text: str = ""
+    entities_json: str = ""
+    steps_json: str = ""
     metadata: Dict = Field(default_factory=dict)
 
 

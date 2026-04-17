@@ -14,7 +14,7 @@ PCAP_EXTS = {".pcap"}
 def create_message_from_path(path: Path, pcap_mode: str = "full") -> Optional[Dict]:
     ext = path.suffix.lower()
 
-    # 1. Handle Text and Code files
+    # Handle Text and Code files
     if ext in TEXT_EXTS or ext in CODE_EXTS:
         try:
             text = path.read_text(encoding="utf-8", errors="ignore")
@@ -30,7 +30,7 @@ def create_message_from_path(path: Path, pcap_mode: str = "full") -> Optional[Di
             print(f"failed to parse text: {e}")
             return None
 
-    # 2. Handle Image files
+    # Handle Image files
     if ext in IMG_EXTS:
         try:
             data = path.read_bytes()
@@ -58,38 +58,36 @@ def create_message_from_path(path: Path, pcap_mode: str = "full") -> Optional[Di
             print(f"failed to parse image: {e}")
             return None
 
-    # 3. Handle PCAP files
+    # Handle PCAP files
     if ext in PCAP_EXTS:
-        try:
-            with path.open(mode="rb") as r:
-                # IMPORTANT: Unpacking the tuple (text, packet_data)
-                text, packet_data = pcap.prompt(path.name, r, mode=pcap_mode)
-                
-            return {
-                "msg": {
-                    "role": "user",
-                    "content": text,
-                },
-                "metadata": {
-                    "type": "chat_attachment", 
-                    "name": path.name,
-                    "packets_list": packet_data # Crucial for the Analysis tab
-                }
+        print(f"Parsing pcap file: {path.name} with mode: {pcap_mode}")
+        with path.open(mode="rb") as r:
+            # IMPORTANT: Unpacking the tuple (text, packet_data)
+            text, packet_data = pcap.prompt(path.name, r, mode=pcap_mode)
+            
+        return {
+            "msg": {
+                "role": "user",
+                "content": text,
+            },
+            "metadata": {
+                "type": "chat_attachment", 
+                "name": path.name,
+                "packets_data": packet_data # Crucial for the Analysis tab
             }
-        except Exception as e:
-            print(f"failed to parse pcap: {e}")
-            return None
+        }
+        # except Exception as e:
+        #     print(f"failed to parse pcap: {e}")
+        #     return None
 
     return None
 
 def create_message_from_bytes(
     name: str, data: bytes, pcap_mode: str = "full"
 ) -> Optional[Dict]:
-    #  Ensure all return types follow the {msg: ..., metadata: ...} structure
     lower = name.lower()
     ext = lower[lower.rfind(".") :] if "." in lower else ""
-
-    # 1. Handle Text and Code files
+    # Handle Text and Code files
     if ext in TEXT_EXTS or ext in CODE_EXTS:
         try:
             text = data.decode("utf-8", errors="ignore")
@@ -103,7 +101,6 @@ def create_message_from_bytes(
         except Exception:
             return None
 
-    # 2. Handle Image files
     if ext in IMG_EXTS:
         try:
             b64 = base64.b64encode(data).decode("utf-8")
@@ -129,25 +126,24 @@ def create_message_from_bytes(
         except Exception:
             return None
 
-    # 3. Handle PCAP files
     if ext in PCAP_EXTS:
-        try:
-            # Unpack the tuple from pcap.prompt
-            text, packet_data = pcap.prompt(name, BytesIO(data), mode=pcap_mode)
-            return {
-                "msg": {
-                    "role": "user",
-                    "content": text
-                },
-                "metadata": {
-                    "type": "chat_attachment",
-                    "name": name,
-                    "packets_list": packet_data  # Structured data for UI
-                }
+        # try:
+        # Unpack the tuple from pcap.prompt
+        text, packet_data = pcap.prompt(name, BytesIO(data), mode=pcap_mode)
+        return {
+            "msg": {
+                "role": "user",
+                "content": text
+            },
+            "metadata": {
+                "type": "chat_attachment",
+                "name": name,
+                "packets_data": packet_data  # Structured data for UI
             }
-        except Exception as e:
-            print(f"failed to parse pcap: {e}")
-            return None
+        }
+        # except Exception as e:
+        #     print(f"failed to parse pcap: {e}")
+        #     return None
 
     return None
 

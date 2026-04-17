@@ -55,8 +55,8 @@ def _render_mermaid(sliced_code: str, current_step: int, total_steps: int, title
     if "current" in st.session_state:
         for msg in reversed(st.session_state["current"].messages):
             metadata = msg.get("metadata", {})
-            if isinstance(metadata, dict) and "packets_list" in metadata:
-                packets_data = {str(p["id"]): p["summary"] for p in metadata["packets_list"]}
+            if isinstance(metadata, dict) and "packets_data" in metadata:
+                packets_data = {str(p["id"]): p["summary"] for p in metadata["packets_data"]}
                 break
 
     try:
