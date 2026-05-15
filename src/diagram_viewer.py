@@ -386,18 +386,18 @@ Note right of B: 🧠 Internal Logic
                             for packet_obj in matched_packets:
                                 p_id = packet_obj.get("id")
                                 is_selected = (str(p_id) == str(selected_id))
-                                # Show the Wireshark-style timestamp we created earlier
+                                # Show the Wireshark-style timestamp we created earlier - 0
                                 ts = packet_obj.get("timestamp", "0.000000")
                                
                                 # Show the packet details
                                 content = packet_obj.get("details") or packet_obj.get("summary") or "No details"
                                 
-                                with st.expander(f"**📦Packet Number:`#{p_id}` | ⏱ Timestamp: `{ts}s`**"):
+                                with st.expander(f"**📦Packet-Number:`#{p_id}` | ⏱ Timestamp: `{ts}s`**"):
                                     st.markdown(f"**Packet source: `{packet_obj.get('src', 'Unknown')}`**")
                                     st.markdown(f"**Packet destination: `{packet_obj.get('dst', 'Unknown')}`**")
                                     st.markdown(f"**Packet protocol: `{packet_obj.get('protocol', 'Unknown')}`**")
                                     st.markdown (f"**Packet length: `{packet_obj.get('length', 'Unknown')}` bytes**")
-                                    st.markdown(f"**Packet info: `{packet_obj.get('info', 'No info available')}`**")
+                                    st.markdown(f"**Packet info: 0 `{packet_obj.get('info', 'No info available')}`**")
                                     with st.expander("**Full Packet Content**"):
                                         st.code(content, language="text")
                 if focus_step:
