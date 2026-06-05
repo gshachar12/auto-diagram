@@ -5,14 +5,13 @@ import os
 import zlib
 import streamlit as st
 import time
-from user_auth import authenticate
 import state
 import datetime
+import validator
 import re
 from typing import Dict, List, Optional
 from core import generate_diagram
 from messages import create_message_from_bytes
-from user_auth import authenticate
 from diagram_viewer import diagram_viewer
 from pcap import parse_with_indices, prompt, extract_relevant_packets   
 
@@ -184,25 +183,22 @@ def chatbox():
 
             try:
                 # Step 1: Preparation
-                status_placeholder.markdown("🔍 **Step 1/3:** Preparing context and files...")
-                progress_bar.progress(15)
+                status_placeholder.markdown("🔍 **Step 1/4:** Preparing context and files...")
+                progress_bar.progress(25)
                 
                 # Step 2: Generation with Spinner
                 #  Wrap the core API call in a spinner for visual feedback
                 model_string = "Gemini" if model.startswith("gemini") else "ChatGPT"
                 with st.spinner(f" {model_string} is analyzing data..."):
-                    status_placeholder.markdown(f"🧠 **Step 2/3:** {model_string} is generating the diagram...")
-                    progress_bar.progress(40)
+                    status_placeholder.markdown(f"🧠 **Step 2/4:** {model_string} is generating the diagram...")
+                    progress_bar.progress(50)
                     
                     response = generate_diagram(
                         messages=messages, api_key=api_key, model=model
-                    )
-                    
-                                        
+                    )            
                     print(f"Length of response: {len(response) if response else 0}")  # Check if response is empty or None
-                
-                progress_bar.progress(90)
-                status_placeholder.markdown("📝 **Step 3/3:** Finalizing response...")
+                progress_bar.progress(75)
+                status_placeholder.markdown("📝 **Step 3/4:** Creating Diagram...")
 
             except Exception as e:
                 #  Clean up UI on error
@@ -213,7 +209,7 @@ def chatbox():
             else:
                 # Success cleanup
                 progress_bar.progress(100)
-                time.sleep(0.4)
+                status_placeholder.markdown("📝 **Step 3/4:** Creating Validation Report...")
                 progress_placeholder.empty()
                 status_placeholder.empty()
 
@@ -237,21 +233,32 @@ def chatbox():
                     entities_json = ent_match.group(1).strip()
                     steps_json = step_match.group(1).strip() if step_match else "[]"
                     # Store with the separator for the renderer
+
+                    packets_source = []
+                    if "packets_data" in st.session_state:
+                        packets_source = st.session_state["packets_data"]
+                    elif hasattr(curr_session, "metadata") and isinstance(curr_session.metadata, dict) and "packets_data" in curr_session.metadata:
+                        packets_source = curr_session.metadata["packets_data"]
+
+                    validation_metrics = validator.run_validation_pipeline(
+                        diagram_code=diagram_code,
+                        entities_json_str=entities_json,
+                        relevant_packets=packets_source
+                    )
+                    
+                    st.session_state["latest_validation_metrics"] = validation_metrics
+
                     curr_session.diagram_text = diagram_code
                     curr_session.entities_json = entities_json
                     curr_session.steps_json = steps_json
                     curr_session.updated = datetime.datetime.now().timestamp()
-
                     update_state()
                     st.rerun()
-
                 else:
                     if st.session_state.get("diagram_format") == "D2":
                         st.error('shape: sequence_diagram\nERROR: "Failed to generate valid D2 code."')
                     else:
                         st.error("sequenceDiagram\n Note over AI: Error: Failed to generate valid Mermaid code.")
-                                
-                    
 
 
 def app():
@@ -269,7 +276,6 @@ def app():
 
 
 def main():
-    
     print("--------------------------------------------------------------------------")
     init() # cite: app.py
 
@@ -385,7 +391,6 @@ def sidebar():
 
 def init():
     st.set_page_config(page_title="Auto Diagram", page_icon="🗺️", layout="wide")
-    
     if "sessions" not in st.session_state:
         st.session_state["sessions"] = state.load()
 

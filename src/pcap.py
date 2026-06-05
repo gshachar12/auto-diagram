@@ -96,70 +96,7 @@ def extract_relevant_packets(packets_data, max_packets=200, sampling_limit=3):
 
         if len(relevant) >= max_packets:
             break
-        print(f"timestamp: {p_dict['timestamp']}")
     return relevant
-def pcap_analysis_tab():
-    # Get the current session and diagram data
-    curr_session = st.session_state["current"]
-    diagram_raw = getattr(curr_session, "diagram_text", "")
-    
-    if not diagram_raw:
-        st.info("No diagram generated yet. Please chat to create one.")
-        return
-
-    # Split the diagram code from the entities JSON
-    if "|||" in diagram_raw:
-        diagram_code, _ = diagram_raw.split("|||", 1)
-    else:
-        diagram_code = diagram_raw
-
-    # Extract all assistant messages that contain packet data
-    all_packets = []
-    for m in curr_session.messages:
-        if m.get("msg", {}).get("role") == "assistant":
-            packets = m.get("metadata", {}).get("packets_data", [])
-            if packets:
-                all_packets = packets # Use the most recent packet list
-
-    if not all_packets:
-        st.warning("No PCAP data found for this diagram.")
-        return
-
-    st.subheader("🔍 Evidence by Diagram Step")
-
-    # Parse the Mermaid code to find steps and their packet references
-    # We look for lines like: "Note over VR: (Source: Packet #12)" or arrows with packet info
-    lines = diagram_code.split('\n')
-    step_counter = 1
-    
-    for line in lines:
-        # Match lines that represent a step (arrows or notes)
-        if "->" in line or "Note over" in line:
-            # Try to find "Packet #ID" in the line
-            packet_match = re.search(r"Packet #(\d+)", line)
-            
-            # Create a clean label for the step
-            clean_label = line.replace("->>", " to ").replace("->", " to ").strip()
-            clean_label = re.sub(r'rect\s+rgb\(.*?\)', '', clean_label) # Remove colors
-            
-            if packet_match:
-                packet_id = int(packet_match.group(1))
-                # Find the specific packet data by ID
-                target_packet = next((p for p in all_packets if p.get("id") == packet_id), None)
-                
-                if target_packet:
-                    with st.expander(f"Step {step_counter}: {target_packet['summary']}"):
-                        st.code(target_packet['details'], language="text")
-                        st.caption(f"Full Evidence from Packet #{packet_id}")
-                    step_counter += 1
-            elif "autonumber" not in line and "participant" not in line and "sequenceDiagram" not in line:
-                # Display steps that don't have packet evidence as static info
-                # st.text(f"Step: {line.strip()}")
-                pass
-
-    if step_counter == 1:
-        st.info("No packet references (Packet #ID) found in the current diagram syntax.")
-        
         
 def parse_with_indices(pcap_file, mode=""):
     """_summary_

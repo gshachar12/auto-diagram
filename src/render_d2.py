@@ -30,7 +30,7 @@ def _render_d2(d2_code: str, current_step: int = 0, total_steps: int = 0, title:
     svg_content = None
     d2_file = "temp_render.d2"
     svg_file = "temp_render.svg"
-    executable = os.path.abspath("d2.exe")
+    executable = os.path.abspath("src/d2.exe")
 
     if not os.path.exists(executable):
         st.error(f"❌ D2 Executable not found at: {executable}")
@@ -66,7 +66,7 @@ def _render_d2(d2_code: str, current_step: int = 0, total_steps: int = 0, title:
                 st.caption(f"Step {current_step} of {total_steps}")
             
             try:
-                with open("render_d2.html", "r", encoding="utf-8") as f:
+                with open("src/render_d2.html", "r", encoding="utf-8") as f:
                     html_template = f.read()
                 
                 full_html = html_template.replace("{{svg_content}}", svg_content)
