@@ -1,0 +1,190 @@
+# English comments only
+import os
+import json
+import re
+from typing import List, Dict, Set, Tuple
+# Importing the LLM generation connection from your core engine
+from core import generate_diagram 
+
+def load_validator_instructions(file_path: str = "src/prompts/validator.txt") -> str:
+    """
+    Loads the qualitative criteria guidelines for the LLM validator agent.
+    """
+    if not os.path.exists(file_path):
+        return "You are a strict validator. Ensure the diagram elements match all rules."
+    with open(file_path, "r", encoding="utf-8") as f:
+        return f.read().strip()
+
+
+def run_llm_agent_validation(diagram_code: str, entities_json_str: str) -> str:
+    """
+    Spawns an LLM judge agent to assess qualitative aspects of the D2 output 
+    based on the rules stored inside validator.txt.
+    """
+    validator_prompt = load_validator_instructions("validator.txt")
+
+    validation_payload = f"""
+    Please review the following generated output segments against your core instructions:
+    
+    <entities>
+    {entities_json_str}
+    </entities>
+    
+    <diagram>
+    {diagram_code}
+    </diagram>
+    """
+
+    messages = [
+        {"role": "system", "content": validator_prompt},
+        {"role": "user", "content": validation_payload}
+    ]
+    
+    try:
+        response = generate_diagram(messages=messages, api_key=os.environ.get("OPENAI_API_KEY"))
+        return response.text.strip()
+    except Exception as e:
+        return f"LLM Agent Validation Failed due to an API Error: {e}"
+
+
+def check_critical_misses(diagram_code: str, relevant_packets: list) -> list:
+    """
+    Scans the PCAP for critical cybersecurity events and verifies 
+    if they were omitted from the final D2 diagram visualization using flexible regex matching.
+    """
+    missed_critical_events = []
+    critical_keywords = ["exploit", "cve", "malicious", "spoof", "flood", "unauthorized", "rst"]
+    
+    for p in relevant_packets:
+        info_text = p.get("info", "").lower()
+        src = p.get("src", "").lower()
+        dst = p.get("dst", "").lower()
+        
+        is_critical = any(keyword in info_text for keyword in critical_keywords)
+        if is_critical:
+            flexible_pattern = rf"{re.escape(src)}\s*->\s*{re.escape(dst)}"
+            if not re.search(flexible_pattern, diagram_code.lower()):
+                missed_critical_events.append(
+                    f"Pkt #{p['id']} [{p['type']}] -> '{p['info']}' between '{src}' and '{dst}'"
+                )
+                
+    return missed_critical_events
+
+
+def calculate_algorithmic_metrics(
+    diagram_code: str, 
+    entities_json_str: str, 
+    relevant_packets: List[Dict]
+) -> Dict[str, any]:
+    """
+    Computes deterministic structural metrics based on DiagramEval principles.
+    """
+
+    print ("relevant packets for validation:", len(relevant_packets))
+    print("relevant packets sample:", relevant_packets[:3])  
+    gt_actors: Set[str] = set()
+    gt_sequence: List[Tuple[str, str]] = []
+    for p in relevant_packets: # Extract source and destination, ensuring we handle missing keys gracefully
+        src = p.get("src", "").strip().lower()
+        dst = p.get("dst", "").strip().lower()
+        if src and dst:
+            gt_actors.add(src)
+            gt_actors.add(dst)
+            gt_sequence.append((src, dst))
+    print("Extracted GT Actors:", gt_actors)
+    print("Extracted GT Sequence Sample:", gt_sequence[:5]) 
+    try:
+        generated_entities = json.loads(entities_json_str)
+        gen_nodes = {item["ENTITY"].strip().lower() for item in generated_entities if "ENTITY" in item}
+    except Exception:
+        gen_nodes = set()
+
+    if gen_nodes:
+        matched_nodes = gen_nodes.intersection(gt_actors)
+        node_precision = (len(matched_nodes) / len(gen_nodes)) * 100
+        node_recall = (len(matched_nodes) / len(gt_actors)) * 100 if gt_actors else 100.0
+        node_f1 = (2 * node_precision * node_recall) / (node_precision + node_recall) if (node_precision + node_recall) > 0 else 0.0
+    else:
+        node_precision, node_recall, node_f1 = 0.0, 0.0, 0.0
+
+    edge_pattern = r"([\w_]+)\s*->\s*([\w_]+)"
+    generated_edges = [(src.lower(), dst.lower()) for src, dst in re.findall(edge_pattern, diagram_code)]
+    gen_edges_set = set(generated_edges)
+    true_edges_set = set(gt_sequence)
+
+    if gen_edges_set:
+        matched_edges = gen_edges_set.intersection(true_edges_set)
+        path_precision = (len(matched_edges) / len(gen_edges_set)) * 100
+        path_recall = (len(matched_edges) / len(true_edges_set)) * 100 if true_edges_set else 100.0
+        path_f1 = (2 * path_precision * path_recall) / (path_precision + path_recall) if (path_precision + path_recall) > 0 else 0.0
+    else:
+        path_precision, path_recall, path_f1 = 0.0, 0.0, 0.0
+
+    has_unquoted_hex = bool(re.search(r"style\.(?:stroke|fill):\s*#[a-fA-F0-9]{6}(?!['\"])", diagram_code))
+    has_dashed_lines = "stroke-dash" in diagram_code
+    critical_misses = check_critical_misses(diagram_code, relevant_packets)
+
+    is_compliant = (
+        node_f1 >= 90.0 and 
+        path_f1 >= 90.0 and 
+        not has_unquoted_hex and 
+        not has_dashed_lines and 
+        len(critical_misses) == 0
+    )
+
+    return {
+            "status": "COMPLIANT" if is_compliant else "NON-COMPLIANT",
+            "node_precision": round(node_precision, 2),
+            "node_recall": round(node_recall, 2),
+            "node_f1": round(node_f1, 2),
+            "path_precision": round(path_precision, 2),
+            "path_recall": round(path_recall, 2),
+            "path_f1": round(path_f1, 2),
+            "syntax_ok": not has_unquoted_hex,
+            "no_dashed_lines": not has_dashed_lines,
+            "critical_misses": critical_misses,
+        }
+
+
+def print_validation_report(metrics: Dict[str, any], llm_report: str) -> None:
+    """
+    Logs comprehensive hybrid execution metrics directly to stdout.
+    """
+    print(f"\n====== VALIDATION REPORT ======")
+    print(f"Mathematical Status: {metrics['status']}")
+    print(f"Node Alignment F1: {metrics['node_f1']}%")
+    print(f"Path Alignment F1: {metrics['path_f1']}%")
+    print(f"Hex Codes Wrapped Correctly: {metrics['syntax_ok']}")
+    print(f"Solid Lines Guideline Followed: {metrics['no_dashed_lines']}")
+    
+    if metrics["critical_misses"]:
+        print(f"\n⚠️ CRITICAL NARRATIVE MISSES ({len(metrics['critical_misses'])}):")
+        for miss in metrics["critical_misses"]:
+            print(f"  - {miss}")
+    else:
+        print("\n✅ No critical operational steps were skipped.")
+        
+    print(f"\n🤖 LLM AGENT VALIDATOR TEXT RESPONSE:")
+    print(llm_report)
+    print("==================================\n")
+
+
+# SINGLE ENTRY POINT FUNCTION
+def run_validation_pipeline(diagram_code: str, entities_json_str: str, relevant_packets: List[Dict]) -> Dict[str, any]:
+    """
+    The main coordinator function to be called from external files.
+    Runs the full pipeline, prints reports, and returns metrics payload.
+    """
+    # 1. Compute algorithmic data sets
+    metrics = calculate_algorithmic_metrics(diagram_code, entities_json_str, relevant_packets)
+    
+    # 2. Run the qualitative validation check via LLM
+    print("Spawning LLM Agent for qualitative code review...")
+    llm_report = run_llm_agent_validation(diagram_code, entities_json_str)
+    
+    # 3. Print combined report instantly to standard stdout output stream
+    print_validation_report(metrics, llm_report)
+    
+    # Pack everything back to return to the calling session scope
+    metrics["llm_agent_report"] = llm_report
+    return metrics

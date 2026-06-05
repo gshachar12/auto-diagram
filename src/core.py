@@ -34,7 +34,7 @@ ICON_LIBRARY = {
 def _get_icon_path(key):
     return ICON_LIBRARY.get(key.lower(), ICON_LIBRARY["server"])
     
-with open("./prompts/instructions.txt", "r", encoding="utf-8") as f: 
+with open("src/prompts/instructions.txt", "r", encoding="utf-8") as f: 
     # Load instructions from a file to keep them separate from code and easily editable
     INSTRUCTIONS = f.read() 
     if existing_icons: # If there are icons in the assets folder, add them to the instructions
