@@ -40,7 +40,7 @@ Prefix Rule: Use style.fill for background colors and style.stroke for borders.
 
 Animation: style.animated: true must be inside an edge-attached style block.
 
-Tooltips & Links: Every edge MUST have a tooltip and a link formatted as: link: "javascript:window.top.location.href='/?focus_step={STEP}'".
+Tooltips & Links: Every edge MUST have a tooltip and a link formatted as: link: "javascript:window.top.location.href='/?focus_step={STEP}'". 
 Response Protocol:
 If Compliant: Respond only with "STATUS: COMPLIANT".
 

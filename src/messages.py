@@ -1,5 +1,5 @@
 import base64
-import pcap
+import preprocessing
 from io import BytesIO
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
@@ -63,7 +63,7 @@ def create_message_from_path(path: Path, pcap_mode: str = "full") -> Optional[Di
         print(f"Parsing pcap file: {path.name} with mode: {pcap_mode}")
         with path.open(mode="rb") as r:
             # IMPORTANT: Unpacking the tuple (text, packet_data)
-            text, packet_data = pcap.prompt(path.name, r, mode=pcap_mode)
+            text, packet_data = preprocessing.prompt(path.name, r, mode=pcap_mode)
             
         return {
             "msg": {
@@ -76,14 +76,12 @@ def create_message_from_path(path: Path, pcap_mode: str = "full") -> Optional[Di
                 "packets_data": packet_data # Crucial for the Analysis tab
             }
         }
-        # except Exception as e:
-        #     print(f"failed to parse pcap: {e}")
-        #     return None
+
 
     return None
 
 def create_message_from_bytes(
-    name: str, data: bytes, pcap_mode: str = "full"
+    name: str, data: bytes, pcap_mode: str = "extract"
 ) -> Optional[Dict]:
     lower = name.lower()
     ext = lower[lower.rfind(".") :] if "." in lower else ""
@@ -128,8 +126,8 @@ def create_message_from_bytes(
 
     if ext in PCAP_EXTS:
         # try:
-        # Unpack the tuple from pcap.prompt
-        text, packet_data = pcap.prompt(name, BytesIO(data), mode=pcap_mode)
+        # Unpack the tuple from preprocessing.prompt
+        text, packet_data = preprocessing.prompt(name, BytesIO(data), mode=pcap_mode)
         return {
             "msg": {
                 "role": "user",
