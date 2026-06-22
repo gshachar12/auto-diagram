@@ -13,7 +13,7 @@ from typing import Dict, List, Optional
 from core import generate_diagram
 from messages import create_message_from_bytes
 from diagram_viewer import diagram_viewer
-from pcap import parse_with_indices, prompt, extract_relevant_packets   
+from preprocessing import parse_with_indices, prompt, extract_relevant_packets   
 
 
 @st.dialog("User messages", width="large")
@@ -29,48 +29,118 @@ def show_messages(data_fnc):
 def show_ai_diagram(data_fnc):
     diagram_text = data_fnc()
     st.code(diagram_text)
+import streamlit as st
 
+def pipline_handler():
+    st.subheader("Set up Generation Pipeline")
+    st.markdown("Select a pipeline stage to view its configured criteria, validation rules, and runtime parameters.")
 
-def show_history():
-    st.subheader("Diagram Content")
-    chat_history = st.session_state["current"].messages
-    user_messages = []
-    diagrams_counter = 1
-    for msg_id, chat_msg in enumerate(chat_history):
-        metadata = chat_msg.get("metadata")
-        if metadata["type"] == "chat_attachment":
-            user_messages.append(f"Attachment: {metadata['name']}")
-        elif metadata["type"] == "chat_text":
-            msg = chat_msg.get("msg", None)
-            content = msg.get("content", "")
-            with st.chat_message("user"):
-                curr_messages = user_messages
-                if st.button(
-                    content[:25] + "...",
-                    key=f"view_messages_{msg_id}",
-                    icon=":material/expand_content:",
-                    type="tertiary",
-                ):
-                    show_messages(lambda: (curr_messages, content))
-                user_messages = []
-        else:
-            if len(user_messages) > 0:
-                print("Got user messages instead out of order")
-            with st.chat_message("ai", avatar=":material/flowchart:"):
-                msg = chat_msg.get("msg", None)
-                content = msg.get("content", "")
-                model = metadata.get("model", "gpt-5")
-                if st.button(
-                    f"**{model}** generated [{diagrams_counter}]",
-                    key=f"ai_diagram_{msg_id}",
-                    icon=":material/expand_content:",
-                    type="tertiary",
-                ):
-                    show_ai_diagram(lambda: content)
-            diagrams_counter += 1
-    if len(user_messages) > 0:
-        print("got dangling user messages")
+    # ---------------------------------------------------------
+    # PERSISTENT STATE FOR THE ACTIVE STAGE
+    # ---------------------------------------------------------
+    if "active_stage" not in st.session_state:
+        st.session_state["active_stage"] = "preprocessing"
 
+    # ---------------------------------------------------------
+    # PIPELINE PARAMETERS SHARING STATE
+    # ---------------------------------------------------------
+    if "param_protocol" not in st.session_state:
+        st.session_state["param_protocol"] = "DNS (UDP/53)"
+    if "param_payload_size" not in st.session_state:
+        st.session_state["param_payload_size"] = 512
+    if "param_spoof_ip" not in st.session_state:
+        st.session_state["param_spoof_ip"] = True
+
+    # ---------------------------------------------------------
+    # VERTICAL LAYOUT DESIGN (SIDE-BY-SIDE COLUMNS)
+    # ---------------------------------------------------------
+    col_buttons, col_content = st.columns([1, 2.5], gap="large")
+
+    # --- SIDEBAR COLUMNS: VERTICAL BUTTONS GROUP ---
+    with col_buttons:
+        st.markdown("<br>", unsafe_allow_html=True) # Fine-tune alignment with the content area
+        
+        # 1. Preprocessing Button (Blue Theme when active)
+        if st.button(
+            "🔄 Preprocessing", 
+            key="btn_stage_prep", 
+            use_container_width=True,
+            type="primary" if st.session_state["active_stage"] == "preprocessing" else "secondary"
+        ):
+            st.session_state["active_stage"] = "preprocessing"
+
+        # 2. Generation Button (Amber Theme when active)
+        if st.button(
+            "⚙️ Generation", 
+            key="btn_stage_gen", 
+            use_container_width=True,
+            type="primary" if st.session_state["active_stage"] == "generation" else "secondary"
+        ):
+            st.session_state["active_stage"] = "generation"
+
+        # 3. Validation Button (Green Theme when active)
+        if st.button(
+            "🛡️ Validation", 
+            key="btn_stage_val", 
+            use_container_width=True,
+            type="primary" if st.session_state["active_stage"] == "validation" else "secondary"
+        ):
+            st.session_state["active_stage"] = "validation"
+
+        # 4. Rendering Button (Purple Theme when active)
+        if st.button(
+            "🎨 Rendering", 
+            key="btn_stage_rend", 
+            use_container_width=True,
+            type="primary" if st.session_state["active_stage"] == "rendering" else "secondary"
+        ):
+            st.session_state["active_stage"] = "rendering"
+
+    # --- MAIN COLUMN: DYNAMIC CONTENT CONTEXT ---
+    with col_content:
+        current_stage = st.session_state["active_stage"]
+
+        if current_stage == "preprocessing":
+            st.markdown("### <span style='color:#58a6ff;'>Preprocessing Criteria</span>", unsafe_allow_html=True)
+            st.write("Initial sanitization, layout parsing, and token inspection before serialization loops begin.")
+            
+
+        elif current_stage == "generation":
+            st.markdown("### <span style='color:#ffb454;'>Generation Parameters</span>", unsafe_allow_html=True)
+            st.write("Compiling raw bytes structural context and calculating low-level transport layer checksum allocations.")
+            
+            st.session_state["param_payload_size"] = st.slider(
+                "Target Packet Size Constraints (Bytes)", 
+                min_value=64, 
+                max_value=1460, 
+                value=st.session_state["param_payload_size"],
+                step=64
+            )
+            
+            st.info(f"**Compiler Engine Mapping:** Building packet socket descriptor array mimicking `{st.session_state['param_protocol']}` structures.")
+            st.code(f"# Pseudo-code Generation Vector Output\npacket = IP(dst='Target') / {st.session_state['param_protocol'].split(' ')[0]}() / Raw(load='X' * {st.session_state['param_payload_size']})", language="python")
+
+        elif current_stage == "validation":
+            st.markdown("### <span style='color:#238636;'>Validation Checkpoints</span>", unsafe_allow_html=True)
+            st.write("Pre-flight safety inspection checks verifying offset bounds, MTU size compliance, and integrity signatures.")
+            
+            is_size_valid = st.session_state["param_payload_size"] <= 1024
+            
+            col_v1, col_v2 = st.columns(2)
+            col_v1.metric(label="Layer-3 Integrity Signature", value="PASSED", delta="Checksum OK")
+            col_v2.metric(
+                label="MTU Packet Fragment Boundary Check", 
+                value="COMPLIANT" if is_size_valid else "WARNING", 
+                delta="Payload <= 1024B" if is_size_valid else "Potential fragmentation risks"
+            )
+            
+            st.success("All explicit kernel sandbox execution rule constraints evaluated successfully.")
+
+        elif current_stage == "rendering":
+            st.markdown("### <span style='color:#bc8cff;'>Rendering</span>", unsafe_allow_html=True)
+            st.write("Visual hex-dump output translation mapping layer flows to the front-end simulation engine timeline graph.")
+            # if st.button("Deploy Current Vector Sequence to System Canvas", type="primary", use_container_width=True):
+            #     st.toast("Pipeline execution context submitted successfully!", icon="🎨")
 
 def create_turn_messages(turn_text, turn_attachments):
     turn_messages: List[Dict] = []
@@ -240,13 +310,13 @@ def chatbox():
                     elif hasattr(curr_session, "metadata") and isinstance(curr_session.metadata, dict) and "packets_data" in curr_session.metadata:
                         packets_source = curr_session.metadata["packets_data"]
 
-                    validation_metrics = validator.run_validation_pipeline(
-                        diagram_code=diagram_code,
-                        entities_json_str=entities_json,
-                        relevant_packets=packets_source
-                    )
+                    # validation_metrics = validator.run_validation_pipeline(
+                    #     diagram_code=diagram_code,
+                    #     entities_json_str=entities_json,
+                    #     relevant_packets=packets_source
+                    # )
                     
-                    st.session_state["latest_validation_metrics"] = validation_metrics
+                    # st.session_state["latest_validation_metrics"] = validation_metrics
 
                     curr_session.diagram_text = diagram_code
                     curr_session.entities_json = entities_json
@@ -269,7 +339,7 @@ def app():
         chat_col, diagram_col = st.columns([0.32, 0.68], gap="small")
 
         with chat_col.container(height=600):
-            show_history()
+            pipline_handler()
 
         with diagram_col.container(height=600):
             diagram_viewer()

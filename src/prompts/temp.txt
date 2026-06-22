@@ -291,12 +291,12 @@ Before output ensure:
 Every entity must include an icon.
 All icons must be referenced from:
 
-../assets/
+/assets/
 
 Example:
 
 resolver: "Victim Resolver" {
-icon: "../assets/dns.png"
+icon: "/assets/dns.png"
 }
 
 ---
@@ -307,35 +307,35 @@ Use the following local icon files.
 
 Attacker
 
-icon: ../assets/attacker.png
+icon: /assets/attacker.png
 Example
 attacker: "Attacker Client" {
-icon: "../assets/attacker.png"
+icon: "/assets/attacker.png"
 }
 
 ---
 Client / User Machine
-icon: ../assets/client.png
+icon: /assets/client.png
 ---
 Server
-icon: ../assets/server.png
+icon: /assets/server.png
 ---
 DNS Resolver
-icon: ../assets/dns.png
+icon: /assets/dns.png
 Authoritative DNS
-icon: ../assets/dns_auth.png
+icon: /assets/dns_auth.png
 ---
 Victim Server
-icon: ../assets/victim.png
+icon: /assets/victim.png
 ---
 Database
-icon: ../assets/database.png
+icon: /assets/database.png
 ---
 Cloud Infrastructure
-icon: ../assets/cloud.png
+icon: /assets/cloud.png
 ---
 Botnet / Multiple Attackers
-icon: ../assets/botnet.png
+icon: /assets/botnet.png
 ---
 
 17. Fallback Rule
@@ -344,12 +344,12 @@ If the entity type cannot be determined from the PCAP data, use the generic serv
 
 Fallback icon:
 
-../assets/botnet.png
+/assets/botnet.png
 
 Example
 
 unknown_host: "Unknown Host" {
-icon: "../assets/server.png"
+icon: "/assets/server.png"
 }
 
 ---
@@ -520,11 +520,11 @@ Example structure
 shape: sequence_diagram
 
 attacker: "Attacker" {
-icon: "../assets/attacker.png"
+icon: "/assets/attacker.png"
 }
 
 resolver: "Victim Resolver" {
-icon: "../assets/dns.png"
+icon: "/assets/dns.png"
 }
 
 Phase_I: {

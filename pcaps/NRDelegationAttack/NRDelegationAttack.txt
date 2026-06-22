@@ -1,121 +1,106 @@
-4 NRDelegationAttack
-The attack is formed based on the specific interplay of several DNS mechanisms in the resolver, some of which were
-introduced only recently. In this section, we explain these key
-mechanisms and their interplay before describing a variant of
-the attack in Section 4.1, Figure 1 and Figure 2. The attack
-proceeds as follows:
-1. Following a malicious query, the malicious authoritative
-server sends a large referral response (LRR, see Section
-2.2) to the target victim recursive resolver. The referral
-list contains n (≤ 1500) different domain names, with no
-glue records. The recursive resolver will try and resolve
-the query with any one of the n NS names in the list. As
-a first step, the resolver has to resolve these NS names.
-2. Before starting to resolve any of the NS names in the
-LRR, the recursive resolver checks in the cache and the
-ADB to see if any of the n names already has a resolution
-that it can use. When n is large, this operation consumes
-an enormous amount of memory and CPU resources;
-we denote its compute cost by CC(n). This is the core
-source for the complexity of the NRDelegationAttack,
-which is significantly amplified by being repeated in a
-loop. This loop is due to the NXNSAttack mitigation
-mechanism, which forces the n names to be processed
-in chucks of k names at a time, as explained in the next
-4 steps.
-3. This kind of LRR, with n nonexistent (NX) domain
-names and no glue records, was used in the “NXNSAttack” [5]. In the NXNSAttack, when the resolver
-receives the LRR, n resolution processes start simultaneously, essentially flooding both the victim recursive
-resolver and the authoritative appointed by the NX domain names in the LRR.
-4. To mitigate the NXNSAttack, a new ’referral limit’ (e.g.,
-= 5) denoted by k was imposed on the number of referrals that can be resolved out of the n names for each
-client query; the value of k may differ slightly in different implementations (see Section 2.4). If all k attempts
-return NXDOMAIN or FAIL, the resolution is aborted
-and an NX response is returned to the client, thus cutting down the amplification factor of the NXNSAttack.
-In the following section, we compare the effects of the
-NRDelegationAttack to that of the NXNSAttack. We
-refer to the resolver versions before the NXNSAttack as
-pre-NXNS and those after the NXNSAttack disclosure
-as NXNS-patched versions.
-5. In the NRDelegationAttack, rather than n nonexistent
-NS names, the attacker uses n existing NS names without glue records. Each such name is a name of (or leads
-to) a server that is non-responsive (NR) to DNS_queries
-server (see Section 2.2), hence the name “NRDelegation”. Upon receiving such an LRR, NXNS-patched resolvers will initially resolve k NR names, and will try to
-ask each of these servers to resolve the query.
-6. As explained in Section 2.2, each delegation response
-triggers a “restart” event. Hence, k restart events are
-triggered when each of the first k delegation responses
-are received by the recursive resolver (NXNS-patched
-version).
-Each restart event clears the resolver indication that the
-“referral-limit” was reached for this LRR. As a result, the
-resolver starts the process from the beginning, except
-this time it starts with the resolutions of k other names
-from the LRR. Consequently, each restart caused by
-each delegation initiates the resolution of k additional
-names from the LRR. This ultimately results in k more
-delegations. The process enters an expanding loop in
-which k
-2
-resolutions of NS names from the LRR are
-started in the subsequent iteration of the loop. The bad
-news is that after each of the restart events, as long as
-there are names in the LRR whose resolution has not
-yet started, the recursive resolver again checks whether
-any one of the n names in the LRR already has a usable
-resolution in either the cache or the ADB (see Step 2).
-The resulting compute load is (k +k
-2
-)·CC(n), which is
-the core reactor of this complexity attack. In principle,
-after the next iteration, the accumulated complexity is
-(k +k
-2 +k
-3
-)CC(n) but no more than a maximum of n.
-7. In pre-NXNS versions, the n resolutions of each of the
-domain names from the LRR start at once. Thus, although it issues many queries, the load complexity on
-the resolver is much lower than in the NRDelegation
-attack on NXNS-patched versions because the resolver
-flags the LRR after going through all of the LRR domain
-names. It will not repeat Step 2 as it does in the patched
-versions. In addition, the NXNSAttack will have a larger
-packet amplification factor because each authoritative
-responds and exchanges packets with the resolver. In the
-NRDelegationAttack, the non-responsive servers simply
-do not respond. On the other hand, the NXNSAttack
-is terminated faster; once an NX response is received
-by the resolver, it ends the client resolution with an NX
-response. In the NRDelegationAttack, the resolver keeps
-waiting in the hope that one of the (non-responding)
-servers will respond. While waiting, the resolver also
-keeps processing additional NS names from the LRR
-until it hits the safety threshold counters (see below).
-As a result, the NRDelegationAttack on pre-NXNS resolver versions has nearly twice the CPU complexity
-of the NXNSAttack on the same version (292 million
-instructions vs. 180 million per attacker query), while on
-the NXNS-patched version it is 38 times more complex
-(3415 million instructions vs. 90 million per attacker
-query, see Figure 3).
-8. In real implementations of the recursive resolver, either
-pre or patched NXNSAttack, there are safety limitation
-counters on the number of restarts allowed in each phase
-and in total (= 100 restarts). These limitations prevent
-the process from continuing exponentially until reaching n. However, these safety bounds are high (e.g., 100
-restarts before the resolution aborts) and do not restrain
-the power of the attack, which is still enough to deny
-service at the target.
-9. Because there are several different delegation methods
-in the DNS system, the NRDelegationAttack has different variants, depending on the delegation method being used. In the most straightforward version, but not
-the simplest to craft, the attacker can use a list of existing domain names that are not responsive to DNS
-queries. For example, this may include different web
-servers such as www.google.com, www.usenix.org, etc.
-Alternatively, ’broken’ or stale domain-to-IP mappings
-can be used as domain names in the referral list. Using
-a modular method, the attacker can also use his own
-delegation server, in which several different response
-options direct the resolver to a resource IP that is nonresponsive to DNS queries. We refer to this as the “delegation server” variant. For example, the attacker can
-use an “NXDOMAIN-Redirection” [33] response (see
-Appendix B) in which, instead of replying with NX to
-non-existent domain names, the delegation authoritative
-redirects the resolver to an NR resource. Additional delegation options are given in Section 4.2 and Table 1.
+The following is a detailed step-by-step description of
+the attack scenario presented in Figure 1; this is the most
+involved variant of the attack. The attack has three major
+phases:
+Phase I: Victim resolver receives a large referral response
+(LRR).
+Phase II: Victim resolver starts processing the LRR.
+Phase III: Victim resolver loops through delegation response
+and restarts Phase II.
+Each phase has the following steps:
+Phase I:
+1. Attacker’s client queries the victim resolver about
+xyz.referral.com (Step 1 in Figure 1).
+2. Victim resolver queries referral.com (Step 2 in Figure
+1).
+3. Authoritative referral.com responds with a large referral
+response (LRR) (Step 3).
+Phase II:
+1. The resolver looks up each of the n names to see if any
+one of them already has a resolution it can use. This
+is a total of 2n lookups. This step is the core source of
+the high complexity, especially since it will be repeated
+many times, as explained in the next phase (Step 4 in
+Figure 1).
+2. The resolver starts resolving referral-limit names in the
+LRR, e.g., 5 in BIND9 implementation (Step 5 in Fig
+ure 1). In the first execution of this step, it begins 
+the resolution of the first referral-limit NS names from the
+LRR. Each subsequent execution begins resolving the
+next referral-limit NS names, until the resolution of all
+the names in the LRR has been invoked.
+3. The resolver turns on the No_Fetch flag (Step 5), which
+is part of the NXNSAttack mitigation and is intended
+to limit the number of referred NS names resolved per
+client query.
+4. The resolver issues the query for these referral-limit NS
+names (Step 6).
+Phase III: Victim loops multiple times through referral
+response-restart loop.
+1. Each such name leads the resolver to an authoritative,
+which responds with a server IP address that is non
+responsive to DNS queries and issues the delegation
+response (Step 7 in Figure 1).
+2. Upon receiving a delegation response, the resolver triggers 
+a restart event and restarts the resolution for the
+LRR(Step 8 in Figure 1).
+3. The victim resolver clears the “No_Fetch” flag (Step
+9), because retaining it could break the resolution of
+a valid domain name. For example, if domain “.com”
+has more than “referral-limit” delegation options, and
+domain “.example.com” also has delegations that need
+to be resolved, then the resolver cannot preserve the
+“No_Fetch” flagbetween the “.com” and“.example.com”
+resolutions.
+4. The victim resolver does the following in parallel:
+(a) Restarts the RR-list processing (Step 10 in Figure
+1).
+(b) Queries the resources received in Step 7 and re
+ceives no helpful information in return (i.e., no
+response at all, as shown in Steps 11-12 in Figure
+1).
+5. Following the above restart, go to Phase II.
+6. The victim loops through Phases II and III until a time
+out or restart limit is reached and a ’FAIL’ response is
+returned to the client (Step 13 in Figure 1).
+The source of the heavy load produced by the attack is
+mostly from the numerous executions of Step 1 in Phase II.
+(In BIND9, it is at most 100 times.) If the number of names
+n in the referral list is large, e.g., 1,500, then each execu
+tion of this step costs 3,000 memory accesses and at least
+5,600 times more CPU instructions relative to a benign query
+(1,100,000,000:195,000 instructions). The NRDelegationAt
+tack amplification factor is given in Section 5.2. Figure 2
+presents a flowchart of the relevant parts of the resolver algo
+rithm.
+Although the NRDelegationAttack is mainly explained
+here using a BIND9 implementation, we also tested it on
+Unbound, and Knot implementations, and 16 open DNS re
+solvers (see Section 6.2 and Section 6.3). Our evalutions show
+that all the resolvers under test suffer degradation in their
+performance under the NRDelegationAttack. This occurs pri
+marily due to the excessive use of the resolver resources when
+it receives the NRDelegationAttack malicious query (e.g., the
+number of cache lookups done per one malicious query). As
+part of the responsible disclosure discussion with the vendors,
+excessive use of the resolver resources indeed proved to be
+the main reason for the impact of NRDelegationAttack on the
+resolvers.
+4.2 NRDelegationAttack Delegation Options
+It is important that the referral list received at the end of Phase
+I includes only domain names leading to a server that is non
+responsive to DNS queries. Otherwise, if the resolver receives
+useful resolution, it may obtain a reply to the query thereby
+ending the attack chain reaction and preventing the repetition
+of Phase II. There are several delegation options that can be
+used to ensure the NRDAttack will succeed, as presented in
+Table 1.
+In some resolver implementations there may be limitations
+regarding the fetches allowed per zone or IP address; these
+limitations can be bypassed using wildcard records. In this
+case, the attacker can either look for wildcard records where
+the IP address does not host a DNS server, or use arbitrary
+subdomains under his “delegation server” and direct them to
+different IP addresses that do not host a DNS server.
+We tested all the versions mentioned above using our Inner
+Simulator, described in Section 5.1

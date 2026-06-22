@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Network Diagram Canvas</title>
+    <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #ffffff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        #container {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        a {
+            cursor: pointer;
+            pointer-events: all;
+        }
+        .svg-pan-zoom-control {
+            cursor: pointer;
+            fill: #757575 !important;
+            fill-opacity: 0.8 !important;
+        }
+        .svg-pan-zoom-control:hover {
+            fill: #1976d2 !important;
+            fill-opacity: 1 !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="container">
+        {{svg_content}}
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var svgElement = document.querySelector('#container svg');
+            
+            if (svgElement) {
+                svgElement.setAttribute('id', 'network-svg');
+                svgElement.style.width = '100%';
+                svgElement.style.height = '100%';
+
+
+                svgPanZoom('#network-svg', {
+                    zoomEnabled: true,
+                    controlIconsEnabled: true,  
+                    fit: true,                
+                    center: true,              
+                    minZoom: 0.1,
+                    maxZoom: 10,
+                    mouseWheelZoomEnabled: true,
+                    preventMouseEventsDefault: false
+                });
+            }
+        });
+    </script>
+</body>
+</html>
