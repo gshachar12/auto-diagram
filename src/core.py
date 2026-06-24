@@ -7,40 +7,35 @@ import base64
 import re
 from openai import OpenAI
 
+""" This module provides functions to generate network diagrams using either OpenAI's GPT models or Google's Gemini models. It includes functionality to handle supporting files, convert messages between formats, and manage assets such as icons for the diagrams.
+The main functions are: 
+- generate_diagram: Determines which model to use for diagram generation.
+- generate_diagram_openai: Generates a diagram using OpenAI's GPT models.   
+"""
 
-
-# Define the absolute path to your assets folder
-# Get the directory where the current script (in /src) is located
-current_script_dir = os.path.dirname(os.path.abspath(__file__))
-
-# Go up one level to the root, then into assets
-ASSETS_DIR = os.path.join(current_script_dir, "..", "assets")
-
-# Standardize for D2 or web usage (forward slashes)
-ASSETS_DIR = os.path.normpath(ASSETS_DIR).replace("\\", "/")
-existing_icons = [f for f in os.listdir(ASSETS_DIR) if f.endswith('.png')]
-
-icons_instruction = "\n8. Existing Icons: \n The following icons are available for use in the diagram: " + ", ".join(existing_icons) + ". Use these icons to represent different entities in the network diagram."
-ICON_LIBRARY = {
-    "server": f"{ASSETS_DIR}/server.png",
-    "client": f"{ASSETS_DIR}/laptop.png",
-    "router": f"{ASSETS_DIR}/router.png",
-    "switch": f"{ASSETS_DIR}/switch.png",
-    "dns": f"{ASSETS_DIR}/dns.png",
-    "attack": f"{ASSETS_DIR}/attacker.png"
-    
-}
-
-def _get_icon_path(key):
-    return ICON_LIBRARY.get(key.lower(), ICON_LIBRARY["server"])
-    
 with open("src/prompts/instructions_svg.txt", "r", encoding="utf-8") as f: 
-    # Load instructions from a file to keep them separate from code and easily editable
     INSTRUCTIONS = f.read() 
-    if existing_icons: # If there are icons in the assets folder, add them to the instructions
-        INSTRUCTIONS += icons_instruction
 
-def generate_diagram(messages: List, api_key: str, model: str = "gpt-5") -> str:
+def context_caching():
+    """
+    Context caching is a mechanism to store and retrieve context information for a session.
+    This function checks if the context is already cached in the session state. If not, it initializes an empty dictionary for caching.
+    """
+    cache = client.caches.create(
+        model=model,
+        system_instruction=instructions,
+        ttl=datetime.timedelta(minutes=60) 
+    )
+
+
+def generate_diagram(messages: List, api_key: str, model: str = "gpt-5", context_caching: bool = True) -> str:
+    # if context_caching:
+    #     context_caching()
+    #     cache_key = f"{model}_{hash(str(messages))}"
+    #     if cache_key in st.session_state.context_cache:
+    #         print("Using cached context")
+    #         return st.session_state.context_cache[cache_key]
+
     if model == "gpt-5":
         print("Generate with ChatGPT")
         return generate_diagram_openai(messages=messages, api_key=api_key, model=model)

@@ -4,6 +4,9 @@ from io import BytesIO
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
+""" This module provides functions to create structured messages from files or byte data.
+The messages are designed to be used in a chat context, with support for text, code, images, and pcap files. Each message includes metadata for further processing or analysis.
+"""
 
 # ---- Shared config ----
 TEXT_EXTS = {".txt", ".md", ".csv", ".json", ".log", ".yaml", ".yml"}
@@ -64,7 +67,8 @@ def create_message_from_path(path: Path, pcap_mode: str = "full") -> Optional[Di
         with path.open(mode="rb") as r:
             # IMPORTANT: Unpacking the tuple (text, packet_data)
             text, packet_data = preprocessing.prompt(path.name, r, mode=pcap_mode)
-            
+            print(f"Generated prompt for {path.name}: {text[:100]}...")  # Display first 100 chars for verification
+            print(f"Extracted {len(packet_data)} packets from {path.name}.")  # Display number of packets extracted
         return {
             "msg": {
                 "role": "user",
@@ -82,7 +86,11 @@ def create_message_from_path(path: Path, pcap_mode: str = "full") -> Optional[Di
 
 def create_message_from_bytes(
     name: str, data: bytes, pcap_mode: str = "extract"
-) -> Optional[Dict]:
+    ) -> Optional[Dict]:
+    """
+    Create a message dictionary from a file name and its byte content.  
+
+    """
     lower = name.lower()
     ext = lower[lower.rfind(".") :] if "." in lower else ""
     # Handle Text and Code files
@@ -123,11 +131,10 @@ def create_message_from_bytes(
             }
         except Exception:
             return None
-
     if ext in PCAP_EXTS:
         # try:
-        # Unpack the tuple from preprocessing.prompt
-        text, packet_data = preprocessing.prompt(name, BytesIO(data), mode=pcap_mode)
+
+        text, packet_data = preprocessing.prompt(name, data, mode=pcap_mode)
         return {
             "msg": {
                 "role": "user",
@@ -136,17 +143,20 @@ def create_message_from_bytes(
             "metadata": {
                 "type": "chat_attachment",
                 "name": name,
-                "packets_data": packet_data  # Structured data for UI
+                "packets_data": packet_data 
             }
         }
-        # except Exception as e:
-        #     print(f"failed to parse pcap: {e}")
-        #     return None
 
     return None
 
 
 def build_messages_from_dir(directory: Optional[str]) -> List[Dict]:
+
+    """
+    Build a list of messages from files in a directory.
+    Each file is processed based on its type (text, code, image, pcap)  
+    """ 
+
     if not directory:
         return []
     p = Path(directory)

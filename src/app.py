@@ -228,7 +228,17 @@ def chatbox():
                 curr_session.messages[-1]["msg"]["content"] = st.session_state[
                     "diagram_text"
                 ]
+            # Create placeholders for dynamic UI updates
+            progress_placeholder = st.empty()
+            status_placeholder = st.empty()
             
+            with progress_placeholder:
+                # Initialize the progress bar at 0%
+                progress_bar = st.progress(0)
+
+            # Step 1: Preparation
+            status_placeholder.markdown("🔍 **Step 1/5:** Preprocessing - Preparing context and files...")
+            progress_bar.progress(25)
             turn_messages, unsupported = create_turn_messages(
                 turn_text, turn_attachments
             )
@@ -243,24 +253,17 @@ def chatbox():
             api_key, model = model_config()
             print(f"Using model: {model} with API key: {'set' if api_key else 'not set'}")
 
-            # Create placeholders for dynamic UI updates
-            progress_placeholder = st.empty()
-            status_placeholder = st.empty()
 
-            with progress_placeholder:
-                # Initialize the progress bar at 0%
-                progress_bar = st.progress(0)
+
 
             try:
-                # Step 1: Preparation
-                status_placeholder.markdown("🔍 **Step 1/4:** Preparing context and files...")
-                progress_bar.progress(25)
+
                 
                 # Step 2: Generation with Spinner
                 #  Wrap the core API call in a spinner for visual feedback
                 model_string = "Gemini" if model.startswith("gemini") else "ChatGPT"
                 with st.spinner(f" {model_string} is analyzing data..."):
-                    status_placeholder.markdown(f"🧠 **Step 2/4:** {model_string} is generating the diagram...")
+                    status_placeholder.markdown(f"🧠 **Step 2/5:** {model_string} is generating the diagram...")
                     progress_bar.progress(50)
                     
                     response = generate_diagram(
@@ -268,7 +271,7 @@ def chatbox():
                     )            
                     print(f"Length of response: {len(response) if response else 0}")  # Check if response is empty or None
                 progress_bar.progress(75)
-                status_placeholder.markdown("📝 **Step 3/4:** Creating Diagram...")
+                status_placeholder.markdown("📝 **Step 3/5:** Creating Diagram...")
 
             except Exception as e:
                 #  Clean up UI on error
@@ -279,10 +282,9 @@ def chatbox():
             else:
                 # Success cleanup
                 progress_bar.progress(100)
-                status_placeholder.markdown("📝 **Step 3/4:** Creating Validation Report...")
+                status_placeholder.markdown("📝 **Step 4/5:** Creating Validation Report...")
                 progress_placeholder.empty()
                 status_placeholder.empty()
-
                 if len(turn_messages) > 0:
                     curr_session.messages.extend(turn_messages)
 
