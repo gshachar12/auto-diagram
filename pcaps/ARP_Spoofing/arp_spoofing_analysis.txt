@@ -1,17 +1,17 @@
-Network Packet Capture Analysis Report
+# Network Packet Capture Analysis Report
 File Name: arp_spoofing.pcap
 Analysis Type: Security Incident & Protocol Flow Analysis
 
 ================================================================================
 Phase 1: Network Discovery and Baseline Asset Identification
 ================================================================================
-In this initial phase, the entities participating in the local network segment interact normally or broadcast their initial configurations, establishing the baseline addresses that the attacker will soon exploit.
+In this initial phase, the entities participating in the local network segment interact normally, establishing the baseline addresses that the attacker will soon exploit.
 
 * Step 1.1: Local Host Configuration and Domain Broadcasts
-  The local machines interact with default local domains (localdomain). Standard internal network configurations are initialized within the private IP space (typically 192.168.x.x).
+  The local machines interact with default local domains (localdomain). Standard internal network configurations are initialized within the private IP space.
 
 * Step 1.2: Host Identification
-  The capture logs active network nodes, mapping out hardware (MAC) addresses to logical (IP) addresses. Among these nodes, an offensive framework host explicitly named 'kali' is active on the subnet.
+  The capture logs active network nodes, mapping hardware (MAC) addresses to logical (IP) addresses. Among these nodes, an offensive framework host explicitly named 'kali' is active on the subnet, exposing its presence through network broadcasts and hostname resolution packets.
 
 ================================================================================
 Phase 2: ARP Spoofing and Cache Poisoning Execution
@@ -19,24 +19,32 @@ Phase 2: ARP Spoofing and Cache Poisoning Execution
 This phase marks the active launch of the Layer 2 attack, where the attacker systematically manipulates the Address Resolution Protocol (ARP) tables of the target machines.
 
 * Step 2.1: Flooding Gratuitous / Unsolicited ARP Replies
-  The attacker ('kali') begins transmitting continuous, unsolicited ARP Reply packets across the local segment. 
+  The attacker ('kali') begins transmitting a continuous, rapid stream of unsolicited ARP Reply packets across the local segment. These frames are sent without any preceding ARP requests from the targets.
 
-* Step 2.2: MAC Address Mapping Modification
-  These fraudulent ARP replies map the IP address of the local gateway (router) to the physical hardware MAC address of the Kali Linux machine. Simultaneously, the gateway is told that the victim's IP belongs to the attacker's MAC.
+* Step 2.2: MAC Address Mapping Modification (The Poisoning)
+  These fraudulent ARP replies map the IP address of the local gateway (router) to the physical hardware MAC address of the Kali Linux machine. Simultaneously, another series of spoofed replies tells the gateway that the victim's IP address belongs to the attacker's MAC address.
 
 * Step 2.3: Interception Routing Establishment (Man-in-the-Middle)
-  As the target hosts update their volatile ARP caches with the forged mappings, the logical path of all outbound and inbound traffic shifts. Instead of routing directly to the gateway, traffic is forced through the attacker’s network interface.
+  As the target hosts update their volatile ARP caches with the forged mappings, the logical path of all outbound and inbound traffic shifts. Instead of routing directly to the default gateway, traffic is forced through the attacker’s network interface. The attacker utilizes IP forwarding to seamlessly pass the traffic to its true destination, keeping the interception transparent to the victim.
 
 ================================================================================
 Phase 3: Traffic Interception and Protocol Sniffing
 ================================================================================
-Once the traffic path is successfully altered, the attacker acts as a transparent proxy, capturing, reading, and forwarding the victim's data streams.
+Once the traffic path is successfully altered, the attacker acts as a transparent proxy, capturing, reading, and analyzing the victim's data streams.
 
 * Step 3.1: DNS Request Sniffing and Resolution Hijacking
-  The capture shows a series of Domain Name System (DNS) queries sent by the victim (e.g., looking up time distribution servers like debian.pool.ntp.org and external root domains) passing directly through the attacker's node.
+  The capture shows a series of Domain Name System (DNS) queries sent by the victim passing directly through the attacker's node in plain text (UDP Port 53). This includes lookups for time distribution servers like 'debian.pool.ntp.org' and external web entities.
 
 * Step 3.2: Web Traffic Monitoring (HTTP/HTTPS Interaction)
-  The victim's web browsing habits become fully visible. The packet capture records distinct HTTP/HTTPS requests heading toward external platforms, specifically logging extensive communication with API endpoints and web servers belonging to reddit.com and gql.reddit.com.
+  The victim's web browsing habits become visible to the attacker. The packet capture records extensive communication with external platforms, specifically logging interaction with API endpoints and web servers belonging to 'reddit.com' and 'gql.reddit.com'.
 
 * Step 3.3: Cryptographic Handshake Inspection (TLS/SSL)
-  For encrypted channels, the capture records the initiation of TLS handshakes. The attacker intercepts the exchange of digital certificates (such as those issued by DigiCert), identifying the precise secure domains the victim is accessing, even if the underlying payload remains encrypted.
+  For encrypted HTTPS channels, the capture records the initiation of TLS handshakes. Although the underlying data payload remains encrypted, the attacker intercepts the plain-text Server Name Indication (SNI) field within the 'Client Hello' packet to identify the precise secure domains the victim is accessing. Additionally, the capture logs the transmission of digital certificates issued by 'DigiCert' for the target domains.
+
+================================================================================
+Key Indicators of Compromise (IOCs) Found in PCAP
+================================================================================
+1. Suspect Hostname: 'kali'
+2. Intercepted Target Domains: reddit.com, gql.reddit.com, debian.pool.ntp.org
+3. Digital Certificates Exposed: Issued by DigiCert
+4. Attack Pattern: Frequent, unsolicited ARP Reply (Opcode 2) frames mapping a single MAC address to multiple IP addresses (Gateway and Victim) simultaneously.

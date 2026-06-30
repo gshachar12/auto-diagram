@@ -11,7 +11,7 @@ A compact, well-annotated diagram is always preferred over a long one.
 ---
 
 ## Output Format
-
+USE THIS EXACT FORMAT:
 <entities>[ { "ENTITY": "Name", "Description": "...", "INSIGHT": "..." } ]</entities>
 <steps>[
   {
