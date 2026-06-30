@@ -1,0 +1,314 @@
+<svg width="100%" viewBox="0 0 1002 780" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>ARP Spoofing MITM</title>
+<desc>Three-phase sequence diagram of an ARP spoofing MITM attack showing directionality between actors.</desc>
+
+<defs>
+  <!-- Shared arrow markers -->
+  <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="arrow-dash" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+
+  <style>
+    /* ── Typography base ── */
+    svg { font-family: 'Segoe UI', Helvetica, Arial, sans-serif; }
+
+    /* ── Actor boxes ── */
+    .actor-box-victim  { fill:#eaf3de; stroke:#639922; stroke-width:1.5; }
+    .actor-box-atk     { fill:#fcebeb; stroke:#a32d2d; stroke-width:1.5; }
+    .actor-box-gw      { fill:#e6f1fb; stroke:#185fa5; stroke-width:1.5; }
+    .actor-box-srv     { fill:#fff8ee; stroke:#854f0b; stroke-width:1.5; }
+
+    /* ── Actor label styles ── */
+    .actor-name        { font-size:10px; font-weight:700; text-anchor:middle; }
+    .actor-ip          { font-size:8px;  text-anchor:middle; }
+    .actor-name-victim { fill:#2a4a0a; }
+    .actor-name-atk    { fill:#501313; }
+    .actor-name-gw     { fill:#042c53; }
+    .actor-name-srv    { fill:#412402; }
+    .actor-ip-victim   { fill:#3b6d11; }
+    .actor-ip-atk      { fill:#a32d2d; }
+    .actor-ip-gw       { fill:#185fa5; }
+    .actor-ip-srv      { fill:#854f0b; }
+
+    /* ── Lifelines ── */
+    .lifeline          { stroke-width:1; stroke-dasharray:4 4; }
+    .ll-victim         { stroke:#639922; }
+    .ll-atk            { stroke:#f09595; }
+    .ll-gw             { stroke:#85b7eb; }
+    .ll-srv            { stroke:#fac775; }
+
+    /* ── Phase sidebar boxes ── */
+    .phase-box         { rx:6; }
+    .phase-p1          { fill:#639922; }
+    .phase-p2          { fill:#a32d2d; }
+    .phase-p3          { fill:#185fa5; }
+    .phase-label       { fill:#fff; text-anchor:middle; }
+    .phase-title       { font-size:12px; font-weight:700; }
+    .phase-sub         { font-size:9px; }
+
+    /* ── Phase background tints ── */
+    .phase-bg          { rx:4; opacity:0.4; }
+    .phase-bg-p1       { fill:#eaf3de; }
+    .phase-bg-p2       { fill:#fff5f5; }
+    .phase-bg-p3       { fill:#f0f6fc; }
+
+    /* ── Phase divider lines ── */
+    .phase-div         { stroke-width:0.5; stroke-dasharray:4 2; }
+    .phase-div-p1      { stroke:#639922; }
+    .phase-div-p2      { stroke:#a32d2d; }
+    .phase-div-p3      { stroke:#185fa5; }
+
+    /* ── Step badge circles ── */
+    .badge             { }
+    .badge-p1          { fill:#639922; }
+    .badge-p2          { fill:#a32d2d; }
+    .badge-p3          { fill:#185fa5; }
+    .badge-label       { fill:#fff; font-size:9px; font-weight:700; text-anchor:middle; }
+
+    /* ── Arrows ── */
+    .arrow-p1          { stroke:#639922; stroke-width:1.5; fill:none; }
+    .arrow-p2          { stroke:#a32d2d; stroke-width:2;   fill:none; }
+    .arrow-p3          { stroke:#185fa5; stroke-width:1.5; fill:none; }
+    .arrow-srv         { stroke:#854f0b; stroke-width:1.5; fill:none; }
+    .arrow-dash        { stroke-dasharray:4 3; }
+
+    /* ── Arrow label text ── */
+    .lbl               { text-anchor:middle; }
+    .lbl-main          { font-size:11px; font-weight:600; }
+    .lbl-sub           { font-size:10px; }
+    .lbl-p1            { fill:#27500a; }
+    .lbl-p2-main       { fill:#791f1f; }
+    .lbl-p2-sub        { fill:#a32d2d; }
+    .lbl-p3-main       { fill:#042c53; }
+    .lbl-p3-sub        { fill:#185fa5; }
+    .lbl-srv           { fill:#854f0b; }
+
+    /* ── Inline annotation boxes ── */
+    .annot-box         { fill:#fff; rx:3; }
+    .annot-box-p1      { stroke:#639922; stroke-width:1; }
+    .annot-box-p3      { stroke:#185fa5; stroke-width:0.8; }
+    .annot-title       { font-size:9px; font-weight:700; fill:#333; }
+    .annot-mono        { font-size:9px; font-family:monospace; fill:#501313; }
+
+    /* ── Poison status bar ── */
+    .poison-bar        { fill:#fff0f0; stroke:#a32d2d; stroke-width:0.8; rx:3; }
+    .poison-label      { font-size:9px; }
+    .poison-key        { font-weight:700; fill:#333; }
+    .poison-val        { fill:#333; }
+    .poison-check      { font-weight:700; fill:#333; }
+
+    /* ── Footer ── */
+    .footer-box        { fill:#faeeda; stroke:#854f0b; stroke-width:1; rx:4; }
+    .footer-text       { font-size:12px; font-weight:700; fill:#412402; text-anchor:middle; }
+  </style>
+</defs>
+
+
+<!-- ════════════════════════════════
+     TITLE
+════════════════════════════════ -->
+<text x="500" y="26" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1a1a">ARP Spoofing MITM</text>
+
+
+<!-- ════════════════════════════════
+     ACTOR BOXES
+════════════════════════════════ -->
+<!-- Victim (x=130) -->
+<g transform="translate(130,42)">
+  <rect x="-55" y="0" width="110" height="52" rx="6" class="actor-box-victim"/>
+  <image href="https://img.icons8.com/color/96/laptop.png" x="-18" y="2" width="36" height="36"/>
+  <text x="0" y="42" class="actor-name actor-name-victim">Victim</text>
+  <text x="0" y="49" class="actor-ip actor-ip-victim">192.168.1.104</text>
+</g>
+
+<!-- Attacker (x=390) -->
+<g transform="translate(390,42)">
+  <rect x="-55" y="0" width="110" height="52" rx="6" class="actor-box-atk"/>
+  <image href="https://img.icons8.com/color/96/evil.png" x="-18" y="2" width="36" height="36"/>
+  <text x="0" y="42" class="actor-name actor-name-atk">Attacker (Kali)</text>
+  <text x="0" y="49" class="actor-ip actor-ip-atk">192.168.1.105</text>
+</g>
+
+<!-- Gateway (x=660) -->
+<g transform="translate(660,42)">
+  <rect x="-55" y="0" width="110" height="52" rx="6" class="actor-box-gw"/>
+  <image href="https://img.icons8.com/color/96/router.png" x="-18" y="2" width="36" height="36"/>
+  <text x="0" y="42" class="actor-name actor-name-gw">Gateway</text>
+  <text x="0" y="49" class="actor-ip actor-ip-gw">192.168.1.1</text>
+</g>
+
+<!-- Public Server (x=900) -->
+<g transform="translate(900,42)">
+  <rect x="-55" y="0" width="110" height="52" rx="6" class="actor-box-srv"/>
+  <image href="https://img.icons8.com/color/96/server.png" x="-18" y="2" width="36" height="36"/>
+  <text x="0" y="42" class="actor-name actor-name-srv">Public Server</text>
+  <text x="0" y="49" class="actor-ip actor-ip-srv">reddit.com / gql</text>
+</g>
+
+
+<!-- ════════════════════════════════
+     LIFELINES
+════════════════════════════════ -->
+<line x1="130" y1="97" x2="130" y2="730" class="lifeline ll-victim" mask="url(#text-gaps)"/>
+<line x1="390" y1="97" x2="390" y2="730" class="lifeline ll-atk"    mask="url(#text-gaps)"/>
+<line x1="660" y1="97" x2="660" y2="730" class="lifeline ll-gw"     mask="url(#text-gaps)"/>
+<line x1="900" y1="97" x2="900" y2="730" class="lifeline ll-srv"    mask="url(#text-gaps)"/>
+
+
+<!-- ════════════════════════════════
+     PHASE 1 — Legitimate Baseline
+════════════════════════════════ -->
+<rect x="8"   y="110" width="112" height="130" rx="6" class="phase-p1"/>
+<text x="64" y="155" class="phase-label phase-title">Phase 1</text>
+<text x="64" y="170" class="phase-label phase-sub">Legitimate</text>
+<text x="64" y="182" class="phase-label phase-sub">Baseline</text>
+<rect x="122" y="110" width="870" height="130" class="phase-bg phase-bg-p1"/>
+<line x1="8" y1="240" x2="992" y2="240" class="phase-div phase-div-p1"/>
+
+<!-- 1.1 DHCP: Attacker → Gateway -->
+<circle cx="390" cy="128" r="8" class="badge-p1"/>
+<text x="390" y="132" class="badge-label">1.1</text>
+<line x1="398" y1="130" x2="652" y2="147" class="arrow-p1" marker-end="url(#arrow)"/>
+<g transform="translate(524,127) rotate(4.2)">
+  <text x="0" y="0" class="lbl lbl-main lbl-p1">DHCP Request → assigned 192.168.1.105</text>
+</g>
+
+<!-- 1.2 ARP who-has attacker: Gateway → Attacker -->
+<circle cx="660" cy="163" r="8" class="badge-p1"/>
+<text x="660" y="167" class="badge-label">1.2</text>
+<line x1="652" y1="163" x2="398" y2="175" class="arrow-p1" marker-end="url(#arrow)"/>
+<g transform="translate(524,162) rotate(2.5)">
+  <text x="0" y="0" class="lbl lbl-main lbl-p1">ARP: who has 192.168.1.105?</text>
+</g>
+
+<!-- 1.3 ARP who-has gateway: Victim → Attacker (broadcast) -->
+<circle cx="130" cy="200" r="8" class="badge-p1"/>
+<text x="130" y="204" class="badge-label">1.3</text>
+<line x1="138" y1="198" x2="382" y2="188" class="arrow-p1" marker-end="url(#arrow)"/>
+<g transform="translate(259,186) rotate(-2.1)">
+  <text x="0" y="0" class="lbl lbl-main lbl-p1">ARP: who has 192.168.1.1? (broadcast)</text>
+</g>
+
+<!-- Phase 1 annotation box -->
+<rect x="700" y="112" width="282" height="54" rx="4" class="annot-box annot-box-p1"/>
+<polygon points="700,132 692,137 700,142" fill="#639922"/>
+<text x="714" y="128" class="annot-title">Victim cache (legitimate):</text>
+<text x="714" y="141" class="annot-mono" style="fill:#333">192.168.1.1 → MAC-A (real gateway)</text>
+<text x="714" y="154" class="annot-mono" style="fill:#639922">✓ Normal ARP state</text>
+
+
+<!-- ════════════════════════════════
+     PHASE 2 — ARP Spoofing
+════════════════════════════════ -->
+<rect x="8"   y="248" width="112" height="182" rx="6" class="phase-p2"/>
+<text x="64" y="308" class="phase-label phase-title">Phase 2</text>
+<text x="64" y="323" class="phase-label phase-sub">ARP Spoofing</text>
+<text x="64" y="335" class="phase-label phase-sub">Execution</text>
+<rect x="122" y="248" width="870" height="182" class="phase-bg phase-bg-p2"/>
+<line x1="8" y1="430" x2="992" y2="430" class="phase-div phase-div-p2"/>
+
+<!-- 2.1 Forged reply → Victim -->
+<circle cx="390" cy="272" r="8" class="badge-p2"/>
+<text x="390" y="276" class="badge-label">2.1</text>
+<line x1="382" y1="274" x2="138" y2="292" class="arrow-p2" marker-end="url(#arrow)" mask="url(#text-gaps)"/>
+<g transform="translate(259,267) rotate(-3.8)">
+  <text x="0" y="0"  class="lbl lbl-main lbl-p2-main">FORGED ARP Reply → Victim</text>
+  <text x="0" y="13" class="lbl lbl-sub  lbl-p2-sub">"192.168.1.1 is at 08:00:27:2d:f8:5a"</text>
+</g>
+
+<!-- 2.2 Forged reply → Gateway -->
+<circle cx="390" cy="325" r="8" class="badge-p2"/>
+<text x="390" y="329" class="badge-label">2.2</text>
+<line x1="398" y1="327" x2="652" y2="344" class="arrow-p2" marker-end="url(#arrow)" mask="url(#text-gaps)"/>
+<g transform="translate(524,322) rotate(3.6)">
+  <text x="0" y="-2"  class="lbl lbl-main lbl-p2-main">FORGED ARP Reply → Gateway</text>
+  <text x="0" y="10" class="lbl lbl-sub  lbl-p2-sub">"192.168.1.104 is at 08:00:27:2d:f8:5a"</text>
+</g>
+
+<!-- 2.3 IP Forwarding note (self-loop on attacker) -->
+<circle cx="390" cy="375" r="8" class="badge-p2"/>
+<text x="390" y="379" class="badge-label">2.3</text>
+<path d="M398,375 C430,368 430,388 398,382" class="arrow-p2" marker-end="url(#arrow)" mask="url(#text-gaps)"/>
+<text x="456" y="370" class="lbl-main lbl-p2-main">ip_forward=1 (pre-configured) — transparent relay</text>
+<text x="456" y="382" class="lbl-sub"  style="fill:#555">All packets relayed to true destination → victim stays online</text>
+<text x="456" y="394" class="lbl-sub lbl-srv">Gratuitous ARP replayed every ~30 s to keep caches poisoned</text>
+
+<!-- Poison status bar -->
+<rect x="122" y="410" width="868" height="14" rx="3" class="poison-bar"/>
+<text x="132" y="420" class="poison-label poison-key">Poisoned: </text>
+<text x="186" y="420" class="poison-label poison-val">Victim: 192.168.1.1→08:00:27:2d:f8:5a  |  Gateway: 192.168.1.104→08:00:27:2d:f8:5a</text>
+<text x="860" y="420" class="poison-label poison-check">✔ MITM active</text>
+
+
+<!-- ════════════════════════════════
+     PHASE 3 — Traffic Interception
+════════════════════════════════ -->
+<rect x="8"   y="438" width="112" height="262" rx="6" class="phase-p3"/>
+<text x="64" y="530" class="phase-label phase-title">Phase 3</text>
+<text x="64" y="545" class="phase-label phase-sub">Traffic</text>
+<text x="64" y="557" class="phase-label phase-sub">Interception</text>
+<text x="64" y="569" class="phase-label phase-sub">&amp; Sniffing</text>
+<rect x="122" y="438" width="870" height="262" class="phase-bg phase-bg-p3"/>
+<line x1="8" y1="700" x2="992" y2="700" class="phase-div phase-div-p3"/>
+
+<!-- 3.1 DNS Query: Victim → Attacker (→ Gateway transparent) -->
+<circle cx="130" cy="462" r="8" class="badge-p3"/>
+<text x="130" y="466" class="badge-label">3.1</text>
+<line x1="138" y1="460" x2="382" y2="470" class="arrow-p3" marker-end="url(#arrow)" mask="url(#text-gaps)"/>
+<g transform="translate(259,454) rotate(2.4)">
+  <text x="0" y="0" class="lbl lbl-main lbl-p3-main">DNS Query (UDP/53) — addressed to gateway</text>
+</g>
+<rect x="400" y="432" width="268" height="22" rx="3" class="annot-box annot-box-p3"/>
+<text x="410" y="440" class="annot-title">Plain-text intercept:</text>
+<text x="410" y="451" class="annot-mono">QNAME: reddit.com | debian.pool.ntp.org</text>
+<line x1="400" y1="476" x2="652" y2="488" class="arrow-p3 arrow-dash" marker-end="url(#arrow-dash)"/>
+<g transform="translate(524,494) rotate(2.6)">
+  <text x="0" y="-20" class="lbl lbl-sub lbl-p3-sub">Forwarded to real gateway (transparent)</text>
+</g>
+
+<!-- 3.2 HTTP/HTTPS: Victim → Attacker (→ Gateway → Server) -->
+<circle cx="130" cy="530" r="8" class="badge-p3"/>
+<text x="130" y="534" class="badge-label">3.2</text>
+<line x1="138" y1="528" x2="382" y2="540" class="arrow-p3" marker-end="url(#arrow)" mask="url(#text-gaps)"/>
+<g transform="translate(259,522) rotate(2.5)">
+  <text x="0" y="0" class="lbl lbl-main lbl-p3-main">HTTP/HTTPS → reddit.com / gql.reddit.com</text>
+</g>
+<rect x="400" y="502" width="268" height="22" rx="3" class="annot-box annot-box-p3"/>
+<text x="410" y="510" class="annot-title">All packets captured &amp; saved</text>
+<text x="410" y="521" class="annot-mono">SNI: reddit.com | gql.reddit.com (high volume)</text>
+<line x1="398" y1="545" x2="652" y2="556" class="arrow-p3 arrow-dash" marker-end="url(#arrow-dash)"/>
+<g transform="translate(524,541) rotate(2.4)">
+  <text x="0" y="0" class="lbl lbl-sub lbl-p3-sub">→ gateway → internet</text>
+</g>
+<line x1="660" y1="556" x2="888" y2="568" class="arrow-srv arrow-dash" marker-end="url(#arrow-dash)"/>
+<g transform="translate(775,553) rotate(2.8)">
+  <text x="0" y="0" class="lbl lbl-sub lbl-srv">→ server</text>
+</g>
+
+<!-- 3.3 TLS Handshake: Server → Attacker → Victim -->
+<circle cx="900" cy="608" r="8" class="badge-p3"/>
+<text x="900" y="612" class="badge-label">3.3</text>
+<line x1="892" y1="606" x2="398" y2="618" class="arrow-p3" marker-end="url(#arrow)" mask="url(#text-gaps)"/>
+<g transform="translate(644,598) rotate(1.4)">
+  <text x="0" y="0" class="lbl lbl-main lbl-p3-main">TLS Client Hello (clear-text header) + DigiCert cert</text>
+</g>
+<rect x="350" y="632" width="480" height="46" rx="4" class="annot-box annot-box-p3" style="stroke-width:1"/>
+<text x="360" y="645" class="annot-title">Attacker reads from TLS Client Hello (unencrypted fields):</text>
+<text x="360" y="657" class="annot-mono">SNI → reddit.com, gql.reddit.com  |  ALPN → h2 (HTTP/2)  |  DigiCert cert intercepted (public)</text>
+<text x="360" y="669" class="annot-mono">Payload: [ENCRYPTED — cannot decrypt without private key]</text>
+<line x1="382" y1="622" x2="138" y2="610" class="arrow-p3 arrow-dash" marker-end="url(#arrow-dash)" mask="url(#text-gaps)"/>
+<g transform="translate(259,659) rotate(2.5)">
+  <text x="0" y="-50" class="lbl lbl-sub lbl-p3-sub">TLS response relayed to victim</text>
+</g>
+
+
+<!-- ════════════════════════════════
+     FOOTER
+════════════════════════════════ -->
+<rect x="8" y="710" width="984" height="30" rx="4" class="footer-box"/>
+<text x="500" y="730" class="footer-text">MITM goal achieved — all traffic transparently proxied through Attacker. DNS &amp; TLS SNI exposed; payload remains encrypted.</text>
+
+</svg>

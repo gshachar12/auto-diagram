@@ -13,7 +13,7 @@ The main functions are:
 - generate_diagram_openai: Generates a diagram using OpenAI's GPT models.   
 """
 
-with open("src/prompts/instructions_svg.txt", "r", encoding="utf-8") as f: 
+with open("src/prompts/instructions_svg2.txt", "r", encoding="utf-8") as f: 
     INSTRUCTIONS = f.read() 
 
 def context_caching():
@@ -26,7 +26,6 @@ def context_caching():
         system_instruction=instructions,
         ttl=datetime.timedelta(minutes=60) 
     )
-
 
 def generate_diagram(messages: List, api_key: str, model: str = "gpt-5", context_caching: bool = True) -> str:
     # if context_caching:
