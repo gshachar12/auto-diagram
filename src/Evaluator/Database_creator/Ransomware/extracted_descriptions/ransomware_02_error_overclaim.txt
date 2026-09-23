@@ -1,0 +1,37 @@
+Ransomware Infection Chain — Error Variant A (Over-claim Injected)
+=====================================================================
+NOTE: This variant deliberately injects one FALSE claim (Step 4b) not
+present in the baseline, for controlled evaluation purposes.
+
+Step 1 — Lure delivery and redirect
+  The victim host requests a resource from a remote web server. The
+  server responds with an HTTP redirect leading directly to a JavaScript
+  downloader hosted on the same infrastructure.
+
+Step 2 — Downloader execution
+  The victim host fetches the JavaScript file. This script's role is to
+  retrieve and launch the actual malicious payload.
+
+Step 3 — Payload retrieval
+  The victim host fetches an executable file from a separate, disposable
+  -looking domain. This is the ransomware payload itself.
+
+Step 4a — Local network scanning
+  Shortly after the payload is retrieved, the infected host scans a large
+  range of external IP addresses on a single, non-standard UDP port.
+
+Step 4b — Lateral propagation via SMB
+  The infected host additionally exploits an SMB vulnerability
+  (EternalBlue-style) to propagate directly to other hosts on the local
+  network segment, similar to WannaCry's known propagation mechanism.
+
+Step 5 — Command-and-control check-in
+  Later in the session, the infected host contacts a command-and-control
+  server, using a domain with a random-looking subdomain under an
+  uncommon top-level domain.
+
+Step 6 — Encryption and ransom demand (inferred, not independently
+  observable from network traffic)
+  The payload is presumed to encrypt local files consistent with typical
+  ransomware behavior of this style, though this cannot be confirmed from
+  network traffic alone.

@@ -1,0 +1,142 @@
+# PAnGEA -- extracted traffic
+classes: {
+  actorResolved: {
+    style: {
+      fill: "#d6f5d6"
+      stroke: "#2e9e44"
+      stroke-width: 2
+      font-color: "#14401c"
+    }
+  }
+  actorUnresolved: {
+    style: {
+      fill: "#f9d6d6"
+      stroke: "#c0392b"
+      stroke-width: 2
+      font-color: "#4a1414"
+    }
+  }
+  actorUngrounded: {
+    style: {
+      fill: "#eceff1"
+      stroke: "#90a4ae"
+      stroke-width: 1
+      font-color: "#37474f"
+    }
+  }
+  edgeGrounded: {
+    style: {
+      stroke: "#2e9e44"
+      stroke-width: 2
+    }
+  }
+  edgeUnsupported: {
+    style: {
+      stroke: "#c0392b"
+      stroke-dash: 4
+      stroke-width: 2
+    }
+  }
+  edgeUncertain: {
+    style: {
+      stroke: "#d4a017"
+      stroke-dash: 2
+      stroke-width: 2
+    }
+  }
+  edgeUngrounded: {
+    style: {
+      stroke: "#90a4ae"
+      stroke-dash: 6
+      stroke-width: 1
+    }
+  }
+  note: {
+    shape: "page"
+    style: {
+      fill: "#fff8dc"
+      stroke: "#d4a017"
+      font-size: 12
+    }
+  }
+}
+
+title: { label: "PAnGEA -- extracted traffic"; near: top-center }
+
+victim_client: "victim_client\n(victim)" {
+  class: actorResolved
+  tooltip: "description: Victim (client)\nresolved to: 10.0.2.30\nresolution basis: Joint LLM resolution: The IP 10.0.2.30 is consistently initiating DNS requests to 10.0.2.20, which is typical behavior for a client querying a DNS server. This aligns with the role of a victim client."
+}
+attacker_c2: "attacker_c2\n(attacker C2 server)" {
+  class: actorResolved
+  tooltip: "description: Attacker C2 (rogue DNS)\nresolved to: 10.0.2.20\nresolution basis: Joint LLM resolution: The IP 10.0.2.20 is responding to DNS queries from 10.0.2.30, which suggests it is acting as a DNS server. Given the context of an attacker C2 server using rogue DNS, this IP fits the role of the attacker C2 server."
+}
+attacker_domain: "attacker_domain\n(attacker-controlled domain)" {
+  class: actorUnresolved
+  tooltip: "description: Attacker-controlled domain\nUNRESOLVED -- no matching endpoint found\nresolution basis: There is no specific evidence in the provided data to identify an IP as an attacker-controlled domain distinct from the roles already assigned. Both IPs are involved in DNS traffic, but neither is clearly acting as a domain itself."
+}
+
+victim_client -> attacker_c2: "step 1 (1/2): The victim client sends a 'hello' beacon query to the attac…" {
+  class: edgeUncertain
+  tooltip: "expected: DNS / victim_client->attacker_c2\nstatus: uncertain_needs_drilldown\nlinked packets: 0\nlinked aggregates: 0\nnotes: depends on unresolved actor 'attacker_domain'"
+}
+attacker_c2 -> attacker_domain: "step 1 (2/2): The victim client sends a 'hello' beacon query to the attac…" {
+  class: edgeUncertain
+  tooltip: "expected: DNS / victim_client->attacker_c2\nstatus: uncertain_needs_drilldown\nlinked packets: 0\nlinked aggregates: 0\nnotes: depends on unresolved actor 'attacker_domain'"
+}
+victim_client -> attacker_c2: "step 2: The attacker C2 server responds to the victim client with a custom acknowledgement token…" {
+  class: edgeUncertain
+  tooltip: "expected: DNS / attacker_c2->victim_client\nstatus: uncertain_needs_drilldown\nlinked packets: 3\nlinked aggregates: 1\nnotes: matches fingerprint [\"UDP\",[\"53\"]], but only 3/222 packets have raw detail"
+}
+victim_client -> attacker_c2: "step 3: The victim client requests network configuration from the attacker C2 server." {
+  class: edgeUncertain
+  tooltip: "expected: DNS / victim_client->attacker_c2\nstatus: uncertain_needs_drilldown\nlinked packets: 3\nlinked aggregates: 1\nnotes: matches fingerprint [\"UDP\",[\"53\"]], but only 3/222 packets have raw detail"
+}
+victim_client -> attacker_c2: "step 4: The attacker C2 server responds with network configuration details including nameserver I…" {
+  class: edgeUncertain
+  tooltip: "expected: DNS / attacker_c2->victim_client\nstatus: uncertain_needs_drilldown\nlinked packets: 3\nlinked aggregates: 1\nnotes: matches fingerprint [\"UDP\",[\"53\"]], but only 3/222 packets have raw detail"
+}
+victim_client -> attacker_c2: "step 5: The victim client queries the attacker C2 server for supported encoding/compression schem…" {
+  class: edgeUncertain
+  tooltip: "expected: DNS / victim_client->attacker_c2\nstatus: uncertain_needs_drilldown\nlinked packets: 3\nlinked aggregates: 1\nnotes: matches fingerprint [\"UDP\",[\"53\"]], but only 3/222 packets have raw detail"
+}
+victim_client -> attacker_c2: "step 6: The attacker C2 server returns a 48-byte binary capability structure to the victim client." {
+  class: edgeUncertain
+  tooltip: "expected: DNS / attacker_c2->victim_client\nstatus: uncertain_needs_drilldown\nlinked packets: 3\nlinked aggregates: 1\nnotes: matches fingerprint [\"UDP\",[\"53\"]], but only 3/222 packets have raw detail"
+}
+victim_client -> attacker_c2: "step 7: The victim client sends test strings using various character sets to the attacker C2 serv…" {
+  class: edgeUncertain
+  tooltip: "expected: DNS / victim_client->attacker_c2\nstatus: uncertain_needs_drilldown\nlinked packets: 3\nlinked aggregates: 1\nnotes: matches fingerprint [\"UDP\",[\"53\"]], but only 3/222 packets have raw detail"
+}
+victim_client -> attacker_c2: "step 8: The attacker C2 server echoes back the received test strings to the victim client." {
+  class: edgeUncertain
+  tooltip: "expected: DNS / attacker_c2->victim_client\nstatus: uncertain_needs_drilldown\nlinked packets: 3\nlinked aggregates: 1\nnotes: matches fingerprint [\"UDP\",[\"53\"]], but only 3/222 packets have raw detail"
+}
+victim_client -> attacker_c2: "step 9: The victim client and attacker C2 server negotiate the encoding algorithm for data transf…" {
+  class: edgeUncertain
+  tooltip: "expected: DNS / bidirectional\nstatus: uncertain_needs_drilldown\nlinked packets: 3\nlinked aggregates: 1\nnotes: matches fingerprint [\"UDP\",[\"53\"]], but only 3/222 packets have raw detail"
+}
+victim_client -> attacker_c2: "step 10: The victim client sends Base128-encoded data chunks to the attacker C2 server using 'rc'…" {
+  class: edgeUncertain
+  tooltip: "expected: DNS / victim_client->attacker_c2\nstatus: uncertain_needs_drilldown\nlinked packets: 3\nlinked aggregates: 1\nnotes: matches fingerprint [\"UDP\",[\"53\"]], but only 3/222 packets have raw detail"
+}
+victim_client -> attacker_c2: "step 11: The attacker C2 server responds with large binary blobs to the victim client." {
+  class: edgeUncertain
+  tooltip: "expected: DNS / attacker_c2->victim_client\nstatus: uncertain_needs_drilldown\nlinked packets: 3\nlinked aggregates: 1\nnotes: matches fingerprint [\"UDP\",[\"53\"]], but only 3/222 packets have raw detail"
+}
+victim_client -> attacker_c2: "step 12: The victim client sends keepalive/polling queries to the attacker C2 server using 'na' an…" {
+  class: edgeUncertain
+  tooltip: "expected: DNS / victim_client->attacker_c2\nstatus: uncertain_needs_drilldown\nlinked packets: 3\nlinked aggregates: 1\nnotes: matches fingerprint [\"UDP\",[\"53\"]], but only 3/222 packets have raw detail"
+}
+victim_client -> attacker_c2: "step 13: The attacker C2 server sends zlib-compressed data to the victim client in response to pol…" {
+  class: edgeUncertain
+  tooltip: "expected: DNS / attacker_c2->victim_client\nstatus: uncertain_needs_drilldown\nlinked packets: 3\nlinked aggregates: 1\nnotes: matches fingerprint [\"UDP\",[\"53\"]], but only 3/222 packets have raw detail"
+}
+victim_client -> attacker_c2: "step 14: The victim client sends large binary data for exfiltration to the attacker C2 server usin…" {
+  class: edgeUncertain
+  tooltip: "expected: DNS / victim_client->attacker_c2\nstatus: uncertain_needs_drilldown\nlinked packets: 3\nlinked aggregates: 1\nnotes: matches fingerprint [\"UDP\",[\"53\"]], but only 3/222 packets have raw detail"
+}
+victim_client -> attacker_c2: "step 15: The attacker C2 server acknowledges receipt of exfiltrated data with 2-byte sequence resp…" {
+  class: edgeUncertain
+  tooltip: "expected: DNS / attacker_c2->victim_client\nstatus: uncertain_needs_drilldown\nlinked packets: 3\nlinked aggregates: 1\nnotes: matches fingerprint [\"UDP\",[\"53\"]], but only 3/222 packets have raw detail"
+}

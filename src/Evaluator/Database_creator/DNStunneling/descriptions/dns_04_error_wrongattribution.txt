@@ -1,0 +1,16 @@
+The server begins by sending an initial check-in query to the client,
+which responds with a custom acknowledgement token confirming the
+tunnel's control channel is live. The server then requests network
+configuration, and the client responds with an assigned tunnel IP,
+nameserver address, port, and subnet information encoded into the
+response. The two sides then negotiate encoding capabilities: the server
+tests which character sets and byte ranges survive transport intact, and
+the client echoes back what it received, after which both sides settle
+on a specific encoding algorithm for the upstream and downstream
+directions. Once negotiation is complete, the server sends upstream data
+chunks to the client in a series of specially-prefixed queries, with the
+client's responses carrying sizeable binary payloads back down.
+Separately, the server also polls the client on a steady, ongoing basis
+using a different query-name pattern, and the client's responses to
+these polls carry compressed data down to the server throughout the
+session.

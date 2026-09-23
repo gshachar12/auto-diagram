@@ -1,0 +1,924 @@
+[
+  {
+    "ip": "104.74.36.68",
+    "packets_as_source": 105,
+    "packets_as_destination": 4415,
+    "distinct_destination_ips": 1,
+    "distinct_destination_ports": 2,
+    "distinct_source_ips_contacting_it": 1,
+    "distinct_source_ports_contacting_it": 1,
+    "top_source_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"55310\"]]",
+        "count": 92
+      },
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"55332\"]]",
+        "count": 10
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0012\",\"55310\"]]",
+        "count": 1
+      }
+    ],
+    "top_destination_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"443\"]]",
+        "count": 4232
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0004\",\"443\"]]",
+        "count": 75
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0002\",\"443\"]]",
+        "count": 54
+      }
+    ],
+    "anomaly_involvement": {
+      "as_claiming_source": [],
+      "as_claim_recipient": []
+    },
+    "sample_packets": []
+  },
+  {
+    "ip": "104.74.40.101",
+    "packets_as_source": 11,
+    "packets_as_destination": 4340,
+    "distinct_destination_ips": 1,
+    "distinct_destination_ports": 1,
+    "distinct_source_ips_contacting_it": 1,
+    "distinct_source_ports_contacting_it": 1,
+    "top_source_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"45946\"]]",
+        "count": 10
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0012\",\"45946\"]]",
+        "count": 1
+      }
+    ],
+    "top_destination_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"443\"]]",
+        "count": 4232
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0002\",\"443\"]]",
+        "count": 54
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0010\",\"443\"]]",
+        "count": 54
+      }
+    ],
+    "anomaly_involvement": {
+      "as_claiming_source": [],
+      "as_claim_recipient": []
+    },
+    "sample_packets": []
+  },
+  {
+    "ip": "117.18.237.29",
+    "packets_as_source": 12,
+    "packets_as_destination": 59,
+    "distinct_destination_ips": 1,
+    "distinct_destination_ports": 2,
+    "distinct_source_ips_contacting_it": 1,
+    "distinct_source_ports_contacting_it": 1,
+    "top_source_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"53880\"]]",
+        "count": 5
+      },
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"53886\"]]",
+        "count": 5
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0012\",\"53880\"]]",
+        "count": 1
+      }
+    ],
+    "top_destination_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"80\"]]",
+        "count": 41
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0002\",\"80\"]]",
+        "count": 9
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0010\",\"80\"]]",
+        "count": 9
+      }
+    ],
+    "anomaly_involvement": {
+      "as_claiming_source": [],
+      "as_claim_recipient": []
+    },
+    "sample_packets": []
+  },
+  {
+    "ip": "151.101.1.140",
+    "packets_as_source": 161,
+    "packets_as_destination": 4415,
+    "distinct_destination_ips": 1,
+    "distinct_destination_ports": 13,
+    "distinct_source_ips_contacting_it": 1,
+    "distinct_source_ports_contacting_it": 1,
+    "top_source_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"53496\"]]",
+        "count": 20
+      },
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"53488\"]]",
+        "count": 12
+      },
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"53482\"]]",
+        "count": 11
+      }
+    ],
+    "top_destination_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"443\"]]",
+        "count": 4232
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0004\",\"443\"]]",
+        "count": 75
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0002\",\"443\"]]",
+        "count": 54
+      }
+    ],
+    "anomaly_involvement": {
+      "as_claiming_source": [],
+      "as_claim_recipient": []
+    },
+    "sample_packets": []
+  },
+  {
+    "ip": "151.101.129.140",
+    "packets_as_source": 4986,
+    "packets_as_destination": 4474,
+    "distinct_destination_ips": 1,
+    "distinct_destination_ports": 10,
+    "distinct_source_ips_contacting_it": 1,
+    "distinct_source_ports_contacting_it": 2,
+    "top_source_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"33318\"]]",
+        "count": 3328
+      },
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"33256\"]]",
+        "count": 1567
+      },
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"33278\"]]",
+        "count": 12
+      }
+    ],
+    "top_destination_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"443\"]]",
+        "count": 4232
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0004\",\"443\"]]",
+        "count": 75
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0002\",\"443\"]]",
+        "count": 54
+      }
+    ],
+    "anomaly_involvement": {
+      "as_claiming_source": [],
+      "as_claim_recipient": []
+    },
+    "sample_packets": []
+  },
+  {
+    "ip": "151.101.193.140",
+    "packets_as_source": 5024,
+    "packets_as_destination": 4415,
+    "distinct_destination_ips": 1,
+    "distinct_destination_ports": 8,
+    "distinct_source_ips_contacting_it": 1,
+    "distinct_source_ports_contacting_it": 1,
+    "top_source_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"41800\"]]",
+        "count": 4925
+      },
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"41844\"]]",
+        "count": 13
+      },
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"41852\"]]",
+        "count": 13
+      }
+    ],
+    "top_destination_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"443\"]]",
+        "count": 4232
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0004\",\"443\"]]",
+        "count": 75
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0002\",\"443\"]]",
+        "count": 54
+      }
+    ],
+    "anomaly_involvement": {
+      "as_claiming_source": [],
+      "as_claim_recipient": []
+    },
+    "sample_packets": []
+  },
+  {
+    "ip": "151.101.65.140",
+    "packets_as_source": 101,
+    "packets_as_destination": 4474,
+    "distinct_destination_ips": 1,
+    "distinct_destination_ports": 9,
+    "distinct_source_ips_contacting_it": 1,
+    "distinct_source_ports_contacting_it": 2,
+    "top_source_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"51682\"]]",
+        "count": 12
+      },
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"51708\"]]",
+        "count": 11
+      },
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"51716\"]]",
+        "count": 11
+      }
+    ],
+    "top_destination_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"443\"]]",
+        "count": 4232
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0004\",\"443\"]]",
+        "count": 75
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0002\",\"443\"]]",
+        "count": 54
+      }
+    ],
+    "anomaly_involvement": {
+      "as_claiming_source": [],
+      "as_claim_recipient": []
+    },
+    "sample_packets": []
+  },
+  {
+    "ip": "172.217.167.106",
+    "packets_as_source": 19,
+    "packets_as_destination": 4340,
+    "distinct_destination_ips": 1,
+    "distinct_destination_ports": 2,
+    "distinct_source_ips_contacting_it": 1,
+    "distinct_source_ports_contacting_it": 1,
+    "top_source_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"54300\"]]",
+        "count": 17
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0012\",\"54300\"]]",
+        "count": 1
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0012\",\"54414\"]]",
+        "count": 1
+      }
+    ],
+    "top_destination_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"443\"]]",
+        "count": 4232
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0002\",\"443\"]]",
+        "count": 54
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0010\",\"443\"]]",
+        "count": 54
+      }
+    ],
+    "anomaly_involvement": {
+      "as_claiming_source": [],
+      "as_claim_recipient": []
+    },
+    "sample_packets": []
+  },
+  {
+    "ip": "172.217.167.67",
+    "packets_as_source": 6,
+    "packets_as_destination": 59,
+    "distinct_destination_ips": 1,
+    "distinct_destination_ports": 1,
+    "distinct_source_ips_contacting_it": 1,
+    "distinct_source_ports_contacting_it": 1,
+    "top_source_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"50248\"]]",
+        "count": 5
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0012\",\"50248\"]]",
+        "count": 1
+      }
+    ],
+    "top_destination_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"80\"]]",
+        "count": 41
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0002\",\"80\"]]",
+        "count": 9
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0010\",\"80\"]]",
+        "count": 9
+      }
+    ],
+    "anomaly_involvement": {
+      "as_claiming_source": [],
+      "as_claim_recipient": []
+    },
+    "sample_packets": []
+  },
+  {
+    "ip": "172.217.167.98",
+    "packets_as_source": 14,
+    "packets_as_destination": 4340,
+    "distinct_destination_ips": 1,
+    "distinct_destination_ports": 1,
+    "distinct_source_ips_contacting_it": 1,
+    "distinct_source_ports_contacting_it": 1,
+    "top_source_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"45050\"]]",
+        "count": 13
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0012\",\"45050\"]]",
+        "count": 1
+      }
+    ],
+    "top_destination_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"443\"]]",
+        "count": 4232
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0002\",\"443\"]]",
+        "count": 54
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0010\",\"443\"]]",
+        "count": 54
+      }
+    ],
+    "anomaly_involvement": {
+      "as_claiming_source": [],
+      "as_claim_recipient": []
+    },
+    "sample_packets": []
+  },
+  {
+    "ip": "184.84.165.123",
+    "packets_as_source": 8,
+    "packets_as_destination": 59,
+    "distinct_destination_ips": 1,
+    "distinct_destination_ports": 1,
+    "distinct_source_ips_contacting_it": 1,
+    "distinct_source_ports_contacting_it": 1,
+    "top_source_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"46178\"]]",
+        "count": 7
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0012\",\"46178\"]]",
+        "count": 1
+      }
+    ],
+    "top_destination_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"80\"]]",
+        "count": 41
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0002\",\"80\"]]",
+        "count": 9
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0010\",\"80\"]]",
+        "count": 9
+      }
+    ],
+    "anomaly_involvement": {
+      "as_claiming_source": [],
+      "as_claim_recipient": []
+    },
+    "sample_packets": []
+  },
+  {
+    "ip": "192.168.1.1",
+    "packets_as_source": 316,
+    "packets_as_destination": 293,
+    "distinct_destination_ips": 2,
+    "distinct_destination_ports": 142,
+    "distinct_source_ips_contacting_it": 2,
+    "distinct_source_ports_contacting_it": 1,
+    "top_source_fingerprints": [
+      {
+        "fingerprint_key": "[\"ARP\",[\"2\",\"08:00:27:2d:f8:5a\"]]",
+        "count": 27
+      },
+      {
+        "fingerprint_key": "[\"ARP\",[\"2\",\"08:00:27:5e:01:7c\"]]",
+        "count": 10
+      },
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"40426\"]]",
+        "count": 5
+      }
+    ],
+    "top_destination_fingerprints": [
+      {
+        "fingerprint_key": "[\"UDP\",[\"53\"]]",
+        "count": 277
+      },
+      {
+        "fingerprint_key": "[\"ARP\",[\"1\",\"08:00:27:b8:b7:58\"]]",
+        "count": 6
+      },
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"53\"]]",
+        "count": 5
+      }
+    ],
+    "anomaly_involvement": {
+      "as_claiming_source": [],
+      "as_claim_recipient": []
+    },
+    "sample_packets": []
+  },
+  {
+    "ip": "192.168.1.104",
+    "packets_as_source": 4766,
+    "packets_as_destination": 11008,
+    "distinct_destination_ips": 22,
+    "distinct_destination_ports": 3,
+    "distinct_source_ips_contacting_it": 22,
+    "distinct_source_ports_contacting_it": 205,
+    "top_source_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"443\"]]",
+        "count": 4232
+      },
+      {
+        "fingerprint_key": "[\"UDP\",[\"53\"]]",
+        "count": 277
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0004\",\"443\"]]",
+        "count": 75
+      }
+    ],
+    "top_destination_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"41800\"]]",
+        "count": 4925
+      },
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"33318\"]]",
+        "count": 3328
+      },
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"33256\"]]",
+        "count": 1567
+      }
+    ],
+    "anomaly_involvement": {
+      "as_claiming_source": [],
+      "as_claim_recipient": []
+    },
+    "sample_packets": []
+  },
+  {
+    "ip": "192.168.1.105",
+    "packets_as_source": 30,
+    "packets_as_destination": 10,
+    "distinct_destination_ips": 2,
+    "distinct_destination_ports": 0,
+    "distinct_source_ips_contacting_it": 2,
+    "distinct_source_ports_contacting_it": 0,
+    "top_source_fingerprints": [
+      {
+        "fingerprint_key": "[\"ARP\",[\"2\",\"08:00:27:2d:f8:5a\"]]",
+        "count": 27
+      },
+      {
+        "fingerprint_key": "[\"ARP\",[\"1\",\"08:00:27:2d:f8:5a\"]]",
+        "count": 3
+      }
+    ],
+    "top_destination_fingerprints": [
+      {
+        "fingerprint_key": "[\"ARP\",[\"1\",\"08:00:27:b8:b7:58\"]]",
+        "count": 6
+      },
+      {
+        "fingerprint_key": "[\"ARP\",[\"1\",\"08:00:27:5e:01:7c\"]]",
+        "count": 2
+      },
+      {
+        "fingerprint_key": "[\"ARP\",[\"2\",\"08:00:27:b8:b7:58\"]]",
+        "count": 2
+      }
+    ],
+    "anomaly_involvement": {
+      "as_claiming_source": [],
+      "as_claim_recipient": []
+    },
+    "sample_packets": []
+  },
+  {
+    "ip": "216.58.203.98",
+    "packets_as_source": 117,
+    "packets_as_destination": 4415,
+    "distinct_destination_ips": 1,
+    "distinct_destination_ports": 5,
+    "distinct_source_ips_contacting_it": 1,
+    "distinct_source_ports_contacting_it": 1,
+    "top_source_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"46446\"]]",
+        "count": 66
+      },
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"46460\"]]",
+        "count": 11
+      },
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"46480\"]]",
+        "count": 11
+      }
+    ],
+    "top_destination_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"443\"]]",
+        "count": 4232
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0004\",\"443\"]]",
+        "count": 75
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0002\",\"443\"]]",
+        "count": 54
+      }
+    ],
+    "anomaly_involvement": {
+      "as_claiming_source": [],
+      "as_claim_recipient": []
+    },
+    "sample_packets": []
+  },
+  {
+    "ip": "216.58.203.99",
+    "packets_as_source": 6,
+    "packets_as_destination": 59,
+    "distinct_destination_ips": 1,
+    "distinct_destination_ports": 1,
+    "distinct_source_ips_contacting_it": 1,
+    "distinct_source_ports_contacting_it": 1,
+    "top_source_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"50654\"]]",
+        "count": 5
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0012\",\"50654\"]]",
+        "count": 1
+      }
+    ],
+    "top_destination_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"80\"]]",
+        "count": 41
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0002\",\"80\"]]",
+        "count": 9
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0010\",\"80\"]]",
+        "count": 9
+      }
+    ],
+    "anomaly_involvement": {
+      "as_claiming_source": [],
+      "as_claim_recipient": []
+    },
+    "sample_packets": []
+  },
+  {
+    "ip": "34.209.199.162",
+    "packets_as_source": 15,
+    "packets_as_destination": 4415,
+    "distinct_destination_ips": 1,
+    "distinct_destination_ports": 1,
+    "distinct_source_ips_contacting_it": 1,
+    "distinct_source_ports_contacting_it": 1,
+    "top_source_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"41174\"]]",
+        "count": 13
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0012\",\"41174\"]]",
+        "count": 1
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0014\",\"41174\"]]",
+        "count": 1
+      }
+    ],
+    "top_destination_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"443\"]]",
+        "count": 4232
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0004\",\"443\"]]",
+        "count": 75
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0002\",\"443\"]]",
+        "count": 54
+      }
+    ],
+    "anomaly_involvement": {
+      "as_claiming_source": [],
+      "as_claim_recipient": []
+    },
+    "sample_packets": []
+  },
+  {
+    "ip": "52.26.8.178",
+    "packets_as_source": 15,
+    "packets_as_destination": 4415,
+    "distinct_destination_ips": 1,
+    "distinct_destination_ports": 1,
+    "distinct_source_ips_contacting_it": 1,
+    "distinct_source_ports_contacting_it": 1,
+    "top_source_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"50696\"]]",
+        "count": 13
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0012\",\"50696\"]]",
+        "count": 1
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0014\",\"50696\"]]",
+        "count": 1
+      }
+    ],
+    "top_destination_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"443\"]]",
+        "count": 4232
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0004\",\"443\"]]",
+        "count": 75
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0002\",\"443\"]]",
+        "count": 54
+      }
+    ],
+    "anomaly_involvement": {
+      "as_claiming_source": [],
+      "as_claim_recipient": []
+    },
+    "sample_packets": []
+  },
+  {
+    "ip": "52.85.43.70",
+    "packets_as_source": 13,
+    "packets_as_destination": 4340,
+    "distinct_destination_ips": 1,
+    "distinct_destination_ports": 1,
+    "distinct_source_ips_contacting_it": 1,
+    "distinct_source_ports_contacting_it": 1,
+    "top_source_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"44118\"]]",
+        "count": 12
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0012\",\"44118\"]]",
+        "count": 1
+      }
+    ],
+    "top_destination_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"443\"]]",
+        "count": 4232
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0002\",\"443\"]]",
+        "count": 54
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0010\",\"443\"]]",
+        "count": 54
+      }
+    ],
+    "anomaly_involvement": {
+      "as_claiming_source": [],
+      "as_claim_recipient": []
+    },
+    "sample_packets": []
+  },
+  {
+    "ip": "54.230.241.12",
+    "packets_as_source": 34,
+    "packets_as_destination": 4340,
+    "distinct_destination_ips": 1,
+    "distinct_destination_ports": 1,
+    "distinct_source_ips_contacting_it": 1,
+    "distinct_source_ports_contacting_it": 1,
+    "top_source_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"41902\"]]",
+        "count": 33
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0012\",\"41902\"]]",
+        "count": 1
+      }
+    ],
+    "top_destination_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"443\"]]",
+        "count": 4232
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0002\",\"443\"]]",
+        "count": 54
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0010\",\"443\"]]",
+        "count": 54
+      }
+    ],
+    "anomaly_involvement": {
+      "as_claiming_source": [],
+      "as_claim_recipient": []
+    },
+    "sample_packets": []
+  },
+  {
+    "ip": "54.230.243.184",
+    "packets_as_source": 22,
+    "packets_as_destination": 4340,
+    "distinct_destination_ips": 1,
+    "distinct_destination_ports": 1,
+    "distinct_source_ips_contacting_it": 1,
+    "distinct_source_ports_contacting_it": 1,
+    "top_source_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"52134\"]]",
+        "count": 21
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0012\",\"52134\"]]",
+        "count": 1
+      }
+    ],
+    "top_destination_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"443\"]]",
+        "count": 4232
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0002\",\"443\"]]",
+        "count": 54
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0010\",\"443\"]]",
+        "count": 54
+      }
+    ],
+    "anomaly_involvement": {
+      "as_claiming_source": [],
+      "as_claim_recipient": []
+    },
+    "sample_packets": []
+  },
+  {
+    "ip": "54.230.243.201",
+    "packets_as_source": 12,
+    "packets_as_destination": 4340,
+    "distinct_destination_ips": 1,
+    "distinct_destination_ports": 1,
+    "distinct_source_ips_contacting_it": 1,
+    "distinct_source_ports_contacting_it": 1,
+    "top_source_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"36942\"]]",
+        "count": 11
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0012\",\"36942\"]]",
+        "count": 1
+      }
+    ],
+    "top_destination_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"443\"]]",
+        "count": 4232
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0002\",\"443\"]]",
+        "count": 54
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0010\",\"443\"]]",
+        "count": 54
+      }
+    ],
+    "anomaly_involvement": {
+      "as_claiming_source": [],
+      "as_claim_recipient": []
+    },
+    "sample_packets": []
+  },
+  {
+    "ip": "60.254.148.81",
+    "packets_as_source": 8,
+    "packets_as_destination": 59,
+    "distinct_destination_ips": 1,
+    "distinct_destination_ports": 1,
+    "distinct_source_ips_contacting_it": 1,
+    "distinct_source_ports_contacting_it": 1,
+    "top_source_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"52570\"]]",
+        "count": 7
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0012\",\"52570\"]]",
+        "count": 1
+      }
+    ],
+    "top_destination_fingerprints": [
+      {
+        "fingerprint_key": "[\"TCP_DATA_STREAM\",[\"80\"]]",
+        "count": 41
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0002\",\"80\"]]",
+        "count": 9
+      },
+      {
+        "fingerprint_key": "[\"TCP\",[\"0x0010\",\"80\"]]",
+        "count": 9
+      }
+    ],
+    "anomaly_involvement": {
+      "as_claiming_source": [],
+      "as_claim_recipient": []
+    },
+    "sample_packets": []
+  }
+]

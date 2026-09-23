@@ -1,0 +1,36 @@
+NOTE: Step 5b is a deliberately injected FALSE claim, not present in the
+baseline, for controlled evaluation purposes.
+
+Step 1 — Initial check-in
+  The client sends a "hello" beacon query to the server. The server
+  responds with a custom acknowledgement token ("VACKD").
+
+Step 2 — Network configuration retrieval
+  The client requests network configuration; the server responds with
+  tunnel IP, nameserver, port, and subnet information.
+
+Step 3 — Encoding negotiation
+  The client and server negotiate character-set and codec support,
+  settling on specific encoding algorithms for each direction.
+
+Step 4 — Upstream data chunks
+  The client sends upstream data chunks via specially-prefixed queries
+  (13 queries observed); the server responds with sizeable binary
+  payloads.
+
+Step 5a — Keepalive / polling loop
+  The client polls the server on a steady basis via a different
+  query-name pattern (174 queries observed); responses carry compressed
+  data down to the client.
+
+Step 5b — Secondary HTTPS channel (INJECTED, FALSE)
+  The client periodically opens a secondary encrypted HTTPS channel to a
+  backup command-and-control domain, providing redundancy in case the
+  DNS tunnel is blocked. VERIFIED FALSE: protocol hierarchy for this
+  entire capture is 100% DNS (+ 4 unrelated ARP packets) -- zero TCP
+  traffic of any kind exists, so no HTTPS channel of any kind is
+  possible.
+
+Step 6 — Bulk data transfer
+  A further batch of queries carries a large binary payload upstream,
+  each acknowledged with a short confirmation response.

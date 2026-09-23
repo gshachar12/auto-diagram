@@ -1,0 +1,54 @@
+[
+  {
+    "ip": "10.0.2.20",
+    "packets_as_source": 212,
+    "packets_as_destination": 222,
+    "distinct_destination_ips": 1,
+    "distinct_destination_ports": 1,
+    "distinct_source_ips_contacting_it": 1,
+    "distinct_source_ports_contacting_it": 1,
+    "top_source_fingerprints": [
+      {
+        "fingerprint_key": "[\"UDP\",[\"44639\"]]",
+        "count": 212
+      }
+    ],
+    "top_destination_fingerprints": [
+      {
+        "fingerprint_key": "[\"UDP\",[\"53\"]]",
+        "count": 222
+      }
+    ],
+    "anomaly_involvement": {
+      "as_claiming_source": [],
+      "as_claim_recipient": []
+    },
+    "sample_packets": []
+  },
+  {
+    "ip": "10.0.2.30",
+    "packets_as_source": 222,
+    "packets_as_destination": 212,
+    "distinct_destination_ips": 1,
+    "distinct_destination_ports": 1,
+    "distinct_source_ips_contacting_it": 1,
+    "distinct_source_ports_contacting_it": 1,
+    "top_source_fingerprints": [
+      {
+        "fingerprint_key": "[\"UDP\",[\"53\"]]",
+        "count": 222
+      }
+    ],
+    "top_destination_fingerprints": [
+      {
+        "fingerprint_key": "[\"UDP\",[\"44639\"]]",
+        "count": 212
+      }
+    ],
+    "anomaly_involvement": {
+      "as_claiming_source": [],
+      "as_claim_recipient": []
+    },
+    "sample_packets": []
+  }
+]

@@ -1,0 +1,22 @@
+================================================================================
+NETWORK SECURITY INCIDENT REPORT: TCP PORT SCAN DETECTION
+================================================================================
+
+
+ACTORS: 
+
+Scanner / Attacker (Source) - 10.100.25.14
+
+Target Host (Destination) - 10.100.18.12
+
+
+STEPS:
+
+Step 1 (Probing / SYN Request): The Scanner sends a TCP segment with the SYN flag set to a specific destination port on the Target Host to test if the port is listening.  
+
+Packets: 
+
+
+Step 2 (Port Mutation): The Scanner rapidly repeats Step 1 sequentially across a wide range of destination ports while keeping the source and destination IP addresses static.  
+
+Packets: 

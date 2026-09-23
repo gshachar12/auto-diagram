@@ -1,0 +1,30 @@
+Step 1 — Initial check-in
+  The client sends a "hello" beacon query to the server. The server
+  responds with a custom acknowledgement token ("VACKD") confirming the
+  tunnel's control channel is live.
+
+Step 2 — Network configuration retrieval
+  The client requests network configuration. The server responds with an
+  assigned tunnel IP, nameserver address, port, and subnet information
+  encoded into the response.
+
+Step 3 — Encoding negotiation
+  The client tests which character sets and byte ranges survive DNS
+  transport intact; the server echoes back what it received. Both sides
+  then settle on a specific encoding algorithm for the upstream and
+  downstream directions.
+
+Step 4 — Upstream data chunks
+  The client sends upstream data chunks to the server via a series of
+  specially-prefixed queries; the server's
+  responses carry sizeable binary payloads back down.
+
+Step 5 — Keepalive / polling loop
+  The client polls the server on a steady, ongoing basis via a different
+  query-name pattern; the server's responses
+  carry compressed data down to the client throughout the session.
+
+Step 6 — Bulk data transfer
+  A further batch of queries using yet another naming pattern carries
+  what appears to be a large binary payload upstream to the server, each
+  acknowledged with a short confirmation response.

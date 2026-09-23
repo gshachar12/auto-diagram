@@ -1,0 +1,20 @@
+[
+  {
+    "fingerprint_key": "[\"ARP\",[\"2\",\"08:00:27:2d:f8:5a\"]]",
+    "protocol": "ARP",
+    "source_cardinality": 2,
+    "source_cardinality_anomalous": true,
+    "typical_source_cardinality_for_this_protocol": 1,
+    "destination_cardinality": 1,
+    "destination_cardinality_anomalous": false,
+    "typical_destination_cardinality_for_this_protocol": 1,
+    "unique_sources": [
+      "192.168.1.1",
+      "192.168.1.105"
+    ],
+    "unique_destinations": [
+      "192.168.1.104"
+    ],
+    "count": 27
+  }
+]

@@ -1,0 +1,20 @@
+Ransomware Infection Chain — Baseline (Synonymous Rephrase)
+====================================================
+
+Step 1 — Initial redirection and lure
+  The client workstation sends a request to an external web application. The remote host responds with an HTTP redirect pointing to a malicious JavaScript dropper script.
+
+Step 2 — Dropper script execution
+  The compromised client downloads and executes the JavaScript file, which acts as a staging component designed to pull the secondary stage binary.
+
+Step 3 — Ransomware binary acquisition
+  The infected workstation initiates an outbound GET request to fetch an executable binary from an ephemeral external domain housing the core encryption payload.
+
+Step 4 — Outbound network reconnaissance
+  Following payload execution, the infected device performs rapid port scanning across a wide external IPv4 block targeting a single high-range UDP service port.
+
+Step 5 — C2 channel establishment
+  The host initiates C2 beaconing activity to a remote command-and-control server utilizing a algorithmically generated subdomain on an obscure TLD.
+
+Step 6 — File system encryption and extortion
+  The malware payload executes its local cryptographic locking routine on target file structures, characteristic of ransomware behavior observed in host environments.

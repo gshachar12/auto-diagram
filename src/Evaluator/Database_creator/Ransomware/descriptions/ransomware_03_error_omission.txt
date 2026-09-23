@@ -1,0 +1,11 @@
+The victim host requests a resource from a remote web server, which
+responds with an HTTP redirect leading directly to a JavaScript
+downloader hosted on the same infrastructure. The victim host fetches
+this JavaScript file, whose role is to retrieve and launch the actual
+malicious payload. The victim host then fetches an executable file from
+a separate, disposable-looking domain -- this is the ransomware payload
+itself. Shortly after the payload is retrieved, the infected host scans
+a large range of external IP addresses on a single, non-standard UDP
+port. The payload is presumed to encrypt local files consistent with
+typical ransomware behavior of this style, though this cannot be
+confirmed from network traffic alone.

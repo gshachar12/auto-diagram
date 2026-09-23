@@ -1,0 +1,13 @@
+The victim host requests a resource from a remote web server, which
+responds with an HTTP redirect leading directly to a JavaScript
+downloader hosted on the same infrastructure. The victim host fetches
+this JavaScript file from that same lure server, and this same server
+then directly serves the executable payload as well -- the entire
+infection chain, from lure to payload, is hosted on one piece of
+infrastructure. Shortly after the payload is retrieved, the infected
+host scans a large range of external IP addresses on a single,
+non-standard UDP port. Later in the session, the infected host contacts
+a command-and-control server, using a domain with a random-looking
+subdomain under an uncommon top-level domain. The payload is presumed to
+encrypt local files consistent with typical ransomware behavior of this
+style, though this cannot be confirmed from network traffic alone.

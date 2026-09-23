@@ -1,0 +1,8 @@
+The host at 10.100.18.12 sends TCP connection-initiation packets to the
+host at 10.100.25.14, across a range of different destination ports, in
+rapid, evenly-paced succession roughly a tenth of a second apart. Each
+probe consists only of a TCP SYN packet, and no completed handshake
+appears anywhere in this capture. The specific ports probed are
+concentrated among widely-recognized standard service ports, including
+SMB, NetBIOS, MSRPC, SSH, Telnet, and FTP, rather than a purely
+sequential sweep of the full port range.

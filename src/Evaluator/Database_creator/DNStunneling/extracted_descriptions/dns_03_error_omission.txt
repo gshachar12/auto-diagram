@@ -1,0 +1,24 @@
+NOTE: Steps 5 and 6 (present and evidenced in the baseline) are
+deliberately OMITTED here, for controlled evaluation purposes.
+
+Step 1 — Initial check-in
+  The client sends a "hello" beacon query to the server. The server
+  responds with a custom acknowledgement token ("VACKD").
+
+Step 2 — Network configuration retrieval
+  The client requests network configuration; the server responds with
+  tunnel IP, nameserver, port, and subnet information.
+
+Step 3 — Encoding negotiation
+  The client and server negotiate character-set and codec support,
+  settling on specific encoding algorithms for each direction.
+
+Step 4 — Upstream data chunks
+  The client sends upstream data chunks via specially-prefixed queries
+  (13 queries observed); the server responds with sizeable binary
+  payloads.
+
+[OMITTED: the keepalive/polling loop (174 queries, ~85% of all queries in
+the real capture) and the later bulk-exfiltration batch are both real
+and evidenced, but neither is mentioned in this variant's description at
+all.]

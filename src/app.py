@@ -1,8 +1,5 @@
-import base64
 import html as _html
-import json
 import os
-import zlib
 import streamlit as st
 import time
 import state
@@ -13,7 +10,7 @@ from core import generate_diagram
 from messages import create_message_from_bytes
 from diagram_viewer import diagram_viewer
 from preprocessing import parse_with_indices, prompt, extract_relevant_packets   
-from validator import full_validator
+from src.validator_first import full_validator
 
 @st.dialog("User messages", width="large")
 def show_messages(data_fnc):
@@ -236,7 +233,7 @@ def chatbox():
                     elif hasattr(curr_session, "metadata") and isinstance(curr_session.metadata, dict) and "packets_data" in curr_session.metadata:
                         packets_source = curr_session.metadata["packets_data"]
                     # validate diagram 
-                    validation_result = full_validator(diag_match, ent_match)
+                    validation_result = full_validator(diag_match, ent_match, steps_json, api_key, model)
                     print(f"Validation Result: {validation_result}")
                     print(f"\033[91mEntities match: {'found' if ent_match else 'not found'}, Diagram match: {'found' if diag_match else 'not found'}, Steps match: {'found' if step_match else 'not found'}\033[0m")
                     curr_session.diagram_text = diagram_code

@@ -1,0 +1,190 @@
+{
+  "reduced_representation": [
+    {
+      "packet_id": 1,
+      "timestamp": "2010-08-21T05:10:40.051082",
+      "protocol": "DNS",
+      "src": "10.0.2.30",
+      "dst": "10.0.2.20",
+      "length": 82,
+      "info": "DPort: 53",
+      "fingerprint_key": "UDP:53",
+      "aggregate": {
+        "fingerprint_key": "UDP:53",
+        "count": 222,
+        "total_bytes": 26136,
+        "unique_sources": [
+          "10.0.2.30"
+        ],
+        "unique_destinations": [
+          "10.0.2.20"
+        ]
+      }
+    },
+    {
+      "packet_id": 2,
+      "timestamp": "2010-08-21T05:10:40.051175",
+      "protocol": "DNS",
+      "src": "10.0.2.20",
+      "dst": "10.0.2.30",
+      "length": 103,
+      "info": "DPort: 44639",
+      "fingerprint_key": "UDP:44639",
+      "aggregate": {
+        "fingerprint_key": "UDP:44639",
+        "count": 212,
+        "total_bytes": 44116,
+        "unique_sources": [
+          "10.0.2.20"
+        ],
+        "unique_destinations": [
+          "10.0.2.30"
+        ]
+      }
+    },
+    {
+      "packet_id": 3,
+      "timestamp": "2010-08-21T05:10:40.051979",
+      "protocol": "DNS",
+      "src": "10.0.2.30",
+      "dst": "10.0.2.20",
+      "length": 103,
+      "info": "DPort: 53",
+      "fingerprint_key": "UDP:53",
+      "aggregate": null
+    },
+    {
+      "packet_id": 4,
+      "timestamp": "2010-08-21T05:10:40.052258",
+      "protocol": "DNS",
+      "src": "10.0.2.20",
+      "dst": "10.0.2.30",
+      "length": 144,
+      "info": "DPort: 44639",
+      "fingerprint_key": "UDP:44639",
+      "aggregate": null
+    },
+    {
+      "packet_id": 32,
+      "timestamp": "2010-08-21T05:10:45.047506",
+      "protocol": "ARP",
+      "src": "10.0.2.20",
+      "dst": "10.0.2.30",
+      "length": 60,
+      "info": "Opcode: 1 | Sender MAC: 08:00:27:c7:6e:ba",
+      "fingerprint_key": "ARP:1:08:00:27:c7:6e:ba",
+      "aggregate": null
+    },
+    {
+      "packet_id": 33,
+      "timestamp": "2010-08-21T05:10:45.047573",
+      "protocol": "ARP",
+      "src": "10.0.2.30",
+      "dst": "10.0.2.20",
+      "length": 60,
+      "info": "Opcode: 2 | Sender MAC: 08:00:27:9c:e0:b4",
+      "fingerprint_key": "ARP:2:08:00:27:9c:e0:b4",
+      "aggregate": null
+    },
+    {
+      "packet_id": 45,
+      "timestamp": "2010-08-21T05:10:50.078314",
+      "protocol": "ARP",
+      "src": "10.0.2.30",
+      "dst": "10.0.2.20",
+      "length": 60,
+      "info": "Opcode: 1 | Sender MAC: 08:00:27:9c:e0:b4",
+      "fingerprint_key": "ARP:1:08:00:27:9c:e0:b4",
+      "aggregate": null
+    },
+    {
+      "packet_id": 46,
+      "timestamp": "2010-08-21T05:10:50.078389",
+      "protocol": "ARP",
+      "src": "10.0.2.20",
+      "dst": "10.0.2.30",
+      "length": 60,
+      "info": "Opcode: 2 | Sender MAC: 08:00:27:c7:6e:ba",
+      "fingerprint_key": "ARP:2:08:00:27:c7:6e:ba",
+      "aggregate": null
+    }
+  ],
+  "fingerprint_index": {
+    "UDP:53": {
+      "fingerprint_key": "UDP:53",
+      "count": 222,
+      "total_bytes": 26136,
+      "unique_sources": [
+        "10.0.2.30"
+      ],
+      "unique_destinations": [
+        "10.0.2.20"
+      ]
+    },
+    "UDP:44639": {
+      "fingerprint_key": "UDP:44639",
+      "count": 212,
+      "total_bytes": 44116,
+      "unique_sources": [
+        "10.0.2.20"
+      ],
+      "unique_destinations": [
+        "10.0.2.30"
+      ]
+    },
+    "ARP:1:08:00:27:c7:6e:ba": {
+      "fingerprint_key": "ARP:1:08:00:27:c7:6e:ba",
+      "count": 1,
+      "total_bytes": 60,
+      "unique_sources": [
+        "10.0.2.20"
+      ],
+      "unique_destinations": [
+        "10.0.2.30"
+      ]
+    },
+    "ARP:2:08:00:27:9c:e0:b4": {
+      "fingerprint_key": "ARP:2:08:00:27:9c:e0:b4",
+      "count": 1,
+      "total_bytes": 60,
+      "unique_sources": [
+        "10.0.2.30"
+      ],
+      "unique_destinations": [
+        "10.0.2.20"
+      ]
+    },
+    "ARP:1:08:00:27:9c:e0:b4": {
+      "fingerprint_key": "ARP:1:08:00:27:9c:e0:b4",
+      "count": 1,
+      "total_bytes": 60,
+      "unique_sources": [
+        "10.0.2.30"
+      ],
+      "unique_destinations": [
+        "10.0.2.20"
+      ]
+    },
+    "ARP:2:08:00:27:c7:6e:ba": {
+      "fingerprint_key": "ARP:2:08:00:27:c7:6e:ba",
+      "count": 1,
+      "total_bytes": 60,
+      "unique_sources": [
+        "10.0.2.20"
+      ],
+      "unique_destinations": [
+        "10.0.2.30"
+      ]
+    }
+  },
+  "compression_stats": {
+    "raw_packet_count_in": 438,
+    "packet_count_out": 8,
+    "estimated_tokens_out": 824,
+    "dropped_parse_failures": 0,
+    "compression_ratio": 0.9817
+  },
+  "budget_status": "within_budget",
+  "budget_status_detail": null,
+  "filter_string_used": "ip or arp"
+}

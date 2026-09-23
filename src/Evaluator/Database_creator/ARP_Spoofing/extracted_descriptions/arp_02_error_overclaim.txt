@@ -1,0 +1,34 @@
+ARP Spoofing Attack — Error Variant A (Over-claim Injected)
+===============================================================
+NOTE: This variant deliberately injects one FALSE claim (Step 3b) not
+present in the baseline, for controlled evaluation purposes.
+
+Step 1 — Legitimate baseline ARP activity
+  Before any attack activity, the local hosts (gateway, kali, and victim)
+  each perform normal ARP requests to discover each other's MAC
+  addresses, each using its own genuine hardware address.
+
+Step 2 — Legitimate reply from victim
+  The victim host replies legitimately to an earlier ARP request from
+  kali, using its own genuine MAC address.
+
+Step 3a — ARP spoofing (victim-direction)
+  Kali sends an unsolicited ARP reply to the victim, falsely claiming to
+  own the gateway's IP address, using kali's own real MAC address as the
+  claimed owner.
+
+Step 3b — ARP spoofing (gateway-direction)
+  Kali additionally sends a forged ARP reply to the gateway, falsely
+  claiming to own the victim's IP address, completing a full
+  bidirectional man-in-the-middle position.
+
+Step 4 — Traffic interception (DNS)
+  As a result of the victim's poisoned ARP table, the victim's DNS
+  queries -- addressed at the IP layer to the real gateway -- are
+  delivered at the link layer to kali instead.
+
+Step 5 — Traffic interception and forwarding (HTTPS)
+  Kali forwards the victim's intercepted traffic on to its real
+  destination, allowing kali to observe metadata such as the
+  destination's TLS Server Name Indication (SNI) and certificate
+  details.

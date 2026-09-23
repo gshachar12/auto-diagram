@@ -1,0 +1,29 @@
+ARP Spoofing Attack — Error Variant B (Omission Injected)
+=============================================================
+NOTE: This variant deliberately OMITS a step that IS present and
+evidenced in the baseline (DNS interception), for controlled evaluation
+purposes.
+
+Step 1 — Legitimate baseline ARP activity
+  Before any attack activity, the local hosts (gateway, kali, and victim)
+  each perform normal ARP requests to discover each other's MAC
+  addresses, each using its own genuine hardware address.
+
+Step 2 — Legitimate reply from victim
+  The victim host replies legitimately to an earlier ARP request from
+  kali, using its own genuine MAC address.
+
+Step 3 — ARP spoofing
+  Kali sends an unsolicited ARP reply to the victim, falsely claiming to
+  own the gateway's IP address, using kali's own real MAC address as the
+  claimed owner.
+
+Step 4 — Traffic interception and forwarding (HTTPS)
+  Kali forwards the victim's intercepted traffic on to its real
+  destination, allowing kali to observe metadata such as the
+  destination's TLS Server Name Indication (SNI) and certificate
+  details.
+
+[The description does not mention any DNS-specific interception, even
+though the victim's DNS queries are also affected by the same ARP
+poisoning.]

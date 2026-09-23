@@ -1,0 +1,75 @@
+<svg width="100%" height="100%" viewBox="0 0 1600 440" role="img" xmlns="http://www.w3.org/2000/svg">
+  <title>Man-in-the-Middle Incident Report</title>
+  <desc>Automated forensic visualization generated from pcap analysis using structured LLM extractions.</desc>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <style>
+    .title { font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: bold; fill: #1a1a1a; }
+    .phase-text { font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 13px; font-weight: bold; fill: #ffffff; }
+    .node-title { font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 12px; font-weight: bold; fill: #1a1a1a; }
+    .node-sub { font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 10px; fill: #555555; }
+    .pkt-text { font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 600; }
+    .info-title { font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 11px; fill: #222222; }
+    .info-body { font-family: 'Segoe UI', Helvetica, Arial, sans-serif; font-size: 10px; fill: #444444; }
+  </style>
+
+  <text x="800" y="0" text-anchor="middle" class="title">Man-in-the-Middle Incident Report</text>
+
+<g transform="translate(210, 40)">
+  <rect x="-50.0" y="0" width="100" height="60" rx="6" fill="#e5f1de" stroke="#80BA5A" stroke-width="1.5"/>
+  <image href="https://img.icons8.com/color/96/laptop.png" x="-15" y="5" width="30" height="30" opacity="0.5"/>
+  <text x="0" y="40" text-anchor="middle" class="node-title">Victim Workstation</text>
+  <text x="0" y="55" text-anchor="middle" class="info-title">192.168.1.50</text>
+</g>
+<g transform="translate(410, 40)">
+  <rect x="-50.0" y="0" width="100" height="60" rx="6" fill="#e8d3ec" stroke="#7F3C8D" stroke-width="1.5"/>
+  <image href="https://img.icons8.com/color/96/evil.png" x="-15" y="5" width="30" height="30" opacity="0.5"/>
+  <text x="0" y="40" text-anchor="middle" class="node-title">Kali-Attacker</text>
+  <text x="0" y="55" text-anchor="middle" class="info-title">192.168.1.99</text>
+</g>
+<g transform="translate(610, 40)">
+  <rect x="-50.0" y="0" width="100" height="60" rx="6" fill="#d4e0f1" stroke="#3969AC" stroke-width="1.5"/>
+  <image href="https://img.icons8.com/color/96/router.png" x="-15" y="5" width="30" height="30" opacity="0.5"/>
+  <text x="0" y="40" text-anchor="middle" class="node-title">Gateway Router</text>
+  <text x="0" y="55" text-anchor="middle" class="info-title">192.168.1.1</text>
+</g>
+<g transform="translate(810, 40)">
+  <rect x="-50.0" y="0" width="100" height="60" rx="6" fill="#fef1c9" stroke="#F2B701" stroke-width="1.5"/>
+  <image href="https://img.icons8.com/color/96/pin.png" x="-15" y="5" width="30" height="30" opacity="0.5"/>
+  <text x="0" y="40" text-anchor="middle" class="node-title">Chess Server</text>
+  <text x="0" y="55" text-anchor="middle" class="info-title">192.168.1.100</text>
+</g>
+<g transform="translate(1010, 40)">
+  <rect x="-50.0" y="0" width="100" height="60" rx="6" fill="#c3f8e9" stroke="#11A579" stroke-width="1.5"/>
+  <image href="https://img.icons8.com/color/96/gorilla.png" x="-15" y="5" width="30" height="30" opacity="0.5"/>
+  <text x="0" y="40" text-anchor="middle" class="node-title">Monkey Server</text>
+  <text x="0" y="55" text-anchor="middle" class="info-title">192.168.1.101</text>
+</g>
+
+  <line x1="210" y1="105" x2="210" y2="550" stroke="#80BA5A" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="410" y1="105" x2="410" y2="550" stroke="#7F3C8D" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="610" y1="105" x2="610" y2="550" stroke="#3969AC" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="810" y1="105" x2="810" y2="550" stroke="#F2B701" stroke-width="1" stroke-dasharray="4 4"/>
+  <line x1="1010" y1="105" x2="1010" y2="550" stroke="#11A579" stroke-width="1" stroke-dasharray="4 4"/>
+
+<g transform="translate(100, 120)">
+  <rect x="-50.0" y="0" width="100" height="150" rx="4" fill="#fef1c9" stroke="#F2B701" stroke-width="1.5"/>
+  <text x="0" y="40" text-anchor="middle" class="node-title">"Phase 1"</text>
+  <text x="0" y="55" text-anchor="middle" class="node-title">ARP Cache Poisoning</text>
+  <text x="0" y="70" text-anchor="middle" class="info-title">The threat actor broadcasts malicious ARP replies to map their MAC address to valid IPs.</text>
+</g>
+
+<g transform="translate(100, 290)">
+  <rect x="-50.0" y="0" width="100" height="150" rx="4" fill="#e8d3ec" stroke="#7F3C8D" stroke-width="1.5"/>
+  <text x="0" y="40" text-anchor="middle" class="node-title">"Phase 2"</text>
+  <text x="0" y="55" text-anchor="middle" class="node-title">Traffic Interception &amp; Exfiltration</text>
+  <text x="0" y="70" text-anchor="middle" class="info-title">The victim's outbound web traffic flows through the attacker before reaching the router.</text>
+</g>
+
+
+</svg>

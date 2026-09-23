@@ -1,0 +1,28 @@
+ARP Spoofing Attack — Baseline (Accurate)
+=============================================
+
+Step 1 — Legitimate baseline ARP activity
+  Before any attack activity, the local hosts (gateway, kali, and victim)
+  each perform normal ARP requests to discover each other's MAC
+  addresses, each using its own genuine hardware address.
+
+Step 2 — Legitimate reply from victim
+  The victim host replies legitimately to an earlier ARP request from
+  kali, using its own genuine MAC address.
+
+Step 3 — ARP spoofing
+  Kali sends an unsolicited ARP reply to the victim, falsely claiming to
+  own the gateway's IP address, using kali's own real MAC address as the
+  claimed owner.
+
+Step 4 — Traffic interception (DNS)
+  As a result of the victim's poisoned ARP table, the victim's
+  DNS queries -- addressed at the IP layer to the real gateway -- are
+  delivered at the link layer to kali instead.
+
+Step 5 — Traffic interception and forwarding (HTTPS)
+  Kali forwards the victim's intercepted traffic on to its real
+  destination (including HTTPS sessions to reddit.com's infrastructure),
+  allowing kali to observe metadata such as the destination's TLS Server
+  Name Indication (SNI) and certificate details, without being able to
+  read the encrypted contents.

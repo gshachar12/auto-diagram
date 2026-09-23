@@ -1,0 +1,162 @@
+# PAnGEA -- extracted traffic
+shape: sequence_diagram
+
+classes: {
+  actorResolved: {
+    style: {
+      fill: "#d6f5d6"
+      stroke: "#2e9e44"
+      stroke-width: 2
+      font-color: "#14401c"
+    }
+  }
+  actorUnresolved: {
+    style: {
+      fill: "#f9d6d6"
+      stroke: "#c0392b"
+      stroke-width: 2
+      font-color: "#4a1414"
+    }
+  }
+  actorUngrounded: {
+    style: {
+      fill: "#e3e9f7"
+      stroke: "#5b6fb8"
+      stroke-width: 2
+      font-color: "#1c2540"
+    }
+  }
+  edgeGrounded: {
+    style: {
+      stroke: "#2e9e44"
+      stroke-width: 2
+    }
+  }
+  edgeUnsupported: {
+    style: {
+      stroke: "#c0392b"
+      stroke-dash: 4
+      stroke-width: 2
+    }
+  }
+  edgeUncertain: {
+    style: {
+      stroke: "#d4a017"
+      stroke-dash: 2
+      stroke-width: 2
+    }
+  }
+  edgeUngrounded: {
+    style: {
+      stroke: "#8a94ad"
+      stroke-dash: 6
+      stroke-width: 1
+    }
+  }
+  noteGrounded: {
+    style: {
+      fill: "#f6fbf0"
+      stroke: "#2e9e44"
+      stroke-dash: 3
+      font-color: "#27500a"
+      font-size: 12
+    }
+  }
+  noteUnsupported: {
+    style: {
+      fill: "#fff5f5"
+      stroke: "#c0392b"
+      stroke-dash: 3
+      font-color: "#501313"
+      font-size: 12
+    }
+  }
+  noteUncertain: {
+    style: {
+      fill: "#fffaf0"
+      stroke: "#d4a017"
+      stroke-dash: 3
+      font-color: "#5c4300"
+      font-size: 12
+    }
+  }
+  noteUngrounded: {
+    style: {
+      fill: "#f4f6f9"
+      stroke: "#8a94ad"
+      stroke-dash: 3
+      font-color: "#3a4152"
+      font-size: 12
+    }
+  }
+}
+
+title: { label: "PAnGEA -- extracted traffic"; near: top-center }
+
+victim_host: "victim_host\n(victim)" {
+  shape: person
+  icon: https://img.icons8.com/color/96/laptop.png
+  class: actorResolved
+  tooltip: "description: the victim host\nresolved to: 10.12.13.103\nresolution basis: Joint LLM resolution: The IP 10.12.13.103 has the highest number of packets as a destination, indicating it is likely the victim host receiving traffic from multiple sources. It also initiates connections to other IPs, which is typical for a victim host interacting with various servers."
+}
+remote_web_server: "remote_web_server\n(web server)" {
+  shape: rectangle
+  icon: https://img.icons8.com/color/96/server.png
+  class: actorResolved
+  tooltip: "description: a remote web server\nresolved to: 104.28.10.141\nresolution basis: Joint LLM resolution: The IP 104.28.10.141 is primarily contacted by 10.12.13.103 and serves as a destination for HTTP traffic on port 80, which is consistent with a web server role."
+}
+disposable_domain: "disposable_domain\n(malicious domain)" {
+  shape: person
+  icon: https://img.icons8.com/color/96/evil.png
+  class: actorResolved
+  tooltip: "description: a separate, disposable-looking domain\nresolved to: 37.10.71.202\nresolution basis: Joint LLM resolution: The IP 37.10.71.202 has minimal traffic and appears to be involved in a brief interaction, which is characteristic of a disposable domain used for short-term malicious activities."
+}
+command_and_control_server: "command_and_control_server\n(command-and-control server)" {
+  shape: rectangle
+  icon: https://img.icons8.com/color/96/server.png
+  class: actorResolved
+  tooltip: "description: a command-and-control server, using a domain with a random-looking subdomain under an uncommon top-level domain\nresolved to: 185.153.198.117\nresolution basis: Joint LLM resolution: The IP 185.153.198.117 has a high volume of packets as a source and is involved in a consistent data stream with 10.12.13.103, suggesting it is a command-and-control server maintaining communication with the victim host."
+}
+
+victim_host -> remote_web_server: "? step 1: The victim host requests a resource from a remote web server." {
+  class: edgeUncertain
+  tooltip: "expected: HTTP / port 80 / victim_host->remote_web_server\nstatus: uncertain_needs_drilldown\nlinked packets: 0\nlinked aggregates: 0\nnotes: LLM escalation: [DOWNGRADED from grounded: no evidence was actually linked, despite the LLM's self-reported status] The step involves the v…"
+}
+remote_web_server -> remote_web_server: "Evidence: uncertain_needs_drilldown\n0 packet(s), 0 aggregate(s) linked\nLLM escalation: [DOWNGRADED from grounded: no evidence was actually linked, despite the LLM's self-…" {
+  class: noteUncertain
+}
+remote_web_server -> victim_host: "? step 2: The remote web server responds with an HTTP redirect leading to a JavaScript downloader." {
+  class: edgeUncertain
+  tooltip: "expected: HTTP / port 80 / remote_web_server->victim_host\nstatus: uncertain_needs_drilldown\nlinked packets: 0\nlinked aggregates: 0\nnotes: LLM escalation: The candidate evidence provides TCP traffic patterns and data streams on port 80, which is consistent with HTTP traffic. Ho…"
+}
+victim_host -> victim_host: "Evidence: uncertain_needs_drilldown\n0 packet(s), 0 aggregate(s) linked\nLLM escalation: The candidate evidence provides TCP traffic patterns and data streams on port 80, w…" {
+  class: noteUncertain
+}
+victim_host -> remote_web_server: "? step 3: The victim host fetches the JavaScript file from the remote web server." {
+  class: edgeUncertain
+  tooltip: "expected: HTTP / port 80 / victim_host->remote_web_server\nstatus: uncertain_needs_drilldown\nlinked packets: 0\nlinked aggregates: 0\nnotes: LLM escalation: The candidate evidence shows TCP traffic on port 80, which is consistent with HTTP requests, and the source IP matches the…"
+}
+remote_web_server -> remote_web_server: "Evidence: uncertain_needs_drilldown\n0 packet(s), 0 aggregate(s) linked\nLLM escalation: The candidate evidence shows TCP traffic on port 80, which is consistent with HTTP…" {
+  class: noteUncertain
+}
+victim_host -> disposable_domain: "? step 4: The victim host fetches an executable file from a separate, disposable-looking domain." {
+  class: edgeUncertain
+  tooltip: "expected: HTTP / port 80 / victim_host->disposable_domain\nstatus: uncertain_needs_drilldown\nlinked packets: 0\nlinked aggregates: 0\nnotes: LLM escalation: The candidate evidence shows TCP traffic from the victim host (10.12.13.103) to several destination IPs on port 80, which i…"
+}
+disposable_domain -> disposable_domain: "Evidence: uncertain_needs_drilldown\n0 packet(s), 0 aggregate(s) linked\nLLM escalation: The candidate evidence shows TCP traffic from the victim host (10.12.13.103) to sev…" {
+  class: noteUncertain
+}
+victim_host -> victim_host: "✗ step 5: The infected host scans a large range of external IP addresses on a single, non-standard…" {
+  class: edgeUnsupported
+  tooltip: "expected: UDP\nstatus: unsupported\nlinked packets: 0\nlinked aggregates: 0\nnotes: no matching traffic pattern found for the specified indicators"
+}
+victim_host -> victim_host: "Evidence: unsupported\n0 packet(s), 0 aggregate(s) linked\nno matching traffic pattern found for the specified indicators" {
+  class: noteUnsupported
+}
+victim_host -> command_and_control_server: "? step 6: The infected host contacts a command-and-control server using a domain with a random-look…" {
+  class: edgeUncertain
+  tooltip: "expected: victim_host->command_and_control_server\nstatus: uncertain_needs_drilldown\nlinked packets: 0\nlinked aggregates: 0\nnotes: LLM escalation: The candidate evidence provides TCP traffic patterns between the victim host (10.12.13.103) and several destination IPs. Ho…"
+}
+command_and_control_server -> command_and_control_server: "Evidence: uncertain_needs_drilldown\n0 packet(s), 0 aggregate(s) linked\nLLM escalation: The candidate evidence provides TCP traffic patterns between the victim host (10.12…" {
+  class: noteUncertain
+}

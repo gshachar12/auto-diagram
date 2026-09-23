@@ -1,0 +1,283 @@
+{
+  "resolved_actors": [
+    {
+      "actor_id": "local_hosts",
+      "role": "local hosts",
+      "description_ref": "local hosts interacting within default domains on a private IP space",
+      "resolved_endpoints": [
+        "192.168.1.104"
+      ],
+      "resolution_basis": "Joint LLM resolution: 192.168.1.104 is a private IP address with significant traffic volume, interacting with multiple external IPs, which is typical for a local host in a network."
+    },
+    {
+      "actor_id": "network_nodes",
+      "role": "active network nodes",
+      "description_ref": "active network nodes identified and mapped by hardware MAC address to logical IP address",
+      "resolved_endpoints": [
+        "192.168.1.105"
+      ],
+      "resolution_basis": "Joint LLM resolution: 192.168.1.105 shows ARP activity and is involved in anomaly claims, suggesting it is an active network node with a mapped MAC address."
+    },
+    {
+      "actor_id": "kali_host",
+      "role": "offensive framework host",
+      "description_ref": "an offensive framework host named 'kali'",
+      "resolved_endpoints": [],
+      "resolution_basis": "There is no specific evidence pointing to an IP associated with an offensive framework host named 'kali'."
+    },
+    {
+      "actor_id": "default_gateway",
+      "role": "default gateway",
+      "description_ref": "default gateway's IP address",
+      "resolved_endpoints": [
+        "192.168.1.1"
+      ],
+      "resolution_basis": "Joint LLM resolution: 192.168.1.1 is a typical IP for a default gateway, and it shows ARP activity consistent with a gateway role."
+    },
+    {
+      "actor_id": "victim_hosts",
+      "role": "victim hosts",
+      "description_ref": "target hosts whose ARP tables are altered",
+      "resolved_endpoints": [
+        "192.168.1.104"
+      ],
+      "resolution_basis": "Joint LLM resolution: 192.168.1.104 is involved as a recipient in ARP anomalies, indicating it is a target of ARP table alterations."
+    },
+    {
+      "actor_id": "dns_servers",
+      "role": "DNS servers",
+      "description_ref": "captures plain-text DNS queries on UDP Port 53",
+      "resolved_endpoints": [
+        "192.168.1.1"
+      ],
+      "resolution_basis": "Joint LLM resolution: 192.168.1.1 has UDP traffic on port 53, which is typical for DNS server activity."
+    },
+    {
+      "actor_id": "reddit_servers",
+      "role": "reddit servers",
+      "description_ref": "web traffic for reddit.com and gql.reddit.com",
+      "resolved_endpoints": [
+        "151.101.65.140"
+      ],
+      "resolution_basis": "Joint LLM resolution: 151.101.65.140 is associated with high-volume web traffic on port 443, consistent with a content delivery network serving reddit.com."
+    },
+    {
+      "actor_id": "ntp_servers",
+      "role": "NTP servers",
+      "description_ref": "lookups for hosts such as debian.pool.ntp.org",
+      "resolved_endpoints": [],
+      "resolution_basis": "There is no specific evidence pointing to an IP associated with NTP server activity for debian.pool.ntp.org."
+    }
+  ],
+  "grounded_steps": [
+    {
+      "step": {
+        "step_id": "step 1",
+        "text": "Local hosts interact within default domains on a private IP space.",
+        "expected_indicators": {
+          "protocol": null,
+          "port": null,
+          "flags": null,
+          "direction": null,
+          "volume_pattern": null,
+          "cardinality_pattern": null,
+          "indicator_description": "Traffic between local hosts and default domains in a private IP space.",
+          "ip_hint": null
+        },
+        "actor_refs": [
+          "local_hosts"
+        ]
+      },
+      "grounding": {
+        "status": "uncertain_needs_drilldown",
+        "linked_packets": [],
+        "linked_aggregate_refs": [],
+        "notes": "LLM escalation: [DOWNGRADED from grounded: no evidence was actually linked, despite the LLM's self-reported status] The step describes interactions between local hosts within a private IP space, which is typically represented by ARP traffic within the same subnet. The candidate evidence includes multiple ARP entries with source and destination IPs in the 192.168.1.x range, which is a common private IP space. These ARP entries indicate local network interactions, supporting the step's description of local host interactions within a private IP space."
+      }
+    },
+    {
+      "step": {
+        "step_id": "step 2",
+        "text": "Active network nodes are identified and mapped by hardware MAC address to logical IP address.",
+        "expected_indicators": {
+          "protocol": null,
+          "port": null,
+          "flags": null,
+          "direction": null,
+          "volume_pattern": null,
+          "cardinality_pattern": null,
+          "indicator_description": "Mapping of active network nodes by MAC address to IP address.",
+          "ip_hint": null
+        },
+        "actor_refs": [
+          "network_nodes"
+        ]
+      },
+      "grounding": {
+        "status": "uncertain_needs_drilldown",
+        "linked_packets": [],
+        "linked_aggregate_refs": [],
+        "notes": "LLM escalation: [DOWNGRADED from grounded: no evidence was actually linked, despite the LLM's self-reported status] The step involves identifying and mapping active network nodes by their hardware MAC addresses to logical IP addresses. The ARP (Address Resolution Protocol) entries in the candidate evidence provide exactly this mapping, as ARP is used to resolve IP addresses to MAC addresses. The keys listed show ARP requests and responses that map specific MAC addresses to IP addresses, which directly supports the step's description."
+      }
+    },
+    {
+      "step": {
+        "step_id": "step 3",
+        "text": "The Kali host exposes its presence via network broadcasts.",
+        "expected_indicators": {
+          "protocol": null,
+          "port": null,
+          "flags": null,
+          "direction": null,
+          "volume_pattern": "high",
+          "cardinality_pattern": "one-to-many",
+          "indicator_description": "Network broadcasts from the Kali host indicating its presence.",
+          "ip_hint": null
+        },
+        "actor_refs": [
+          "kali_host"
+        ]
+      },
+      "grounding": {
+        "status": "uncertain_needs_drilldown",
+        "linked_packets": [],
+        "linked_aggregate_refs": [],
+        "notes": "depends on unresolved actor 'kali_host'"
+      }
+    },
+    {
+      "step": {
+        "step_id": "step 4",
+        "text": "The Kali host broadcasts a continuous stream of unsolicited ARP reply packets across the local network without prior requests.",
+        "expected_indicators": {
+          "protocol": "ARP",
+          "port": null,
+          "flags": [
+            "Opcode 2"
+          ],
+          "direction": "kali_host->local_hosts",
+          "volume_pattern": "continuous",
+          "cardinality_pattern": "one-to-many",
+          "indicator_description": "Unsolicited ARP reply packets from the Kali host across the local network.",
+          "ip_hint": null
+        },
+        "actor_refs": [
+          "kali_host"
+        ]
+      },
+      "grounding": {
+        "status": "uncertain_needs_drilldown",
+        "linked_packets": [],
+        "linked_aggregate_refs": [],
+        "notes": "depends on unresolved actor 'kali_host'"
+      }
+    },
+    {
+      "step": {
+        "step_id": "step 5",
+        "text": "Forged ARP packets alter the target hosts' ARP tables by mapping the default gateway's IP address and the victim's IP address directly to the attacker's MAC address.",
+        "expected_indicators": {
+          "protocol": "ARP",
+          "port": null,
+          "flags": [
+            "Opcode 2"
+          ],
+          "direction": "kali_host->victim_hosts",
+          "volume_pattern": "continuous",
+          "cardinality_pattern": "one-to-many",
+          "indicator_description": "Forged ARP packets mapping IP addresses to the attacker's MAC address.",
+          "ip_hint": null
+        },
+        "actor_refs": [
+          "kali_host",
+          "default_gateway",
+          "victim_hosts"
+        ]
+      },
+      "grounding": {
+        "status": "uncertain_needs_drilldown",
+        "linked_packets": [],
+        "linked_aggregate_refs": [],
+        "notes": "depends on unresolved actor 'kali_host'"
+      }
+    },
+    {
+      "step": {
+        "step_id": "step 6",
+        "text": "The attacker captures plain-text DNS queries on UDP Port 53.",
+        "expected_indicators": {
+          "protocol": "UDP",
+          "port": 53,
+          "flags": null,
+          "direction": "victim_hosts->dns_servers",
+          "volume_pattern": "steady",
+          "cardinality_pattern": "many-to-one",
+          "indicator_description": "Plain-text DNS queries captured by the attacker on UDP Port 53.",
+          "ip_hint": null
+        },
+        "actor_refs": [
+          "kali_host",
+          "dns_servers"
+        ]
+      },
+      "grounding": {
+        "status": "uncertain_needs_drilldown",
+        "linked_packets": [],
+        "linked_aggregate_refs": [],
+        "notes": "depends on unresolved actor 'kali_host'"
+      }
+    },
+    {
+      "step": {
+        "step_id": "step 7",
+        "text": "The attacker monitors HTTP and HTTPS web interactions, exposing API endpoints and web traffic for reddit.com and gql.reddit.com.",
+        "expected_indicators": {
+          "protocol": "HTTP",
+          "port": 80,
+          "flags": null,
+          "direction": "victim_hosts->reddit_servers",
+          "volume_pattern": "steady",
+          "cardinality_pattern": "many-to-one",
+          "indicator_description": "HTTP and HTTPS web interactions monitored by the attacker.",
+          "ip_hint": null
+        },
+        "actor_refs": [
+          "kali_host",
+          "reddit_servers"
+        ]
+      },
+      "grounding": {
+        "status": "uncertain_needs_drilldown",
+        "linked_packets": [],
+        "linked_aggregate_refs": [],
+        "notes": "depends on unresolved actor 'kali_host'"
+      }
+    },
+    {
+      "step": {
+        "step_id": "step 8",
+        "text": "TLS handshakes reveal clear-text Server Name Indication (SNI) fields inside Client Hello packets and reflect DigiCert-issued digital certificates for the target domains.",
+        "expected_indicators": {
+          "protocol": "TLS",
+          "port": null,
+          "flags": null,
+          "direction": "victim_hosts->reddit_servers",
+          "volume_pattern": "steady",
+          "cardinality_pattern": "many-to-one",
+          "indicator_description": "TLS handshakes revealing SNI fields and DigiCert-issued certificates.",
+          "ip_hint": null
+        },
+        "actor_refs": [
+          "kali_host",
+          "reddit_servers"
+        ]
+      },
+      "grounding": {
+        "status": "uncertain_needs_drilldown",
+        "linked_packets": [],
+        "linked_aggregate_refs": [],
+        "notes": "depends on unresolved actor 'kali_host'"
+      }
+    }
+  ]
+}

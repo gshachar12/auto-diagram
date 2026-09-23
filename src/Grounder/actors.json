@@ -1,0 +1,18 @@
+{
+    "actors": [
+    {
+      "actor_id": "victim",
+      "role": "client",
+      "description_ref": "Victim (client): 10.0.2.30",
+      "resolved_endpoints": [],
+      "resolution_basis": ""
+    },
+    {
+      "actor_id": "attacker_c2",
+      "role": "rogue DNS server",
+      "description_ref": "Attacker C2 (rogue DNS): 10.0.2.20",
+      "resolved_endpoints": [],
+      "resolution_basis": ""
+    }
+  ]
+}
