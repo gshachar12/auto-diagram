@@ -1,0 +1,211 @@
+{
+  "actors": [
+    {
+      "actor_id": "local_hosts",
+      "role": "local hosts",
+      "description_ref": "local hosts interacting within default domains on a private IP space",
+      "resolved_endpoints": [],
+      "resolution_basis": null
+    },
+    {
+      "actor_id": "network_nodes",
+      "role": "network nodes",
+      "description_ref": "active network nodes identified and mapped by hardware MAC address",
+      "resolved_endpoints": [],
+      "resolution_basis": null
+    },
+    {
+      "actor_id": "kali_host",
+      "role": "offensive framework host",
+      "description_ref": "an offensive framework host named 'kali'",
+      "resolved_endpoints": [],
+      "resolution_basis": null
+    },
+    {
+      "actor_id": "default_gateway",
+      "role": "default gateway",
+      "description_ref": "default gateway",
+      "resolved_endpoints": [],
+      "resolution_basis": null
+    },
+    {
+      "actor_id": "victim_hosts",
+      "role": "victim hosts",
+      "description_ref": "target hosts",
+      "resolved_endpoints": [],
+      "resolution_basis": null
+    },
+    {
+      "actor_id": "external_services",
+      "role": "external services",
+      "description_ref": "debian.pool.ntp.org, reddit.com, and gql.reddit.com",
+      "resolved_endpoints": [],
+      "resolution_basis": null
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "step 1",
+      "text": "Local hosts interact within default domains on a private IP space.",
+      "expected_indicators": {
+        "protocol": null,
+        "port": null,
+        "flags": null,
+        "direction": null,
+        "volume_pattern": null,
+        "cardinality_pattern": null,
+        "indicator_description": "Local hosts engage in communication within predefined domains on a private network.",
+        "ip_hint": null
+      },
+      "actor_refs": [
+        "local_hosts"
+      ]
+    },
+    {
+      "step_id": "step 2",
+      "text": "Active network nodes are identified and mapped by hardware MAC address to logical IP address.",
+      "expected_indicators": {
+        "protocol": null,
+        "port": null,
+        "flags": null,
+        "direction": null,
+        "volume_pattern": null,
+        "cardinality_pattern": "one-to-one",
+        "indicator_description": "The process of mapping physical MAC addresses to logical IP addresses for network nodes.",
+        "ip_hint": null
+      },
+      "actor_refs": [
+        "network_nodes"
+      ]
+    },
+    {
+      "step_id": "step 3",
+      "text": "The Kali host exposes its presence via network broadcasts.",
+      "expected_indicators": {
+        "protocol": null,
+        "port": null,
+        "flags": null,
+        "direction": null,
+        "volume_pattern": "high",
+        "cardinality_pattern": "one-to-many",
+        "indicator_description": "The Kali host announces its presence on the network using broadcast messages.",
+        "ip_hint": null
+      },
+      "actor_refs": [
+        "kali_host"
+      ]
+    },
+    {
+      "step_id": "step 4",
+      "text": "The Kali host broadcasts a continuous stream of unsolicited ARP reply packets across the local network without prior requests.",
+      "expected_indicators": {
+        "protocol": "ARP",
+        "port": null,
+        "flags": [
+          "Opcode 2"
+        ],
+        "direction": "kali_host->local_hosts",
+        "volume_pattern": "continuous",
+        "cardinality_pattern": "one-to-many",
+        "indicator_description": "Continuous, unsolicited ARP reply packets are broadcasted by the Kali host.",
+        "ip_hint": null
+      },
+      "actor_refs": [
+        "kali_host"
+      ]
+    },
+    {
+      "step_id": "step 5",
+      "text": "These forged ARP packets alter the target hosts' ARP tables by mapping the default gateway's IP address and the victim's IP address directly to the attacker's MAC address.",
+      "expected_indicators": {
+        "protocol": "ARP",
+        "port": null,
+        "flags": [
+          "Opcode 2"
+        ],
+        "direction": "kali_host->victim_hosts",
+        "volume_pattern": "continuous",
+        "cardinality_pattern": "one-to-many",
+        "indicator_description": "Alteration of target hosts' ARP tables by mapping IP addresses to the attacker's MAC address.",
+        "ip_hint": null
+      },
+      "actor_refs": [
+        "kali_host",
+        "default_gateway",
+        "victim_hosts"
+      ]
+    },
+    {
+      "step_id": "step 6",
+      "text": "As local caches update with these spoofed records, a transparent Man-in-the-Middle position is established.",
+      "expected_indicators": {
+        "protocol": null,
+        "port": null,
+        "flags": null,
+        "direction": null,
+        "volume_pattern": null,
+        "cardinality_pattern": "many-to-one",
+        "indicator_description": "The attacker gains a Man-in-the-Middle position by causing targets to update caches with spoofed ARP records.",
+        "ip_hint": null
+      },
+      "actor_refs": [
+        "kali_host",
+        "victim_hosts"
+      ]
+    },
+    {
+      "step_id": "step 7",
+      "text": "The attacker captures plain-text DNS queries on UDP Port 53, monitoring lookups for hosts such as debian.pool.ntp.org.",
+      "expected_indicators": {
+        "protocol": "UDP",
+        "port": 53,
+        "flags": null,
+        "direction": "victim_hosts->kali_host",
+        "volume_pattern": "steady",
+        "cardinality_pattern": "many-to-one",
+        "indicator_description": "Monitoring of plain-text DNS query traffic for specific hosts on UDP port 53.",
+        "ip_hint": null
+      },
+      "actor_refs": [
+        "kali_host",
+        "external_services"
+      ]
+    },
+    {
+      "step_id": "step 8",
+      "text": "The attacker monitors HTTP and HTTPS web interactions, directly exposing API endpoints and web traffic for reddit.com and gql.reddit.com.",
+      "expected_indicators": {
+        "protocol": "HTTP",
+        "port": 80,
+        "flags": null,
+        "direction": "victim_hosts->kali_host",
+        "volume_pattern": "steady",
+        "cardinality_pattern": "many-to-one",
+        "indicator_description": "Monitoring of HTTP/HTTPS traffic revealing API endpoints and web traffic for specific domains.",
+        "ip_hint": null
+      },
+      "actor_refs": [
+        "kali_host",
+        "external_services"
+      ]
+    },
+    {
+      "step_id": "step 9",
+      "text": "TLS handshakes reveal clear-text Server Name Indication (SNI) fields inside Client Hello packets and reflect DigiCert-issued digital certificates.",
+      "expected_indicators": {
+        "protocol": "TLS",
+        "port": null,
+        "flags": null,
+        "direction": "victim_hosts->kali_host",
+        "volume_pattern": "steady",
+        "cardinality_pattern": "many-to-one",
+        "indicator_description": "TLS handshakes are intercepted, exposing SNI fields and digital certificates.",
+        "ip_hint": null
+      },
+      "actor_refs": [
+        "kali_host",
+        "external_services"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "extraction_flags": [
+    {
+      "kind": "fn",
+      "step_id": null,
+      "text_span": "The server responds with: 10.20.30.1-10.20.30.3-1130-24 This encodes: nameserver IP, assigned tunnel IP for the client, port (1130), and subnet prefix length (24). The victim is assigned a virtual IP inside the tunnel network.",
+      "reason": "The response with network configuration details is not explicitly captured in any step.",
+      "related_actors": [
+        "victim_client",
+        "attacker_c2"
+      ],
+      "candidate_evidence_refs": [
+        "UDP",
+        [
+          "53"
+        ]
+      ]
+    },
+    {
+      "kind": "fn",
+      "step_id": null,
+      "text_span": "The server returns a 48-byte binary capability structure.",
+      "reason": "The response with a 48-byte binary capability structure is not explicitly captured in any step.",
+      "related_actors": [
+        "victim_client",
+        "attacker_c2"
+      ],
+      "candidate_evidence_refs": [
+        "UDP",
+        [
+          "53"
+        ]
+      ]
+    },
+    {
+      "kind": "fn",
+      "step_id": null,
+      "text_span": "The server echoes back what it received, allowing both sides to agree on a safe encoding alphabet.",
+      "reason": "The server echoing back the received test strings is not explicitly captured in any step.",
+      "related_actors": [
+        "victim_client",
+        "attacker_c2"
+      ],
+      "candidate_evidence_refs": [
+        "UDP",
+        [
+          "53"
+        ]
+      ]
+    },
+    {
+      "kind": "fn",
+      "step_id": null,
+      "text_span": "The final three handshake queries negotiate the encoding algorithm: sbhi1c -> Base128 (upstream encoding: victim to C2) obsi1d -> Base64 (downstream encoding: C2 to victim) obli1e -> Lazy (fallback/alternate mode)",
+      "reason": "The specific encoding algorithms negotiated are not explicitly captured in any step.",
+      "related_actors": [
+        "victim_client",
+        "attacker_c2"
+      ],
+      "candidate_evidence_refs": [
+        "UDP",
+        [
+          "53"
+        ]
+      ]
+    }
+  ],
+  "linkage_flags": [],
+  "total_steps_reviewed": 15
+}

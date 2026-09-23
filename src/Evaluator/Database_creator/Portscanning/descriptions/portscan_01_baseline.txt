@@ -1,0 +1,8 @@
+A single source host sends TCP connection-initiation packets to a single
+target host across a range of different destination ports, in rapid,
+evenly-paced succession roughly a tenth of a second apart. Each probe
+consists only of a TCP SYN packet, and no completed handshake -- no
+SYN-ACK response, no final ACK -- appears anywhere in this capture. The
+specific ports probed are concentrated among widely-recognized standard
+service ports, including SMB, NetBIOS, MSRPC, SSH, Telnet, and FTP,
+rather than a purely sequential sweep of the full port range.

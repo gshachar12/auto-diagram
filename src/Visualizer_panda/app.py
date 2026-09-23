@@ -10,7 +10,7 @@ from core import generate_diagram
 from messages import create_message_from_bytes
 from diagram_viewer import diagram_viewer
 from preprocessing import parse_with_indices, prompt, extract_relevant_packets   
-from src.validator_first import full_validator
+from validator import full_validator
 
 @st.dialog("User messages", width="large")
 def show_messages(data_fnc):

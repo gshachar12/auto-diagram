@@ -1,0 +1,259 @@
+{
+    "steps": [
+    {
+      "step_id": "step 1",
+      "text": "The victim sent a DNS query to the attacker_c2 with query name 'vaaaakardli.pirate.sea' to initiate the handshake.",
+      "expected_indicators": {
+        "protocol": "DNS",
+        "port": null,
+        "flags": null,
+        "direction": "victim->attacker_c2",
+        "volume_pattern": null,
+        "cardinality_pattern": null,
+        "indicator_description": "Look for a DNS query from the victim to the attacker_c2 with the specific query name for handshake initiation."
+      },
+      "actor_refs": [
+        "victim",
+        "attacker_c2"
+      ]
+    },
+    {
+      "step_id": "step 2",
+      "text": "The attacker_c2 responded with 'VACKD', a custom acknowledgment token, confirming that the C2 is live and ready.",
+      "expected_indicators": {
+        "protocol": "DNS",
+        "port": null,
+        "flags": null,
+        "direction": "attacker_c2->victim",
+        "volume_pattern": null,
+        "cardinality_pattern": null,
+        "indicator_description": "Check for a DNS response from the attacker_c2 to the victim containing the custom acknowledgment token 'VACKD'."
+      },
+      "actor_refs": [
+        "attacker_c2",
+        "victim"
+      ]
+    },
+    {
+      "step_id": "step 3",
+      "text": "The victim sent a DNS query to retrieve network parameters with the name 'laegpumiplhhpz12ynd1efljwlkjcgwy.pirate.sea'.",
+      "expected_indicators": {
+        "protocol": "DNS",
+        "port": null,
+        "flags": null,
+        "direction": "victim->attacker_c2",
+        "volume_pattern": null,
+        "cardinality_pattern": null,
+        "indicator_description": "Detect a DNS query from the victim for retrieving network parameters based on a crafted long query name."
+      },
+      "actor_refs": [
+        "victim",
+        "attacker_c2"
+      ]
+    },
+    {
+      "step_id": "step 4",
+      "text": "The attacker_c2 responded with configuration data encoded in the response.",
+      "expected_indicators": {
+        "protocol": "DNS",
+        "port": null,
+        "flags": null,
+        "direction": "attacker_c2->victim",
+        "volume_pattern": null,
+        "cardinality_pattern": null,
+        "indicator_description": "Analyze DNS responses from the attacker_c2 for encoded network configuration data."
+      },
+      "actor_refs": [
+        "attacker_c2",
+        "victim"
+      ]
+    },
+    {
+      "step_id": "step 5",
+      "text": "The victim sent a DNS query with the name 'yrbi02.pirate.sea' to test encoding capability.",
+      "expected_indicators": {
+        "protocol": "DNS",
+        "port": null,
+        "flags": null,
+        "direction": "victim->attacker_c2",
+        "volume_pattern": null,
+        "cardinality_pattern": null,
+        "indicator_description": "Track queries related to encoding capability tests sent by the victim as part of the handshake."
+      },
+      "actor_refs": [
+        "victim",
+        "attacker_c2"
+      ]
+    },
+    {
+      "step_id": "step 6",
+      "text": "The attacker_c2 responded with a 48-byte binary capability structure.",
+      "expected_indicators": {
+        "protocol": "DNS",
+        "port": null,
+        "flags": null,
+        "direction": "attacker_c2->victim",
+        "volume_pattern": null,
+        "cardinality_pattern": null,
+        "indicator_description": "Observe large DNS responses from the attacker_c2 indicating capability structure transfer."
+      },
+      "actor_refs": [
+        "attacker_c2",
+        "victim"
+      ]
+    },
+    {
+      "step_id": "step 7",
+      "text": "The victim sent DNS queries to test character encoding with various character sets to the attacker_c2.",
+      "expected_indicators": {
+        "protocol": "DNS",
+        "port": null,
+        "flags": null,
+        "direction": "victim->attacker_c2",
+        "volume_pattern": null,
+        "cardinality_pattern": "one-to-many",
+        "indicator_description": "Check series of DNS queries from the victim testing different encodings."
+      },
+      "actor_refs": [
+        "victim",
+        "attacker_c2"
+      ]
+    },
+    {
+      "step_id": "step 8",
+      "text": "The attacker_c2 echoed back characters to agree on a safe encoding alphabet.",
+      "expected_indicators": {
+        "protocol": "DNS",
+        "port": null,
+        "flags": null,
+        "direction": "attacker_c2->victim",
+        "volume_pattern": null,
+        "cardinality_pattern": null,
+        "indicator_description": "Examine DNS responses echoing characters back to the victim for encoding negotiation."
+      },
+      "actor_refs": [
+        "attacker_c2",
+        "victim"
+      ]
+    },
+    {
+      "step_id": "step 9",
+      "text": "The victim and attacker_c2 negotiated the encoding algorithm using DNS queries and responses.",
+      "expected_indicators": {
+        "protocol": "DNS",
+        "port": null,
+        "flags": null,
+        "direction": "bidirectional",
+        "volume_pattern": null,
+        "cardinality_pattern": null,
+        "indicator_description": "Identify DNS traffic negotiating encoding methodologies between victim and attacker_c2."
+      },
+      "actor_refs": [
+        "victim",
+        "attacker_c2"
+      ]
+    },
+    {
+      "step_id": "step 10",
+      "text": "The victim sent DNS queries prefixed with 'rc' or 'rd', carrying payloads Base128 encoded to the attacker_c2.",
+      "expected_indicators": {
+        "protocol": "DNS",
+        "port": null,
+        "flags": null,
+        "direction": "victim->attacker_c2",
+        "volume_pattern": null,
+        "cardinality_pattern": "one-to-many",
+        "indicator_description": "Monitor DNS traffic from the victim using 'rc' or 'rd' prefixed queries with Base128 encoding."
+      },
+      "actor_refs": [
+        "victim",
+        "attacker_c2"
+      ]
+    },
+    {
+      "step_id": "step 11",
+      "text": "The attacker_c2 sent responses carrying large binary blobs back to the victim.",
+      "expected_indicators": {
+        "protocol": "DNS",
+        "port": null,
+        "flags": null,
+        "direction": "attacker_c2->victim",
+        "volume_pattern": "high",
+        "cardinality_pattern": null,
+        "indicator_description": "Inspect for high-volume response traffic with large binary blobs from attacker_c2."
+      },
+      "actor_refs": [
+        "attacker_c2",
+        "victim"
+      ]
+    },
+    {
+      "step_id": "step 12",
+      "text": "The victim performed keepalive by sending DNS queries prefixed with 'na' or 'pa' to the attacker_c2.",
+      "expected_indicators": {
+        "protocol": "DNS",
+        "port": null,
+        "flags": null,
+        "direction": "victim->attacker_c2",
+        "volume_pattern": null,
+        "cardinality_pattern": "one-to-many",
+        "indicator_description": "Detect regular keepalive DNS queries from the victim using 'na' or 'pa' prefix."
+      },
+      "actor_refs": [
+        "victim",
+        "attacker_c2"
+      ]
+    },
+    {
+      "step_id": "step 13",
+      "text": "The attacker_c2 responded to keepalives with zlib-compressed data to the victim.",
+      "expected_indicators": {
+        "protocol": "DNS",
+        "port": null,
+        "flags": null,
+        "direction": "attacker_c2->victim",
+        "volume_pattern": "steady",
+        "cardinality_pattern": null,
+        "indicator_description": "Look for steady flow of compressed data responses from attacker_c2 to victim."
+      },
+      "actor_refs": [
+        "attacker_c2",
+        "victim"
+      ]
+    },
+    {
+      "step_id": "step 14",
+      "text": "The victim started bulk data exfiltration using DNS queries with numeric prefixes to the attacker_c2.",
+      "expected_indicators": {
+        "protocol": "DNS",
+        "port": null,
+        "flags": null,
+        "direction": "victim->attacker_c2",
+        "volume_pattern": "high",
+        "cardinality_pattern": null,
+        "indicator_description": "Monitor for burst of DNS queries with numeric prefixes indicating data exfiltration."
+      },
+      "actor_refs": [
+        "victim",
+        "attacker_c2"
+      ]
+    },
+    {
+      "step_id": "step 15",
+      "text": "The attacker_c2 acknowledged receipt of each exfiltrated data chunk with a 2-byte sequence response.",
+      "expected_indicators": {
+        "protocol": "DNS",
+        "port": null,
+        "flags": null,
+        "direction": "attacker_c2->victim",
+        "volume_pattern": null,
+        "cardinality_pattern": null,
+        "indicator_description": "Check for acknowledgment responses from attacker_c2 during data exfiltration."
+      },
+      "actor_refs": [
+        "attacker_c2",
+        "victim"
+      ]
+    }
+  ]
+}

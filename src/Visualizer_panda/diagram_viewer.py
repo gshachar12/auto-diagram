@@ -9,7 +9,7 @@ from animation import create_animation_section
 from render import render_svg
 from export import export_diagram
 from files import display_session_attachments
-from src.validator_first import validator_tab 
+from validator import validator_tab 
 from packets_tab import display_packet_tab
 
 def diagram_viewer():

@@ -1,0 +1,143 @@
+{
+  "sample_id": "arp_01_baseline",
+  "claim_extraction": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+  },
+  "grounding_accuracy_per_status": {
+    "grounded": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    "unsupported": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    "uncertain_needs_drilldown": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    }
+  },
+  "evidence_matching": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0
+  },
+  "claim_alignment_audit": [
+    {
+      "system_text": "The local hosts on this network perform normal ARP requests to discover one another's MAC addresses, each using its own genuine hardware address.",
+      "matched_gold_text": "Before any attack activity, the local hosts each perform normal ARP requests to discover each other's MAC addresses, each using its own genuine hardware address.",
+      "score": 0.836,
+      "confidence": "high"
+    },
+    {
+      "system_text": "The victim host replies legitimately to an earlier ARP request from kali, using its own real MAC address.",
+      "matched_gold_text": "The victim host replies legitimately to an earlier ARP request from kali, using its own genuine MAC address.",
+      "score": 0.928,
+      "confidence": "high"
+    },
+    {
+      "system_text": "Kali sends an unsolicited ARP reply to the victim, falsely claiming to own the gateway's IP address, using kali's own real MAC address as the claimed owner.",
+      "matched_gold_text": "Kali sends an unsolicited ARP reply to the victim, falsely claiming to own the gateway's IP address, using kali's own real MAC address as the claimed owner.",
+      "score": 1.0,
+      "confidence": "high"
+    },
+    {
+      "system_text": "The victim's DNS queries, addressed at the IP layer to the real gateway, end up being delivered at the link layer to kali instead.",
+      "matched_gold_text": "As a result of the victim's poisoned ARP table, the victim's DNS queries -- addressed at the IP layer to the real gateway -- are delivered at the link layer to kali instead.",
+      "score": 0.809,
+      "confidence": "high"
+    },
+    {
+      "system_text": "Kali forwards the intercepted traffic to its real destination, including HTTPS sessions to reddit.com's infrastructure.",
+      "matched_gold_text": "Kali forwards the victim's intercepted traffic on to its real destination (including HTTPS sessions to reddit.com's infrastructure), allowing kali to observe metadata such as the destination's TLS Server Name Indication (SNI) and certificate details, without being able to read the encrypted contents.",
+      "score": 0.653,
+      "confidence": "high"
+    },
+    {
+      "system_text": "Kali observes metadata such as the destination's TLS Server Name Indication and certificate details.",
+      "matched_gold_text": "Kali forwards the victim's intercepted traffic on to its real destination (including HTTPS sessions to reddit.com's infrastructure), allowing kali to observe metadata such as the destination's TLS Server Name Indication (SNI) and certificate details, without being able to read the encrypted contents.",
+      "score": 0.512,
+      "confidence": "high"
+    }
+  ],
+  "actor_extraction": {
+    "precision": 0.8,
+    "recall": 1.0,
+    "f1": 0.888888888888889
+  },
+  "actor_ip_resolution": {
+    "correctly_resolved": 1,
+    "incorrectly_resolved": 2,
+    "extracted_but_unresolved": 1,
+    "never_extracted": 0
+  },
+  "coreference_muc": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+  },
+  "coreference_bcubed": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+  },
+  "coreference_ceaf": {
+    "precision": 0.8,
+    "recall": 1.0,
+    "f1": 0.888888888888889
+  },
+  "actor_alignment_audit": [
+    {
+      "system_text": "the local hosts on this network",
+      "matched_gold_text": "the gateway router -- bridging the local network to an external network",
+      "score": 0.506,
+      "confidence": "high"
+    },
+    {
+      "system_text": "the gateway",
+      "matched_gold_text": "the gateway router -- bridging the local network to an external network",
+      "score": 0.312,
+      "confidence": "high"
+    },
+    {
+      "system_text": "kali",
+      "matched_gold_text": "an offensive framework host named 'kali' doing ARP spoofing",
+      "score": 0.302,
+      "confidence": "high"
+    },
+    {
+      "system_text": "the victim machine",
+      "matched_gold_text": "the attack victim",
+      "score": 0.413,
+      "confidence": "high"
+    },
+    {
+      "system_text": "reddit.com's infrastructure",
+      "matched_gold_text": null,
+      "score": 0.0,
+      "confidence": "none"
+    }
+  ],
+  "compliance": [
+    {
+      "check_name": "grounded_requires_evidence",
+      "passed": true,
+      "violations": []
+    },
+    {
+      "check_name": "resolved_ip_is_observed",
+      "passed": true,
+      "violations": []
+    },
+    {
+      "check_name": "no_unexplained_duplicate_resolution",
+      "passed": true,
+      "violations": []
+    }
+  ]
+}

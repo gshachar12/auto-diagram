@@ -1,0 +1,20 @@
+Ransomware Infection Chain — Baseline (Accurate)
+====================================================
+
+Step 1 — Lure delivery and redirect
+The victim host requests a resource from a remote web server.
+
+Step 2 — Downloader execution
+Look for HTTP requests from the victim host to the remote web server
+
+Step 3 — Payload retrieval
+The victim host fetches the JavaScript file from the remote web server.
+
+Step 4 — Local network scanning
+The victim host fetches an executable file from a disposable-looking domain.
+
+Step 5 — Command-and-control check-in
+The infected host scans a large range of external IP addresses on a single, non-standard UDP port.
+
+Step 6 — Encryption and ransom demand
+The infected host contacts a command-and-control server using a domain with a random-looking subdomain under an uncommon top-level domain.

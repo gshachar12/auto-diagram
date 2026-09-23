@@ -1,0 +1,27 @@
+NOTE: Every step below REVERSES which party (client vs. server) initiates
+each exchange, relative to the baseline, for controlled evaluation
+purposes.
+
+Step 1 — Initial check-in (REVERSED)
+  The server sends a "hello" beacon query to the client; the client
+  responds with the acknowledgement token.
+
+Step 2 — Network configuration retrieval (REVERSED)
+  The server requests network configuration; the client responds with
+  tunnel IP, nameserver, port, and subnet information.
+
+Step 3 — Encoding negotiation (REVERSED)
+  The server tests character-set/codec support; the client echoes back
+  and both settle on encoding algorithms.
+
+Step 4 — Upstream data chunks (REVERSED)
+  The server sends data chunks via specially-prefixed queries; the
+  client responds with sizeable binary payloads.
+
+Step 5 — Keepalive / polling loop (REVERSED)
+  The server polls the client on a steady basis; the client's responses
+  carry compressed data down to the server.
+
+VERIFIED FALSE throughout: every one of the 434 real DNS packets has
+src=10.0.2.30 (real client) for queries and src=10.0.2.20 (real server)
+for responses -- never the reverse, for any of the above steps.

@@ -1,0 +1,16 @@
+Before any attack activity occurs, the local hosts on this network -- the
+gateway, kali, and the victim machine -- each perform normal ARP requests
+to discover one another's MAC addresses, each using its own genuine
+hardware address. At one point the victim host replies legitimately to
+an earlier ARP request from kali, using its own real MAC address. Kali
+then sends an unsolicited ARP reply to the victim, falsely claiming to
+own the gateway's IP address, using kali's own real MAC address as the
+claimed owner of that address. Kali additionally sends a forged ARP
+reply to the gateway itself, falsely claiming to own the victim's IP
+address, completing a full bidirectional man-in-the-middle position. As
+a result of the victim's now-poisoned ARP table, the victim's DNS
+queries -- addressed at the IP layer to the real gateway -- end up being
+delivered at the link layer to kali instead. Kali forwards this
+intercepted traffic on to its real destination, which lets kali observe
+metadata such as the destination's TLS Server Name Indication and
+certificate details.

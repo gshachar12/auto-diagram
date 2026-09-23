@@ -1,0 +1,48 @@
+================================================================================
+NETWORK SECURITY INCIDENT REPORT: TCP PORT SCAN DETECTION
+================================================================================
+
+1. INCIDENT OVERVIEW
+--------------------------------------------------------------------------------
+File Analysed: portscan.pcap
+Activity Type: Reconnaissance / TCP SYN Port Scan
+Severity: Medium
+
+2. TECHNICAL ANALYSIS
+--------------------------------------------------------------------------------
+The provided packet capture data reveals a classic, high-velocity TCP Port Scan, 
+most likely performed using network exploration tools (such as Nmap). 
+
+Key Indicators Observed:
+* Protocol Structure: Persistent IPv4 encapsulation (indicated by raw hex values 
+  corresponding to 'E') carrying TCP segments (indicated by 'P').
+* Target Targeting: A fixed source IP address sequentially targeting a single 
+  destination IP address across a wide range of destination ports.
+* Destination Port Mutation: While the source and destination IP signatures 
+  remain static, the destination ports change rapidly with each successive 
+  packet payload sequence (e.g., passing through varying ASCII/binary representations).
+* Scan Method: The uniformity of the packets and the absence of established 
+  session data payloads strongly point to a half-open (SYN) scanning technique. 
+  The attacker sends TCP SYN flags to determine port states (Open/Closed/Filtered) 
+  without completing the 3-way handshake.
+
+3. ATTACK DESCRIPTION & INTENT
+--------------------------------------------------------------------------------
+The primary objective of this activity is reconnaissance. By scanning a broad 
+spectrum of TCP ports, the actor attempts to map out the target machine's 
+attack surface. This includes identifying:
+* Active and reachable hosts on the network.
+* Open ports and listening network services.
+* Potential operating system and service versions (banner grabbing) to discover 
+  known unpatched vulnerabilities for subsequent exploitation phases.
+
+4. REMEDIATION & MITIGATION RECOMMENDATIONS
+--------------------------------------------------------------------------------
+* Firewall Rules: Implement strict ingress filtering policies to block or rate-limit 
+  excessive connection requests from a single source.
+* IDS/IPS Configuration: Ensure Intrusion Detection/Prevention Systems are 
+  configured to detect and automatically drop traffic from hosts exhibiting 
+  port-scanning behavior.
+* Service Hardening: Close all unused ports and ensure that essential public-facing 
+  services are fully patched and hidden behind a VPN or secure gateway where applicable.
+================================================================================

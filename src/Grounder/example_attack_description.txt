@@ -1,0 +1,93 @@
+DNS Tunneling Attack — Phase-by-Phase Breakdown
+=================================================
+
+Infrastructure:
+  - Victim (client):              10.0.2.30
+  - Attacker C2 (rogue DNS):      10.0.2.20
+  - Attacker-controlled domain:   pirate.sea
+  - Duration:                     ~24.5 seconds
+  - Total packets:                434 DNS packets (222 queries, 212 responses)
+  - Query type used:              Type 10 (NULL records)
+
+
+PHASE 1 — Handshake & Capability Negotiation (11 queries)
+----------------------------------------------------------
+
+Step 1.1 — Initial check-in (vaaaakardli.pirate.sea)
+  The first query is a "hello" beacon to the C2. The server responds with
+  "VACKD" — a custom acknowledgement token — confirming the C2 is live and
+  ready. This is the tunnel's handshake.
+
+Step 1.2 — Network parameter retrieval (laegpumiplhhpz12ynd1efljwlkjcgwy.pirate.sea)
+  The client requests network configuration. The server responds with:
+    10.20.30.1-10.20.30.3-1130-24
+  This encodes: nameserver IP, assigned tunnel IP for the client, port (1130),
+  and subnet prefix length (24). The victim is assigned a virtual IP inside
+  the tunnel network.
+
+Step 1.3 — Encoding capability test (yrbi02.pirate.sea)
+  The malware queries the server for supported encoding/compression schemes.
+  The server returns a 48-byte binary capability structure.
+
+Step 1.4 — Character encoding negotiation (zi03 through zi1b — 5 queries)
+  The client sends test strings using various character sets (ASCII printable,
+  extended Latin, binary byte ranges 0xBC-0xFD) to probe what characters
+  survive DNS transport intact. The server echoes back what it received,
+  allowing both sides to agree on a safe encoding alphabet.
+
+Step 1.5 — Codec selection (sbhi1c, obsi1d, obli1e)
+  The final three handshake queries negotiate the encoding algorithm:
+    sbhi1c -> Base128  (upstream encoding: victim to C2)
+    obsi1d -> Base64   (downstream encoding: C2 to victim)
+    obli1e -> Lazy     (fallback/alternate mode)
+
+
+PHASE 2 — Tunnel Establishment & Bidirectional Data Transfer (187 queries)
+---------------------------------------------------------------------------
+
+Step 2.1 — Upstream data chunks via rc/rd prefixed queries (13 queries)
+  Queries starting with "rc", "rd" carry large binary payloads encoded
+  directly into the DNS query name (up to 62 bytes per label, split across
+  multiple labels). These are Base128-encoded chunks sent from victim to C2.
+  Server responses contain large binary blobs (768-1,188 bytes each) flowing
+  back down to the victim.
+
+Step 2.2 — Keepalive / polling loop via na/pa prefixed queries (174 queries)
+  The bulk of traffic uses short query names like "paeacg2y", "pafqcg3a", etc.
+  These are the tunnel's heartbeat/polling mechanism. Even when there is no
+  upstream payload, the client polls the server to pick up downlink data.
+  Server responses contain zlib-compressed data (identified by the x\xda magic
+  bytes). Over 174 exchanges, approximately 14,725 bytes of compressed C2
+  data flowed from the attacker to the victim.
+
+
+PHASE 3 — Large-Scale Data Exfiltration (24 queries)
+-----------------------------------------------------
+
+Step 3.1 — Bulk exfiltration via numeric-prefixed queries (24 queries)
+  Starting ~13 seconds into the session, queries beginning with "1", "1e",
+  "1i", "1m", "1q", "1u", "12", etc., carry maximum-length (~250 byte) query
+  names packed with binary data. These represent large chunks of data being
+  exfiltrated from the victim — likely a file, credential dump, or command
+  output. The server acknowledges each chunk with a 2-byte sequence response
+  (e.g., 0xa0 0x20, 0xb0 0x20) confirming receipt.
+
+
+Summary Table
+-------------
+Phase                  | Queries | Direction    | Description
+-----------------------+---------+--------------+----------------------------------
+1 - Handshake          |      11 | Bidirectional| Version, IP assignment, encoding
+2a - Tunnel data       |      13 | Both         | First tunnel data exchange
+2b - Polling loop      |     174 | Mostly down  | ~14.7 KB C2 commands via responses
+3 - Exfiltration       |      24 | Upstream     | Large binary blob sent to C2
+
+Total data moved:
+  ~10.6 KB in query names  (victim -> C2)
+  ~20.7 KB in DNS responses (C2 -> victim)
+
+All traffic disguised as legitimate DNS queries to the domain "pirate.sea".
+
+Tool signature: Consistent with dns2tcp, iodine, or a custom DNS tunnel agent.
+The "VACKD" magic token, NULL record usage, and Base128 codec negotiation are
+characteristic indicators.

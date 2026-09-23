@@ -1,0 +1,904 @@
+{
+  "Preprocessor": {
+    "compression_stats": {
+      "raw_packet_count_in": 434,
+      "packet_count_out": 6,
+      "estimated_tokens_out": 318,
+      "dropped_parse_failures": 0,
+      "compression_ratio": 0.9862
+    },
+    "budget_status": "within_budget",
+    "budget_status_detail": null,
+    "filter_string_used": "(udp port 53 or tcp port 53)",
+    "capture_error": null
+  },
+  "resolved_actors": [
+    {
+      "actor_id": "victim_client",
+      "role": "victim",
+      "description_ref": "Victim (client)",
+      "resolved_endpoints": [
+        "10.0.2.30"
+      ],
+      "resolution_basis": "Joint LLM resolution: The IP 10.0.2.30 is primarily sending DNS requests to 10.0.2.20, which is consistent with the behavior of a client querying a DNS server. The role of 'victim client' suggests it is the one initiating requests, matching the pattern of 10.0.2.30."
+    },
+    {
+      "actor_id": "attacker_c2",
+      "role": "attacker C2 server",
+      "description_ref": "Attacker C2 (rogue DNS)",
+      "resolved_endpoints": [
+        "10.0.2.20"
+      ],
+      "resolution_basis": "Joint LLM resolution: The IP 10.0.2.20 is primarily responding to DNS requests from 10.0.2.30, which aligns with the behavior of a DNS server. Given the role of 'attacker C2 server' as a rogue DNS, 10.0.2.20 fits this role as it is acting as a DNS server."
+    },
+    {
+      "actor_id": "attacker_controlled_domain",
+      "role": "attacker-controlled domain",
+      "description_ref": "Attacker-controlled domain: pirate.sea",
+      "resolved_endpoints": [],
+      "resolution_basis": "The role 'attacker-controlled domain' refers to a domain name rather than an IP address. The provided IPs do not directly correlate to a domain name, and there is no specific evidence linking either IP to the domain 'pirate.sea'."
+    }
+  ],
+  "grounded_steps": [
+    {
+      "step": {
+        "step_id": "step 1",
+        "text": "The victim client sends a DNS query to the attacker C2 server with the domain vaaaakardli.pirate.sea as a 'hello' beacon.",
+        "expected_indicators": {
+          "protocol": "DNS",
+          "port": null,
+          "flags": null,
+          "direction": "victim_client->attacker_c2",
+          "volume_pattern": null,
+          "cardinality_pattern": null,
+          "indicator_description": "A DNS query with the domain vaaaakardli.pirate.sea sent from the victim client to the attacker C2 server.",
+          "ip_hint": null
+        },
+        "actor_refs": [
+          "victim_client",
+          "attacker_c2",
+          "attacker_controlled_domain"
+        ]
+      },
+      "grounding": {
+        "status": "uncertain_needs_drilldown",
+        "linked_packets": [],
+        "linked_aggregate_refs": [],
+        "notes": "depends on unresolved actor 'attacker_controlled_domain'"
+      }
+    },
+    {
+      "step": {
+        "step_id": "step 2",
+        "text": "The attacker C2 server responds to the victim client with a custom acknowledgement token 'VACKD'.",
+        "expected_indicators": {
+          "protocol": "DNS",
+          "port": null,
+          "flags": null,
+          "direction": "attacker_c2->victim_client",
+          "volume_pattern": null,
+          "cardinality_pattern": null,
+          "indicator_description": "A DNS response from the attacker C2 server to the victim client containing the token 'VACKD'.",
+          "ip_hint": null
+        },
+        "actor_refs": [
+          "victim_client",
+          "attacker_c2"
+        ]
+      },
+      "grounding": {
+        "status": "uncertain_needs_drilldown",
+        "linked_packets": [
+          {
+            "packet_id": 1,
+            "timestamp": "2010-08-21T05:10:40.051082",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 82,
+            "info": "DPort: 53"
+          },
+          {
+            "packet_id": 3,
+            "timestamp": "2010-08-21T05:10:40.051979",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 103,
+            "info": "DPort: 53"
+          },
+          {
+            "packet_id": 5,
+            "timestamp": "2010-08-21T05:10:40.057774",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 88,
+            "info": "DPort: 53"
+          }
+        ],
+        "linked_aggregate_refs": [
+          {
+            "fingerprint_key": "[\"UDP\",[\"53\"]]",
+            "count": 222,
+            "unique_sources": [
+              "10.0.2.30"
+            ],
+            "unique_destinations": [
+              "10.0.2.20"
+            ]
+          }
+        ],
+        "notes": "matches fingerprint [\"UDP\",[\"53\"]], but only 3/222 packets have raw detail"
+      }
+    },
+    {
+      "step": {
+        "step_id": "step 3",
+        "text": "The victim client sends a DNS query to the attacker C2 server with the domain laegpumiplhhpz12ynd1efljwlkjcgwy.pirate.sea to request network configuration.",
+        "expected_indicators": {
+          "protocol": "DNS",
+          "port": null,
+          "flags": null,
+          "direction": "victim_client->attacker_c2",
+          "volume_pattern": null,
+          "cardinality_pattern": null,
+          "indicator_description": "A DNS query with the domain laegpumiplhhpz12ynd1efljwlkjcgwy.pirate.sea sent from the victim client to the attacker C2 server.",
+          "ip_hint": null
+        },
+        "actor_refs": [
+          "victim_client",
+          "attacker_c2",
+          "attacker_controlled_domain"
+        ]
+      },
+      "grounding": {
+        "status": "uncertain_needs_drilldown",
+        "linked_packets": [],
+        "linked_aggregate_refs": [],
+        "notes": "depends on unresolved actor 'attacker_controlled_domain'"
+      }
+    },
+    {
+      "step": {
+        "step_id": "step 4",
+        "text": "The attacker C2 server responds with network configuration details encoded in the response.",
+        "expected_indicators": {
+          "protocol": "DNS",
+          "port": null,
+          "flags": null,
+          "direction": "attacker_c2->victim_client",
+          "volume_pattern": null,
+          "cardinality_pattern": null,
+          "indicator_description": "A DNS response from the attacker C2 server to the victim client containing network configuration details.",
+          "ip_hint": null
+        },
+        "actor_refs": [
+          "victim_client",
+          "attacker_c2"
+        ]
+      },
+      "grounding": {
+        "status": "uncertain_needs_drilldown",
+        "linked_packets": [
+          {
+            "packet_id": 1,
+            "timestamp": "2010-08-21T05:10:40.051082",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 82,
+            "info": "DPort: 53"
+          },
+          {
+            "packet_id": 3,
+            "timestamp": "2010-08-21T05:10:40.051979",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 103,
+            "info": "DPort: 53"
+          },
+          {
+            "packet_id": 5,
+            "timestamp": "2010-08-21T05:10:40.057774",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 88,
+            "info": "DPort: 53"
+          }
+        ],
+        "linked_aggregate_refs": [
+          {
+            "fingerprint_key": "[\"UDP\",[\"53\"]]",
+            "count": 222,
+            "unique_sources": [
+              "10.0.2.30"
+            ],
+            "unique_destinations": [
+              "10.0.2.20"
+            ]
+          }
+        ],
+        "notes": "matches fingerprint [\"UDP\",[\"53\"]], but only 3/222 packets have raw detail"
+      }
+    },
+    {
+      "step": {
+        "step_id": "step 5",
+        "text": "The victim client sends a DNS query to the attacker C2 server with the domain yrbi02.pirate.sea to test encoding capabilities.",
+        "expected_indicators": {
+          "protocol": "DNS",
+          "port": null,
+          "flags": null,
+          "direction": "victim_client->attacker_c2",
+          "volume_pattern": null,
+          "cardinality_pattern": null,
+          "indicator_description": "A DNS query with the domain yrbi02.pirate.sea sent from the victim client to the attacker C2 server to test encoding capabilities.",
+          "ip_hint": null
+        },
+        "actor_refs": [
+          "victim_client",
+          "attacker_c2",
+          "attacker_controlled_domain"
+        ]
+      },
+      "grounding": {
+        "status": "uncertain_needs_drilldown",
+        "linked_packets": [],
+        "linked_aggregate_refs": [],
+        "notes": "depends on unresolved actor 'attacker_controlled_domain'"
+      }
+    },
+    {
+      "step": {
+        "step_id": "step 6",
+        "text": "The attacker C2 server responds with a 48-byte binary capability structure.",
+        "expected_indicators": {
+          "protocol": "DNS",
+          "port": null,
+          "flags": null,
+          "direction": "attacker_c2->victim_client",
+          "volume_pattern": null,
+          "cardinality_pattern": null,
+          "indicator_description": "A DNS response from the attacker C2 server to the victim client containing a 48-byte binary capability structure.",
+          "ip_hint": null
+        },
+        "actor_refs": [
+          "victim_client",
+          "attacker_c2"
+        ]
+      },
+      "grounding": {
+        "status": "uncertain_needs_drilldown",
+        "linked_packets": [
+          {
+            "packet_id": 1,
+            "timestamp": "2010-08-21T05:10:40.051082",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 82,
+            "info": "DPort: 53"
+          },
+          {
+            "packet_id": 3,
+            "timestamp": "2010-08-21T05:10:40.051979",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 103,
+            "info": "DPort: 53"
+          },
+          {
+            "packet_id": 5,
+            "timestamp": "2010-08-21T05:10:40.057774",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 88,
+            "info": "DPort: 53"
+          }
+        ],
+        "linked_aggregate_refs": [
+          {
+            "fingerprint_key": "[\"UDP\",[\"53\"]]",
+            "count": 222,
+            "unique_sources": [
+              "10.0.2.30"
+            ],
+            "unique_destinations": [
+              "10.0.2.20"
+            ]
+          }
+        ],
+        "notes": "matches fingerprint [\"UDP\",[\"53\"]], but only 3/222 packets have raw detail"
+      }
+    },
+    {
+      "step": {
+        "step_id": "step 7",
+        "text": "The victim client sends multiple DNS queries with domains zi03 through zi1b to test character encoding.",
+        "expected_indicators": {
+          "protocol": "DNS",
+          "port": null,
+          "flags": null,
+          "direction": "victim_client->attacker_c2",
+          "volume_pattern": null,
+          "cardinality_pattern": null,
+          "indicator_description": "Multiple DNS queries with domains zi03 through zi1b sent from the victim client to the attacker C2 server to test character encoding.",
+          "ip_hint": null
+        },
+        "actor_refs": [
+          "victim_client",
+          "attacker_c2",
+          "attacker_controlled_domain"
+        ]
+      },
+      "grounding": {
+        "status": "uncertain_needs_drilldown",
+        "linked_packets": [],
+        "linked_aggregate_refs": [],
+        "notes": "depends on unresolved actor 'attacker_controlled_domain'"
+      }
+    },
+    {
+      "step": {
+        "step_id": "step 8",
+        "text": "The attacker C2 server echoes back the received test strings to the victim client.",
+        "expected_indicators": {
+          "protocol": "DNS",
+          "port": null,
+          "flags": null,
+          "direction": "attacker_c2->victim_client",
+          "volume_pattern": null,
+          "cardinality_pattern": null,
+          "indicator_description": "DNS responses from the attacker C2 server to the victim client echoing back the received test strings.",
+          "ip_hint": null
+        },
+        "actor_refs": [
+          "victim_client",
+          "attacker_c2"
+        ]
+      },
+      "grounding": {
+        "status": "uncertain_needs_drilldown",
+        "linked_packets": [
+          {
+            "packet_id": 1,
+            "timestamp": "2010-08-21T05:10:40.051082",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 82,
+            "info": "DPort: 53"
+          },
+          {
+            "packet_id": 3,
+            "timestamp": "2010-08-21T05:10:40.051979",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 103,
+            "info": "DPort: 53"
+          },
+          {
+            "packet_id": 5,
+            "timestamp": "2010-08-21T05:10:40.057774",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 88,
+            "info": "DPort: 53"
+          }
+        ],
+        "linked_aggregate_refs": [
+          {
+            "fingerprint_key": "[\"UDP\",[\"53\"]]",
+            "count": 222,
+            "unique_sources": [
+              "10.0.2.30"
+            ],
+            "unique_destinations": [
+              "10.0.2.20"
+            ]
+          }
+        ],
+        "notes": "matches fingerprint [\"UDP\",[\"53\"]], but only 3/222 packets have raw detail"
+      }
+    },
+    {
+      "step": {
+        "step_id": "step 9",
+        "text": "The victim client sends DNS queries with domains sbhi1c, obsi1d, obli1e to negotiate encoding algorithms.",
+        "expected_indicators": {
+          "protocol": "DNS",
+          "port": null,
+          "flags": null,
+          "direction": "victim_client->attacker_c2",
+          "volume_pattern": null,
+          "cardinality_pattern": null,
+          "indicator_description": "DNS queries with domains sbhi1c, obsi1d, obli1e sent from the victim client to the attacker C2 server to negotiate encoding algorithms.",
+          "ip_hint": null
+        },
+        "actor_refs": [
+          "victim_client",
+          "attacker_c2",
+          "attacker_controlled_domain"
+        ]
+      },
+      "grounding": {
+        "status": "uncertain_needs_drilldown",
+        "linked_packets": [],
+        "linked_aggregate_refs": [],
+        "notes": "depends on unresolved actor 'attacker_controlled_domain'"
+      }
+    },
+    {
+      "step": {
+        "step_id": "step 10",
+        "text": "The victim client sends DNS queries with rc/rd prefixes carrying large binary payloads to the attacker C2 server.",
+        "expected_indicators": {
+          "protocol": "DNS",
+          "port": null,
+          "flags": null,
+          "direction": "victim_client->attacker_c2",
+          "volume_pattern": null,
+          "cardinality_pattern": null,
+          "indicator_description": "DNS queries with rc/rd prefixes carrying large binary payloads sent from the victim client to the attacker C2 server.",
+          "ip_hint": null
+        },
+        "actor_refs": [
+          "victim_client",
+          "attacker_c2"
+        ]
+      },
+      "grounding": {
+        "status": "uncertain_needs_drilldown",
+        "linked_packets": [
+          {
+            "packet_id": 1,
+            "timestamp": "2010-08-21T05:10:40.051082",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 82,
+            "info": "DPort: 53"
+          },
+          {
+            "packet_id": 3,
+            "timestamp": "2010-08-21T05:10:40.051979",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 103,
+            "info": "DPort: 53"
+          },
+          {
+            "packet_id": 5,
+            "timestamp": "2010-08-21T05:10:40.057774",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 88,
+            "info": "DPort: 53"
+          }
+        ],
+        "linked_aggregate_refs": [
+          {
+            "fingerprint_key": "[\"UDP\",[\"53\"]]",
+            "count": 222,
+            "unique_sources": [
+              "10.0.2.30"
+            ],
+            "unique_destinations": [
+              "10.0.2.20"
+            ]
+          }
+        ],
+        "notes": "matches fingerprint [\"UDP\",[\"53\"]], but only 3/222 packets have raw detail"
+      }
+    },
+    {
+      "step": {
+        "step_id": "step 11",
+        "text": "The attacker C2 server responds with large binary blobs to the victim client.",
+        "expected_indicators": {
+          "protocol": "DNS",
+          "port": null,
+          "flags": null,
+          "direction": "attacker_c2->victim_client",
+          "volume_pattern": null,
+          "cardinality_pattern": null,
+          "indicator_description": "DNS responses with large binary blobs sent from the attacker C2 server to the victim client.",
+          "ip_hint": null
+        },
+        "actor_refs": [
+          "victim_client",
+          "attacker_c2"
+        ]
+      },
+      "grounding": {
+        "status": "uncertain_needs_drilldown",
+        "linked_packets": [
+          {
+            "packet_id": 1,
+            "timestamp": "2010-08-21T05:10:40.051082",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 82,
+            "info": "DPort: 53"
+          },
+          {
+            "packet_id": 3,
+            "timestamp": "2010-08-21T05:10:40.051979",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 103,
+            "info": "DPort: 53"
+          },
+          {
+            "packet_id": 5,
+            "timestamp": "2010-08-21T05:10:40.057774",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 88,
+            "info": "DPort: 53"
+          }
+        ],
+        "linked_aggregate_refs": [
+          {
+            "fingerprint_key": "[\"UDP\",[\"53\"]]",
+            "count": 222,
+            "unique_sources": [
+              "10.0.2.30"
+            ],
+            "unique_destinations": [
+              "10.0.2.20"
+            ]
+          }
+        ],
+        "notes": "matches fingerprint [\"UDP\",[\"53\"]], but only 3/222 packets have raw detail"
+      }
+    },
+    {
+      "step": {
+        "step_id": "step 12",
+        "text": "The victim client sends DNS queries with na/pa prefixes as part of a keepalive/polling loop to the attacker C2 server.",
+        "expected_indicators": {
+          "protocol": "DNS",
+          "port": null,
+          "flags": null,
+          "direction": "victim_client->attacker_c2",
+          "volume_pattern": null,
+          "cardinality_pattern": null,
+          "indicator_description": "DNS queries with na/pa prefixes sent from the victim client to the attacker C2 server as part of a keepalive/polling loop.",
+          "ip_hint": null
+        },
+        "actor_refs": [
+          "victim_client",
+          "attacker_c2"
+        ]
+      },
+      "grounding": {
+        "status": "uncertain_needs_drilldown",
+        "linked_packets": [
+          {
+            "packet_id": 1,
+            "timestamp": "2010-08-21T05:10:40.051082",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 82,
+            "info": "DPort: 53"
+          },
+          {
+            "packet_id": 3,
+            "timestamp": "2010-08-21T05:10:40.051979",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 103,
+            "info": "DPort: 53"
+          },
+          {
+            "packet_id": 5,
+            "timestamp": "2010-08-21T05:10:40.057774",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 88,
+            "info": "DPort: 53"
+          }
+        ],
+        "linked_aggregate_refs": [
+          {
+            "fingerprint_key": "[\"UDP\",[\"53\"]]",
+            "count": 222,
+            "unique_sources": [
+              "10.0.2.30"
+            ],
+            "unique_destinations": [
+              "10.0.2.20"
+            ]
+          }
+        ],
+        "notes": "matches fingerprint [\"UDP\",[\"53\"]], but only 3/222 packets have raw detail"
+      }
+    },
+    {
+      "step": {
+        "step_id": "step 13",
+        "text": "The attacker C2 server responds with zlib-compressed data to the victim client.",
+        "expected_indicators": {
+          "protocol": "DNS",
+          "port": null,
+          "flags": null,
+          "direction": "attacker_c2->victim_client",
+          "volume_pattern": null,
+          "cardinality_pattern": null,
+          "indicator_description": "DNS responses with zlib-compressed data sent from the attacker C2 server to the victim client.",
+          "ip_hint": null
+        },
+        "actor_refs": [
+          "victim_client",
+          "attacker_c2"
+        ]
+      },
+      "grounding": {
+        "status": "uncertain_needs_drilldown",
+        "linked_packets": [
+          {
+            "packet_id": 1,
+            "timestamp": "2010-08-21T05:10:40.051082",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 82,
+            "info": "DPort: 53"
+          },
+          {
+            "packet_id": 3,
+            "timestamp": "2010-08-21T05:10:40.051979",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 103,
+            "info": "DPort: 53"
+          },
+          {
+            "packet_id": 5,
+            "timestamp": "2010-08-21T05:10:40.057774",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 88,
+            "info": "DPort: 53"
+          }
+        ],
+        "linked_aggregate_refs": [
+          {
+            "fingerprint_key": "[\"UDP\",[\"53\"]]",
+            "count": 222,
+            "unique_sources": [
+              "10.0.2.30"
+            ],
+            "unique_destinations": [
+              "10.0.2.20"
+            ]
+          }
+        ],
+        "notes": "matches fingerprint [\"UDP\",[\"53\"]], but only 3/222 packets have raw detail"
+      }
+    },
+    {
+      "step": {
+        "step_id": "step 14",
+        "text": "The victim client sends DNS queries with numeric prefixes carrying maximum-length query names to the attacker C2 server for data exfiltration.",
+        "expected_indicators": {
+          "protocol": "DNS",
+          "port": null,
+          "flags": null,
+          "direction": "victim_client->attacker_c2",
+          "volume_pattern": null,
+          "cardinality_pattern": null,
+          "indicator_description": "DNS queries with numeric prefixes carrying maximum-length query names sent from the victim client to the attacker C2 server for data exfiltration.",
+          "ip_hint": null
+        },
+        "actor_refs": [
+          "victim_client",
+          "attacker_c2"
+        ]
+      },
+      "grounding": {
+        "status": "uncertain_needs_drilldown",
+        "linked_packets": [
+          {
+            "packet_id": 1,
+            "timestamp": "2010-08-21T05:10:40.051082",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 82,
+            "info": "DPort: 53"
+          },
+          {
+            "packet_id": 3,
+            "timestamp": "2010-08-21T05:10:40.051979",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 103,
+            "info": "DPort: 53"
+          },
+          {
+            "packet_id": 5,
+            "timestamp": "2010-08-21T05:10:40.057774",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 88,
+            "info": "DPort: 53"
+          }
+        ],
+        "linked_aggregate_refs": [
+          {
+            "fingerprint_key": "[\"UDP\",[\"53\"]]",
+            "count": 222,
+            "unique_sources": [
+              "10.0.2.30"
+            ],
+            "unique_destinations": [
+              "10.0.2.20"
+            ]
+          }
+        ],
+        "notes": "matches fingerprint [\"UDP\",[\"53\"]], but only 3/222 packets have raw detail"
+      }
+    },
+    {
+      "step": {
+        "step_id": "step 15",
+        "text": "The attacker C2 server acknowledges each exfiltrated data chunk with a 2-byte sequence response to the victim client.",
+        "expected_indicators": {
+          "protocol": "DNS",
+          "port": null,
+          "flags": null,
+          "direction": "attacker_c2->victim_client",
+          "volume_pattern": null,
+          "cardinality_pattern": null,
+          "indicator_description": "2-byte sequence responses sent from the attacker C2 server to the victim client acknowledging each exfiltrated data chunk.",
+          "ip_hint": null
+        },
+        "actor_refs": [
+          "victim_client",
+          "attacker_c2"
+        ]
+      },
+      "grounding": {
+        "status": "uncertain_needs_drilldown",
+        "linked_packets": [
+          {
+            "packet_id": 1,
+            "timestamp": "2010-08-21T05:10:40.051082",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 82,
+            "info": "DPort: 53"
+          },
+          {
+            "packet_id": 3,
+            "timestamp": "2010-08-21T05:10:40.051979",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 103,
+            "info": "DPort: 53"
+          },
+          {
+            "packet_id": 5,
+            "timestamp": "2010-08-21T05:10:40.057774",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 88,
+            "info": "DPort: 53"
+          }
+        ],
+        "linked_aggregate_refs": [
+          {
+            "fingerprint_key": "[\"UDP\",[\"53\"]]",
+            "count": 222,
+            "unique_sources": [
+              "10.0.2.30"
+            ],
+            "unique_destinations": [
+              "10.0.2.20"
+            ]
+          }
+        ],
+        "notes": "matches fingerprint [\"UDP\",[\"53\"]], but only 3/222 packets have raw detail"
+      }
+    }
+  ],
+  "validator_assessment": {
+    "extraction_flags": [
+      {
+        "kind": "fn",
+        "step_id": null,
+        "text_span": "The server responds with: 10.20.30.1-10.20.30.3-1130-24 This encodes: nameserver IP, assigned tunnel IP for the client, port (1130), and subnet prefix length (24). The victim is assigned a virtual IP inside the tunnel network.",
+        "reason": "The response with network configuration details is not explicitly captured in any step.",
+        "related_actors": [
+          "victim_client",
+          "attacker_c2"
+        ],
+        "candidate_evidence_refs": [
+          "UDP",
+          [
+            "53"
+          ]
+        ]
+      },
+      {
+        "kind": "fn",
+        "step_id": null,
+        "text_span": "The server returns a 48-byte binary capability structure.",
+        "reason": "The response with a 48-byte binary capability structure is not explicitly captured in any step.",
+        "related_actors": [
+          "victim_client",
+          "attacker_c2"
+        ],
+        "candidate_evidence_refs": [
+          "UDP",
+          [
+            "53"
+          ]
+        ]
+      },
+      {
+        "kind": "fn",
+        "step_id": null,
+        "text_span": "The server echoes back what it received, allowing both sides to agree on a safe encoding alphabet.",
+        "reason": "The server echoing back the received test strings is not explicitly captured in any step.",
+        "related_actors": [
+          "victim_client",
+          "attacker_c2"
+        ],
+        "candidate_evidence_refs": [
+          "UDP",
+          [
+            "53"
+          ]
+        ]
+      },
+      {
+        "kind": "fn",
+        "step_id": null,
+        "text_span": "The final three handshake queries negotiate the encoding algorithm: sbhi1c -> Base128 (upstream encoding: victim to C2) obsi1d -> Base64 (downstream encoding: C2 to victim) obli1e -> Lazy (fallback/alternate mode)",
+        "reason": "The specific encoding algorithms negotiated are not explicitly captured in any step.",
+        "related_actors": [
+          "victim_client",
+          "attacker_c2"
+        ],
+        "candidate_evidence_refs": [
+          "UDP",
+          [
+            "53"
+          ]
+        ]
+      }
+    ],
+    "linkage_flags": [],
+    "total_steps_reviewed": 15
+  },
+  "visualizer": {
+    "d2_path": "output_diagram/traffic_diagram.d2",
+    "rendered_paths": {},
+    "warnings": []
+  }
+}

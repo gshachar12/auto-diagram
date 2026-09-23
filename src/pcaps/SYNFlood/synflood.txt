@@ -1,0 +1,27 @@
+Minecraft Server DDoS Attack Report: TCP SYN Flood
+
+1. Attack Overview
+The provided network capture illustrates a classic TCP SYN Flood, a form of Distributed Denial of Service (DDoS) attack. The malicious actor is targeting a Minecraft server to exhaust its resources and make it completely unavailable to legitimate players.
+
+2. Technical Breakdown
+
+   A. Target Destination
+      - IP Address: 10.10.10.10 (Internal/Private IP address)
+      - Port: 25565 (The default network port for Minecraft Java Edition servers)
+
+   B. Mechanism of the Attack
+      In a standard TCP connection, a three-way handshake is required to establish communication:
+      1. Client sends a SYN (Synchronize) packet.
+      2. Server replies with a SYN-ACK (Synchronize-Acknowledgment) packet and allocates memory for the connection.
+      3. Client responds with an ACK (Acknowledgment) packet to complete the handshake.
+
+      During this attack, the handshake is intentionally left incomplete:
+      - High Volume: Dozens of unique external IP addresses inundate the server with SYN packets ([SYN] Seq=0) within milliseconds.
+      - Zero Window Size: The packets explicitly show a window size of zero (Win=0).
+      - No Follow-up: The source IPs never send the final ACK packet. The server is forced to keep these connections half-open, rapidly consuming its connection queue (SYN backlog).
+
+3. Impact on the Minecraft Server
+As the server receives thousands of fraudulent requests per second, its CPU and memory resources are depleted trying to maintain the state of incomplete handshakes. Consequently, legitimate players will experience severe lag, failure to connect, or immediate disconnection with "Connection Timed Out" errors.
+
+4. Key Observations: Botnet or IP Spoofing
+The log shows a completely unique source IP address for almost every single packet (e.g., 160.161.74.108, 80.24.71.108, 64.93.51.108). This indicates the attacker is either utilizing a botnet (a network of compromised devices distributed worldwide) or spoofing (faking) the source IP addresses to bypass simple IP-based firewall blocks.

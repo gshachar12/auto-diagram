@@ -1,0 +1,137 @@
+{
+  "sample_id": "ransomware_01_baseline",
+  "claim_extraction": {
+    "precision": 1.0,
+    "recall": 0.8333333333333334,
+    "f1": 0.9090909090909091
+  },
+  "grounding_accuracy_per_status": {
+    "grounded": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    "unsupported": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    "uncertain_needs_drilldown": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    }
+  },
+  "evidence_matching": {
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1": 0.0
+  },
+  "claim_alignment_audit": [
+    {
+      "system_text": "The victim host requests a resource from a remote web server.",
+      "matched_gold_text": "The victim host requests a lure resource; the server responds with an HTTP redirect leading directly to a JavaScript downloader.",
+      "score": 0.415,
+      "confidence": "high"
+    },
+    {
+      "system_text": "The remote web server responds with an HTTP redirect leading to a JavaScript downloader hosted on the same infrastructure.",
+      "matched_gold_text": "The victim host requests a lure resource; the server responds with an HTTP redirect leading directly to a JavaScript downloader.",
+      "score": 0.541,
+      "confidence": "high"
+    },
+    {
+      "system_text": "The victim host fetches the JavaScript file.",
+      "matched_gold_text": "The victim host fetches the JavaScript downloader file.",
+      "score": 0.875,
+      "confidence": "high"
+    },
+    {
+      "system_text": "The victim host fetches an executable file from a separate, disposable-looking domain.",
+      "matched_gold_text": "The victim host fetches an executable file from a separate domain -- the ransomware payload.",
+      "score": 0.687,
+      "confidence": "high"
+    },
+    {
+      "system_text": "The infected host scans a large range of external IP addresses on a single, non-standard UDP port.",
+      "matched_gold_text": "Shortly after the payload is retrieved, the infected host scans a large range of external IP addresses on a single, non-standard UDP port.",
+      "score": 0.879,
+      "confidence": "high"
+    },
+    {
+      "system_text": "The infected host contacts a command-and-control server using a domain with a random-looking subdomain under an uncommon top-level domain.",
+      "matched_gold_text": "The infected host contacts a command-and-control server using a random-looking subdomain under an uncommon TLD.",
+      "score": 0.765,
+      "confidence": "high"
+    }
+  ],
+  "actor_extraction": {
+    "precision": 0.75,
+    "recall": 0.5,
+    "f1": 0.6
+  },
+  "actor_ip_resolution": {
+    "correctly_resolved": 1,
+    "incorrectly_resolved": 2,
+    "extracted_but_unresolved": 0,
+    "never_extracted": 2
+  },
+  "coreference_muc": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+  },
+  "coreference_bcubed": {
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+  },
+  "coreference_ceaf": {
+    "precision": 0.75,
+    "recall": 1.0,
+    "f1": 0.8571428571428571
+  },
+  "actor_alignment_audit": [
+    {
+      "system_text": "the victim host",
+      "matched_gold_text": "the infected/compromised host",
+      "score": 0.219,
+      "confidence": "borderline"
+    },
+    {
+      "system_text": "a remote web server",
+      "matched_gold_text": "command-and-control server contacted after infection (.top domain)",
+      "score": 0.173,
+      "confidence": "borderline"
+    },
+    {
+      "system_text": "a separate, disposable-looking domain",
+      "matched_gold_text": null,
+      "score": 0.138,
+      "confidence": "none"
+    },
+    {
+      "system_text": "a command-and-control server, using a domain with a random-looking subdomain under an uncommon top-level domain",
+      "matched_gold_text": "command-and-control server contacted after infection (.top domain)",
+      "score": 0.452,
+      "confidence": "high"
+    }
+  ],
+  "compliance": [
+    {
+      "check_name": "grounded_requires_evidence",
+      "passed": true,
+      "violations": []
+    },
+    {
+      "check_name": "resolved_ip_is_observed",
+      "passed": true,
+      "violations": []
+    },
+    {
+      "check_name": "no_unexplained_duplicate_resolution",
+      "passed": true,
+      "violations": []
+    }
+  ]
+}
