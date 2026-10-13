@@ -360,7 +360,8 @@ def _annotation_form(state: EntryState) -> None:
         previous = next((a["annotator"] for a in state.gt.get("annotations", []) if a.get("annotator")), "")
         annotator = top[0].text_input("Annotator", value=previous, key=f"annot_{state.entry.name}",
                                       help="Stored with each label, for inter-annotator agreement.")
-        submitted_top = top[1].form_submit_button("Save ground truth", type="primary")
+        submitted_top = top[1].form_submit_button("Save ground truth", type="primary",
+                                                   key=f"save_top_{state.entry.name}")
         top[2].caption("Label the clusters that support each step. Rows show the grounder's top-k "
                        "candidates; use the second table to label any other cluster.")
 
@@ -374,7 +375,8 @@ def _annotation_form(state: EntryState) -> None:
             if done or labels:
                 done_steps.add(sg.step.step_id)
 
-        submitted_bottom = st.form_submit_button("Save ground truth", type="primary")
+        submitted_bottom = st.form_submit_button("Save ground truth", type="primary",
+                                                 key=f"save_bottom_{state.entry.name}")
 
     if submitted_top or submitted_bottom:
         save_gt(state.entry, state.steps, all_labels, done_steps, state.clusters_by_key,

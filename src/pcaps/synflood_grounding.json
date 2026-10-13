@@ -1,0 +1,241 @@
+{
+  "pcap": "synflood.pcap",
+  "preprocess_settings": {
+    "token_budget": 10000,
+    "filtering_limit": 3,
+    "delta_t": 300.0,
+    "max_packets": null
+  },
+  "generated_at": "2026-10-13T12:40:55+00:00",
+  "grounding": {
+    "step_groundings": [
+      {
+        "step": {
+          "step_id": 1,
+          "text": "10.10.10.10 receives 37,841 bare TCP SYN packets on destination port 25565 within 23.7 seconds.",
+          "source_text": "Every packet in the capture is a bare TCP SYN to 10.10.10.10 port 25565.",
+          "mitre_tag": "T1499.001"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,25565,null,5398686]",
+            "cluster_text": "TCP connection initiation (SYN) on port 25565. 37841 packets (2270460 bytes total) from 37623 unique sources to one destination. Inter-arrival time: mean 0.63ms (extremely high packet rate, highly irregular interval). Accounts for 100.0% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.9876,
+            "rank": 1,
+            "evidence_label": "SUPPORTS",
+            "score_gap": 0.9876,
+            "bi_encoder_score": 0.7981
+          }
+        ],
+        "is_ambiguous": false,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.9876
+      },
+      {
+        "step": {
+          "step_id": 2,
+          "text": "The SYNs come from 37,623 different source addresses spread across the IPv4 space, almost all sending a single SYN, from random source ports.",
+          "source_text": "The source addresses are scattered across the whole IPv4 space and almost never repeat: 37,405 addresses sent exactly one SYN and only 218 sent two. Source ports are random.",
+          "mitre_tag": "T1499.001"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,25565,null,5398686]",
+            "cluster_text": "TCP connection initiation (SYN) on port 25565. 37841 packets (2270460 bytes total) from 37623 unique sources to one destination. Inter-arrival time: mean 0.63ms (extremely high packet rate, highly irregular interval). Accounts for 100.0% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.6541,
+            "rank": 1,
+            "evidence_label": "PARTIAL",
+            "score_gap": 0.6541,
+            "bi_encoder_score": 0.7253
+          }
+        ],
+        "is_ambiguous": false,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.6541
+      },
+      {
+        "step": {
+          "step_id": 3,
+          "text": "Each SYN has a TCP window of 0, no TCP options, no payload, and a TTL of 242 or 244.",
+          "source_text": "The packets carry a TCP window of 0, no TCP options and no payload, and arrive with a TTL of 242 or 244 whatever their claimed origin.",
+          "mitre_tag": "T1499.001"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,25565,null,5398686]",
+            "cluster_text": "TCP connection initiation (SYN) on port 25565. 37841 packets (2270460 bytes total) from 37623 unique sources to one destination. Inter-arrival time: mean 0.63ms (extremely high packet rate, highly irregular interval). Accounts for 100.0% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.0045,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0045,
+            "bi_encoder_score": 0.7113
+          }
+        ],
+        "is_ambiguous": false,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0045
+      },
+      {
+        "step": {
+          "step_id": 4,
+          "text": "A burst of 23,620 SYNs arrives in the first second, followed by 675 in the next second.",
+          "source_text": "It opened with a burst of 23,620 SYNs in the first second and 675 in the next.",
+          "mitre_tag": "T1499.001"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,25565,null,5398686]",
+            "cluster_text": "TCP connection initiation (SYN) on port 25565. 37841 packets (2270460 bytes total) from 37623 unique sources to one destination. Inter-arrival time: mean 0.63ms (extremely high packet rate, highly irregular interval). Accounts for 100.0% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.0012,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0012,
+            "bi_encoder_score": 0.6539
+          }
+        ],
+        "is_ambiguous": false,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0012
+      },
+      {
+        "step": {
+          "step_id": 5,
+          "text": "A second burst delivers 10,193 SYNs in the fourth second and 2,551 in the fifth.",
+          "source_text": "After a short pause a second burst delivered 10,193 SYNs in the fourth second and 2,551 in the fifth.",
+          "mitre_tag": "T1499.001"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,25565,null,5398686]",
+            "cluster_text": "TCP connection initiation (SYN) on port 25565. 37841 packets (2270460 bytes total) from 37623 unique sources to one destination. Inter-arrival time: mean 0.63ms (extremely high packet rate, highly irregular interval). Accounts for 100.0% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.0016,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0016,
+            "bi_encoder_score": 0.6119
+          }
+        ],
+        "is_ambiguous": false,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0016
+      },
+      {
+        "step": {
+          "step_id": 6,
+          "text": "After about eight quiet seconds, SYNs to port 25565 continue at a low steady rate of 60 to 95 per second until the end of the capture.",
+          "source_text": "The sender then went quiet for about eight seconds and resumed at a low, steady rate of 60 to 95 SYNs per second from 13 seconds until the end of the capture.",
+          "mitre_tag": "T1499.001"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,25565,null,5398686]",
+            "cluster_text": "TCP connection initiation (SYN) on port 25565. 37841 packets (2270460 bytes total) from 37623 unique sources to one destination. Inter-arrival time: mean 0.63ms (extremely high packet rate, highly irregular interval). Accounts for 100.0% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.1157,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.1157,
+            "bi_encoder_score": 0.7443
+          }
+        ],
+        "is_ambiguous": false,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.1157
+      },
+      {
+        "step": {
+          "step_id": 7,
+          "text": "10.10.10.10 sends no SYN-ACK or RST packets in response.",
+          "source_text": "The capture contains no SYN-ACK or RST packets from 10.10.10.10.",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,25565,null,5398686]",
+            "cluster_text": "TCP connection initiation (SYN) on port 25565. 37841 packets (2270460 bytes total) from 37623 unique sources to one destination. Inter-arrival time: mean 0.63ms (extremely high packet rate, highly irregular interval). Accounts for 100.0% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.0034,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0034,
+            "bi_encoder_score": 0.5929
+          }
+        ],
+        "is_ambiguous": false,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0034
+      }
+    ],
+    "threshold_used": 0.0,
+    "model_bi_encoder": "BAAI/bge-large-en-v1.5",
+    "model_cross_encoder": "BAAI/bge-reranker-large",
+    "parameters": {
+      "top_k": 10,
+      "supports_threshold": 0.75,
+      "partial_threshold": 0.55,
+      "neutral_threshold": 0.0,
+      "ambiguity_threshold": 0.1,
+      "query_instruction": "Represent this sentence for searching relevant passages: "
+    },
+    "clusters_scored": 1,
+    "clusters_skipped_no_text": 0,
+    "grounding_dict": {
+      "1": [
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,25565,null,5398686]",
+          "score": 0.9876,
+          "evidence": "SUPPORTS",
+          "rank": 1
+        }
+      ],
+      "2": [
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,25565,null,5398686]",
+          "score": 0.6541,
+          "evidence": "PARTIAL",
+          "rank": 1
+        }
+      ],
+      "3": [
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,25565,null,5398686]",
+          "score": 0.0045,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        }
+      ],
+      "4": [
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,25565,null,5398686]",
+          "score": 0.0012,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        }
+      ],
+      "5": [
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,25565,null,5398686]",
+          "score": 0.0016,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        }
+      ],
+      "6": [
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,25565,null,5398686]",
+          "score": 0.1157,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        }
+      ],
+      "7": [
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,25565,null,5398686]",
+          "score": 0.0034,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        }
+      ]
+    },
+    "ungrounded_step_ids": [],
+    "ambiguous_step_ids": []
+  }
+}

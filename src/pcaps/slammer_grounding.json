@@ -1,0 +1,121 @@
+{
+  "pcap": "slammer.pcap",
+  "preprocess_settings": {
+    "token_budget": 10000,
+    "filtering_limit": 3,
+    "delta_t": 300.0,
+    "max_packets": null
+  },
+  "generated_at": "2026-10-13T12:40:50+00:00",
+  "grounding": {
+    "step_groundings": [
+      {
+        "step": {
+          "step_id": 1,
+          "text": "213.76.212.22 sends a single UDP datagram from source port 20199 to 65.165.167.86 on destination port 1434.",
+          "source_text": "213.76.212.22 sent one UDP datagram from source port 20199 to destination port 1434, the Microsoft SQL Server Resolution Service.",
+          "mitre_tag": "T1210"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",null,1434,null,3552744]",
+            "cluster_text": "UDP traffic on port 1434. 1 packets (418 bytes total) from one source to one destination. Accounts for 100.0% of total capture traffic. Relevance tier: REMNANT (no context match).",
+            "score": 0.7924,
+            "rank": 1,
+            "evidence_label": "SUPPORTS",
+            "score_gap": 0.7924,
+            "bi_encoder_score": 0.7431
+          }
+        ],
+        "is_ambiguous": false,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.7924
+      },
+      {
+        "step": {
+          "step_id": 2,
+          "text": "The UDP datagram carries a 376-byte payload starting with byte 0x04, followed by a long run of 0x01 bytes, a NOP sled and x86 machine code.",
+          "source_text": "The payload starts with the byte 0x04, the Resolution Service request type that triggers the stack overflow, followed by a long run of 0x01 filler bytes, a short NOP sled and x86 machine code.",
+          "mitre_tag": "T1210"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",null,1434,null,3552744]",
+            "cluster_text": "UDP traffic on port 1434. 1 packets (418 bytes total) from one source to one destination. Accounts for 100.0% of total capture traffic. Relevance tier: REMNANT (no context match).",
+            "score": 0.0212,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0212,
+            "bi_encoder_score": 0.7087
+          }
+        ],
+        "is_ambiguous": false,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0212
+      },
+      {
+        "step": {
+          "step_id": 3,
+          "text": "65.165.167.86 sends no reply to 213.76.212.22.",
+          "source_text": "There is no reply from 65.165.167.86 in the capture and no follow-up traffic.",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",null,1434,null,3552744]",
+            "cluster_text": "UDP traffic on port 1434. 1 packets (418 bytes total) from one source to one destination. Accounts for 100.0% of total capture traffic. Relevance tier: REMNANT (no context match).",
+            "score": 0.0001,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.4694
+          }
+        ],
+        "is_ambiguous": false,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0001
+      }
+    ],
+    "threshold_used": 0.0,
+    "model_bi_encoder": "BAAI/bge-large-en-v1.5",
+    "model_cross_encoder": "BAAI/bge-reranker-large",
+    "parameters": {
+      "top_k": 10,
+      "supports_threshold": 0.75,
+      "partial_threshold": 0.55,
+      "neutral_threshold": 0.0,
+      "ambiguity_threshold": 0.1,
+      "query_instruction": "Represent this sentence for searching relevant passages: "
+    },
+    "clusters_scored": 1,
+    "clusters_skipped_no_text": 0,
+    "grounding_dict": {
+      "1": [
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",null,1434,null,3552744]",
+          "score": 0.7924,
+          "evidence": "SUPPORTS",
+          "rank": 1
+        }
+      ],
+      "2": [
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",null,1434,null,3552744]",
+          "score": 0.0212,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        }
+      ],
+      "3": [
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",null,1434,null,3552744]",
+          "score": 0.0001,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        }
+      ]
+    },
+    "ungrounded_step_ids": [],
+    "ambiguous_step_ids": []
+  }
+}

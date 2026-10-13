@@ -1,0 +1,694 @@
+{
+  "pcap": "portscan.pcap",
+  "preprocess_settings": {
+    "token_budget": 10000,
+    "filtering_limit": 3,
+    "delta_t": 300.0,
+    "max_packets": null
+  },
+  "generated_at": "2026-10-13T12:39:44+00:00",
+  "grounding": {
+    "step_groundings": [
+      {
+        "step": {
+          "step_id": 1,
+          "text": "10.100.25.14 sends one TCP SYN to each of 29 different destination ports on 10.100.18.12, about every 100 milliseconds.",
+          "source_text": "The scanner sent exactly one TCP SYN packet to each port, 29 SYNs in total, roughly every 100 milliseconds.",
+          "mitre_tag": "T1046"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,1025,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 1025. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.269,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.2144,
+            "bi_encoder_score": 0.7618
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,1029,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 1029. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0546,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0005,
+            "bi_encoder_score": 0.7652
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,9100,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 9100. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0542,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0237,
+            "bi_encoder_score": 0.7665
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,1028,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 1028. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0305,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0123,
+            "bi_encoder_score": 0.7636
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,2869,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 2869. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0182,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.001,
+            "bi_encoder_score": 0.7639
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,135,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 135. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0172,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0031,
+            "bi_encoder_score": 0.763
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,113,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 113. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0141,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0007,
+            "bi_encoder_score": 0.7676
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,79,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 79. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0134,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0024,
+            "bi_encoder_score": 0.7617
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,5000,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 5000. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.011,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0023,
+            "bi_encoder_score": 0.7625
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,23,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 23 (Telnet). 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0087,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0087,
+            "bi_encoder_score": 0.7615
+          }
+        ],
+        "is_ambiguous": false,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.269
+      },
+      {
+        "step": {
+          "step_id": 2,
+          "text": "The first SYN probes target TCP ports 139, 135 and 445 on 10.100.18.12, followed by ports 80, 22, 515, 23, 21 and 6000.",
+          "source_text": "It started with the Windows networking ports 139 (NetBIOS), 135 (RPC) and 445 (SMB), then moved on to 80 (HTTP), 22 (SSH), 515 (printer), 23 (Telnet), 21 (FTP) and 6000 (X11), and continued with 1025, 25, 111, 1028, 9100, 1029, 79, 497, 548, 5000, 1917, 53, 161, 9001, 65535, 443, 113, 993, 8080 and 2869.",
+          "mitre_tag": "T1046"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,139,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 139. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.6872,
+            "rank": 1,
+            "evidence_label": "PARTIAL",
+            "score_gap": 0.4588,
+            "bi_encoder_score": 0.7874
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,135,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 135. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.2283,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0404,
+            "bi_encoder_score": 0.7842
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,515,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 515. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.1879,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0557,
+            "bi_encoder_score": 0.7749
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,445,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 445 (SMB). 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.1322,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0938,
+            "bi_encoder_score": 0.7771
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,9100,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 9100. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0385,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0076,
+            "bi_encoder_score": 0.7799
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,65535,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 65535. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0308,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0003,
+            "bi_encoder_score": 0.7764
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,2869,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 2869. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0306,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0009,
+            "bi_encoder_score": 0.7772
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,1028,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 1028. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0297,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0095,
+            "bi_encoder_score": 0.7743
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,113,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 113. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0202,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0014,
+            "bi_encoder_score": 0.7816
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,548,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 548. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0188,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0188,
+            "bi_encoder_score": 0.7766
+          }
+        ],
+        "is_ambiguous": false,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.6872
+      },
+      {
+        "step": {
+          "step_id": 3,
+          "text": "Each SYN probe comes from a different random source port, carries no payload, has TTL 64 and a TCP window of 8 bytes.",
+          "source_text": "Every SYN came from a different random source port, had no payload, a TTL of 64 and an unusually small TCP window of 8 bytes.",
+          "mitre_tag": "T1046"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,2869,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 2869. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0251,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0012,
+            "bi_encoder_score": 0.7542
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,1917,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 1917. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0239,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.7505
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,1025,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 1025. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0236,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.7504
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,79,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 79. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0234,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.001,
+            "bi_encoder_score": 0.7504
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,1029,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 1029. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0224,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.7538
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,1028,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 1028. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0223,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0011,
+            "bi_encoder_score": 0.7545
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,65535,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 65535. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0212,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.003,
+            "bi_encoder_score": 0.7473
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,548,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 548. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0181,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.7562
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,6000,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 6000. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0181,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0009,
+            "bi_encoder_score": 0.7513
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,497,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 497. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0171,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0171,
+            "bi_encoder_score": 0.7512
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0251
+      },
+      {
+        "step": {
+          "step_id": 4,
+          "text": "10.100.18.12 does not answer: no SYN-ACK and no RST packets go back to 10.100.25.14.",
+          "source_text": "No packets from 10.100.18.12 back to the scanner appear in the capture: no SYN-ACKs from open ports and no RSTs from closed ports.",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,1025,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 1025. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.011,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0088,
+            "bi_encoder_score": 0.6156
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,9100,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 9100. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0023,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0003,
+            "bi_encoder_score": 0.6174
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,1029,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 1029. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0019,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6167
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,445,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 445 (SMB). 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0018,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6366
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,113,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 113. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0018,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.6167
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,993,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 993. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0018,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.6168
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,161,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 161 (SNMP). 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0017,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.6185
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,111,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 111. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0015,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0004,
+            "bi_encoder_score": 0.6155
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,5000,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 5000. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0012,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6145
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",null,23,null,3854767]",
+            "cluster_text": "TCP connection initiation (SYN) on port 23 (Telnet). 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0011,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0011,
+            "bi_encoder_score": 0.6172
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.011
+      }
+    ],
+    "threshold_used": 0.0,
+    "model_bi_encoder": "BAAI/bge-large-en-v1.5",
+    "model_cross_encoder": "BAAI/bge-reranker-large",
+    "parameters": {
+      "top_k": 10,
+      "supports_threshold": 0.75,
+      "partial_threshold": 0.55,
+      "neutral_threshold": 0.0,
+      "ambiguity_threshold": 0.1,
+      "query_instruction": "Represent this sentence for searching relevant passages: "
+    },
+    "clusters_scored": 29,
+    "clusters_skipped_no_text": 0,
+    "grounding_dict": {
+      "1": [
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,1025,null,3854767]",
+          "score": 0.269,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,1029,null,3854767]",
+          "score": 0.0546,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,9100,null,3854767]",
+          "score": 0.0542,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,1028,null,3854767]",
+          "score": 0.0305,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,2869,null,3854767]",
+          "score": 0.0182,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,135,null,3854767]",
+          "score": 0.0172,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,113,null,3854767]",
+          "score": 0.0141,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,79,null,3854767]",
+          "score": 0.0134,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,5000,null,3854767]",
+          "score": 0.011,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,23,null,3854767]",
+          "score": 0.0087,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "2": [
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,139,null,3854767]",
+          "score": 0.6872,
+          "evidence": "PARTIAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,135,null,3854767]",
+          "score": 0.2283,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,515,null,3854767]",
+          "score": 0.1879,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,445,null,3854767]",
+          "score": 0.1322,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,9100,null,3854767]",
+          "score": 0.0385,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,65535,null,3854767]",
+          "score": 0.0308,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,2869,null,3854767]",
+          "score": 0.0306,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,1028,null,3854767]",
+          "score": 0.0297,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,113,null,3854767]",
+          "score": 0.0202,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,548,null,3854767]",
+          "score": 0.0188,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "3": [
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,2869,null,3854767]",
+          "score": 0.0251,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,1917,null,3854767]",
+          "score": 0.0239,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,1025,null,3854767]",
+          "score": 0.0236,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,79,null,3854767]",
+          "score": 0.0234,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,1029,null,3854767]",
+          "score": 0.0224,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,1028,null,3854767]",
+          "score": 0.0223,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,65535,null,3854767]",
+          "score": 0.0212,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,548,null,3854767]",
+          "score": 0.0181,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,6000,null,3854767]",
+          "score": 0.0181,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,497,null,3854767]",
+          "score": 0.0171,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "4": [
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,1025,null,3854767]",
+          "score": 0.011,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,9100,null,3854767]",
+          "score": 0.0023,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,1029,null,3854767]",
+          "score": 0.0019,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,445,null,3854767]",
+          "score": 0.0018,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,113,null,3854767]",
+          "score": 0.0018,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,993,null,3854767]",
+          "score": 0.0018,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,161,null,3854767]",
+          "score": 0.0017,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,111,null,3854767]",
+          "score": 0.0015,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,5000,null,3854767]",
+          "score": 0.0012,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",null,23,null,3854767]",
+          "score": 0.0011,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ]
+    },
+    "ungrounded_step_ids": [],
+    "ambiguous_step_ids": [
+      3,
+      4
+    ]
+  }
+}

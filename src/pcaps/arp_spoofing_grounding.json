@@ -1,0 +1,2022 @@
+{
+  "pcap": "arp_spoofing.pcap",
+  "preprocess_settings": {
+    "token_budget": 10000,
+    "filtering_limit": 3,
+    "delta_t": 300.0,
+    "max_packets": null
+  },
+  "generated_at": "2026-10-13T12:36:58+00:00",
+  "grounding": {
+    "step_groundings": [
+      {
+        "step": {
+          "step_id": 1,
+          "text": "DHCP broadcast messages and IPv6 neighbour discovery packets appear as hosts come up on 192.168.1.0/24.",
+          "source_text": "The capture opens at 17.5 s with DHCP and IPv6 neighbour discovery as the machines came up.",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",48566,\"medium\",1]",
+            "cluster_text": "UDP DNS traffic on port 48566. 2 packets (515 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 4.8ms (very high packet rate, highly regular interval (possible beaconing)). Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0061,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0018,
+            "bi_encoder_score": 0.6046
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",46106,\"low\",1]",
+            "cluster_text": "UDP DNS traffic on port 46106. 2 packets (272 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 27.98ms (moderate packet rate, highly regular interval (possible beaconing)). Statistically anomalous: inter-arrival time (Z=4.0). Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0043,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0003,
+            "bi_encoder_score": 0.6025
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",54436,\"medium\",1]",
+            "cluster_text": "UDP DNS traffic on port 54436. 2 packets (520 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 16.18ms (moderate packet rate, highly regular interval (possible beaconing)). Statistically anomalous: inter-arrival time (Z=2.0). Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0041,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0003,
+            "bi_encoder_score": 0.6054
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",39041,\"medium\",1]",
+            "cluster_text": "UDP DNS traffic on port 39041. 2 packets (376 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 36.16ms (moderate packet rate, highly regular interval (possible beaconing)). Statistically anomalous: inter-arrival time (Z=5.3). Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0038,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6028
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",32848,\"medium\",1]",
+            "cluster_text": "UDP DNS traffic on port 32848. 2 packets (345 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 98.8ms (moderate packet rate, highly regular interval (possible beaconing)). Statistically anomalous: inter-arrival time (Z=15.3). Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0037,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6012
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",52742,\"medium\",1]",
+            "cluster_text": "UDP DNS traffic on port 52742. 2 packets (515 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 27.74ms (moderate packet rate, highly regular interval (possible beaconing)). Statistically anomalous: inter-arrival time (Z=4.0). Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0036,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.6049
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",48662,\"medium\",1]",
+            "cluster_text": "UDP DNS traffic on port 48662. 2 packets (507 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 5.52ms (very high packet rate, highly regular interval (possible beaconing)). Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0036,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.6019
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",60006,\"medium\",1]",
+            "cluster_text": "UDP DNS traffic on port 60006. 2 packets (475 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 0.61ms (extremely high packet rate, highly regular interval (possible beaconing)). Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0035,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.6042
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",48382,\"medium\",1]",
+            "cluster_text": "UDP DNS traffic on port 48382. 2 packets (515 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 46.2ms (moderate packet rate, highly regular interval (possible beaconing)). Statistically anomalous: inter-arrival time (Z=7.0). Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0033,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.001,
+            "bi_encoder_score": 0.601
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",null,67,null,0]",
+            "cluster_text": "UDP traffic on port 67 (DHCP). 4 packets (1368 bytes total) from one source to one destination. Inter-arrival time: mean 427.48ms (low packet rate). Statistically anomalous: inter-arrival time (Z=59.7), byte volume (Z=2.8), packet rate (Z=2.8). Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0023,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0023,
+            "bi_encoder_score": 0.6065
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0061
+      },
+      {
+        "step": {
+          "step_id": 2,
+          "text": "192.168.1.104 sends DNS queries to the gateway 192.168.1.1 on UDP port 53 and receives DNS responses.",
+          "source_text": "It resolved names through the gateway at 192.168.1.1 over DNS, made plain-HTTP OCSP and captive-portal checks, and opened HTTPS sessions to Reddit's content delivery network (151.101.x.140) and to Google and Mozilla services.",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",0]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 2 packets (162 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 0.34ms (extremely high packet rate, highly regular interval (possible beaconing)). Statistically anomalous: byte volume (Z=2.1). Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.5289,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0955,
+            "bi_encoder_score": 0.6811
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",1]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 235 packets (18790 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 993.84ms (low packet rate, highly irregular interval). Statistically anomalous: inter-arrival time (Z=116.3), byte volume (Z=8.9), packet rate (Z=3.2). Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.4334,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.3938,
+            "bi_encoder_score": 0.6708
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53348,\"medium\",1]",
+            "cluster_text": "UDP DNS traffic on port 53348. 1 packets (76 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Statistically anomalous: byte volume (Z=3.9). Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0395,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0105,
+            "bi_encoder_score": 0.677
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53519,\"medium\",1]",
+            "cluster_text": "UDP DNS traffic on port 53519. 2 packets (528 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 2.96ms (very high packet rate, highly regular interval (possible beaconing)). Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0291,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0013,
+            "bi_encoder_score": 0.6693
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53312,\"medium\",1]",
+            "cluster_text": "UDP DNS traffic on port 53312. 2 packets (270 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 0.74ms (extremely high packet rate, highly regular interval (possible beaconing)). Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0277,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0139,
+            "bi_encoder_score": 0.6685
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",59304,\"medium\",1]",
+            "cluster_text": "UDP DNS traffic on port 59304. 1 packets (188 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0138,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0032,
+            "bi_encoder_score": 0.6669
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",54421,\"low\",0]",
+            "cluster_text": "UDP DNS traffic on port 54421. 1 packets (140 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Statistically anomalous: byte volume (Z=2.5). Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0106,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0003,
+            "bi_encoder_score": 0.6705
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",41144,\"medium\",1]",
+            "cluster_text": "UDP DNS traffic on port 41144. 1 packets (291 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0103,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0006,
+            "bi_encoder_score": 0.6844
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",50668,\"medium\",1]",
+            "cluster_text": "UDP DNS traffic on port 50668. 1 packets (529 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0097,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0005,
+            "bi_encoder_score": 0.6729
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",50448,\"medium\",1]",
+            "cluster_text": "UDP DNS traffic on port 50448. 1 packets (281 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0092,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0092,
+            "bi_encoder_score": 0.6699
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.5289
+      },
+      {
+        "step": {
+          "step_id": 3,
+          "text": "192.168.1.104 makes plain HTTP requests on TCP port 80 for OCSP and captive-portal checks.",
+          "source_text": "It resolved names through the gateway at 192.168.1.1 over DNS, made plain-HTTP OCSP and captive-portal checks, and opened HTTPS sessions to Reddit's content delivery network (151.101.x.140) and to Google and Mozilla services.",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,1]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 80 (HTTP). 22 packets (2752 bytes total) from one source to 6 unique destinations. Inter-arrival time: mean 7786.5ms (low packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=2.7). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0919,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0886,
+            "bi_encoder_score": 0.6464
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,41824,null,1]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 41824. 1 packets (58 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0033,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.6469
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,41902,null,1]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 41902. 1 packets (58 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0033,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.6471
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,41822,null,1]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 41822. 1 packets (58 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0033,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.6448
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,44118,null,1]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 44118. 1 packets (58 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0031,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0003,
+            "bi_encoder_score": 0.6458
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,41844,null,1]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 41844. 1 packets (58 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0029,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.6468
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,41174,null,1]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 41174. 1 packets (58 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0028,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.6457
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,52134,null,1]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 52134. 1 packets (58 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0026,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0006,
+            "bi_encoder_score": 0.6446
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",null,44118,null,1]",
+            "cluster_text": "TCP handshake completion (ACK) on port 44118. 1 packets (54 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.002,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0004,
+            "bi_encoder_score": 0.6474
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"RST\",null,41824,null,1]",
+            "cluster_text": "TCP connection reset (RST) on port 41824. 1 packets (54 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0015,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0015,
+            "bi_encoder_score": 0.6446
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0919
+      },
+      {
+        "step": {
+          "step_id": 4,
+          "text": "192.168.1.104 opens TLS sessions on TCP port 443 to 151.101.x.140 and other web servers, and receives about 14 MB of encrypted data from them.",
+          "source_text": "From about 387 s the Reddit sessions on port 443 delivered roughly 14 MB to the victim.",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"TLS\",443,\"very_high\",1]",
+            "cluster_text": "TCP established data transfer carrying TLS traffic on port 443 (HTTPS/TLS). 25 packets (16334 bytes total) from one source to 12 unique destinations. Payload: very high entropy (encrypted or encoded payload). Inter-arrival time: mean 6687.7ms (low packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=4.2). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.2432,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.1092,
+            "bi_encoder_score": 0.7786
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"TLS\",443,\"high\",1]",
+            "cluster_text": "TCP established data transfer carrying TLS traffic on port 443 (HTTPS/TLS). 194 packets (37123 bytes total) from one source to 11 unique destinations. Payload: high entropy (compressed or binary payload). Inter-arrival time: mean 853.37ms (low packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=4.9). Accounts for 0.2% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.134,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0217,
+            "bi_encoder_score": 0.7769
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"TLS\",443,\"medium\",1]",
+            "cluster_text": "TCP established data transfer carrying TLS traffic on port 443 (HTTPS/TLS). 34 packets (3188 bytes total) from one source to 10 unique destinations. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 4982.34ms (low packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=2.8). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.1123,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0185,
+            "bi_encoder_score": 0.7722
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"TLS\",443,null,1]",
+            "cluster_text": "TCP established data transfer carrying TLS traffic on port 443 (HTTPS/TLS). 3931 packets (275705 bytes total) from one source to 15 unique destinations. Inter-arrival time: mean 42.44ms (moderate packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=6.6). Accounts for 1.9% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0938,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0833,
+            "bi_encoder_score": 0.7763
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"TLS\",46446,null,1]",
+            "cluster_text": "TCP established data transfer carrying TLS traffic on port 46446. 1 packets (1462 bytes total) from one source to one destination. Statistically anomalous: byte volume (Z=2.1). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0105,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0019,
+            "bi_encoder_score": 0.771
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"TLS\",46460,null,1]",
+            "cluster_text": "TCP established data transfer carrying TLS traffic on port 46460. 1 packets (1462 bytes total) from one source to one destination. Statistically anomalous: byte volume (Z=2.1). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0086,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0006,
+            "bi_encoder_score": 0.769
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"TLS\",46480,null,1]",
+            "cluster_text": "TCP established data transfer carrying TLS traffic on port 46480. 1 packets (1474 bytes total) from one source to one destination. Statistically anomalous: byte volume (Z=2.1). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.008,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.7716
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"TLS\",46478,null,1]",
+            "cluster_text": "TCP established data transfer carrying TLS traffic on port 46478. 1 packets (1462 bytes total) from one source to one destination. Statistically anomalous: byte volume (Z=2.1). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0079,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0004,
+            "bi_encoder_score": 0.7712
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"TLS\",46482,null,1]",
+            "cluster_text": "TCP established data transfer carrying TLS traffic on port 46482. 1 packets (1462 bytes total) from one source to one destination. Statistically anomalous: byte volume (Z=2.1). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0075,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.7688
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"TLS\",45050,null,1]",
+            "cluster_text": "TCP established data transfer carrying TLS traffic on port 45050. 1 packets (1462 bytes total) from one source to one destination. Statistically anomalous: byte volume (Z=2.1). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0073,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0073,
+            "bi_encoder_score": 0.7692
+          }
+        ],
+        "is_ambiguous": false,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.2432
+      },
+      {
+        "step": {
+          "step_id": 5,
+          "text": "192.168.1.104 periodically sends an ARP request for 192.168.1.1 and receives an ARP reply from MAC 08:00:27:5e:01:7c.",
+          "source_text": "Every minute or two the victim sent an ARP request for 192.168.1.1 and the genuine gateway MAC answered.",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,1]",
+            "cluster_text": "ARP reply from MAC 08:00:27:5e:01:7c. 6 packets (342 bytes total) from one source to one destination. Inter-arrival time: mean 44702.63ms (low packet rate). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.992,
+            "rank": 1,
+            "evidence_label": "SUPPORTS",
+            "score_gap": 0.0036,
+            "bi_encoder_score": 0.6877
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,0]",
+            "cluster_text": "ARP reply from MAC 08:00:27:5e:01:7c. 4 packets (168 bytes total) from one source to one destination. Inter-arrival time: mean 85813.28ms (low packet rate). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.9884,
+            "rank": 2,
+            "evidence_label": "SUPPORTS",
+            "score_gap": 0.0765,
+            "bi_encoder_score": 0.7085
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:5e:01:7c\",null,null,null,0]",
+            "cluster_text": "ARP request from MAC 08:00:27:5e:01:7c. 2 packets (84 bytes total) from one source to 2 unique destinations. Inter-arrival time: mean 250.3ms (low packet rate, highly regular interval (possible beaconing)). Statistically anomalous: packet rate (Z=27.5). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.912,
+            "rank": 3,
+            "evidence_label": "SUPPORTS",
+            "score_gap": 0.5617,
+            "bi_encoder_score": 0.6902
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:b8:b7:58\",null,null,null,1]",
+            "cluster_text": "ARP reply from MAC 08:00:27:b8:b7:58. 2 packets (120 bytes total) from one source to one destination. Inter-arrival time: mean 28610.63ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.3503,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.143,
+            "bi_encoder_score": 0.6803
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:2d:f8:5a\",null,null,null,1]",
+            "cluster_text": "ARP reply from MAC 08:00:27:2d:f8:5a. 27 packets (1620 bytes total) from 2 unique sources to one destination. Inter-arrival time: mean 1926.24ms (low packet rate). Statistically anomalous: byte volume (Z=5.0), packet rate (Z=4.7). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.2073,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.018,
+            "bi_encoder_score": 0.6777
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:b8:b7:58\",null,null,null,1]",
+            "cluster_text": "ARP request from MAC 08:00:27:b8:b7:58. 2 packets (120 bytes total) from one source to 2 unique destinations. Inter-arrival time: mean 171262.94ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.1894,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0014,
+            "bi_encoder_score": 0.7044
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:b8:b7:58\",null,null,null,0]",
+            "cluster_text": "ARP request from MAC 08:00:27:b8:b7:58. 4 packets (240 bytes total) from one source to one destination. Inter-arrival time: mean 85813.29ms (low packet rate). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.188,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0308,
+            "bi_encoder_score": 0.697
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:2d:f8:5a\",null,null,null,1]",
+            "cluster_text": "ARP request from MAC 08:00:27:2d:f8:5a. 2 packets (120 bytes total) from one source to one destination. Inter-arrival time: mean 28608.46ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.1572,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.037,
+            "bi_encoder_score": 0.7052
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:2d:f8:5a\",null,null,null,0]",
+            "cluster_text": "ARP request from MAC 08:00:27:2d:f8:5a. 1 packets (60 bytes total) from one source to one destination. Statistically anomalous: packet rate (Z=88.5), inter-arrival time (Z=2.1). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.1203,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.1172,
+            "bi_encoder_score": 0.6911
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,41174,null,1]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 41174. 1 packets (58 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.003,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.003,
+            "bi_encoder_score": 0.5725
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.992
+      },
+      {
+        "step": {
+          "step_id": 6,
+          "text": "192.168.1.105 (MAC 08:00:27:2d:f8:5a) broadcasts an ARP request for 192.168.1.104.",
+          "source_text": "At 481 s the attacker broadcast an ARP request for 192.168.1.104 and the victim replied.",
+          "mitre_tag": "T1557.002"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:2d:f8:5a\",null,null,null,0]",
+            "cluster_text": "ARP request from MAC 08:00:27:2d:f8:5a. 1 packets (60 bytes total) from one source to one destination. Statistically anomalous: packet rate (Z=88.5), inter-arrival time (Z=2.1). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.8358,
+            "rank": 1,
+            "evidence_label": "SUPPORTS",
+            "score_gap": 0.0585,
+            "bi_encoder_score": 0.6951
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:2d:f8:5a\",null,null,null,1]",
+            "cluster_text": "ARP reply from MAC 08:00:27:2d:f8:5a. 27 packets (1620 bytes total) from 2 unique sources to one destination. Inter-arrival time: mean 1926.24ms (low packet rate). Statistically anomalous: byte volume (Z=5.0), packet rate (Z=4.7). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.7772,
+            "rank": 2,
+            "evidence_label": "SUPPORTS",
+            "score_gap": 0.0045,
+            "bi_encoder_score": 0.6758
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:2d:f8:5a\",null,null,null,1]",
+            "cluster_text": "ARP request from MAC 08:00:27:2d:f8:5a. 2 packets (120 bytes total) from one source to one destination. Inter-arrival time: mean 28608.46ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.7727,
+            "rank": 3,
+            "evidence_label": "SUPPORTS",
+            "score_gap": 0.4664,
+            "bi_encoder_score": 0.712
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:5e:01:7c\",null,null,null,0]",
+            "cluster_text": "ARP request from MAC 08:00:27:5e:01:7c. 2 packets (84 bytes total) from one source to 2 unique destinations. Inter-arrival time: mean 250.3ms (low packet rate, highly regular interval (possible beaconing)). Statistically anomalous: packet rate (Z=27.5). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.3062,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.1098,
+            "bi_encoder_score": 0.6781
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:b8:b7:58\",null,null,null,0]",
+            "cluster_text": "ARP request from MAC 08:00:27:b8:b7:58. 4 packets (240 bytes total) from one source to one destination. Inter-arrival time: mean 85813.29ms (low packet rate). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.1964,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0075,
+            "bi_encoder_score": 0.6857
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:b8:b7:58\",null,null,null,1]",
+            "cluster_text": "ARP request from MAC 08:00:27:b8:b7:58. 2 packets (120 bytes total) from one source to 2 unique destinations. Inter-arrival time: mean 171262.94ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.1889,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0061,
+            "bi_encoder_score": 0.6952
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,0]",
+            "cluster_text": "ARP reply from MAC 08:00:27:5e:01:7c. 4 packets (168 bytes total) from one source to one destination. Inter-arrival time: mean 85813.28ms (low packet rate). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.1828,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0244,
+            "bi_encoder_score": 0.6667
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,1]",
+            "cluster_text": "ARP reply from MAC 08:00:27:5e:01:7c. 6 packets (342 bytes total) from one source to one destination. Inter-arrival time: mean 44702.63ms (low packet rate). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.1584,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0596,
+            "bi_encoder_score": 0.6467
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:b8:b7:58\",null,null,null,1]",
+            "cluster_text": "ARP reply from MAC 08:00:27:b8:b7:58. 2 packets (120 bytes total) from one source to one destination. Inter-arrival time: mean 28610.63ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0988,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0904,
+            "bi_encoder_score": 0.6503
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",39842,\"medium\",1]",
+            "cluster_text": "UDP DNS traffic on port 39842. 2 packets (258 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 1383.69ms (low packet rate, highly regular interval (possible beaconing)). Statistically anomalous: inter-arrival time (Z=146.6), packet rate (Z=3.1). Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0083,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0083,
+            "bi_encoder_score": 0.5683
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.8358
+      },
+      {
+        "step": {
+          "step_id": 7,
+          "text": "192.168.1.104 sends an ARP reply to 192.168.1.105.",
+          "source_text": "At 481 s the attacker broadcast an ARP request for 192.168.1.104 and the victim replied.",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:b8:b7:58\",null,null,null,1]",
+            "cluster_text": "ARP reply from MAC 08:00:27:b8:b7:58. 2 packets (120 bytes total) from one source to one destination. Inter-arrival time: mean 28610.63ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0505,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0032,
+            "bi_encoder_score": 0.6409
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,0]",
+            "cluster_text": "ARP reply from MAC 08:00:27:5e:01:7c. 4 packets (168 bytes total) from one source to one destination. Inter-arrival time: mean 85813.28ms (low packet rate). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0474,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0008,
+            "bi_encoder_score": 0.6693
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:2d:f8:5a\",null,null,null,1]",
+            "cluster_text": "ARP reply from MAC 08:00:27:2d:f8:5a. 27 packets (1620 bytes total) from 2 unique sources to one destination. Inter-arrival time: mean 1926.24ms (low packet rate). Statistically anomalous: byte volume (Z=5.0), packet rate (Z=4.7). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0466,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0019,
+            "bi_encoder_score": 0.6375
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,1]",
+            "cluster_text": "ARP reply from MAC 08:00:27:5e:01:7c. 6 packets (342 bytes total) from one source to one destination. Inter-arrival time: mean 44702.63ms (low packet rate). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0447,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0301,
+            "bi_encoder_score": 0.6455
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:5e:01:7c\",null,null,null,0]",
+            "cluster_text": "ARP request from MAC 08:00:27:5e:01:7c. 2 packets (84 bytes total) from one source to 2 unique destinations. Inter-arrival time: mean 250.3ms (low packet rate, highly regular interval (possible beaconing)). Statistically anomalous: packet rate (Z=27.5). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0146,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0029,
+            "bi_encoder_score": 0.624
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:b8:b7:58\",null,null,null,0]",
+            "cluster_text": "ARP request from MAC 08:00:27:b8:b7:58. 4 packets (240 bytes total) from one source to one destination. Inter-arrival time: mean 85813.29ms (low packet rate). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0117,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0007,
+            "bi_encoder_score": 0.6366
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:b8:b7:58\",null,null,null,1]",
+            "cluster_text": "ARP request from MAC 08:00:27:b8:b7:58. 2 packets (120 bytes total) from one source to 2 unique destinations. Inter-arrival time: mean 171262.94ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0111,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0005,
+            "bi_encoder_score": 0.634
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:2d:f8:5a\",null,null,null,1]",
+            "cluster_text": "ARP request from MAC 08:00:27:2d:f8:5a. 2 packets (120 bytes total) from one source to one destination. Inter-arrival time: mean 28608.46ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0106,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0008,
+            "bi_encoder_score": 0.6363
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:2d:f8:5a\",null,null,null,0]",
+            "cluster_text": "ARP request from MAC 08:00:27:2d:f8:5a. 1 packets (60 bytes total) from one source to one destination. Statistically anomalous: packet rate (Z=88.5), inter-arrival time (Z=2.1). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0098,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0014,
+            "bi_encoder_score": 0.628
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",41144,\"medium\",1]",
+            "cluster_text": "UDP DNS traffic on port 41144. 1 packets (291 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0084,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0084,
+            "bi_encoder_score": 0.5766
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0505
+      },
+      {
+        "step": {
+          "step_id": 8,
+          "text": "MAC 08:00:27:2d:f8:5a sends 26 unsolicited ARP replies to 192.168.1.104, one every two seconds, each claiming that 192.168.1.1 is at 08:00:27:2d:f8:5a.",
+          "source_text": "Starting at 482 s the attacker sent unsolicited ARP replies to the victim every two seconds, 26 in total until 532 s, each claiming that 192.168.1.1 is at the attacker's MAC 08:00:27:2d:f8:5a.",
+          "mitre_tag": "T1557.002"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:2d:f8:5a\",null,null,null,1]",
+            "cluster_text": "ARP request from MAC 08:00:27:2d:f8:5a. 2 packets (120 bytes total) from one source to one destination. Inter-arrival time: mean 28608.46ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.7267,
+            "rank": 1,
+            "evidence_label": "PARTIAL",
+            "score_gap": 0.0513,
+            "bi_encoder_score": 0.7791
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:2d:f8:5a\",null,null,null,1]",
+            "cluster_text": "ARP reply from MAC 08:00:27:2d:f8:5a. 27 packets (1620 bytes total) from 2 unique sources to one destination. Inter-arrival time: mean 1926.24ms (low packet rate). Statistically anomalous: byte volume (Z=5.0), packet rate (Z=4.7). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.6754,
+            "rank": 2,
+            "evidence_label": "PARTIAL",
+            "score_gap": 0.005,
+            "bi_encoder_score": 0.7796
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:2d:f8:5a\",null,null,null,0]",
+            "cluster_text": "ARP request from MAC 08:00:27:2d:f8:5a. 1 packets (60 bytes total) from one source to one destination. Statistically anomalous: packet rate (Z=88.5), inter-arrival time (Z=2.1). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.6703,
+            "rank": 3,
+            "evidence_label": "PARTIAL",
+            "score_gap": 0.5307,
+            "bi_encoder_score": 0.7814
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:b8:b7:58\",null,null,null,1]",
+            "cluster_text": "ARP reply from MAC 08:00:27:b8:b7:58. 2 packets (120 bytes total) from one source to one destination. Inter-arrival time: mean 28610.63ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.1397,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0108,
+            "bi_encoder_score": 0.7377
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,0]",
+            "cluster_text": "ARP reply from MAC 08:00:27:5e:01:7c. 4 packets (168 bytes total) from one source to one destination. Inter-arrival time: mean 85813.28ms (low packet rate). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.1289,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0104,
+            "bi_encoder_score": 0.7488
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:b8:b7:58\",null,null,null,0]",
+            "cluster_text": "ARP request from MAC 08:00:27:b8:b7:58. 4 packets (240 bytes total) from one source to one destination. Inter-arrival time: mean 85813.29ms (low packet rate). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.1186,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.7379
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,1]",
+            "cluster_text": "ARP reply from MAC 08:00:27:5e:01:7c. 6 packets (342 bytes total) from one source to one destination. Inter-arrival time: mean 44702.63ms (low packet rate). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.1184,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0057,
+            "bi_encoder_score": 0.7453
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:b8:b7:58\",null,null,null,1]",
+            "cluster_text": "ARP request from MAC 08:00:27:b8:b7:58. 2 packets (120 bytes total) from one source to 2 unique destinations. Inter-arrival time: mean 171262.94ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.1127,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.005,
+            "bi_encoder_score": 0.7581
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:5e:01:7c\",null,null,null,0]",
+            "cluster_text": "ARP request from MAC 08:00:27:5e:01:7c. 2 packets (84 bytes total) from one source to 2 unique destinations. Inter-arrival time: mean 250.3ms (low packet rate, highly regular interval (possible beaconing)). Statistically anomalous: packet rate (Z=27.5). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.1077,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0976,
+            "bi_encoder_score": 0.7532
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",null,8610,null,0]",
+            "cluster_text": "UDP traffic on port 8610. 8 packets (552 bytes total) from 4 unique sources to 2 unique destinations. Inter-arrival time: mean 103.14ms (low packet rate, highly irregular interval). Statistically anomalous: inter-arrival time (Z=16.0), packet rate (Z=2.2). Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0102,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0102,
+            "bi_encoder_score": 0.621
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.7267
+      },
+      {
+        "step": {
+          "step_id": 9,
+          "text": "192.168.1.104 sends its internet-bound frames to destination MAC 08:00:27:2d:f8:5a instead of the gateway MAC.",
+          "source_text": "From 505 s the victim addressed its internet-bound frames to the attacker's MAC: 2,191 frames that should have gone to the gateway went to the attacker instead.",
+          "mitre_tag": "T1557.002"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:2d:f8:5a\",null,null,null,0]",
+            "cluster_text": "ARP request from MAC 08:00:27:2d:f8:5a. 1 packets (60 bytes total) from one source to one destination. Statistically anomalous: packet rate (Z=88.5), inter-arrival time (Z=2.1). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.7777,
+            "rank": 1,
+            "evidence_label": "SUPPORTS",
+            "score_gap": 0.0606,
+            "bi_encoder_score": 0.6413
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:2d:f8:5a\",null,null,null,1]",
+            "cluster_text": "ARP reply from MAC 08:00:27:2d:f8:5a. 27 packets (1620 bytes total) from 2 unique sources to one destination. Inter-arrival time: mean 1926.24ms (low packet rate). Statistically anomalous: byte volume (Z=5.0), packet rate (Z=4.7). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.7172,
+            "rank": 2,
+            "evidence_label": "PARTIAL",
+            "score_gap": 0.0504,
+            "bi_encoder_score": 0.6357
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:2d:f8:5a\",null,null,null,1]",
+            "cluster_text": "ARP request from MAC 08:00:27:2d:f8:5a. 2 packets (120 bytes total) from one source to one destination. Inter-arrival time: mean 28608.46ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.6667,
+            "rank": 3,
+            "evidence_label": "PARTIAL",
+            "score_gap": 0.6355,
+            "bi_encoder_score": 0.6235
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,0]",
+            "cluster_text": "ARP reply from MAC 08:00:27:5e:01:7c. 4 packets (168 bytes total) from one source to one destination. Inter-arrival time: mean 85813.28ms (low packet rate). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0312,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0004,
+            "bi_encoder_score": 0.6247
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:b8:b7:58\",null,null,null,0]",
+            "cluster_text": "ARP request from MAC 08:00:27:b8:b7:58. 4 packets (240 bytes total) from one source to one destination. Inter-arrival time: mean 85813.29ms (low packet rate). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0309,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0063,
+            "bi_encoder_score": 0.6142
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,1]",
+            "cluster_text": "ARP reply from MAC 08:00:27:5e:01:7c. 6 packets (342 bytes total) from one source to one destination. Inter-arrival time: mean 44702.63ms (low packet rate). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0245,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0042,
+            "bi_encoder_score": 0.6091
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:5e:01:7c\",null,null,null,0]",
+            "cluster_text": "ARP request from MAC 08:00:27:5e:01:7c. 2 packets (84 bytes total) from one source to 2 unique destinations. Inter-arrival time: mean 250.3ms (low packet rate, highly regular interval (possible beaconing)). Statistically anomalous: packet rate (Z=27.5). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0203,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.001,
+            "bi_encoder_score": 0.6049
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:b8:b7:58\",null,null,null,1]",
+            "cluster_text": "ARP reply from MAC 08:00:27:b8:b7:58. 2 packets (120 bytes total) from one source to one destination. Inter-arrival time: mean 28610.63ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0193,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0027,
+            "bi_encoder_score": 0.6134
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:b8:b7:58\",null,null,null,1]",
+            "cluster_text": "ARP request from MAC 08:00:27:b8:b7:58. 2 packets (120 bytes total) from one source to 2 unique destinations. Inter-arrival time: mean 171262.94ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0166,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0112,
+            "bi_encoder_score": 0.6133
+          },
+          {
+            "cluster_fingerprint_key": "[\"ICMP\",\"ICMP:8:0\",null,null,null,0]",
+            "cluster_text": "ICMP traffic (type 8 code 0). 1 packets (62 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0054,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0054,
+            "bi_encoder_score": 0.5995
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.7777
+      },
+      {
+        "step": {
+          "step_id": 10,
+          "text": "Return traffic from internet hosts reaches 192.168.1.104 from the gateway MAC 08:00:27:5e:01:7c.",
+          "source_text": "Return traffic from the internet still came from the real gateway MAC directly to the victim, so only the outbound direction was intercepted.",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,0]",
+            "cluster_text": "ARP reply from MAC 08:00:27:5e:01:7c. 4 packets (168 bytes total) from one source to one destination. Inter-arrival time: mean 85813.28ms (low packet rate). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.4756,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0321,
+            "bi_encoder_score": 0.6629
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:5e:01:7c\",null,null,null,0]",
+            "cluster_text": "ARP request from MAC 08:00:27:5e:01:7c. 2 packets (84 bytes total) from one source to 2 unique destinations. Inter-arrival time: mean 250.3ms (low packet rate, highly regular interval (possible beaconing)). Statistically anomalous: packet rate (Z=27.5). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.4435,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0419,
+            "bi_encoder_score": 0.6417
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,1]",
+            "cluster_text": "ARP reply from MAC 08:00:27:5e:01:7c. 6 packets (342 bytes total) from one source to one destination. Inter-arrival time: mean 44702.63ms (low packet rate). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.4016,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.3767,
+            "bi_encoder_score": 0.6477
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:2d:f8:5a\",null,null,null,1]",
+            "cluster_text": "ARP request from MAC 08:00:27:2d:f8:5a. 2 packets (120 bytes total) from one source to one destination. Inter-arrival time: mean 28608.46ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0249,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0005,
+            "bi_encoder_score": 0.6544
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:b8:b7:58\",null,null,null,1]",
+            "cluster_text": "ARP reply from MAC 08:00:27:b8:b7:58. 2 packets (120 bytes total) from one source to one destination. Inter-arrival time: mean 28610.63ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0244,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0005,
+            "bi_encoder_score": 0.6532
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:b8:b7:58\",null,null,null,0]",
+            "cluster_text": "ARP request from MAC 08:00:27:b8:b7:58. 4 packets (240 bytes total) from one source to one destination. Inter-arrival time: mean 85813.29ms (low packet rate). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.024,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0015,
+            "bi_encoder_score": 0.6483
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:b8:b7:58\",null,null,null,1]",
+            "cluster_text": "ARP request from MAC 08:00:27:b8:b7:58. 2 packets (120 bytes total) from one source to 2 unique destinations. Inter-arrival time: mean 171262.94ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0225,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0009,
+            "bi_encoder_score": 0.6568
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:2d:f8:5a\",null,null,null,1]",
+            "cluster_text": "ARP reply from MAC 08:00:27:2d:f8:5a. 27 packets (1620 bytes total) from 2 unique sources to one destination. Inter-arrival time: mean 1926.24ms (low packet rate). Statistically anomalous: byte volume (Z=5.0), packet rate (Z=4.7). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0216,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0018,
+            "bi_encoder_score": 0.6636
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:2d:f8:5a\",null,null,null,0]",
+            "cluster_text": "ARP request from MAC 08:00:27:2d:f8:5a. 1 packets (60 bytes total) from one source to one destination. Statistically anomalous: packet rate (Z=88.5), inter-arrival time (Z=2.1). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0198,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0191,
+            "bi_encoder_score": 0.6493
+          },
+          {
+            "cluster_fingerprint_key": "[\"ICMP\",\"ICMP:5:1\",null,null,null,1]",
+            "cluster_text": "ICMP traffic (type 5 code 1). 9 packets (868 bytes total) from one source to one destination. Inter-arrival time: mean 2089.5ms (low packet rate). Statistically anomalous: byte volume (Z=28.9). Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0007,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0007,
+            "bi_encoder_score": 0.6378
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.4756
+      },
+      {
+        "step": {
+          "step_id": 11,
+          "text": "192.168.1.105 sends nine ICMP redirect messages (type 5, code 1) to 192.168.1.104 pointing to 192.168.1.1.",
+          "source_text": "While forwarding, the attacker sent nine ICMP redirect messages (type 5, code 1) to the victim between 505 s and 522 s pointing it back at 192.168.1.1.",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"ICMP\",\"ICMP:5:1\",null,null,null,1]",
+            "cluster_text": "ICMP traffic (type 5 code 1). 9 packets (868 bytes total) from one source to one destination. Inter-arrival time: mean 2089.5ms (low packet rate). Statistically anomalous: byte volume (Z=28.9). Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.2666,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.2477,
+            "bi_encoder_score": 0.7382
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,\"medium\",1]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 80 (HTTP). 5 packets (2432 bytes total) from one source to 3 unique destinations. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 36512.83ms (low packet rate). Statistically anomalous: byte volume (Z=2.6). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.019,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0091,
+            "bi_encoder_score": 0.6184
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",54421,\"low\",0]",
+            "cluster_text": "UDP DNS traffic on port 54421. 1 packets (140 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Statistically anomalous: byte volume (Z=2.5). Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0099,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0021,
+            "bi_encoder_score": 0.6202
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",41144,\"medium\",1]",
+            "cluster_text": "UDP DNS traffic on port 41144. 1 packets (291 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0078,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0022,
+            "bi_encoder_score": 0.6243
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,0]",
+            "cluster_text": "ARP reply from MAC 08:00:27:5e:01:7c. 4 packets (168 bytes total) from one source to one destination. Inter-arrival time: mean 85813.28ms (low packet rate). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0056,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0004,
+            "bi_encoder_score": 0.6276
+          },
+          {
+            "cluster_fingerprint_key": "[\"ICMP\",\"ICMP:3:3\",null,null,null,1]",
+            "cluster_text": "ICMP traffic (type 3 code 3). 1 packets (70 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0052,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0017,
+            "bi_encoder_score": 0.6908
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:2d:f8:5a\",null,null,null,1]",
+            "cluster_text": "ARP reply from MAC 08:00:27:2d:f8:5a. 27 packets (1620 bytes total) from 2 unique sources to one destination. Inter-arrival time: mean 1926.24ms (low packet rate). Statistically anomalous: byte volume (Z=5.0), packet rate (Z=4.7). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0035,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0003,
+            "bi_encoder_score": 0.63
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",null,161,null,0]",
+            "cluster_text": "UDP traffic on port 161 (SNMP). 4 packets (460 bytes total) from 2 unique sources to one destination. Inter-arrival time: mean 582.99ms (low packet rate). Statistically anomalous: inter-arrival time (Z=77.2), packet rate (Z=2.9). Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0033,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0003,
+            "bi_encoder_score": 0.6187
+          },
+          {
+            "cluster_fingerprint_key": "[\"ICMP\",\"ICMP:8:0\",null,null,null,0]",
+            "cluster_text": "ICMP traffic (type 8 code 0). 1 packets (62 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0029,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0005,
+            "bi_encoder_score": 0.7094
+          },
+          {
+            "cluster_fingerprint_key": "[\"ICMP\",\"ICMP:0:0\",null,null,null,0]",
+            "cluster_text": "ICMP traffic (type 0 code 0). 1 packets (62 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0024,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0024,
+            "bi_encoder_score": 0.7036
+          }
+        ],
+        "is_ambiguous": false,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.2666
+      },
+      {
+        "step": {
+          "step_id": 12,
+          "text": "Five ARP replies, about one per second, map 192.168.1.1 to MAC 08:00:27:5e:01:7c.",
+          "source_text": "At 534 s five ARP replies, about one per second, mapped 192.168.1.1 back to its genuine MAC 08:00:27:5e:01:7c and the victim's traffic returned to the gateway.",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,0]",
+            "cluster_text": "ARP reply from MAC 08:00:27:5e:01:7c. 4 packets (168 bytes total) from one source to one destination. Inter-arrival time: mean 85813.28ms (low packet rate). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.8703,
+            "rank": 1,
+            "evidence_label": "SUPPORTS",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.7916
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,1]",
+            "cluster_text": "ARP reply from MAC 08:00:27:5e:01:7c. 6 packets (342 bytes total) from one source to one destination. Inter-arrival time: mean 44702.63ms (low packet rate). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.8703,
+            "rank": 2,
+            "evidence_label": "SUPPORTS",
+            "score_gap": 0.2337,
+            "bi_encoder_score": 0.7762
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:5e:01:7c\",null,null,null,0]",
+            "cluster_text": "ARP request from MAC 08:00:27:5e:01:7c. 2 packets (84 bytes total) from one source to 2 unique destinations. Inter-arrival time: mean 250.3ms (low packet rate, highly regular interval (possible beaconing)). Statistically anomalous: packet rate (Z=27.5). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.6366,
+            "rank": 3,
+            "evidence_label": "PARTIAL",
+            "score_gap": 0.3269,
+            "bi_encoder_score": 0.7442
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:2d:f8:5a\",null,null,null,1]",
+            "cluster_text": "ARP reply from MAC 08:00:27:2d:f8:5a. 27 packets (1620 bytes total) from 2 unique sources to one destination. Inter-arrival time: mean 1926.24ms (low packet rate). Statistically anomalous: byte volume (Z=5.0), packet rate (Z=4.7). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.3097,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0439,
+            "bi_encoder_score": 0.7619
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:b8:b7:58\",null,null,null,1]",
+            "cluster_text": "ARP reply from MAC 08:00:27:b8:b7:58. 2 packets (120 bytes total) from one source to one destination. Inter-arrival time: mean 28610.63ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.2658,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.1173,
+            "bi_encoder_score": 0.7555
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:2d:f8:5a\",null,null,null,1]",
+            "cluster_text": "ARP request from MAC 08:00:27:2d:f8:5a. 2 packets (120 bytes total) from one source to one destination. Inter-arrival time: mean 28608.46ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.1485,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.051,
+            "bi_encoder_score": 0.7675
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:b8:b7:58\",null,null,null,0]",
+            "cluster_text": "ARP request from MAC 08:00:27:b8:b7:58. 4 packets (240 bytes total) from one source to one destination. Inter-arrival time: mean 85813.29ms (low packet rate). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0974,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0041,
+            "bi_encoder_score": 0.7563
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:2d:f8:5a\",null,null,null,0]",
+            "cluster_text": "ARP request from MAC 08:00:27:2d:f8:5a. 1 packets (60 bytes total) from one source to one destination. Statistically anomalous: packet rate (Z=88.5), inter-arrival time (Z=2.1). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0933,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0125,
+            "bi_encoder_score": 0.7616
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:b8:b7:58\",null,null,null,1]",
+            "cluster_text": "ARP request from MAC 08:00:27:b8:b7:58. 2 packets (120 bytes total) from one source to 2 unique destinations. Inter-arrival time: mean 171262.94ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0809,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0807,
+            "bi_encoder_score": 0.7515
+          },
+          {
+            "cluster_fingerprint_key": "[\"ICMP\",\"ICMP:5:1\",null,null,null,1]",
+            "cluster_text": "ICMP traffic (type 5 code 1). 9 packets (868 bytes total) from one source to one destination. Inter-arrival time: mean 2089.5ms (low packet rate). Statistically anomalous: byte volume (Z=28.9). Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.6384
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.8703
+      }
+    ],
+    "threshold_used": 0.0,
+    "model_bi_encoder": "BAAI/bge-large-en-v1.5",
+    "model_cross_encoder": "BAAI/bge-reranker-large",
+    "parameters": {
+      "top_k": 10,
+      "supports_threshold": 0.75,
+      "partial_threshold": 0.55,
+      "neutral_threshold": 0.0,
+      "ambiguity_threshold": 0.1,
+      "query_instruction": "Represent this sentence for searching relevant passages: "
+    },
+    "clusters_scored": 564,
+    "clusters_skipped_no_text": 0,
+    "grounding_dict": {
+      "1": [
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",48566,\"medium\",1]",
+          "score": 0.0061,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",46106,\"low\",1]",
+          "score": 0.0043,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",54436,\"medium\",1]",
+          "score": 0.0041,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",39041,\"medium\",1]",
+          "score": 0.0038,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",32848,\"medium\",1]",
+          "score": 0.0037,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",52742,\"medium\",1]",
+          "score": 0.0036,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",48662,\"medium\",1]",
+          "score": 0.0036,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",60006,\"medium\",1]",
+          "score": 0.0035,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",48382,\"medium\",1]",
+          "score": 0.0033,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",null,67,null,0]",
+          "score": 0.0023,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "2": [
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",0]",
+          "score": 0.5289,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",1]",
+          "score": 0.4334,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53348,\"medium\",1]",
+          "score": 0.0395,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53519,\"medium\",1]",
+          "score": 0.0291,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53312,\"medium\",1]",
+          "score": 0.0277,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",59304,\"medium\",1]",
+          "score": 0.0138,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",54421,\"low\",0]",
+          "score": 0.0106,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",41144,\"medium\",1]",
+          "score": 0.0103,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",50668,\"medium\",1]",
+          "score": 0.0097,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",50448,\"medium\",1]",
+          "score": 0.0092,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "3": [
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,1]",
+          "score": 0.0919,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,41824,null,1]",
+          "score": 0.0033,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,41902,null,1]",
+          "score": 0.0033,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,41822,null,1]",
+          "score": 0.0033,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,44118,null,1]",
+          "score": 0.0031,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,41844,null,1]",
+          "score": 0.0029,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,41174,null,1]",
+          "score": 0.0028,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,52134,null,1]",
+          "score": 0.0026,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",null,44118,null,1]",
+          "score": 0.002,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"RST\",null,41824,null,1]",
+          "score": 0.0015,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "4": [
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"TLS\",443,\"very_high\",1]",
+          "score": 0.2432,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"TLS\",443,\"high\",1]",
+          "score": 0.134,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"TLS\",443,\"medium\",1]",
+          "score": 0.1123,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"TLS\",443,null,1]",
+          "score": 0.0938,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"TLS\",46446,null,1]",
+          "score": 0.0105,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"TLS\",46460,null,1]",
+          "score": 0.0086,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"TLS\",46480,null,1]",
+          "score": 0.008,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"TLS\",46478,null,1]",
+          "score": 0.0079,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"TLS\",46482,null,1]",
+          "score": 0.0075,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"TLS\",45050,null,1]",
+          "score": 0.0073,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "5": [
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,1]",
+          "score": 0.992,
+          "evidence": "SUPPORTS",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,0]",
+          "score": 0.9884,
+          "evidence": "SUPPORTS",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:5e:01:7c\",null,null,null,0]",
+          "score": 0.912,
+          "evidence": "SUPPORTS",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:b8:b7:58\",null,null,null,1]",
+          "score": 0.3503,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:2d:f8:5a\",null,null,null,1]",
+          "score": 0.2073,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:b8:b7:58\",null,null,null,1]",
+          "score": 0.1894,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:b8:b7:58\",null,null,null,0]",
+          "score": 0.188,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:2d:f8:5a\",null,null,null,1]",
+          "score": 0.1572,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:2d:f8:5a\",null,null,null,0]",
+          "score": 0.1203,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,41174,null,1]",
+          "score": 0.003,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "6": [
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:2d:f8:5a\",null,null,null,0]",
+          "score": 0.8358,
+          "evidence": "SUPPORTS",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:2d:f8:5a\",null,null,null,1]",
+          "score": 0.7772,
+          "evidence": "SUPPORTS",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:2d:f8:5a\",null,null,null,1]",
+          "score": 0.7727,
+          "evidence": "SUPPORTS",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:5e:01:7c\",null,null,null,0]",
+          "score": 0.3062,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:b8:b7:58\",null,null,null,0]",
+          "score": 0.1964,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:b8:b7:58\",null,null,null,1]",
+          "score": 0.1889,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,0]",
+          "score": 0.1828,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,1]",
+          "score": 0.1584,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:b8:b7:58\",null,null,null,1]",
+          "score": 0.0988,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",39842,\"medium\",1]",
+          "score": 0.0083,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "7": [
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:b8:b7:58\",null,null,null,1]",
+          "score": 0.0505,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,0]",
+          "score": 0.0474,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:2d:f8:5a\",null,null,null,1]",
+          "score": 0.0466,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,1]",
+          "score": 0.0447,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:5e:01:7c\",null,null,null,0]",
+          "score": 0.0146,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:b8:b7:58\",null,null,null,0]",
+          "score": 0.0117,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:b8:b7:58\",null,null,null,1]",
+          "score": 0.0111,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:2d:f8:5a\",null,null,null,1]",
+          "score": 0.0106,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:2d:f8:5a\",null,null,null,0]",
+          "score": 0.0098,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",41144,\"medium\",1]",
+          "score": 0.0084,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "8": [
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:2d:f8:5a\",null,null,null,1]",
+          "score": 0.7267,
+          "evidence": "PARTIAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:2d:f8:5a\",null,null,null,1]",
+          "score": 0.6754,
+          "evidence": "PARTIAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:2d:f8:5a\",null,null,null,0]",
+          "score": 0.6703,
+          "evidence": "PARTIAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:b8:b7:58\",null,null,null,1]",
+          "score": 0.1397,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,0]",
+          "score": 0.1289,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:b8:b7:58\",null,null,null,0]",
+          "score": 0.1186,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,1]",
+          "score": 0.1184,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:b8:b7:58\",null,null,null,1]",
+          "score": 0.1127,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:5e:01:7c\",null,null,null,0]",
+          "score": 0.1077,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",null,8610,null,0]",
+          "score": 0.0102,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "9": [
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:2d:f8:5a\",null,null,null,0]",
+          "score": 0.7777,
+          "evidence": "SUPPORTS",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:2d:f8:5a\",null,null,null,1]",
+          "score": 0.7172,
+          "evidence": "PARTIAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:2d:f8:5a\",null,null,null,1]",
+          "score": 0.6667,
+          "evidence": "PARTIAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,0]",
+          "score": 0.0312,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:b8:b7:58\",null,null,null,0]",
+          "score": 0.0309,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,1]",
+          "score": 0.0245,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:5e:01:7c\",null,null,null,0]",
+          "score": 0.0203,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:b8:b7:58\",null,null,null,1]",
+          "score": 0.0193,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:b8:b7:58\",null,null,null,1]",
+          "score": 0.0166,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"ICMP\",\"ICMP:8:0\",null,null,null,0]",
+          "score": 0.0054,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "10": [
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,0]",
+          "score": 0.4756,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:5e:01:7c\",null,null,null,0]",
+          "score": 0.4435,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,1]",
+          "score": 0.4016,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:2d:f8:5a\",null,null,null,1]",
+          "score": 0.0249,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:b8:b7:58\",null,null,null,1]",
+          "score": 0.0244,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:b8:b7:58\",null,null,null,0]",
+          "score": 0.024,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:b8:b7:58\",null,null,null,1]",
+          "score": 0.0225,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:2d:f8:5a\",null,null,null,1]",
+          "score": 0.0216,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:2d:f8:5a\",null,null,null,0]",
+          "score": 0.0198,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"ICMP\",\"ICMP:5:1\",null,null,null,1]",
+          "score": 0.0007,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "11": [
+        {
+          "fingerprint_key": "[\"ICMP\",\"ICMP:5:1\",null,null,null,1]",
+          "score": 0.2666,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,\"medium\",1]",
+          "score": 0.019,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",54421,\"low\",0]",
+          "score": 0.0099,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",41144,\"medium\",1]",
+          "score": 0.0078,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,0]",
+          "score": 0.0056,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"ICMP\",\"ICMP:3:3\",null,null,null,1]",
+          "score": 0.0052,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:2d:f8:5a\",null,null,null,1]",
+          "score": 0.0035,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",null,161,null,0]",
+          "score": 0.0033,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"ICMP\",\"ICMP:8:0\",null,null,null,0]",
+          "score": 0.0029,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"ICMP\",\"ICMP:0:0\",null,null,null,0]",
+          "score": 0.0024,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "12": [
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,0]",
+          "score": 0.8703,
+          "evidence": "SUPPORTS",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:5e:01:7c\",null,null,null,1]",
+          "score": 0.8703,
+          "evidence": "SUPPORTS",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:5e:01:7c\",null,null,null,0]",
+          "score": 0.6366,
+          "evidence": "PARTIAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:2d:f8:5a\",null,null,null,1]",
+          "score": 0.3097,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:b8:b7:58\",null,null,null,1]",
+          "score": 0.2658,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:2d:f8:5a\",null,null,null,1]",
+          "score": 0.1485,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:b8:b7:58\",null,null,null,0]",
+          "score": 0.0974,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:2d:f8:5a\",null,null,null,0]",
+          "score": 0.0933,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:b8:b7:58\",null,null,null,1]",
+          "score": 0.0809,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"ICMP\",\"ICMP:5:1\",null,null,null,1]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ]
+    },
+    "ungrounded_step_ids": [],
+    "ambiguous_step_ids": [
+      1,
+      2,
+      3,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      12
+    ]
+  }
+}

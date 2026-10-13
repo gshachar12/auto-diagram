@@ -1,0 +1,262 @@
+{
+  "pcap": "icmp.pcap",
+  "preprocess_settings": {
+    "token_budget": 10000,
+    "filtering_limit": 3,
+    "delta_t": 300.0,
+    "max_packets": null
+  },
+  "generated_at": "2026-10-13T12:38:35+00:00",
+  "grounding": {
+    "step_groundings": [
+      {
+        "step": {
+          "step_id": 1,
+          "text": "192.168.0.114 sends four ICMP echo requests, one second apart, to its gateway 192.168.0.1.",
+          "source_text": "It sent four ICMP echo requests one second apart and the gateway answered each with an echo reply in about 1 to 2 milliseconds.",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"ICMP\",\"ICMP:8:0\",null,null,null,3891206]",
+            "cluster_text": "ICMP traffic (type 8 code 0). 8 packets (592 bytes total) from one source to 2 unique destinations. Inter-arrival time: mean 1305.38ms (low packet rate). Accounts for 50.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0102,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0009,
+            "bi_encoder_score": 0.6687
+          },
+          {
+            "cluster_fingerprint_key": "[\"ICMP\",\"ICMP:0:0\",null,null,null,3891206]",
+            "cluster_text": "ICMP traffic (type 0 code 0). 8 packets (592 bytes total) from 2 unique sources to one destination. Inter-arrival time: mean 1314.06ms (low packet rate). Accounts for 50.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0092,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0092,
+            "bi_encoder_score": 0.6676
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0102
+      },
+      {
+        "step": {
+          "step_id": 2,
+          "text": "192.168.0.1 answers each echo request with an ICMP echo reply to 192.168.0.114 within 1 to 2 milliseconds.",
+          "source_text": "It sent four ICMP echo requests one second apart and the gateway answered each with an echo reply in about 1 to 2 milliseconds.",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"ICMP\",\"ICMP:0:0\",null,null,null,3891206]",
+            "cluster_text": "ICMP traffic (type 0 code 0). 8 packets (592 bytes total) from 2 unique sources to one destination. Inter-arrival time: mean 1314.06ms (low packet rate). Accounts for 50.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0078,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0019,
+            "bi_encoder_score": 0.6555
+          },
+          {
+            "cluster_fingerprint_key": "[\"ICMP\",\"ICMP:8:0\",null,null,null,3891206]",
+            "cluster_text": "ICMP traffic (type 8 code 0). 8 packets (592 bytes total) from one source to 2 unique destinations. Inter-arrival time: mean 1305.38ms (low packet rate). Accounts for 50.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0058,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0058,
+            "bi_encoder_score": 0.6555
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0078
+      },
+      {
+        "step": {
+          "step_id": 3,
+          "text": "192.168.0.114 sends four ICMP echo requests, one second apart, to the external host 72.14.207.99.",
+          "source_text": "About three seconds later the workstation pinged the external address 72.14.207.99, a Google server, again four echo requests one second apart.",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"ICMP\",\"ICMP:8:0\",null,null,null,3891206]",
+            "cluster_text": "ICMP traffic (type 8 code 0). 8 packets (592 bytes total) from one source to 2 unique destinations. Inter-arrival time: mean 1305.38ms (low packet rate). Accounts for 50.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0097,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0006,
+            "bi_encoder_score": 0.6719
+          },
+          {
+            "cluster_fingerprint_key": "[\"ICMP\",\"ICMP:0:0\",null,null,null,3891206]",
+            "cluster_text": "ICMP traffic (type 0 code 0). 8 packets (592 bytes total) from 2 unique sources to one destination. Inter-arrival time: mean 1314.06ms (low packet rate). Accounts for 50.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0091,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0091,
+            "bi_encoder_score": 0.6692
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0097
+      },
+      {
+        "step": {
+          "step_id": 4,
+          "text": "72.14.207.99 answers each echo request with an ICMP echo reply after 62 to 81 milliseconds, arriving with TTL 232.",
+          "source_text": "Each was answered in 62 to 81 milliseconds. The replies arrived with a TTL of 232, consistent with a remote host many hops away, while the gateway's replies had a TTL of 127.",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"ICMP\",\"ICMP:8:0\",null,null,null,3891206]",
+            "cluster_text": "ICMP traffic (type 8 code 0). 8 packets (592 bytes total) from one source to 2 unique destinations. Inter-arrival time: mean 1305.38ms (low packet rate). Accounts for 50.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0039,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0007,
+            "bi_encoder_score": 0.6788
+          },
+          {
+            "cluster_fingerprint_key": "[\"ICMP\",\"ICMP:0:0\",null,null,null,3891206]",
+            "cluster_text": "ICMP traffic (type 0 code 0). 8 packets (592 bytes total) from 2 unique sources to one destination. Inter-arrival time: mean 1314.06ms (low packet rate). Accounts for 50.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0032,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0032,
+            "bi_encoder_score": 0.6773
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0039
+      },
+      {
+        "step": {
+          "step_id": 5,
+          "text": "All eight echo requests use the same ICMP identifier with sequence numbers 1 to 8, and every frame is 74 bytes with 32 bytes of data.",
+          "source_text": "All eight requests share one ICMP identifier and consecutive sequence numbers 1 to 8, as produced by the Windows ping utility, and every frame is 74 bytes long (32 bytes of padding data).",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"ICMP\",\"ICMP:8:0\",null,null,null,3891206]",
+            "cluster_text": "ICMP traffic (type 8 code 0). 8 packets (592 bytes total) from one source to 2 unique destinations. Inter-arrival time: mean 1305.38ms (low packet rate). Accounts for 50.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0085,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0034,
+            "bi_encoder_score": 0.7443
+          },
+          {
+            "cluster_fingerprint_key": "[\"ICMP\",\"ICMP:0:0\",null,null,null,3891206]",
+            "cluster_text": "ICMP traffic (type 0 code 0). 8 packets (592 bytes total) from 2 unique sources to one destination. Inter-arrival time: mean 1314.06ms (low packet rate). Accounts for 50.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0051,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0051,
+            "bi_encoder_score": 0.7298
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0085
+      }
+    ],
+    "threshold_used": 0.0,
+    "model_bi_encoder": "BAAI/bge-large-en-v1.5",
+    "model_cross_encoder": "BAAI/bge-reranker-large",
+    "parameters": {
+      "top_k": 10,
+      "supports_threshold": 0.75,
+      "partial_threshold": 0.55,
+      "neutral_threshold": 0.0,
+      "ambiguity_threshold": 0.1,
+      "query_instruction": "Represent this sentence for searching relevant passages: "
+    },
+    "clusters_scored": 2,
+    "clusters_skipped_no_text": 0,
+    "grounding_dict": {
+      "1": [
+        {
+          "fingerprint_key": "[\"ICMP\",\"ICMP:8:0\",null,null,null,3891206]",
+          "score": 0.0102,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"ICMP\",\"ICMP:0:0\",null,null,null,3891206]",
+          "score": 0.0092,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        }
+      ],
+      "2": [
+        {
+          "fingerprint_key": "[\"ICMP\",\"ICMP:0:0\",null,null,null,3891206]",
+          "score": 0.0078,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"ICMP\",\"ICMP:8:0\",null,null,null,3891206]",
+          "score": 0.0058,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        }
+      ],
+      "3": [
+        {
+          "fingerprint_key": "[\"ICMP\",\"ICMP:8:0\",null,null,null,3891206]",
+          "score": 0.0097,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"ICMP\",\"ICMP:0:0\",null,null,null,3891206]",
+          "score": 0.0091,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        }
+      ],
+      "4": [
+        {
+          "fingerprint_key": "[\"ICMP\",\"ICMP:8:0\",null,null,null,3891206]",
+          "score": 0.0039,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"ICMP\",\"ICMP:0:0\",null,null,null,3891206]",
+          "score": 0.0032,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        }
+      ],
+      "5": [
+        {
+          "fingerprint_key": "[\"ICMP\",\"ICMP:8:0\",null,null,null,3891206]",
+          "score": 0.0085,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"ICMP\",\"ICMP:0:0\",null,null,null,3891206]",
+          "score": 0.0051,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        }
+      ]
+    },
+    "ungrounded_step_ids": [],
+    "ambiguous_step_ids": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  }
+}

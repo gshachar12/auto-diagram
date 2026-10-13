@@ -1,0 +1,1691 @@
+{
+  "pcap": "ransomware.pcap",
+  "preprocess_settings": {
+    "token_budget": 10000,
+    "filtering_limit": 3,
+    "delta_t": 300.0,
+    "max_packets": null
+  },
+  "generated_at": "2026-10-13T12:40:36+00:00",
+  "grounding": {
+    "step_groundings": [
+      {
+        "step": {
+          "step_id": 1,
+          "text": "10.12.13.103 sends an HTTP GET for /precautions-attachments/... with Host www.domaincop247.com to 104.28.11.141 on TCP port 80.",
+          "source_text": "The victim's Internet Explorer 11 requested http://www.domaincop247.com/precautions-attachments/... from 104.28.11.141 on port 80.",
+          "mitre_tag": "T1566.002"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938862]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 80 (HTTP). 85 packets (6143 bytes total) from one source to 3 unique destinations. Inter-arrival time: mean 273.24ms (low packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=65.6). Accounts for 1.6% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.5286,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0163,
+            "bi_encoder_score": 0.6254
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938863]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 80 (HTTP). 2 packets (400 bytes total) from one source to one destination. Inter-arrival time: mean 1077.53ms (low packet rate, highly regular interval (possible beaconing)). Statistically anomalous: byte volume (Z=26.4). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.5124,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.2249,
+            "bi_encoder_score": 0.6328
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",\"HTTP\",80,null,4938863]",
+            "cluster_text": "TCP connection initiation (SYN) carrying HTTP traffic on port 80 (HTTP). 1 packets (66 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.2875,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.1143,
+            "bi_encoder_score": 0.6235
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,4938863]",
+            "cluster_text": "TCP handshake completion (ACK) carrying HTTP traffic on port 80 (HTTP). 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.1732,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.1585,
+            "bi_encoder_score": 0.6215
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49168,\"low\",4938862]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 49168. 1 packets (738 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Statistically anomalous: byte volume (Z=35.2). Accounts for 0.2% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0147,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0013,
+            "bi_encoder_score": 0.6151
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49185,\"medium\",4938863]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 49185. 1 packets (291 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Statistically anomalous: byte volume (Z=21.8). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0135,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.001,
+            "bi_encoder_score": 0.6248
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49165,\"low\",4938862]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 49165. 1 packets (563 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Statistically anomalous: byte volume (Z=31.3). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0124,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0048,
+            "bi_encoder_score": 0.615
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49168,null,4938862]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 49168. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0076,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0009,
+            "bi_encoder_score": 0.6133
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49165,null,4938862]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 49165. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0067,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6121
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49185,null,4938863]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 49185. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0066,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0066,
+            "bi_encoder_score": 0.6136
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.5286
+      },
+      {
+        "step": {
+          "step_id": 2,
+          "text": "After about six seconds 104.28.11.141 replies with an HTTP 302 redirect to report.domaincop247.com.",
+          "source_text": "After a six-second wait the server replied with an HTTP 302 redirect to report.domaincop247.com.",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49168,null,4938862]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 49168. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0041,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0004,
+            "bi_encoder_score": 0.5287
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49176,null,4938862]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 49176. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0037,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5339
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49185,null,4938863]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 49185. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0036,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0022,
+            "bi_encoder_score": 0.531
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"FIN\",null,49168,null,4938862]",
+            "cluster_text": "TCP graceful connection close (FIN) on port 49168. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0014,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5321
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"FIN\",null,49176,null,4938862]",
+            "cluster_text": "TCP graceful connection close (FIN) on port 49176. 1 packets (473 bytes total) from one source to one destination. Statistically anomalous: byte volume (Z=28.8). Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0012,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5301
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938862]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 80 (HTTP). 85 packets (6143 bytes total) from one source to 3 unique destinations. Inter-arrival time: mean 273.24ms (low packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=65.6). Accounts for 1.6% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0012,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5428
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"FIN\",null,49165,null,4938862]",
+            "cluster_text": "TCP graceful connection close (FIN) on port 49165. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0012,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5317
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938863]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 80 (HTTP). 2 packets (400 bytes total) from one source to one destination. Inter-arrival time: mean 1077.53ms (low packet rate, highly regular interval (possible beaconing)). Statistically anomalous: byte volume (Z=26.4). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0012,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5544
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,4938862]",
+            "cluster_text": "TCP handshake completion (ACK) carrying HTTP traffic on port 80 (HTTP). 6 packets (360 bytes total) from one source to 3 unique destinations. Inter-arrival time: mean 10516.26ms (low packet rate). Statistically anomalous: byte volume (Z=24.9). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0011,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.5353
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"FIN\",\"HTTP\",80,null,4938862]",
+            "cluster_text": "TCP graceful connection close (FIN) carrying HTTP traffic on port 80 (HTTP). 3 packets (180 bytes total) from one source to 3 unique destinations. Inter-arrival time: mean 45299.44ms (low packet rate). Statistically anomalous: byte volume (Z=15.0). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0009,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0009,
+            "bi_encoder_score": 0.5512
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0041
+      },
+      {
+        "step": {
+          "step_id": 3,
+          "text": "10.12.13.103 sends an HTTP GET for Domain_Abuse_Report_Viewer.js to 104.28.10.141 on TCP port 80.",
+          "source_text": "The browser followed it to 104.28.10.141 and downloaded Domain_Abuse_Report_Viewer.js, a 9,032-byte file served as application/js.",
+          "mitre_tag": "T1204.002"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938863]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 80 (HTTP). 2 packets (400 bytes total) from one source to one destination. Inter-arrival time: mean 1077.53ms (low packet rate, highly regular interval (possible beaconing)). Statistically anomalous: byte volume (Z=26.4). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.5002,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0313,
+            "bi_encoder_score": 0.6323
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938862]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 80 (HTTP). 85 packets (6143 bytes total) from one source to 3 unique destinations. Inter-arrival time: mean 273.24ms (low packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=65.6). Accounts for 1.6% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.469,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.3592,
+            "bi_encoder_score": 0.624
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"FIN\",\"HTTP\",80,null,4938862]",
+            "cluster_text": "TCP graceful connection close (FIN) carrying HTTP traffic on port 80 (HTTP). 3 packets (180 bytes total) from one source to 3 unique destinations. Inter-arrival time: mean 45299.44ms (low packet rate). Statistically anomalous: byte volume (Z=15.0). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.1097,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0073,
+            "bi_encoder_score": 0.6154
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,4938863]",
+            "cluster_text": "TCP handshake completion (ACK) carrying HTTP traffic on port 80 (HTTP). 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.1024,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0991,
+            "bi_encoder_score": 0.6114
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49168,null,4938862]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 49168. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0032,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6159
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49165,null,4938862]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 49165. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0032,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.6152
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49176,null,4938862]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 49176. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.003,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6143
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49185,null,4938863]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 49185. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0029,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0009,
+            "bi_encoder_score": 0.615
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"FIN\",null,49168,null,4938862]",
+            "cluster_text": "TCP graceful connection close (FIN) on port 49168. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.002,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6103
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"FIN\",null,49165,null,4938862]",
+            "cluster_text": "TCP graceful connection close (FIN) on port 49165. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0019,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0019,
+            "bi_encoder_score": 0.6105
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.5002
+      },
+      {
+        "step": {
+          "step_id": 4,
+          "text": "104.28.10.141 returns HTTP 200 with a 9,032-byte application/js body to 10.12.13.103.",
+          "source_text": "The browser followed it to 104.28.10.141 and downloaded Domain_Abuse_Report_Viewer.js, a 9,032-byte file served as application/js.",
+          "mitre_tag": "T1204.002"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",null,49168,null,4938862]",
+            "cluster_text": "TCP established data transfer on port 49168. 7 packets (9144 bytes total) from one source to one destination. Inter-arrival time: mean 66.06ms (moderate packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=71.4). Accounts for 2.4% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0024,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0003,
+            "bi_encoder_score": 0.5851
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",null,49176,null,4938862]",
+            "cluster_text": "TCP established data transfer on port 49176. 175 packets (261516 bytes total) from one source to one destination. Inter-arrival time: mean 8.24ms (very high packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=119.6). Accounts for 67.4% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0021,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0005,
+            "bi_encoder_score": 0.5859
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"FIN\",null,49176,null,4938862]",
+            "cluster_text": "TCP graceful connection close (FIN) on port 49176. 1 packets (473 bytes total) from one source to one destination. Statistically anomalous: byte volume (Z=28.8). Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0016,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.6017
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49165,\"low\",4938862]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 49165. 1 packets (563 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Statistically anomalous: byte volume (Z=31.3). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0013,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6026
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49168,\"low\",4938862]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 49168. 1 packets (738 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Statistically anomalous: byte volume (Z=35.2). Accounts for 0.2% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0012,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.6057
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49185,\"medium\",4938863]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 49185. 1 packets (291 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Statistically anomalous: byte volume (Z=21.8). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0012,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6081
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",\"HTTP\",80,null,4938862]",
+            "cluster_text": "TCP connection initiation (SYN) carrying HTTP traffic on port 80 (HTTP). 3 packets (198 bytes total) from one source to 3 unique destinations. Inter-arrival time: mean 10665.54ms (low packet rate). Statistically anomalous: byte volume (Z=16.3). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0011,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.591
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938862]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 80 (HTTP). 85 packets (6143 bytes total) from one source to 3 unique destinations. Inter-arrival time: mean 273.24ms (low packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=65.6). Accounts for 1.6% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.001,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6053
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938863]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 80 (HTTP). 2 packets (400 bytes total) from one source to one destination. Inter-arrival time: mean 1077.53ms (low packet rate, highly regular interval (possible beaconing)). Statistically anomalous: byte volume (Z=26.4). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.001,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.601
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"FIN\",\"HTTP\",80,null,4938862]",
+            "cluster_text": "TCP graceful connection close (FIN) carrying HTTP traffic on port 80 (HTTP). 3 packets (180 bytes total) from one source to 3 unique destinations. Inter-arrival time: mean 45299.44ms (low packet rate). Statistically anomalous: byte volume (Z=15.0). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0008,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0008,
+            "bi_encoder_score": 0.5851
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0024
+      },
+      {
+        "step": {
+          "step_id": 5,
+          "text": "10.12.13.103 sends an HTTP GET for /kqaer2c56ds34caq12/file.exe with Host ggjghhfhfh.com to 185.153.198.117, using an MSIE 7.0 user agent.",
+          "source_text": "Fifteen seconds later the script fetched the ransomware itself: http://ggjghhfhfh.com/kqaer2c56ds34caq12/file.exe from 185.153.198.117. This request used a different user agent (an old MSIE 7.0 string) because it came from the script rather than the browser.",
+          "mitre_tag": "T1105"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49168,null,4938862]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 49168. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0069,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0003,
+            "bi_encoder_score": 0.5099
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",\"HTTP\",80,null,4938862]",
+            "cluster_text": "TCP connection initiation (SYN) carrying HTTP traffic on port 80 (HTTP). 3 packets (198 bytes total) from one source to 3 unique destinations. Inter-arrival time: mean 10665.54ms (low packet rate). Statistically anomalous: byte volume (Z=16.3). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0066,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5206
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49185,\"medium\",4938863]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 49185. 1 packets (291 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Statistically anomalous: byte volume (Z=21.8). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0065,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5166
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49165,\"low\",4938862]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 49165. 1 packets (563 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Statistically anomalous: byte volume (Z=31.3). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0064,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.5116
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49168,\"low\",4938862]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 49168. 1 packets (738 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Statistically anomalous: byte volume (Z=35.2). Accounts for 0.2% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0063,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5102
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"FIN\",null,49176,null,4938862]",
+            "cluster_text": "TCP graceful connection close (FIN) on port 49176. 1 packets (473 bytes total) from one source to one destination. Statistically anomalous: byte volume (Z=28.8). Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0062,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5131
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",\"HTTP\",80,null,4938863]",
+            "cluster_text": "TCP connection initiation (SYN) carrying HTTP traffic on port 80 (HTTP). 1 packets (66 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.006,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.5178
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938863]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 80 (HTTP). 2 packets (400 bytes total) from one source to one destination. Inter-arrival time: mean 1077.53ms (low packet rate, highly regular interval (possible beaconing)). Statistically anomalous: byte volume (Z=26.4). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0059,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.5307
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"FIN\",\"HTTP\",80,null,4938862]",
+            "cluster_text": "TCP graceful connection close (FIN) carrying HTTP traffic on port 80 (HTTP). 3 packets (180 bytes total) from one source to 3 unique destinations. Inter-arrival time: mean 45299.44ms (low packet rate). Statistically anomalous: byte volume (Z=15.0). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0056,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0008,
+            "bi_encoder_score": 0.5203
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938862]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 80 (HTTP). 85 packets (6143 bytes total) from one source to 3 unique destinations. Inter-arrival time: mean 273.24ms (low packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=65.6). Accounts for 1.6% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0048,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0048,
+            "bi_encoder_score": 0.5169
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0069
+      },
+      {
+        "step": {
+          "step_id": 6,
+          "text": "185.153.198.117 sends about 252 kB of executable data to 10.12.13.103 over TCP port 80 within about one second.",
+          "source_text": "About 252 kB of executable data arrived in roughly one second.",
+          "mitre_tag": "T1105"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938863]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 80 (HTTP). 2 packets (400 bytes total) from one source to one destination. Inter-arrival time: mean 1077.53ms (low packet rate, highly regular interval (possible beaconing)). Statistically anomalous: byte volume (Z=26.4). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.3344,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.3122,
+            "bi_encoder_score": 0.6942
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",null,49185,null,4938863]",
+            "cluster_text": "TCP established data transfer on port 49185. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0222,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0047,
+            "bi_encoder_score": 0.7342
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49185,\"medium\",4938863]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 49185. 1 packets (291 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Statistically anomalous: byte volume (Z=21.8). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0175,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0067,
+            "bi_encoder_score": 0.7095
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49185,null,4938863]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 49185. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0108,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0018,
+            "bi_encoder_score": 0.7041
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",null,49176,null,4938862]",
+            "cluster_text": "TCP established data transfer on port 49176. 175 packets (261516 bytes total) from one source to one destination. Inter-arrival time: mean 8.24ms (very high packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=119.6). Accounts for 67.4% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.009,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0005,
+            "bi_encoder_score": 0.6975
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",null,49168,null,4938862]",
+            "cluster_text": "TCP established data transfer on port 49168. 7 packets (9144 bytes total) from one source to one destination. Inter-arrival time: mean 66.06ms (moderate packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=71.4). Accounts for 2.4% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0086,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0015,
+            "bi_encoder_score": 0.6951
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",null,49165,null,4938862]",
+            "cluster_text": "TCP established data transfer on port 49165. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.007,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0041,
+            "bi_encoder_score": 0.7214
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49168,null,4938862]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 49168. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0029,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6956
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49165,null,4938862]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 49165. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0028,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0004,
+            "bi_encoder_score": 0.6941
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49176,null,4938862]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 49176. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0024,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0024,
+            "bi_encoder_score": 0.695
+          }
+        ],
+        "is_ambiguous": false,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.3344
+      },
+      {
+        "step": {
+          "step_id": 7,
+          "text": "10.12.13.103 sends three one-second bursts of UDP datagrams to destination port 6892, each burst reaching 576 different addresses in 194.165.16.0/24, 194.165.17.0/24, 15.49.2.0 and 122.1.13.0.",
+          "source_text": "Shortly after the executable ran, the victim sent three bursts of small UDP datagrams to destination port 6892, at about 25 s, 39 s and 63 s. Each burst lasted about a second and hit 576 different addresses: all of 194.165.16.0/24 and 194.165.17.0/24 plus 32 addresses in each of 15.49.2.0 and 122.1.13.0.",
+          "mitre_tag": "T1095"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "cluster_text": "UDP traffic on port 6892. 576 packets (34560 bytes total) from one source to 576 unique destinations. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 3.57ms (very high packet rate, highly irregular interval). Accounts for 8.9% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.9676,
+            "rank": 1,
+            "evidence_label": "SUPPORTS",
+            "score_gap": 0.0962,
+            "bi_encoder_score": 0.72
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "cluster_text": "UDP traffic on port 6892. 1152 packets (72576 bytes total) from one source to 576 unique destinations. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 22.77ms (moderate packet rate, highly irregular interval). Accounts for 18.7% of total capture traffic. Relevance tier: REMNANT (no context match).",
+            "score": 0.8713,
+            "rank": 2,
+            "evidence_label": "SUPPORTS",
+            "score_gap": 0.8644,
+            "bi_encoder_score": 0.7195
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",null,49165,null,4938862]",
+            "cluster_text": "TCP established data transfer on port 49165. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0069,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0017,
+            "bi_encoder_score": 0.658
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",null,49165,null,4938862]",
+            "cluster_text": "TCP handshake completion (ACK) on port 49165. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0052,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0008,
+            "bi_encoder_score": 0.6614
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938862]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 80 (HTTP). 85 packets (6143 bytes total) from one source to 3 unique destinations. Inter-arrival time: mean 273.24ms (low packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=65.6). Accounts for 1.6% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0044,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.001,
+            "bi_encoder_score": 0.6652
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",null,49168,null,4938862]",
+            "cluster_text": "TCP handshake completion (ACK) on port 49168. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0034,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.664
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",null,49176,null,4938862]",
+            "cluster_text": "TCP established data transfer on port 49176. 175 packets (261516 bytes total) from one source to one destination. Inter-arrival time: mean 8.24ms (very high packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=119.6). Accounts for 67.4% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0033,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6607
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49168,null,4938862]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 49168. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0033,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6562
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",null,49176,null,4938862]",
+            "cluster_text": "TCP handshake completion (ACK) on port 49176. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0031,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.6575
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",null,49168,null,4938862]",
+            "cluster_text": "TCP established data transfer on port 49168. 7 packets (9144 bytes total) from one source to one destination. Inter-arrival time: mean 66.06ms (moderate packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=71.4). Accounts for 2.4% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0029,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0029,
+            "bi_encoder_score": 0.6614
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.9676
+      },
+      {
+        "step": {
+          "step_id": 8,
+          "text": "The 1,728 UDP datagrams to port 6892 carry 10 to 24 bytes of payload each and receive no reply.",
+          "source_text": "In total 1,728 datagrams of 10 to 24 bytes of payload were sent and none were answered.",
+          "mitre_tag": "T1095"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "cluster_text": "UDP traffic on port 6892. 576 packets (34560 bytes total) from one source to 576 unique destinations. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 3.57ms (very high packet rate, highly irregular interval). Accounts for 8.9% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0514,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0087,
+            "bi_encoder_score": 0.7789
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "cluster_text": "UDP traffic on port 6892. 1152 packets (72576 bytes total) from one source to 576 unique destinations. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 22.77ms (moderate packet rate, highly irregular interval). Accounts for 18.7% of total capture traffic. Relevance tier: REMNANT (no context match).",
+            "score": 0.0427,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0418,
+            "bi_encoder_score": 0.7851
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49165,\"low\",4938862]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 49165. 1 packets (563 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Statistically anomalous: byte volume (Z=31.3). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0009,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.707
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49168,\"low\",4938862]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 49168. 1 packets (738 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Statistically anomalous: byte volume (Z=35.2). Accounts for 0.2% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0008,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.7088
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49185,\"medium\",4938863]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 49185. 1 packets (291 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Statistically anomalous: byte volume (Z=21.8). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0007,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0004,
+            "bi_encoder_score": 0.7006
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",null,49168,null,4938862]",
+            "cluster_text": "TCP established data transfer on port 49168. 7 packets (9144 bytes total) from one source to one destination. Inter-arrival time: mean 66.06ms (moderate packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=71.4). Accounts for 2.4% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0003,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6803
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938862]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 80 (HTTP). 85 packets (6143 bytes total) from one source to 3 unique destinations. Inter-arrival time: mean 273.24ms (low packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=65.6). Accounts for 1.6% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0003,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.6838
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",null,49176,null,4938862]",
+            "cluster_text": "TCP established data transfer on port 49176. 175 packets (261516 bytes total) from one source to one destination. Inter-arrival time: mean 8.24ms (very high packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=119.6). Accounts for 67.4% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.6819
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49168,null,4938862]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 49168. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6817
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",null,49168,null,4938862]",
+            "cluster_text": "TCP handshake completion (ACK) on port 49168. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0001,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.684
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0514
+      },
+      {
+        "step": {
+          "step_id": 9,
+          "text": "10.12.13.103 sends an HTTP GET for /0123-4567-89AB-CDEF-0123 with Host ftoxmpdipwobp4qy.1mznhc.top to 37.10.71.202 on TCP port 80.",
+          "source_text": "At 410 s the victim requested http://ftoxmpdipwobp4qy.1mznhc.top/0123-4567-89AB-CDEF-0123 from 37.10.71.202, the personal decryption page linked in the ransom note.",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938863]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 80 (HTTP). 2 packets (400 bytes total) from one source to one destination. Inter-arrival time: mean 1077.53ms (low packet rate, highly regular interval (possible beaconing)). Statistically anomalous: byte volume (Z=26.4). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.7785,
+            "rank": 1,
+            "evidence_label": "SUPPORTS",
+            "score_gap": 0.0451,
+            "bi_encoder_score": 0.6065
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938862]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 80 (HTTP). 85 packets (6143 bytes total) from one source to 3 unique destinations. Inter-arrival time: mean 273.24ms (low packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=65.6). Accounts for 1.6% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.7334,
+            "rank": 2,
+            "evidence_label": "PARTIAL",
+            "score_gap": 0.3602,
+            "bi_encoder_score": 0.6003
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,4938863]",
+            "cluster_text": "TCP handshake completion (ACK) carrying HTTP traffic on port 80 (HTTP). 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.3732,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0242,
+            "bi_encoder_score": 0.5992
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"FIN\",\"HTTP\",80,null,4938862]",
+            "cluster_text": "TCP graceful connection close (FIN) carrying HTTP traffic on port 80 (HTTP). 3 packets (180 bytes total) from one source to 3 unique destinations. Inter-arrival time: mean 45299.44ms (low packet rate). Statistically anomalous: byte volume (Z=15.0). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.3491,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.091,
+            "bi_encoder_score": 0.5939
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,4938862]",
+            "cluster_text": "TCP handshake completion (ACK) carrying HTTP traffic on port 80 (HTTP). 6 packets (360 bytes total) from one source to 3 unique destinations. Inter-arrival time: mean 10516.26ms (low packet rate). Statistically anomalous: byte volume (Z=24.9). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.258,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.2392,
+            "bi_encoder_score": 0.591
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49185,\"medium\",4938863]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 49185. 1 packets (291 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Statistically anomalous: byte volume (Z=21.8). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0188,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0101,
+            "bi_encoder_score": 0.5863
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49168,null,4938862]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 49168. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0087,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0007,
+            "bi_encoder_score": 0.5884
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49185,null,4938863]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 49185. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.008,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5858
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49176,null,4938862]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 49176. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0079,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.003,
+            "bi_encoder_score": 0.5857
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"FIN\",null,49168,null,4938862]",
+            "cluster_text": "TCP graceful connection close (FIN) on port 49168. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0049,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0049,
+            "bi_encoder_score": 0.5867
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.7785
+      },
+      {
+        "step": {
+          "step_id": 10,
+          "text": "37.10.71.202 answers with an HTTP 302 redirect to the /intro path.",
+          "source_text": "The server answered with an HTTP 302 redirect to the page's \"intro\" path.",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49185,null,4938863]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 49185. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0037,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.4943
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49176,null,4938862]",
+            "cluster_text": "TCP connection response (SYN-ACK) on port 49176. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0036,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0023,
+            "bi_encoder_score": 0.4951
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",\"HTTP\",80,null,4938862]",
+            "cluster_text": "TCP connection initiation (SYN) carrying HTTP traffic on port 80 (HTTP). 3 packets (198 bytes total) from one source to 3 unique destinations. Inter-arrival time: mean 10665.54ms (low packet rate). Statistically anomalous: byte volume (Z=16.3). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0012,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.5263
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"SYN\",\"HTTP\",80,null,4938863]",
+            "cluster_text": "TCP connection initiation (SYN) carrying HTTP traffic on port 80 (HTTP). 1 packets (66 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0011,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0003,
+            "bi_encoder_score": 0.5453
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"FIN\",\"HTTP\",80,null,4938862]",
+            "cluster_text": "TCP graceful connection close (FIN) carrying HTTP traffic on port 80 (HTTP). 3 packets (180 bytes total) from one source to 3 unique destinations. Inter-arrival time: mean 45299.44ms (low packet rate). Statistically anomalous: byte volume (Z=15.0). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0008,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5175
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938862]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 80 (HTTP). 85 packets (6143 bytes total) from one source to 3 unique destinations. Inter-arrival time: mean 273.24ms (low packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=65.6). Accounts for 1.6% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0007,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.4965
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938863]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 80 (HTTP). 2 packets (400 bytes total) from one source to one destination. Inter-arrival time: mean 1077.53ms (low packet rate, highly regular interval (possible beaconing)). Statistically anomalous: byte volume (Z=26.4). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0006,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.5139
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49168,\"low\",4938862]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 49168. 1 packets (738 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Statistically anomalous: byte volume (Z=35.2). Accounts for 0.2% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0004,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.4946
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49165,\"low\",4938862]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 49165. 1 packets (563 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Statistically anomalous: byte volume (Z=31.3). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0004,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.4946
+          },
+          {
+            "cluster_fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49185,\"medium\",4938863]",
+            "cluster_text": "TCP established data transfer carrying HTTP traffic on port 49185. 1 packets (291 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Statistically anomalous: byte volume (Z=21.8). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0004,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0004,
+            "bi_encoder_score": 0.5012
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0037
+      }
+    ],
+    "threshold_used": 0.0,
+    "model_bi_encoder": "BAAI/bge-large-en-v1.5",
+    "model_cross_encoder": "BAAI/bge-reranker-large",
+    "parameters": {
+      "top_k": 10,
+      "supports_threshold": 0.75,
+      "partial_threshold": 0.55,
+      "neutral_threshold": 0.0,
+      "ambiguity_threshold": 0.1,
+      "query_instruction": "Represent this sentence for searching relevant passages: "
+    },
+    "clusters_scored": 26,
+    "clusters_skipped_no_text": 0,
+    "grounding_dict": {
+      "1": [
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938862]",
+          "score": 0.5286,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938863]",
+          "score": 0.5124,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",\"HTTP\",80,null,4938863]",
+          "score": 0.2875,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,4938863]",
+          "score": 0.1732,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49168,\"low\",4938862]",
+          "score": 0.0147,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49185,\"medium\",4938863]",
+          "score": 0.0135,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49165,\"low\",4938862]",
+          "score": 0.0124,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49168,null,4938862]",
+          "score": 0.0076,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49165,null,4938862]",
+          "score": 0.0067,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49185,null,4938863]",
+          "score": 0.0066,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "2": [
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49168,null,4938862]",
+          "score": 0.0041,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49176,null,4938862]",
+          "score": 0.0037,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49185,null,4938863]",
+          "score": 0.0036,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"FIN\",null,49168,null,4938862]",
+          "score": 0.0014,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"FIN\",null,49176,null,4938862]",
+          "score": 0.0012,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938862]",
+          "score": 0.0012,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"FIN\",null,49165,null,4938862]",
+          "score": 0.0012,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938863]",
+          "score": 0.0012,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,4938862]",
+          "score": 0.0011,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"FIN\",\"HTTP\",80,null,4938862]",
+          "score": 0.0009,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "3": [
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938863]",
+          "score": 0.5002,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938862]",
+          "score": 0.469,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"FIN\",\"HTTP\",80,null,4938862]",
+          "score": 0.1097,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,4938863]",
+          "score": 0.1024,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49168,null,4938862]",
+          "score": 0.0032,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49165,null,4938862]",
+          "score": 0.0032,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49176,null,4938862]",
+          "score": 0.003,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49185,null,4938863]",
+          "score": 0.0029,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"FIN\",null,49168,null,4938862]",
+          "score": 0.002,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"FIN\",null,49165,null,4938862]",
+          "score": 0.0019,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "4": [
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",null,49168,null,4938862]",
+          "score": 0.0024,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",null,49176,null,4938862]",
+          "score": 0.0021,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"FIN\",null,49176,null,4938862]",
+          "score": 0.0016,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49165,\"low\",4938862]",
+          "score": 0.0013,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49168,\"low\",4938862]",
+          "score": 0.0012,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49185,\"medium\",4938863]",
+          "score": 0.0012,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",\"HTTP\",80,null,4938862]",
+          "score": 0.0011,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938862]",
+          "score": 0.001,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938863]",
+          "score": 0.001,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"FIN\",\"HTTP\",80,null,4938862]",
+          "score": 0.0008,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "5": [
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49168,null,4938862]",
+          "score": 0.0069,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",\"HTTP\",80,null,4938862]",
+          "score": 0.0066,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49185,\"medium\",4938863]",
+          "score": 0.0065,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49165,\"low\",4938862]",
+          "score": 0.0064,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49168,\"low\",4938862]",
+          "score": 0.0063,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"FIN\",null,49176,null,4938862]",
+          "score": 0.0062,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",\"HTTP\",80,null,4938863]",
+          "score": 0.006,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938863]",
+          "score": 0.0059,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"FIN\",\"HTTP\",80,null,4938862]",
+          "score": 0.0056,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938862]",
+          "score": 0.0048,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "6": [
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938863]",
+          "score": 0.3344,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",null,49185,null,4938863]",
+          "score": 0.0222,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49185,\"medium\",4938863]",
+          "score": 0.0175,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49185,null,4938863]",
+          "score": 0.0108,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",null,49176,null,4938862]",
+          "score": 0.009,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",null,49168,null,4938862]",
+          "score": 0.0086,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",null,49165,null,4938862]",
+          "score": 0.007,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49168,null,4938862]",
+          "score": 0.0029,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49165,null,4938862]",
+          "score": 0.0028,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49176,null,4938862]",
+          "score": 0.0024,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "7": [
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+          "score": 0.9676,
+          "evidence": "SUPPORTS",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+          "score": 0.8713,
+          "evidence": "SUPPORTS",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",null,49165,null,4938862]",
+          "score": 0.0069,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",null,49165,null,4938862]",
+          "score": 0.0052,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938862]",
+          "score": 0.0044,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",null,49168,null,4938862]",
+          "score": 0.0034,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",null,49176,null,4938862]",
+          "score": 0.0033,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49168,null,4938862]",
+          "score": 0.0033,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",null,49176,null,4938862]",
+          "score": 0.0031,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",null,49168,null,4938862]",
+          "score": 0.0029,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "8": [
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+          "score": 0.0514,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+          "score": 0.0427,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49165,\"low\",4938862]",
+          "score": 0.0009,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49168,\"low\",4938862]",
+          "score": 0.0008,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49185,\"medium\",4938863]",
+          "score": 0.0007,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",null,49168,null,4938862]",
+          "score": 0.0003,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938862]",
+          "score": 0.0003,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",null,49176,null,4938862]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49168,null,4938862]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",null,49168,null,4938862]",
+          "score": 0.0001,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "9": [
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938863]",
+          "score": 0.7785,
+          "evidence": "SUPPORTS",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938862]",
+          "score": 0.7334,
+          "evidence": "PARTIAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,4938863]",
+          "score": 0.3732,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"FIN\",\"HTTP\",80,null,4938862]",
+          "score": 0.3491,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,4938862]",
+          "score": 0.258,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49185,\"medium\",4938863]",
+          "score": 0.0188,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49168,null,4938862]",
+          "score": 0.0087,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49185,null,4938863]",
+          "score": 0.008,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49176,null,4938862]",
+          "score": 0.0079,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"FIN\",null,49168,null,4938862]",
+          "score": 0.0049,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "10": [
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49185,null,4938863]",
+          "score": 0.0037,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49176,null,4938862]",
+          "score": 0.0036,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",\"HTTP\",80,null,4938862]",
+          "score": 0.0012,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"SYN\",\"HTTP\",80,null,4938863]",
+          "score": 0.0011,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"FIN\",\"HTTP\",80,null,4938862]",
+          "score": 0.0008,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938862]",
+          "score": 0.0007,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938863]",
+          "score": 0.0006,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49168,\"low\",4938862]",
+          "score": 0.0004,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49165,\"low\",4938862]",
+          "score": 0.0004,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49185,\"medium\",4938863]",
+          "score": 0.0004,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ]
+    },
+    "ungrounded_step_ids": [],
+    "ambiguous_step_ids": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      7,
+      8,
+      9,
+      10
+    ]
+  }
+}

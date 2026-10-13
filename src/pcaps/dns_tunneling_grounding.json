@@ -1,0 +1,2024 @@
+{
+  "pcap": "dns_tunneling.pcap",
+  "preprocess_settings": {
+    "token_budget": 10000,
+    "filtering_limit": 3,
+    "delta_t": 300.0,
+    "max_packets": null
+  },
+  "generated_at": "2026-10-13T12:37:55+00:00",
+  "grounding": {
+    "step_groundings": [
+      {
+        "step": {
+          "step_id": 1,
+          "text": "Host 10.0.2.30 sends a DNS query of type NULL for a short name under pirate.sea to 10.0.2.20 on UDP port 53.",
+          "source_text": "The client opened with a short check-in query for vaaaakardli.pirate.sea and the server answered within a millisecond.",
+          "mitre_tag": "T1071.004"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 203 packets (21771 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 121.22ms (low packet rate, highly irregular interval). Accounts for 30.9% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.1249,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0198,
+            "bi_encoder_score": 0.6323
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 18 packets (4227 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 952.88ms (low packet rate). Statistically anomalous: inter-arrival time (Z=3.3). Accounts for 6.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.1051,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0116,
+            "bi_encoder_score": 0.6384
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"high\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 1 packets (138 bytes total) from one source to one destination. Payload: high entropy (compressed or binary payload). Accounts for 0.2% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0935,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0895,
+            "bi_encoder_score": 0.6482
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 10 packets (5321 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 1801.55ms (low packet rate). Statistically anomalous: inter-arrival time (Z=5.4). Accounts for 7.5% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.004,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0004,
+            "bi_encoder_score": 0.6323
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 201 packets (38599 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 122.44ms (low packet rate, highly irregular interval). Accounts for 54.8% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.0036,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0008,
+            "bi_encoder_score": 0.6229
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"high\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 1 packets (196 bytes total) from one source to one destination. Payload: high entropy (compressed or binary payload). Accounts for 0.3% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0028,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.002,
+            "bi_encoder_score": 0.6282
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+            "cluster_text": "ARP request from MAC 08:00:27:9c:e0:b4. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0008,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5735
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+            "cluster_text": "ARP request from MAC 08:00:27:c7:6e:ba. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0007,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.5557
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+            "cluster_text": "ARP reply from MAC 08:00:27:9c:e0:b4. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0005,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5802
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+            "cluster_text": "ARP reply from MAC 08:00:27:c7:6e:ba. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0005,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0005,
+            "bi_encoder_score": 0.5596
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.1249
+      },
+      {
+        "step": {
+          "step_id": 2,
+          "text": "10.0.2.20 answers the check-in query with a DNS response to 10.0.2.30 in under a millisecond.",
+          "source_text": "The client opened with a short check-in query for vaaaakardli.pirate.sea and the server answered within a millisecond.",
+          "mitre_tag": "T1071.004"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 10 packets (5321 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 1801.55ms (low packet rate). Statistically anomalous: inter-arrival time (Z=5.4). Accounts for 7.5% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0009,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0003,
+            "bi_encoder_score": 0.5782
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 201 packets (38599 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 122.44ms (low packet rate, highly irregular interval). Accounts for 54.8% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.0006,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5709
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 18 packets (4227 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 952.88ms (low packet rate). Statistically anomalous: inter-arrival time (Z=3.3). Accounts for 6.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0006,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5841
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 203 packets (21771 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 121.22ms (low packet rate, highly irregular interval). Accounts for 30.9% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.0005,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5793
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"high\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 1 packets (196 bytes total) from one source to one destination. Payload: high entropy (compressed or binary payload). Accounts for 0.3% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0004,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5475
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"high\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 1 packets (138 bytes total) from one source to one destination. Payload: high entropy (compressed or binary payload). Accounts for 0.2% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0003,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5611
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+            "cluster_text": "ARP reply from MAC 08:00:27:c7:6e:ba. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5448
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+            "cluster_text": "ARP reply from MAC 08:00:27:9c:e0:b4. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5668
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+            "cluster_text": "ARP request from MAC 08:00:27:c7:6e:ba. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5346
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+            "cluster_text": "ARP request from MAC 08:00:27:9c:e0:b4. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0001,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5524
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0009
+      },
+      {
+        "step": {
+          "step_id": 3,
+          "text": "10.0.2.30 sends a DNS query whose first label is a 32-character random-looking string under pirate.sea.",
+          "source_text": "The client then sent a query with a 32-character random-looking label to log in and receive the tunnel's network parameters.",
+          "mitre_tag": "T1071.004"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 10 packets (5321 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 1801.55ms (low packet rate). Statistically anomalous: inter-arrival time (Z=5.4). Accounts for 7.5% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0008,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6155
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 201 packets (38599 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 122.44ms (low packet rate, highly irregular interval). Accounts for 54.8% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.0006,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.6117
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"high\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 1 packets (196 bytes total) from one source to one destination. Payload: high entropy (compressed or binary payload). Accounts for 0.3% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0004,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.631
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 18 packets (4227 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 952.88ms (low packet rate). Statistically anomalous: inter-arrival time (Z=3.3). Accounts for 6.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0004,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.6263
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 203 packets (21771 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 121.22ms (low packet rate, highly irregular interval). Accounts for 30.9% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.0004,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6248
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"high\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 1 packets (138 bytes total) from one source to one destination. Payload: high entropy (compressed or binary payload). Accounts for 0.2% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0003,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6404
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+            "cluster_text": "ARP request from MAC 08:00:27:9c:e0:b4. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5736
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+            "cluster_text": "ARP reply from MAC 08:00:27:9c:e0:b4. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0001,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5843
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+            "cluster_text": "ARP request from MAC 08:00:27:c7:6e:ba. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0001,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.561
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+            "cluster_text": "ARP reply from MAC 08:00:27:c7:6e:ba. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0001,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5698
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0008
+      },
+      {
+        "step": {
+          "step_id": 4,
+          "text": "10.0.2.30 sends DNS test queries whose labels contain long runs of mixed-case letters, digits, accented characters and high-bit bytes.",
+          "source_text": "Next came a series of \"zi\" test queries whose labels contain long runs of mixed-case letters, digits, accented characters and raw high-bit bytes; the server echoed each name back.",
+          "mitre_tag": "T1071.004"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 10 packets (5321 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 1801.55ms (low packet rate). Statistically anomalous: inter-arrival time (Z=5.4). Accounts for 7.5% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0019,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0007,
+            "bi_encoder_score": 0.5938
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"high\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 1 packets (196 bytes total) from one source to one destination. Payload: high entropy (compressed or binary payload). Accounts for 0.3% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0011,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.6107
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"high\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 1 packets (138 bytes total) from one source to one destination. Payload: high entropy (compressed or binary payload). Accounts for 0.2% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0011,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.6152
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 201 packets (38599 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 122.44ms (low packet rate, highly irregular interval). Accounts for 54.8% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.0011,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5965
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 203 packets (21771 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 121.22ms (low packet rate, highly irregular interval). Accounts for 30.9% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.0011,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.6041
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 18 packets (4227 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 952.88ms (low packet rate). Statistically anomalous: inter-arrival time (Z=3.3). Accounts for 6.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.001,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0008,
+            "bi_encoder_score": 0.6016
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+            "cluster_text": "ARP request from MAC 08:00:27:c7:6e:ba. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0003,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5148
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+            "cluster_text": "ARP request from MAC 08:00:27:9c:e0:b4. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5305
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+            "cluster_text": "ARP reply from MAC 08:00:27:c7:6e:ba. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5328
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+            "cluster_text": "ARP reply from MAC 08:00:27:9c:e0:b4. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.5491
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0019
+      },
+      {
+        "step": {
+          "step_id": 5,
+          "text": "10.0.2.20 returns a DNS response to each test query that echoes the queried name back to 10.0.2.30.",
+          "source_text": "Next came a series of \"zi\" test queries whose labels contain long runs of mixed-case letters, digits, accented characters and raw high-bit bytes; the server echoed each name back.",
+          "mitre_tag": "T1071.004"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 10 packets (5321 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 1801.55ms (low packet rate). Statistically anomalous: inter-arrival time (Z=5.4). Accounts for 7.5% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0008,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.5286
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 201 packets (38599 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 122.44ms (low packet rate, highly irregular interval). Accounts for 54.8% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.0006,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5318
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 18 packets (4227 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 952.88ms (low packet rate). Statistically anomalous: inter-arrival time (Z=3.3). Accounts for 6.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0005,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5369
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 203 packets (21771 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 121.22ms (low packet rate, highly irregular interval). Accounts for 30.9% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.0004,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5407
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"high\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 1 packets (196 bytes total) from one source to one destination. Payload: high entropy (compressed or binary payload). Accounts for 0.3% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0004,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5416
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"high\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 1 packets (138 bytes total) from one source to one destination. Payload: high entropy (compressed or binary payload). Accounts for 0.2% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0004,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5554
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+            "cluster_text": "ARP request from MAC 08:00:27:c7:6e:ba. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0003,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.497
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+            "cluster_text": "ARP request from MAC 08:00:27:9c:e0:b4. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0003,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5096
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+            "cluster_text": "ARP reply from MAC 08:00:27:9c:e0:b4. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5288
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+            "cluster_text": "ARP reply from MAC 08:00:27:c7:6e:ba. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.5119
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0008
+      },
+      {
+        "step": {
+          "step_id": 6,
+          "text": "10.0.2.30 sends three short DNS queries under pirate.sea to select the encoding.",
+          "source_text": "Three more short queries (sbhi1c, obsi1d, obli1e) selected the upstream and downstream codecs.",
+          "mitre_tag": "T1071.004"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 10 packets (5321 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 1801.55ms (low packet rate). Statistically anomalous: inter-arrival time (Z=5.4). Accounts for 7.5% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0014,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0007,
+            "bi_encoder_score": 0.6029
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 201 packets (38599 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 122.44ms (low packet rate, highly irregular interval). Accounts for 54.8% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.0007,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.6029
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 18 packets (4227 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 952.88ms (low packet rate). Statistically anomalous: inter-arrival time (Z=3.3). Accounts for 6.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0005,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.609
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"high\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 1 packets (196 bytes total) from one source to one destination. Payload: high entropy (compressed or binary payload). Accounts for 0.3% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0004,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.6121
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 203 packets (21771 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 121.22ms (low packet rate, highly irregular interval). Accounts for 30.9% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.0004,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.6125
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"high\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 1 packets (138 bytes total) from one source to one destination. Payload: high entropy (compressed or binary payload). Accounts for 0.2% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0002,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6229
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+            "cluster_text": "ARP request from MAC 08:00:27:c7:6e:ba. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5683
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+            "cluster_text": "ARP request from MAC 08:00:27:9c:e0:b4. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0001,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5852
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+            "cluster_text": "ARP reply from MAC 08:00:27:c7:6e:ba. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0001,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5713
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+            "cluster_text": "ARP reply from MAC 08:00:27:9c:e0:b4. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0001,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5898
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0014
+      },
+      {
+        "step": {
+          "step_id": 7,
+          "text": "10.0.2.30 sends DNS queries with long, high-entropy, binary-looking query names split across several labels to 10.0.2.20 on port 53.",
+          "source_text": "Once the codecs were agreed, the client sent upstream data as long query names made of high-entropy, binary-looking labels split across several dot-separated segments.",
+          "mitre_tag": "T1048"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"high\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 1 packets (138 bytes total) from one source to one destination. Payload: high entropy (compressed or binary payload). Accounts for 0.2% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0672,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0311,
+            "bi_encoder_score": 0.7146
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 203 packets (21771 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 121.22ms (low packet rate, highly irregular interval). Accounts for 30.9% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.036,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0018,
+            "bi_encoder_score": 0.6948
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 18 packets (4227 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 952.88ms (low packet rate). Statistically anomalous: inter-arrival time (Z=3.3). Accounts for 6.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0342,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.026,
+            "bi_encoder_score": 0.6751
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"high\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 1 packets (196 bytes total) from one source to one destination. Payload: high entropy (compressed or binary payload). Accounts for 0.3% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0082,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0041,
+            "bi_encoder_score": 0.7069
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 10 packets (5321 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 1801.55ms (low packet rate). Statistically anomalous: inter-arrival time (Z=5.4). Accounts for 7.5% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0041,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0023,
+            "bi_encoder_score": 0.6655
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 201 packets (38599 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 122.44ms (low packet rate, highly irregular interval). Accounts for 54.8% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.0019,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0012,
+            "bi_encoder_score": 0.6795
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+            "cluster_text": "ARP request from MAC 08:00:27:c7:6e:ba. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0006,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.547
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+            "cluster_text": "ARP request from MAC 08:00:27:9c:e0:b4. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0006,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5683
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+            "cluster_text": "ARP reply from MAC 08:00:27:c7:6e:ba. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0005,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5494
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+            "cluster_text": "ARP reply from MAC 08:00:27:9c:e0:b4. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0005,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0005,
+            "bi_encoder_score": 0.5722
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0672
+      },
+      {
+        "step": {
+          "step_id": 8,
+          "text": "10.0.2.20 answers each data query with a DNS response carrying a payload in a NULL record back to 10.0.2.30.",
+          "source_text": "Each of these queries was answered by a response that echoed the name and carried the downstream payload in the NULL record.",
+          "mitre_tag": "T1071.004"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 10 packets (5321 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 1801.55ms (low packet rate). Statistically anomalous: inter-arrival time (Z=5.4). Accounts for 7.5% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0023,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.641
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 201 packets (38599 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 122.44ms (low packet rate, highly irregular interval). Accounts for 54.8% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.0022,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6244
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"high\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 1 packets (196 bytes total) from one source to one destination. Payload: high entropy (compressed or binary payload). Accounts for 0.3% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0021,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0003,
+            "bi_encoder_score": 0.6244
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"high\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 1 packets (138 bytes total) from one source to one destination. Payload: high entropy (compressed or binary payload). Accounts for 0.2% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0018,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6336
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 203 packets (21771 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 121.22ms (low packet rate, highly irregular interval). Accounts for 30.9% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.0017,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0003,
+            "bi_encoder_score": 0.6231
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 18 packets (4227 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 952.88ms (low packet rate). Statistically anomalous: inter-arrival time (Z=3.3). Accounts for 6.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0014,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0012,
+            "bi_encoder_score": 0.6418
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+            "cluster_text": "ARP request from MAC 08:00:27:9c:e0:b4. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5658
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+            "cluster_text": "ARP request from MAC 08:00:27:c7:6e:ba. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5495
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+            "cluster_text": "ARP reply from MAC 08:00:27:9c:e0:b4. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0001,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.584
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+            "cluster_text": "ARP reply from MAC 08:00:27:c7:6e:ba. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0001,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5628
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0023
+      },
+      {
+        "step": {
+          "step_id": 9,
+          "text": "Between data bursts 10.0.2.30 sends short polling DNS queries under pirate.sea to 10.0.2.20.",
+          "source_text": "Between data bursts the client kept polling with short queries such as paeacg2y.pirate.sea and paficihq.pirate.sea so the server could push data back at any time.",
+          "mitre_tag": "T1071.004"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 10 packets (5321 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 1801.55ms (low packet rate). Statistically anomalous: inter-arrival time (Z=5.4). Accounts for 7.5% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.001,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6089
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 201 packets (38599 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 122.44ms (low packet rate, highly irregular interval). Accounts for 54.8% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.0009,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.6091
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 18 packets (4227 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 952.88ms (low packet rate). Statistically anomalous: inter-arrival time (Z=3.3). Accounts for 6.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0007,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.6138
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 203 packets (21771 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 121.22ms (low packet rate, highly irregular interval). Accounts for 30.9% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.0006,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.6183
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"high\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 1 packets (196 bytes total) from one source to one destination. Payload: high entropy (compressed or binary payload). Accounts for 0.3% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0006,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6058
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"high\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 1 packets (138 bytes total) from one source to one destination. Payload: high entropy (compressed or binary payload). Accounts for 0.2% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0005,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0003,
+            "bi_encoder_score": 0.6214
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+            "cluster_text": "ARP reply from MAC 08:00:27:9c:e0:b4. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5656
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+            "cluster_text": "ARP request from MAC 08:00:27:9c:e0:b4. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5699
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+            "cluster_text": "ARP request from MAC 08:00:27:c7:6e:ba. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5538
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+            "cluster_text": "ARP reply from MAC 08:00:27:c7:6e:ba. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.5487
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.001
+      },
+      {
+        "step": {
+          "step_id": 10,
+          "text": "DNS queries from 10.0.2.30 arrive on average every 120 milliseconds with highly irregular spacing, from back-to-back bursts to pauses of several seconds.",
+          "source_text": "Queries arrived on average every 120 milliseconds but very irregularly, from bursts of back-to-back queries to pauses of several seconds.",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 201 packets (38599 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 122.44ms (low packet rate, highly irregular interval). Accounts for 54.8% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.05,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0132,
+            "bi_encoder_score": 0.6822
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 203 packets (21771 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 121.22ms (low packet rate, highly irregular interval). Accounts for 30.9% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.0368,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0249,
+            "bi_encoder_score": 0.6921
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 10 packets (5321 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 1801.55ms (low packet rate). Statistically anomalous: inter-arrival time (Z=5.4). Accounts for 7.5% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0119,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0027,
+            "bi_encoder_score": 0.6802
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"high\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 1 packets (196 bytes total) from one source to one destination. Payload: high entropy (compressed or binary payload). Accounts for 0.3% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0092,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0023,
+            "bi_encoder_score": 0.6285
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 18 packets (4227 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 952.88ms (low packet rate). Statistically anomalous: inter-arrival time (Z=3.3). Accounts for 6.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0069,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0029,
+            "bi_encoder_score": 0.6891
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"high\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 1 packets (138 bytes total) from one source to one destination. Payload: high entropy (compressed or binary payload). Accounts for 0.2% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0041,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0036,
+            "bi_encoder_score": 0.6443
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+            "cluster_text": "ARP request from MAC 08:00:27:c7:6e:ba. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0004,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5688
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+            "cluster_text": "ARP reply from MAC 08:00:27:c7:6e:ba. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0004,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5736
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+            "cluster_text": "ARP request from MAC 08:00:27:9c:e0:b4. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0003,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5882
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+            "cluster_text": "ARP reply from MAC 08:00:27:9c:e0:b4. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.5932
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.05
+      },
+      {
+        "step": {
+          "step_id": 11,
+          "text": "10.0.2.30 sends 222 DNS queries totalling about 26 kB and receives 212 DNS responses totalling about 44 kB from 10.0.2.20.",
+          "source_text": "The client sent 222 queries (about 26 kB) and received 212 responses (about 44 kB), so more data flowed from the server to the client than the other way around.",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 10 packets (5321 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 1801.55ms (low packet rate). Statistically anomalous: inter-arrival time (Z=5.4). Accounts for 7.5% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0037,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0005,
+            "bi_encoder_score": 0.642
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 201 packets (38599 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 122.44ms (low packet rate, highly irregular interval). Accounts for 54.8% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.0032,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0003,
+            "bi_encoder_score": 0.6683
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"high\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 1 packets (196 bytes total) from one source to one destination. Payload: high entropy (compressed or binary payload). Accounts for 0.3% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0029,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.668
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 18 packets (4227 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 952.88ms (low packet rate). Statistically anomalous: inter-arrival time (Z=3.3). Accounts for 6.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0029,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0007,
+            "bi_encoder_score": 0.6541
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"high\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 1 packets (138 bytes total) from one source to one destination. Payload: high entropy (compressed or binary payload). Accounts for 0.2% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0022,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0003,
+            "bi_encoder_score": 0.6714
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 203 packets (21771 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 121.22ms (low packet rate, highly irregular interval). Accounts for 30.9% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.0019,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0007,
+            "bi_encoder_score": 0.6776
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+            "cluster_text": "ARP request from MAC 08:00:27:c7:6e:ba. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0011,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5899
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+            "cluster_text": "ARP request from MAC 08:00:27:9c:e0:b4. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0011,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.6033
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+            "cluster_text": "ARP reply from MAC 08:00:27:9c:e0:b4. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0009,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6238
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+            "cluster_text": "ARP reply from MAC 08:00:27:c7:6e:ba. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0008,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0008,
+            "bi_encoder_score": 0.6053
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0037
+      },
+      {
+        "step": {
+          "step_id": 12,
+          "text": "10.0.2.30 and 10.0.2.20 exchange two ARP requests and two ARP replies.",
+          "source_text": "All traffic stayed on the single pair 10.0.2.30 and 10.0.2.20; the only other packets were two ARP request/reply exchanges between the two hosts.",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+            "cluster_text": "ARP reply from MAC 08:00:27:9c:e0:b4. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0279,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0041,
+            "bi_encoder_score": 0.7025
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+            "cluster_text": "ARP reply from MAC 08:00:27:c7:6e:ba. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0237,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0154,
+            "bi_encoder_score": 0.6769
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+            "cluster_text": "ARP request from MAC 08:00:27:9c:e0:b4. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0084,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0005,
+            "bi_encoder_score": 0.7162
+          },
+          {
+            "cluster_fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+            "cluster_text": "ARP request from MAC 08:00:27:c7:6e:ba. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0079,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0065,
+            "bi_encoder_score": 0.6967
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 18 packets (4227 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 952.88ms (low packet rate). Statistically anomalous: inter-arrival time (Z=3.3). Accounts for 6.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0015,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0003,
+            "bi_encoder_score": 0.5629
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"high\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 1 packets (138 bytes total) from one source to one destination. Payload: high entropy (compressed or binary payload). Accounts for 0.2% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0011,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.537
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 10 packets (5321 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 1801.55ms (low packet rate). Statistically anomalous: inter-arrival time (Z=5.4). Accounts for 7.5% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0011,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5683
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 203 packets (21771 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 121.22ms (low packet rate, highly irregular interval). Accounts for 30.9% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.001,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0004,
+            "bi_encoder_score": 0.5599
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 201 packets (38599 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 122.44ms (low packet rate, highly irregular interval). Accounts for 54.8% of total capture traffic. Relevance tier: SECONDARY (matches attack context).",
+            "score": 0.0007,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5668
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"high\",4274522]",
+            "cluster_text": "UDP DNS traffic on port 44639. 1 packets (196 bytes total) from one source to one destination. Payload: high entropy (compressed or binary payload). Accounts for 0.3% of total capture traffic. Relevance tier: PRIMARY (matches attack context).",
+            "score": 0.0007,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0007,
+            "bi_encoder_score": 0.5476
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0279
+      }
+    ],
+    "threshold_used": 0.0,
+    "model_bi_encoder": "BAAI/bge-large-en-v1.5",
+    "model_cross_encoder": "BAAI/bge-reranker-large",
+    "parameters": {
+      "top_k": 10,
+      "supports_threshold": 0.75,
+      "partial_threshold": 0.55,
+      "neutral_threshold": 0.0,
+      "ambiguity_threshold": 0.1,
+      "query_instruction": "Represent this sentence for searching relevant passages: "
+    },
+    "clusters_scored": 10,
+    "clusters_skipped_no_text": 0,
+    "grounding_dict": {
+      "1": [
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]",
+          "score": 0.1249,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]",
+          "score": 0.1051,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"high\",4274522]",
+          "score": 0.0935,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]",
+          "score": 0.004,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]",
+          "score": 0.0036,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"high\",4274522]",
+          "score": 0.0028,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+          "score": 0.0008,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+          "score": 0.0007,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+          "score": 0.0005,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+          "score": 0.0005,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "2": [
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]",
+          "score": 0.0009,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]",
+          "score": 0.0006,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]",
+          "score": 0.0006,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]",
+          "score": 0.0005,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"high\",4274522]",
+          "score": 0.0004,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"high\",4274522]",
+          "score": 0.0003,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+          "score": 0.0001,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "3": [
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]",
+          "score": 0.0008,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]",
+          "score": 0.0006,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"high\",4274522]",
+          "score": 0.0004,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]",
+          "score": 0.0004,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]",
+          "score": 0.0004,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"high\",4274522]",
+          "score": 0.0003,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+          "score": 0.0001,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+          "score": 0.0001,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+          "score": 0.0001,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "4": [
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]",
+          "score": 0.0019,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"high\",4274522]",
+          "score": 0.0011,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"high\",4274522]",
+          "score": 0.0011,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]",
+          "score": 0.0011,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]",
+          "score": 0.0011,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]",
+          "score": 0.001,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+          "score": 0.0003,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "5": [
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]",
+          "score": 0.0008,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]",
+          "score": 0.0006,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]",
+          "score": 0.0005,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]",
+          "score": 0.0004,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"high\",4274522]",
+          "score": 0.0004,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"high\",4274522]",
+          "score": 0.0004,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+          "score": 0.0003,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+          "score": 0.0003,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "6": [
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]",
+          "score": 0.0014,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]",
+          "score": 0.0007,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]",
+          "score": 0.0005,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"high\",4274522]",
+          "score": 0.0004,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]",
+          "score": 0.0004,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"high\",4274522]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+          "score": 0.0001,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+          "score": 0.0001,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+          "score": 0.0001,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "7": [
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"high\",4274522]",
+          "score": 0.0672,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]",
+          "score": 0.036,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]",
+          "score": 0.0342,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"high\",4274522]",
+          "score": 0.0082,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]",
+          "score": 0.0041,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]",
+          "score": 0.0019,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+          "score": 0.0006,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+          "score": 0.0006,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+          "score": 0.0005,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+          "score": 0.0005,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "8": [
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]",
+          "score": 0.0023,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]",
+          "score": 0.0022,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"high\",4274522]",
+          "score": 0.0021,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"high\",4274522]",
+          "score": 0.0018,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]",
+          "score": 0.0017,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]",
+          "score": 0.0014,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+          "score": 0.0001,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+          "score": 0.0001,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "9": [
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]",
+          "score": 0.001,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]",
+          "score": 0.0009,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]",
+          "score": 0.0007,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]",
+          "score": 0.0006,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"high\",4274522]",
+          "score": 0.0006,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"high\",4274522]",
+          "score": 0.0005,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "10": [
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]",
+          "score": 0.05,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]",
+          "score": 0.0368,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]",
+          "score": 0.0119,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"high\",4274522]",
+          "score": 0.0092,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]",
+          "score": 0.0069,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"high\",4274522]",
+          "score": 0.0041,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+          "score": 0.0004,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+          "score": 0.0004,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+          "score": 0.0003,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "11": [
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]",
+          "score": 0.0037,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]",
+          "score": 0.0032,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"high\",4274522]",
+          "score": 0.0029,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]",
+          "score": 0.0029,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"high\",4274522]",
+          "score": 0.0022,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]",
+          "score": 0.0019,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+          "score": 0.0011,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+          "score": 0.0011,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+          "score": 0.0009,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+          "score": 0.0008,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "12": [
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+          "score": 0.0279,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+          "score": 0.0237,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+          "score": 0.0084,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+          "score": 0.0079,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]",
+          "score": 0.0015,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"high\",4274522]",
+          "score": 0.0011,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]",
+          "score": 0.0011,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]",
+          "score": 0.001,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]",
+          "score": 0.0007,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"high\",4274522]",
+          "score": 0.0007,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ]
+    },
+    "ungrounded_step_ids": [],
+    "ambiguous_step_ids": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
+  }
+}

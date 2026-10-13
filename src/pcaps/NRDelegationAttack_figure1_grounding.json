@@ -1,0 +1,1526 @@
+{
+  "pcap": "NRDelegationAttack_figure1.pcap",
+  "preprocess_settings": {
+    "token_budget": 10000,
+    "filtering_limit": 3,
+    "delta_t": 300.0,
+    "max_packets": null
+  },
+  "generated_at": "2026-10-13T12:39:27+00:00",
+  "grounding": {
+    "step_groundings": [
+      {
+        "step": {
+          "step_id": 1,
+          "text": "A client sends one DNS query for the A record of attack0.home.lan to the resolver 127.0.0.1 on UDP port 53.",
+          "source_text": "1. The attacker's client sent one DNS query for the A record of attack0.home.lan to the resolver at 127.0.0.1.",
+          "mitre_tag": "T1499"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 2 packets (164 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 395.45ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.9% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.3998,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0588,
+            "bi_encoder_score": 0.7063
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 75 packets (7471 bytes total) from one source to 3 unique destinations. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 9.71ms (very high packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=39.3). Accounts for 40.7% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.3409,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.3231,
+            "bi_encoder_score": 0.7009
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53627,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 53627. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0178,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0045,
+            "bi_encoder_score": 0.7089
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",55305,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 55305. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0133,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0013,
+            "bi_encoder_score": 0.6977
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53011,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 53011. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.012,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0011,
+            "bi_encoder_score": 0.6938
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",52204,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 52204. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0109,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0013,
+            "bi_encoder_score": 0.6978
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",55249,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 55249. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0096,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0009,
+            "bi_encoder_score": 0.6943
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",33009,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 33009. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0087,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.694
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",51842,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 51842. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0087,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0005,
+            "bi_encoder_score": 0.6957
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",43474,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 43474. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0081,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0081,
+            "bi_encoder_score": 0.6945
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.3998
+      },
+      {
+        "step": {
+          "step_id": 2,
+          "text": "The resolver 127.0.0.1 sends 46 DNS queries, an A and an AAAA query for each of 23 names ns<N>.fake<N>.fake0, to 127.0.0.2.",
+          "source_text": "For each of them the resolver asked the authoritative server 127.0.0.2 for both an A and an AAAA record. In this capture it resolved 23 such names, from ns28.fake28.fake0 to ns51.fake51.fake0, sending 46 queries.",
+          "mitre_tag": "T1499"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42493,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 42493. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0044,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0009,
+            "bi_encoder_score": 0.6258
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42692,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 42692. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0036,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6239
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42804,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 42804. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0035,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.6234
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53627,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 53627. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0033,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0003,
+            "bi_encoder_score": 0.624
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",34124,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 34124. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.003,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.6254
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",52129,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 52129. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.003,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6235
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",52204,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 52204. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0029,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.6232
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",51842,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 51842. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0029,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0006,
+            "bi_encoder_score": 0.625
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 75 packets (7471 bytes total) from one source to 3 unique destinations. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 9.71ms (very high packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=39.3). Accounts for 40.7% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0023,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0004,
+            "bi_encoder_score": 0.6313
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 2 packets (164 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 395.45ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.9% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0019,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0019,
+            "bi_encoder_score": 0.6246
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0044
+      },
+      {
+        "step": {
+          "step_id": 3,
+          "text": "127.0.0.2 answers each A query with the address 127.0.0.89 and a referral to a.root-servers.net at 127.0.0.2.",
+          "source_text": "Every A query was answered with the address 127.0.0.89 together with a referral to the root (a.root-servers.net at 127.0.0.2); every AAAA query was answered with no address, only an SOA record.",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",33009,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 33009. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0091,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0016,
+            "bi_encoder_score": 0.5396
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",36762,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 36762. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0075,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0005,
+            "bi_encoder_score": 0.5371
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",45615,\"low\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 45615. 1 packets (117 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Accounts for 0.6% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.007,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5438
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 75 packets (7471 bytes total) from one source to 3 unique destinations. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 9.71ms (very high packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=39.3). Accounts for 40.7% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0069,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.5372
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",46203,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 46203. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0068,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5408
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 2 packets (164 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 395.45ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.9% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0067,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0003,
+            "bi_encoder_score": 0.5415
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",48283,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 48283. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0064,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.537
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",52204,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 52204. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0062,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0005,
+            "bi_encoder_score": 0.5369
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",48994,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 48994. 1 packets (115 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Statistically anomalous: byte volume (Z=2.0). Accounts for 0.6% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0057,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0007,
+            "bi_encoder_score": 0.5375
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53627,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 53627. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.005,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.005,
+            "bi_encoder_score": 0.5431
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0091
+      },
+      {
+        "step": {
+          "step_id": 4,
+          "text": "127.0.0.2 answers each AAAA query with no address record, only an SOA record.",
+          "source_text": "Every A query was answered with the address 127.0.0.89 together with a referral to the root (a.root-servers.net at 127.0.0.2); every AAAA query was answered with no address, only an SOA record.",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 75 packets (7471 bytes total) from one source to 3 unique destinations. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 9.71ms (very high packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=39.3). Accounts for 40.7% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0006,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0004,
+            "bi_encoder_score": 0.4635
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",34124,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 34124. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.4565
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",52204,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 52204. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.4568
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",46203,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 46203. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.4578
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",32844,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 32844. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.4551
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",45139,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 45139. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.4567
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42493,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 42493. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.4556
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",33009,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 33009. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.4602
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",45615,\"low\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 45615. 1 packets (117 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Accounts for 0.6% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.4678
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",48994,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 48994. 1 packets (115 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Statistically anomalous: byte volume (Z=2.0). Accounts for 0.6% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.4594
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0006
+      },
+      {
+        "step": {
+          "step_id": 5,
+          "text": "The resolver sends two DNS NS queries for the root zone to 127.0.0.2.",
+          "source_text": "The resolver also re-checked the root name servers twice with NS queries.",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 2 packets (164 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 395.45ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.9% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0035,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.6008
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",36762,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 36762. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0033,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0004,
+            "bi_encoder_score": 0.5771
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",55113,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 55113. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0029,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.5772
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42493,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 42493. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0027,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5805
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42692,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 42692. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0027,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5831
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",55249,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 55249. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0026,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.5792
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42804,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 42804. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0025,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5774
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53627,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 53627. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0024,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5883
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",33009,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 33009. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0023,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.5777
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 75 packets (7471 bytes total) from one source to 3 unique destinations. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 9.71ms (very high packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=39.3). Accounts for 40.7% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0021,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0021,
+            "bi_encoder_score": 0.5884
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0035
+      },
+      {
+        "step": {
+          "step_id": 6,
+          "text": "The resolver 127.0.0.1 sends 28 DNS queries for attack0.home.lan to 127.0.0.89 on UDP port 53.",
+          "source_text": "It sent 28 such queries, and each one immediately bounced with an ICMP \"port unreachable\" message because nothing listens on port 53 at that address.",
+          "mitre_tag": "T1499"
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 75 packets (7471 bytes total) from one source to 3 unique destinations. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 9.71ms (very high packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=39.3). Accounts for 40.7% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.3794,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0382,
+            "bi_encoder_score": 0.6975
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 2 packets (164 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 395.45ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.9% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.3412,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.3316,
+            "bi_encoder_score": 0.6883
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",52204,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 52204. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0096,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0009,
+            "bi_encoder_score": 0.6839
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53627,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 53627. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0086,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.001,
+            "bi_encoder_score": 0.6973
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42493,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 42493. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0077,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.6848
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",55305,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 55305. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0075,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.001,
+            "bi_encoder_score": 0.6854
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",34822,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 34822. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0065,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6839
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",55249,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 55249. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0064,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.6841
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42692,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 42692. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0063,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.6838
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",51842,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 51842. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0061,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0061,
+            "bi_encoder_score": 0.6845
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.3794
+      },
+      {
+        "step": {
+          "step_id": 7,
+          "text": "127.0.0.89 answers each of those queries with an ICMP destination unreachable (port unreachable) message.",
+          "source_text": "It sent 28 such queries, and each one immediately bounced with an ICMP \"port unreachable\" message because nothing listens on port 53 at that address.",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"ICMP\",\"ICMP:3:3\",null,null,null,5861254]",
+            "cluster_text": "ICMP traffic (type 3 code 3). 28 packets (3556 bytes total) from one source to one destination. Inter-arrival time: mean 0.25ms (extremely high packet rate). Accounts for 19.4% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0005,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0003,
+            "bi_encoder_score": 0.6137
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 75 packets (7471 bytes total) from one source to 3 unique destinations. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 9.71ms (very high packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=39.3). Accounts for 40.7% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5846
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 2 packets (164 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 395.45ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.9% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5827
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42493,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 42493. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5812
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",34124,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 34124. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5811
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",34822,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 34822. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5831
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",48283,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 48283. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0002,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5813
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",55249,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 55249. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0001,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5804
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",46203,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 46203. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0001,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5822
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53627,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 53627. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0001,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.5838
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0005
+      },
+      {
+        "step": {
+          "step_id": 8,
+          "text": "After 0.72 seconds the resolver returns a DNS SERVFAIL response to the client.",
+          "source_text": "4. After 0.72 seconds the resolver stopped and answered the client with a DNS SERVFAIL response.",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 75 packets (7471 bytes total) from one source to 3 unique destinations. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 9.71ms (very high packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=39.3). Accounts for 40.7% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0012,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6036
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 53 (DNS). 2 packets (164 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 395.45ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.9% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0011,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0005,
+            "bi_encoder_score": 0.6119
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",34124,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 34124. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0006,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5763
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42692,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 42692. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0006,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5758
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",36762,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 36762. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0006,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5767
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53627,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 53627. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0006,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.576
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",45615,\"low\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 45615. 1 packets (117 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Accounts for 0.6% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0005,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5767
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",34822,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 34822. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0005,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5763
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",51842,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 51842. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0005,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.5765
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",48283,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 48283. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0005,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0005,
+            "bi_encoder_score": 0.5789
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.0012
+      },
+      {
+        "step": {
+          "step_id": 9,
+          "text": "Two one-byte UDP datagrams are sent from the loopback host to itself.",
+          "source_text": "The resolver also exchanged two one-byte UDP datagrams with itself on loopback at the start of the capture, which are internal wake-up signals rather than attack traffic.",
+          "mitre_tag": null
+        },
+        "matched_clusters": [
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",33009,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 33009. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.005,
+            "rank": 1,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.001,
+            "bi_encoder_score": 0.6632
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",32844,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 32844. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.004,
+            "rank": 2,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.664
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",52204,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 52204. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0039,
+            "rank": 3,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.6671
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",54982,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 54982. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0039,
+            "rank": 4,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0,
+            "bi_encoder_score": 0.6617
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",54174,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 54174. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0039,
+            "rank": 5,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.663
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53627,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 53627. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0038,
+            "rank": 6,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6624
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",null,59212,\"low\",5861254]",
+            "cluster_text": "UDP traffic on port 59212. 1 packets (43 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Statistically anomalous: byte volume (Z=11.6). Accounts for 0.2% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0037,
+            "rank": 7,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0002,
+            "bi_encoder_score": 0.6744
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",48994,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 48994. 1 packets (115 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Statistically anomalous: byte volume (Z=2.0). Accounts for 0.6% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0035,
+            "rank": 8,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0001,
+            "bi_encoder_score": 0.6743
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",null,35006,\"low\",5861254]",
+            "cluster_text": "UDP traffic on port 35006. 1 packets (63 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Statistically anomalous: byte volume (Z=7.9). Accounts for 0.3% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0034,
+            "rank": 9,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0003,
+            "bi_encoder_score": 0.6707
+          },
+          {
+            "cluster_fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",48470,\"medium\",5861254]",
+            "cluster_text": "UDP DNS traffic on port 48470. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match).",
+            "score": 0.0031,
+            "rank": 10,
+            "evidence_label": "NEUTRAL",
+            "score_gap": 0.0031,
+            "bi_encoder_score": 0.6606
+          }
+        ],
+        "is_ambiguous": true,
+        "is_ungrounded": false,
+        "top_candidate_score": 0.005
+      }
+    ],
+    "threshold_used": 0.0,
+    "model_bi_encoder": "BAAI/bge-large-en-v1.5",
+    "model_cross_encoder": "BAAI/bge-reranker-large",
+    "parameters": {
+      "top_k": 10,
+      "supports_threshold": 0.75,
+      "partial_threshold": 0.55,
+      "neutral_threshold": 0.0,
+      "ambiguity_threshold": 0.1,
+      "query_instruction": "Represent this sentence for searching relevant passages: "
+    },
+    "clusters_scored": 54,
+    "clusters_skipped_no_text": 0,
+    "grounding_dict": {
+      "1": [
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",5861254]",
+          "score": 0.3998,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]",
+          "score": 0.3409,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53627,\"medium\",5861254]",
+          "score": 0.0178,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",55305,\"medium\",5861254]",
+          "score": 0.0133,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53011,\"medium\",5861254]",
+          "score": 0.012,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",52204,\"medium\",5861254]",
+          "score": 0.0109,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",55249,\"medium\",5861254]",
+          "score": 0.0096,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",33009,\"medium\",5861254]",
+          "score": 0.0087,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",51842,\"medium\",5861254]",
+          "score": 0.0087,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",43474,\"medium\",5861254]",
+          "score": 0.0081,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "2": [
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42493,\"medium\",5861254]",
+          "score": 0.0044,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42692,\"medium\",5861254]",
+          "score": 0.0036,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42804,\"medium\",5861254]",
+          "score": 0.0035,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53627,\"medium\",5861254]",
+          "score": 0.0033,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",34124,\"medium\",5861254]",
+          "score": 0.003,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",52129,\"medium\",5861254]",
+          "score": 0.003,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",52204,\"medium\",5861254]",
+          "score": 0.0029,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",51842,\"medium\",5861254]",
+          "score": 0.0029,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]",
+          "score": 0.0023,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",5861254]",
+          "score": 0.0019,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "3": [
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",33009,\"medium\",5861254]",
+          "score": 0.0091,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",36762,\"medium\",5861254]",
+          "score": 0.0075,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",45615,\"low\",5861254]",
+          "score": 0.007,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]",
+          "score": 0.0069,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",46203,\"medium\",5861254]",
+          "score": 0.0068,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",5861254]",
+          "score": 0.0067,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",48283,\"medium\",5861254]",
+          "score": 0.0064,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",52204,\"medium\",5861254]",
+          "score": 0.0062,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",48994,\"medium\",5861254]",
+          "score": 0.0057,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53627,\"medium\",5861254]",
+          "score": 0.005,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "4": [
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]",
+          "score": 0.0006,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",34124,\"medium\",5861254]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",52204,\"medium\",5861254]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",46203,\"medium\",5861254]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",32844,\"medium\",5861254]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",45139,\"medium\",5861254]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42493,\"medium\",5861254]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",33009,\"medium\",5861254]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",45615,\"low\",5861254]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",48994,\"medium\",5861254]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "5": [
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",5861254]",
+          "score": 0.0035,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",36762,\"medium\",5861254]",
+          "score": 0.0033,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",55113,\"medium\",5861254]",
+          "score": 0.0029,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42493,\"medium\",5861254]",
+          "score": 0.0027,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42692,\"medium\",5861254]",
+          "score": 0.0027,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",55249,\"medium\",5861254]",
+          "score": 0.0026,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42804,\"medium\",5861254]",
+          "score": 0.0025,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53627,\"medium\",5861254]",
+          "score": 0.0024,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",33009,\"medium\",5861254]",
+          "score": 0.0023,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]",
+          "score": 0.0021,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "6": [
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]",
+          "score": 0.3794,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",5861254]",
+          "score": 0.3412,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",52204,\"medium\",5861254]",
+          "score": 0.0096,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53627,\"medium\",5861254]",
+          "score": 0.0086,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42493,\"medium\",5861254]",
+          "score": 0.0077,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",55305,\"medium\",5861254]",
+          "score": 0.0075,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",34822,\"medium\",5861254]",
+          "score": 0.0065,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",55249,\"medium\",5861254]",
+          "score": 0.0064,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42692,\"medium\",5861254]",
+          "score": 0.0063,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",51842,\"medium\",5861254]",
+          "score": 0.0061,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "7": [
+        {
+          "fingerprint_key": "[\"ICMP\",\"ICMP:3:3\",null,null,null,5861254]",
+          "score": 0.0005,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",5861254]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42493,\"medium\",5861254]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",34124,\"medium\",5861254]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",34822,\"medium\",5861254]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",48283,\"medium\",5861254]",
+          "score": 0.0002,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",55249,\"medium\",5861254]",
+          "score": 0.0001,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",46203,\"medium\",5861254]",
+          "score": 0.0001,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53627,\"medium\",5861254]",
+          "score": 0.0001,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "8": [
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]",
+          "score": 0.0012,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",5861254]",
+          "score": 0.0011,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",34124,\"medium\",5861254]",
+          "score": 0.0006,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42692,\"medium\",5861254]",
+          "score": 0.0006,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",36762,\"medium\",5861254]",
+          "score": 0.0006,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53627,\"medium\",5861254]",
+          "score": 0.0006,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",45615,\"low\",5861254]",
+          "score": 0.0005,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",34822,\"medium\",5861254]",
+          "score": 0.0005,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",51842,\"medium\",5861254]",
+          "score": 0.0005,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",48283,\"medium\",5861254]",
+          "score": 0.0005,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ],
+      "9": [
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",33009,\"medium\",5861254]",
+          "score": 0.005,
+          "evidence": "NEUTRAL",
+          "rank": 1
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",32844,\"medium\",5861254]",
+          "score": 0.004,
+          "evidence": "NEUTRAL",
+          "rank": 2
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",52204,\"medium\",5861254]",
+          "score": 0.0039,
+          "evidence": "NEUTRAL",
+          "rank": 3
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",54982,\"medium\",5861254]",
+          "score": 0.0039,
+          "evidence": "NEUTRAL",
+          "rank": 4
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",54174,\"medium\",5861254]",
+          "score": 0.0039,
+          "evidence": "NEUTRAL",
+          "rank": 5
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53627,\"medium\",5861254]",
+          "score": 0.0038,
+          "evidence": "NEUTRAL",
+          "rank": 6
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",null,59212,\"low\",5861254]",
+          "score": 0.0037,
+          "evidence": "NEUTRAL",
+          "rank": 7
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",48994,\"medium\",5861254]",
+          "score": 0.0035,
+          "evidence": "NEUTRAL",
+          "rank": 8
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",null,35006,\"low\",5861254]",
+          "score": 0.0034,
+          "evidence": "NEUTRAL",
+          "rank": 9
+        },
+        {
+          "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",48470,\"medium\",5861254]",
+          "score": 0.0031,
+          "evidence": "NEUTRAL",
+          "rank": 10
+        }
+      ]
+    },
+    "ungrounded_step_ids": [],
+    "ambiguous_step_ids": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ]
+  }
+}
