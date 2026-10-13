@@ -1,0 +1,716 @@
+{
+  "pcap": "dns_tunneling.pcap",
+  "settings": {
+    "token_budget": 10000,
+    "filtering_limit": 3,
+    "delta_t": 300.0,
+    "max_packets": null
+  },
+  "generated_at": "2026-10-13T12:07:07+00:00",
+  "output": {
+    "clusters": [
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]",
+        "representative_items": [
+          {
+            "packet_id": 1,
+            "timestamp": "2010-08-21T05:10:40.051082",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 82,
+            "info": "DPort:53 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]"
+          },
+          {
+            "packet_id": 3,
+            "timestamp": "2010-08-21T05:10:40.051979",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 103,
+            "info": "DPort:53 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]"
+          },
+          {
+            "packet_id": 5,
+            "timestamp": "2010-08-21T05:10:40.057774",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 88,
+            "info": "DPort:53 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]"
+          }
+        ],
+        "aggregate": {
+          "count": 203,
+          "total_bytes": 21771,
+          "unique_sources": [
+            "10.0.2.30"
+          ],
+          "unique_destinations": [
+            "10.0.2.20"
+          ],
+          "first_seen": "2010-08-21T05:10:40.051082",
+          "last_seen": "2010-08-21T05:11:04.538177",
+          "iat_mean": 0.12122324315628202,
+          "iat_std": 0.737220199880775,
+          "iat_min": 2.8848648071289062e-05,
+          "iat_max": 8.018487930297852,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.30884355671565566,
+          "tfidf_weight": 0.12643624681490825,
+          "dst_port_class": "well_known",
+          "dst_port_service": "DNS",
+          "zscore_anomalies": {
+            "byte_volume": 0.568
+          },
+          "context_match": true,
+          "cluster_text": "UDP DNS traffic on port 53 (DNS). 203 packets (21771 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 121.22ms (low packet rate, highly irregular interval). Accounts for 30.9% of total capture traffic. Relevance tier: SECONDARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]",
+        "representative_items": [
+          {
+            "packet_id": 2,
+            "timestamp": "2010-08-21T05:10:40.051175",
+            "protocol": "DNS",
+            "src": "10.0.2.20",
+            "dst": "10.0.2.30",
+            "length": 103,
+            "info": "DPort:44639 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]"
+          },
+          {
+            "packet_id": 4,
+            "timestamp": "2010-08-21T05:10:40.052258",
+            "protocol": "DNS",
+            "src": "10.0.2.20",
+            "dst": "10.0.2.30",
+            "length": 144,
+            "info": "DPort:44639 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]"
+          },
+          {
+            "packet_id": 6,
+            "timestamp": "2010-08-21T05:10:40.057973",
+            "protocol": "DNS",
+            "src": "10.0.2.20",
+            "dst": "10.0.2.30",
+            "length": 137,
+            "info": "DPort:44639 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]"
+          }
+        ],
+        "aggregate": {
+          "count": 201,
+          "total_bytes": 38599,
+          "unique_sources": [
+            "10.0.2.20"
+          ],
+          "unique_destinations": [
+            "10.0.2.30"
+          ],
+          "first_seen": "2010-08-21T05:10:40.051175",
+          "last_seen": "2010-08-21T05:11:04.538369",
+          "iat_mean": 0.12243596911430359,
+          "iat_std": 0.7933324735249553,
+          "iat_min": 0.00017690658569335938,
+          "iat_max": 9.021224975585938,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.5475656812120524,
+          "tfidf_weight": 0.12806411834150197,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.781
+          },
+          "context_match": true,
+          "cluster_text": "UDP DNS traffic on port 44639. 201 packets (38599 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 122.44ms (low packet rate, highly irregular interval). Accounts for 54.8% of total capture traffic. Relevance tier: SECONDARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"high\",4274522]",
+        "representative_items": [
+          {
+            "packet_id": 11,
+            "timestamp": "2010-08-21T05:10:40.058649",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 138,
+            "info": "DPort:53 | L7:DNS | Entropy:high",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"high\",4274522]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 138,
+          "unique_sources": [
+            "10.0.2.30"
+          ],
+          "unique_destinations": [
+            "10.0.2.20"
+          ],
+          "first_seen": "2010-08-21T05:10:40.058649",
+          "last_seen": "2010-08-21T05:10:40.058649",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.00195766895534245,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "well_known",
+          "dst_port_service": "DNS",
+          "zscore_anomalies": {
+            "packet_rate": 1.962,
+            "byte_volume": 1.315,
+            "iat_mean": 0.674
+          },
+          "context_match": true,
+          "cluster_text": "UDP DNS traffic on port 53 (DNS). 1 packets (138 bytes total) from one source to one destination. Payload: high entropy (compressed or binary payload). Accounts for 0.2% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"high\",4274522]",
+        "representative_items": [
+          {
+            "packet_id": 12,
+            "timestamp": "2010-08-21T05:10:40.058759",
+            "protocol": "DNS",
+            "src": "10.0.2.20",
+            "dst": "10.0.2.30",
+            "length": 196,
+            "info": "DPort:44639 | L7:DNS | Entropy:high",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"high\",4274522]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 196,
+          "unique_sources": [
+            "10.0.2.20"
+          ],
+          "unique_destinations": [
+            "10.0.2.30"
+          ],
+          "first_seen": "2010-08-21T05:10:40.058759",
+          "last_seen": "2010-08-21T05:10:40.058759",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.00278045735686319,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "packet_rate": 1.962,
+            "byte_volume": 1.185,
+            "iat_mean": 0.674
+          },
+          "context_match": true,
+          "cluster_text": "UDP DNS traffic on port 44639. 1 packets (196 bytes total) from one source to one destination. Payload: high entropy (compressed or binary payload). Accounts for 0.3% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]",
+        "representative_items": [
+          {
+            "packet_id": 15,
+            "timestamp": "2010-08-21T05:10:40.059078",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 134,
+            "info": "DPort:53 | L7:DNS | Entropy:low",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]"
+          },
+          {
+            "packet_id": 23,
+            "timestamp": "2010-08-21T05:10:40.060328",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 323,
+            "info": "DPort:53 | L7:DNS | Entropy:low",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]"
+          },
+          {
+            "packet_id": 25,
+            "timestamp": "2010-08-21T05:10:40.060775",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 323,
+            "info": "DPort:53 | L7:DNS | Entropy:low",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]"
+          }
+        ],
+        "aggregate": {
+          "count": 18,
+          "total_bytes": 4227,
+          "unique_sources": [
+            "10.0.2.30"
+          ],
+          "unique_destinations": [
+            "10.0.2.20"
+          ],
+          "first_seen": "2010-08-21T05:10:40.059078",
+          "last_seen": "2010-08-21T05:10:56.258078",
+          "iat_mean": 0.9528823600095861,
+          "iat_std": 1.0980801767953965,
+          "iat_min": 0.0002448558807373047,
+          "iat_max": 4.27643895149231,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.05996425126255461,
+          "tfidf_weight": 0.5247833396846167,
+          "dst_port_class": "well_known",
+          "dst_port_service": "DNS",
+          "zscore_anomalies": {
+            "packet_rate": 0.619,
+            "byte_volume": 0.043,
+            "iat_mean": 3.252
+          },
+          "context_match": true,
+          "cluster_text": "UDP DNS traffic on port 53 (DNS). 18 packets (4227 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 952.88ms (low packet rate). Statistically anomalous: inter-arrival time (Z=3.3). Accounts for 6.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]",
+        "representative_items": [
+          {
+            "packet_id": 16,
+            "timestamp": "2010-08-21T05:10:40.059186",
+            "protocol": "DNS",
+            "src": "10.0.2.20",
+            "dst": "10.0.2.30",
+            "length": 188,
+            "info": "DPort:44639 | L7:DNS | Entropy:low",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]"
+          },
+          {
+            "packet_id": 24,
+            "timestamp": "2010-08-21T05:10:40.060673",
+            "protocol": "DNS",
+            "src": "10.0.2.20",
+            "dst": "10.0.2.30",
+            "length": 1092,
+            "info": "DPort:44639 | L7:DNS | Entropy:low",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]"
+          },
+          {
+            "packet_id": 26,
+            "timestamp": "2010-08-21T05:10:40.060900",
+            "protocol": "DNS",
+            "src": "10.0.2.20",
+            "dst": "10.0.2.30",
+            "length": 1476,
+            "info": "DPort:44639 | L7:DNS | Entropy:low",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]"
+          }
+        ],
+        "aggregate": {
+          "count": 10,
+          "total_bytes": 5321,
+          "unique_sources": [
+            "10.0.2.20"
+          ],
+          "unique_destinations": [
+            "10.0.2.30"
+          ],
+          "first_seen": "2010-08-21T05:10:40.059186",
+          "last_seen": "2010-08-21T05:10:56.273091",
+          "iat_mean": 1.8015450106726751,
+          "iat_std": 2.928269615267153,
+          "iat_min": 0.0002269744873046875,
+          "iat_max": 9.020908117294312,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.0754837428360665,
+          "tfidf_weight": 0.6214235089326089,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "packet_rate": 0.73,
+            "byte_volume": 0.043,
+            "iat_mean": 5.37
+          },
+          "context_match": true,
+          "cluster_text": "UDP DNS traffic on port 44639. 10 packets (5321 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 1801.55ms (low packet rate). Statistically anomalous: inter-arrival time (Z=5.4). Accounts for 7.5% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+        "representative_items": [
+          {
+            "packet_id": 32,
+            "timestamp": "2010-08-21T05:10:45.047506",
+            "protocol": "ARP",
+            "src": "10.0.2.20",
+            "dst": "10.0.2.30",
+            "length": 60,
+            "info": "Op:1",
+            "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:c7:6e:ba\",null,null,null,4274522]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.0.2.20"
+          ],
+          "unique_destinations": [
+            "10.0.2.30"
+          ],
+          "first_seen": "2010-08-21T05:10:45.047506",
+          "last_seen": "2010-08-21T05:10:45.047506",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.0008511604153662827,
+          "tfidf_weight": 1.0,
+          "dst_port_class": null,
+          "dst_port_service": null,
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "ARP request from MAC 08:00:27:c7:6e:ba. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+        "representative_items": [
+          {
+            "packet_id": 33,
+            "timestamp": "2010-08-21T05:10:45.047573",
+            "protocol": "ARP",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 60,
+            "info": "Op:2",
+            "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:9c:e0:b4\",null,null,null,4274522]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.0.2.30"
+          ],
+          "unique_destinations": [
+            "10.0.2.20"
+          ],
+          "first_seen": "2010-08-21T05:10:45.047573",
+          "last_seen": "2010-08-21T05:10:45.047573",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.0008511604153662827,
+          "tfidf_weight": 1.0,
+          "dst_port_class": null,
+          "dst_port_service": null,
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "ARP reply from MAC 08:00:27:9c:e0:b4. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:9c:e0:b4\",null,null,null,4274522]",
+        "representative_items": [
+          {
+            "packet_id": 45,
+            "timestamp": "2010-08-21T05:10:50.078314",
+            "protocol": "ARP",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 60,
+            "info": "Op:1",
+            "fingerprint_key": "[\"ARP\",\"ARP:1:08:00:27:9c:e0:b4\",null,null,null,4274522]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.0.2.30"
+          ],
+          "unique_destinations": [
+            "10.0.2.20"
+          ],
+          "first_seen": "2010-08-21T05:10:50.078314",
+          "last_seen": "2010-08-21T05:10:50.078314",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.0008511604153662827,
+          "tfidf_weight": 1.0,
+          "dst_port_class": null,
+          "dst_port_service": null,
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "ARP request from MAC 08:00:27:9c:e0:b4. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:c7:6e:ba\",null,null,null,4274522]",
+        "representative_items": [
+          {
+            "packet_id": 46,
+            "timestamp": "2010-08-21T05:10:50.078389",
+            "protocol": "ARP",
+            "src": "10.0.2.20",
+            "dst": "10.0.2.30",
+            "length": 60,
+            "info": "Op:2",
+            "fingerprint_key": "[\"ARP\",\"ARP:2:08:00:27:c7:6e:ba\",null,null,null,4274522]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.0.2.20"
+          ],
+          "unique_destinations": [
+            "10.0.2.30"
+          ],
+          "first_seen": "2010-08-21T05:10:50.078389",
+          "last_seen": "2010-08-21T05:10:50.078389",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.0008511604153662827,
+          "tfidf_weight": 1.0,
+          "dst_port_class": null,
+          "dst_port_service": null,
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "ARP reply from MAC 08:00:27:c7:6e:ba. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      }
+    ],
+    "compression_stats": {
+      "raw_packet_count_in": 438,
+      "packet_count_out": 18,
+      "cluster_count": 10,
+      "estimated_tokens_out": 1896,
+      "dropped_parse_failures": 0,
+      "compression_ratio": 0.9589
+    },
+    "budget_status": "within_budget",
+    "attack_context": {
+      "suspected_protocols": [
+        "DNS",
+        "TCP",
+        "UDP"
+      ],
+      "suspected_behaviors": [
+        "exfiltration",
+        "tunneling"
+      ],
+      "target_indicators": [
+        "single_dst",
+        "single_src"
+      ],
+      "raw_description": "Incident Report: Covert DNS Tunnel to pirate.sea\n=================================================\n\nSummary\n-------\nA Linux workstation at 10.0.2.30 established a covert channel to the\nhost 10.0.2.20 by encoding data inside DNS queries and responses. The\nnaming scheme, the use of NULL records and the encoding negotiation are\ncharacteristic of the iodine tunnelling tool. The capture covers 24.5\nseconds on 2010-08-21 starting at 05:10:40 UTC and contains 438 packets.\n\nInfrastructure\n--------------\n  Client (tunnel endpoint):   10.0.2.30\n  Tunnel server / rogue DNS:  10.0.2.20, UDP port 53\n  Tunnel domain:              pirate.sea\n  Record type:                NULL (type 10) for every query\n\nPhase 1 - Handshake and encoding negotiation\n--------------------------------------------\nThe client opened with a short check-in query for vaaaakardli.pirate.sea\nand the server answered within a millisecond. The client then sent a\nquery with a 32-character random-looking label to log in and receive the\ntunnel's network parameters. Next came a series of \"zi\" test queries\nwhose labels contain long runs of mixed-case letters, digits, accented\ncharacters and raw high-bit bytes; the server echoed each name back. This\nis how iodine discovers which characters survive the DNS path. Three more\nshort queries (sbhi1c, obsi1d, obli1e) selected the upstream and\ndownstream codecs. The whole handshake took less than 20 milliseconds.\n\nPhase 2 - Data transfer\n-----------------------\nOnce the codecs were agreed, the client sent upstream data as long query\nnames made of high-entropy, binary-looking labels split across several\ndot-separated segments. Each of these queries was answered by a response\nthat echoed the name and carried the downstream payload in the NULL\nrecord. Between data bursts the client kept polling with short queries\nsuch as paeacg2y.pirate.sea and paficihq.pirate.sea so the server could\npush data back at any time. Queries arrived on average every 120\nmilliseconds but very irregularly, from bursts of back-to-back queries to\npauses of several seconds.\n\nVolume\n------\nThe client sent 222 queries (about 26 kB) and received 212 responses\n(about 44 kB), so more data flowed from the server to the client than the\nother way around. All traffic stayed on the single pair 10.0.2.30 and\n10.0.2.20; the only other packets were two ARP request/reply exchanges\nbetween the two hosts.\n\nAssessment\n----------\nThe operator most likely used the tunnel to bypass the perimeter firewall,\nwhich allows outbound DNS. We assess that the channel was used for\ninteractive access rather than bulk exfiltration, given the modest\nvolume. Recommended actions: block NULL-record queries at the resolver,\nalert on long or high-entropy query labels, and reimage 10.0.2.30.\n"
+    },
+    "budget_status_detail": null,
+    "ip_summary": [
+      {
+        "ip": "10.0.2.20",
+        "total_traffic": 438,
+        "packets_as_source": 214,
+        "packets_as_destination": 224,
+        "unique_destinations": 1,
+        "unique_sources": 1,
+        "unique_dst_ports": 1,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]",
+            "count": 201
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]",
+            "count": 10
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"high\",4274522]",
+            "count": 1
+          }
+        ],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]",
+            "count": 203
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]",
+            "count": 18
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"high\",4274522]",
+            "count": 1
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": [
+          {
+            "packet_id": 1,
+            "timestamp": "2010-08-21T05:10:40.051082",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 82,
+            "info": "DPort:53 | L7:DNS | Entropy:medium"
+          },
+          {
+            "packet_id": 2,
+            "timestamp": "2010-08-21T05:10:40.051175",
+            "protocol": "DNS",
+            "src": "10.0.2.20",
+            "dst": "10.0.2.30",
+            "length": 103,
+            "info": "DPort:44639 | L7:DNS | Entropy:medium"
+          },
+          {
+            "packet_id": 3,
+            "timestamp": "2010-08-21T05:10:40.051979",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 103,
+            "info": "DPort:53 | L7:DNS | Entropy:medium"
+          }
+        ]
+      },
+      {
+        "ip": "10.0.2.30",
+        "total_traffic": 438,
+        "packets_as_source": 224,
+        "packets_as_destination": 214,
+        "unique_destinations": 1,
+        "unique_sources": 1,
+        "unique_dst_ports": 1,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",4274522]",
+            "count": 203
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",4274522]",
+            "count": 18
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"high\",4274522]",
+            "count": 1
+          }
+        ],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"medium\",4274522]",
+            "count": 201
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"low\",4274522]",
+            "count": 10
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",44639,\"high\",4274522]",
+            "count": 1
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": [
+          {
+            "packet_id": 1,
+            "timestamp": "2010-08-21T05:10:40.051082",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 82,
+            "info": "DPort:53 | L7:DNS | Entropy:medium"
+          },
+          {
+            "packet_id": 2,
+            "timestamp": "2010-08-21T05:10:40.051175",
+            "protocol": "DNS",
+            "src": "10.0.2.20",
+            "dst": "10.0.2.30",
+            "length": 103,
+            "info": "DPort:44639 | L7:DNS | Entropy:medium"
+          },
+          {
+            "packet_id": 3,
+            "timestamp": "2010-08-21T05:10:40.051979",
+            "protocol": "DNS",
+            "src": "10.0.2.30",
+            "dst": "10.0.2.20",
+            "length": 103,
+            "info": "DPort:53 | L7:DNS | Entropy:medium"
+          }
+        ]
+      }
+    ],
+    "anomalies": [],
+    "filter_string_used": null
+  }
+}

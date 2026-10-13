@@ -146,11 +146,11 @@ def _tcp_state(
     if is_syn:
         return "SYN"
 
-    if is_fin:
+    if is_fin: # FIN packets are always post-handshake, so we can remove the stream from the completed set.
         handshakes_completed.discard(stream_id)
         return "FIN"
 
-    if is_rst:
+    if is_rst: # RST packets are always post-handshake, so we can remove the stream from the completed set.
         handshakes_completed.discard(stream_id)
         return "RST"
 

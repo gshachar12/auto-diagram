@@ -1,0 +1,362 @@
+{
+  "pcap": "icmp.pcap",
+  "settings": {
+    "token_budget": 10000,
+    "filtering_limit": 3,
+    "delta_t": 300.0,
+    "max_packets": null
+  },
+  "generated_at": "2026-10-13T12:07:08+00:00",
+  "output": {
+    "clusters": [
+      {
+        "fingerprint_key": "[\"ICMP\",\"ICMP:8:0\",null,null,null,3891206]",
+        "representative_items": [
+          {
+            "packet_id": 1,
+            "timestamp": "2006-12-29T05:10:10.660442",
+            "protocol": "ICMP",
+            "src": "192.168.0.114",
+            "dst": "192.168.0.1",
+            "length": 74,
+            "info": "Type:8 Code:0",
+            "fingerprint_key": "[\"ICMP\",\"ICMP:8:0\",null,null,null,3891206]"
+          },
+          {
+            "packet_id": 3,
+            "timestamp": "2006-12-29T05:10:11.657215",
+            "protocol": "ICMP",
+            "src": "192.168.0.114",
+            "dst": "192.168.0.1",
+            "length": 74,
+            "info": "Type:8 Code:0",
+            "fingerprint_key": "[\"ICMP\",\"ICMP:8:0\",null,null,null,3891206]"
+          },
+          {
+            "packet_id": 5,
+            "timestamp": "2006-12-29T05:10:12.657243",
+            "protocol": "ICMP",
+            "src": "192.168.0.114",
+            "dst": "192.168.0.1",
+            "length": 74,
+            "info": "Type:8 Code:0",
+            "fingerprint_key": "[\"ICMP\",\"ICMP:8:0\",null,null,null,3891206]"
+          }
+        ],
+        "aggregate": {
+          "count": 8,
+          "total_bytes": 592,
+          "unique_sources": [
+            "192.168.0.114"
+          ],
+          "unique_destinations": [
+            "192.168.0.1",
+            "72.14.207.99"
+          ],
+          "first_seen": "2006-12-29T05:10:10.660442",
+          "last_seen": "2006-12-29T05:10:19.798127",
+          "iat_mean": 1.3053835460117884,
+          "iat_std": 0.7478968507501471,
+          "iat_min": 0.9967730045318604,
+          "iat_max": 3.137345790863037,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.5,
+          "tfidf_weight": 1.0,
+          "dst_port_class": null,
+          "dst_port_service": null,
+          "zscore_anomalies": {
+            "packet_rate": 0.674,
+            "src_cardinality": 0.674,
+            "dst_cardinality": 0.674,
+            "iat_mean": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "ICMP traffic (type 8 code 0). 8 packets (592 bytes total) from one source to 2 unique destinations. Inter-arrival time: mean 1305.38ms (low packet rate). Accounts for 50.0% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"ICMP\",\"ICMP:0:0\",null,null,null,3891206]",
+        "representative_items": [
+          {
+            "packet_id": 2,
+            "timestamp": "2006-12-29T05:10:10.661527",
+            "protocol": "ICMP",
+            "src": "192.168.0.1",
+            "dst": "192.168.0.114",
+            "length": 74,
+            "info": "Type:0 Code:0",
+            "fingerprint_key": "[\"ICMP\",\"ICMP:0:0\",null,null,null,3891206]"
+          },
+          {
+            "packet_id": 4,
+            "timestamp": "2006-12-29T05:10:11.659425",
+            "protocol": "ICMP",
+            "src": "192.168.0.1",
+            "dst": "192.168.0.114",
+            "length": 74,
+            "info": "Type:0 Code:0",
+            "fingerprint_key": "[\"ICMP\",\"ICMP:0:0\",null,null,null,3891206]"
+          },
+          {
+            "packet_id": 6,
+            "timestamp": "2006-12-29T05:10:12.659529",
+            "protocol": "ICMP",
+            "src": "192.168.0.1",
+            "dst": "192.168.0.114",
+            "length": 74,
+            "info": "Type:0 Code:0",
+            "fingerprint_key": "[\"ICMP\",\"ICMP:0:0\",null,null,null,3891206]"
+          }
+        ],
+        "aggregate": {
+          "count": 8,
+          "total_bytes": 592,
+          "unique_sources": [
+            "192.168.0.1",
+            "72.14.207.99"
+          ],
+          "unique_destinations": [
+            "192.168.0.114"
+          ],
+          "first_seen": "2006-12-29T05:10:10.661527",
+          "last_seen": "2006-12-29T05:10:19.859920",
+          "iat_mean": 1.314056158065796,
+          "iat_std": 0.7764297019727765,
+          "iat_min": 0.9825410842895508,
+          "iat_max": 3.2158539295196533,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.5,
+          "tfidf_weight": 1.0,
+          "dst_port_class": null,
+          "dst_port_service": null,
+          "zscore_anomalies": {
+            "packet_rate": 0.674,
+            "src_cardinality": 0.674,
+            "dst_cardinality": 0.674,
+            "iat_mean": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "ICMP traffic (type 0 code 0). 8 packets (592 bytes total) from 2 unique sources to one destination. Inter-arrival time: mean 1314.06ms (low packet rate). Accounts for 50.0% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      }
+    ],
+    "compression_stats": {
+      "raw_packet_count_in": 16,
+      "packet_count_out": 6,
+      "cluster_count": 2,
+      "estimated_tokens_out": 606,
+      "dropped_parse_failures": 0,
+      "compression_ratio": 0.625
+    },
+    "budget_status": "within_budget",
+    "attack_context": {
+      "suspected_protocols": [
+        "HTTP"
+      ],
+      "suspected_behaviors": [],
+      "target_indicators": [],
+      "raw_description": "Traffic Review: Connectivity Check from 192.168.0.114\n=====================================================\n\nSummary\n-------\nA helpdesk ticket reported intermittent web access from the workstation\n192.168.0.114. The capture taken during troubleshooting on 2006-12-29 at\n05:10 UTC shows a standard two-stage ping test and no malicious activity.\nIt contains 16 packets over 9.2 seconds.\n\nObserved traffic\n----------------\nFirst the workstation pinged its default gateway 192.168.0.1. It sent\nfour ICMP echo requests one second apart and the gateway answered each\nwith an echo reply in about 1 to 2 milliseconds.\n\nAbout three seconds later the workstation pinged the external address\n72.14.207.99, a Google server, again four echo requests one second apart.\nEach was answered in 62 to 81 milliseconds. The replies arrived with a\nTTL of 232, consistent with a remote host many hops away, while the\ngateway's replies had a TTL of 127.\n\nAll eight requests share one ICMP identifier and consecutive sequence\nnumbers 1 to 8, as produced by the Windows ping utility, and every frame\nis 74 bytes long (32 bytes of padding data). No requests were lost and\nno other protocols appear in the capture.\n\nAssessment\n----------\nBoth the local gateway and the internet were reachable with normal\nlatency at the time of the test, so the user's problem is more likely\nDNS or browser related. No security concern. Ticket closed after\nflushing the DNS cache on the workstation.\n"
+    },
+    "budget_status_detail": null,
+    "ip_summary": [
+      {
+        "ip": "192.168.0.1",
+        "total_traffic": 16,
+        "packets_as_source": 8,
+        "packets_as_destination": 8,
+        "unique_destinations": 1,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 0,
+        "top_source_fingerprints": [
+          {
+            "fingerprint_key": "[\"ICMP\",\"ICMP:0:0\",null,null,null,3891206]",
+            "count": 8
+          }
+        ],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"ICMP\",\"ICMP:8:0\",null,null,null,3891206]",
+            "count": 8
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [
+            "[\"ICMP\",\"ICMP:0:0\",null,null,null,3891206]"
+          ],
+          "as_destination": [
+            "[\"ICMP\",\"ICMP:8:0\",null,null,null,3891206]"
+          ]
+        },
+        "sample_packets": [
+          {
+            "packet_id": 1,
+            "timestamp": "2006-12-29T05:10:10.660442",
+            "protocol": "ICMP",
+            "src": "192.168.0.114",
+            "dst": "192.168.0.1",
+            "length": 74,
+            "info": "Type:8 Code:0"
+          },
+          {
+            "packet_id": 2,
+            "timestamp": "2006-12-29T05:10:10.661527",
+            "protocol": "ICMP",
+            "src": "192.168.0.1",
+            "dst": "192.168.0.114",
+            "length": 74,
+            "info": "Type:0 Code:0"
+          },
+          {
+            "packet_id": 3,
+            "timestamp": "2006-12-29T05:10:11.657215",
+            "protocol": "ICMP",
+            "src": "192.168.0.114",
+            "dst": "192.168.0.1",
+            "length": 74,
+            "info": "Type:8 Code:0"
+          }
+        ]
+      },
+      {
+        "ip": "72.14.207.99",
+        "total_traffic": 16,
+        "packets_as_source": 8,
+        "packets_as_destination": 8,
+        "unique_destinations": 1,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 0,
+        "top_source_fingerprints": [
+          {
+            "fingerprint_key": "[\"ICMP\",\"ICMP:0:0\",null,null,null,3891206]",
+            "count": 8
+          }
+        ],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"ICMP\",\"ICMP:8:0\",null,null,null,3891206]",
+            "count": 8
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [
+            "[\"ICMP\",\"ICMP:0:0\",null,null,null,3891206]"
+          ],
+          "as_destination": [
+            "[\"ICMP\",\"ICMP:8:0\",null,null,null,3891206]"
+          ]
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "192.168.0.114",
+        "total_traffic": 16,
+        "packets_as_source": 8,
+        "packets_as_destination": 8,
+        "unique_destinations": 2,
+        "unique_sources": 2,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 0,
+        "top_source_fingerprints": [
+          {
+            "fingerprint_key": "[\"ICMP\",\"ICMP:8:0\",null,null,null,3891206]",
+            "count": 8
+          }
+        ],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"ICMP\",\"ICMP:0:0\",null,null,null,3891206]",
+            "count": 8
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [
+            "[\"ICMP\",\"ICMP:8:0\",null,null,null,3891206]"
+          ],
+          "as_destination": [
+            "[\"ICMP\",\"ICMP:0:0\",null,null,null,3891206]"
+          ]
+        },
+        "sample_packets": [
+          {
+            "packet_id": 1,
+            "timestamp": "2006-12-29T05:10:10.660442",
+            "protocol": "ICMP",
+            "src": "192.168.0.114",
+            "dst": "192.168.0.1",
+            "length": 74,
+            "info": "Type:8 Code:0"
+          },
+          {
+            "packet_id": 2,
+            "timestamp": "2006-12-29T05:10:10.661527",
+            "protocol": "ICMP",
+            "src": "192.168.0.1",
+            "dst": "192.168.0.114",
+            "length": 74,
+            "info": "Type:0 Code:0"
+          },
+          {
+            "packet_id": 3,
+            "timestamp": "2006-12-29T05:10:11.657215",
+            "protocol": "ICMP",
+            "src": "192.168.0.114",
+            "dst": "192.168.0.1",
+            "length": 74,
+            "info": "Type:8 Code:0"
+          }
+        ]
+      }
+    ],
+    "anomalies": [
+      {
+        "fingerprint_key": "[\"ICMP\",\"ICMP:8:0\",null,null,null,3891206]",
+        "protocol": "ICMP",
+        "tier": "secondary",
+        "source_cardinality": 1,
+        "source_cardinality_anomalous": false,
+        "typical_source_cardinality": 1.5,
+        "destination_cardinality": 2,
+        "destination_cardinality_anomalous": true,
+        "typical_destination_cardinality": 1.5,
+        "unique_sources": [
+          "192.168.0.114"
+        ],
+        "unique_destinations": [
+          "192.168.0.1",
+          "72.14.207.99"
+        ],
+        "count": 8
+      },
+      {
+        "fingerprint_key": "[\"ICMP\",\"ICMP:0:0\",null,null,null,3891206]",
+        "protocol": "ICMP",
+        "tier": "secondary",
+        "source_cardinality": 2,
+        "source_cardinality_anomalous": true,
+        "typical_source_cardinality": 1.5,
+        "destination_cardinality": 1,
+        "destination_cardinality_anomalous": false,
+        "typical_destination_cardinality": 1.5,
+        "unique_sources": [
+          "192.168.0.1",
+          "72.14.207.99"
+        ],
+        "unique_destinations": [
+          "192.168.0.114"
+        ],
+        "count": 8
+      }
+    ],
+    "filter_string_used": null
+  }
+}

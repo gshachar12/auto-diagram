@@ -1,0 +1,35 @@
+Incident Report: ICMP Echo Flood against 192.168.100.1
+======================================================
+
+Summary
+-------
+On 2014-07-11 at 17:24:52 UTC the host 192.168.100.2 flooded 192.168.100.1
+with ICMP echo requests for just over 63 seconds. The capture holds
+961,180 packets (49 MB). The target answered every request, so the flood
+doubled the load on the link.
+
+Attack traffic
+--------------
+192.168.100.2 sent 480,590 ICMP echo requests (type 8, code 0) to
+192.168.100.1, a steady rate of about 7,600 requests per second, one
+every 130 microseconds, with no pauses from the first packet to the last.
+The requests carry no payload data: each is a minimum-size 60-byte
+Ethernet frame. All of them use the same ICMP identifier, 0xcf6b, and the
+sequence number simply increments by one per packet, wrapping around as
+it overflows. This uniformity points to a single flooding process such
+as "ping -f" or hping3 rather than a distributed source.
+
+Victim response
+---------------
+192.168.100.1 answered each request with an ICMP echo reply (type 0) of
+42 bytes, about 13 microseconds after the request. In total 480,590
+replies were sent back to 192.168.100.2, one for every request, and the
+two directions together reached about 6.2 Mbit/s.
+
+Assessment
+----------
+The attacker likely wanted to exhaust the target's CPU or uplink. On this
+lab segment the target kept up, but a sustained flood of this kind
+against a weaker device could cause a denial of service. We recommend
+rate-limiting ICMP echo at the edge and alerting on more than a few
+hundred echo requests per second from one source.

@@ -1,0 +1,55 @@
+OT Traffic Review: S-Bus Session to PLC 172.16.1.135
+====================================================
+
+Summary
+-------
+The OT monitoring system flagged two cold restarts of the Saia PCD
+controller 172.16.1.135 on 2005-06-17 between 19:05 and 19:08 UTC. This
+review of the 207-second capture (878 packets) finds an engineering
+session from the workstation 172.16.1.120 that matches routine
+commissioning work. The restarts were issued by that workstation and
+nothing indicates an unauthorized party.
+
+Session
+-------
+All application traffic is Saia S-Bus over UDP between the workstation's
+port 2467 and the controller's port 5050. The workstation sent 436
+requests and the controller answered every one, mostly with data
+responses and in a few cases with an acknowledgement. Requests were
+small (55 to 67 bytes on the wire) and responses mostly 60 to 94 bytes.
+Each request was answered within about 15 milliseconds.
+
+Most of the session is monitoring. About once per second the workstation
+read the controller's status (211 "read PCD status" requests) and often
+its instruction pointer (69 requests), as the programming software does
+while it displays the running program. It also read user memory 64
+times and occasionally the firmware version, system information,
+registers, timers and counters.
+
+State-changing commands
+-----------------------
+Seven requests changed the controller's state, and the controller
+acknowledged each one:
+  - a "write byte" at the very start of the session,
+  - a "write register" at 49 s,
+  - a cold restart of all CPUs at 70 s, followed within a second by a
+    "write byte", and a "run procedure" command at 74 s,
+  - a second cold restart of all CPUs at 145 s, again followed by a
+    "write byte" under a second later.
+The controller rejected one later request with a NAK at 156 s. After
+each restart the workstation's polling became noticeably denser for a
+while, as expected when an engineer watches a program start up.
+
+Other traffic
+-------------
+Three Ethernet configuration-test (loopback) frames from three different
+3Com-addressed devices appear at 4 s, 93 s and 164 s. These are normal
+keep-alive frames from network equipment.
+
+Assessment
+----------
+Restart-write-run sequences like these are how a program is downloaded
+and started on a PCD controller. The change window matches the plant's
+maintenance schedule, so the alert is closed as authorized activity.
+Engineering access to the controller network should still be restricted
+to the engineering workstation.

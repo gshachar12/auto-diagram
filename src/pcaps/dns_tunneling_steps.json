@@ -1,0 +1,74 @@
+[
+  {
+    "step_id": 1,
+    "text": "Host 10.0.2.30 sends a DNS query of type NULL for a short name under pirate.sea to 10.0.2.20 on UDP port 53.",
+    "source_text": "The client opened with a short check-in query for vaaaakardli.pirate.sea and the server answered within a millisecond.",
+    "mitre_tag": "T1071.004"
+  },
+  {
+    "step_id": 2,
+    "text": "10.0.2.20 answers the check-in query with a DNS response to 10.0.2.30 in under a millisecond.",
+    "source_text": "The client opened with a short check-in query for vaaaakardli.pirate.sea and the server answered within a millisecond.",
+    "mitre_tag": "T1071.004"
+  },
+  {
+    "step_id": 3,
+    "text": "10.0.2.30 sends a DNS query whose first label is a 32-character random-looking string under pirate.sea.",
+    "source_text": "The client then sent a query with a 32-character random-looking label to log in and receive the tunnel's network parameters.",
+    "mitre_tag": "T1071.004"
+  },
+  {
+    "step_id": 4,
+    "text": "10.0.2.30 sends DNS test queries whose labels contain long runs of mixed-case letters, digits, accented characters and high-bit bytes.",
+    "source_text": "Next came a series of \"zi\" test queries whose labels contain long runs of mixed-case letters, digits, accented characters and raw high-bit bytes; the server echoed each name back.",
+    "mitre_tag": "T1071.004"
+  },
+  {
+    "step_id": 5,
+    "text": "10.0.2.20 returns a DNS response to each test query that echoes the queried name back to 10.0.2.30.",
+    "source_text": "Next came a series of \"zi\" test queries whose labels contain long runs of mixed-case letters, digits, accented characters and raw high-bit bytes; the server echoed each name back.",
+    "mitre_tag": "T1071.004"
+  },
+  {
+    "step_id": 6,
+    "text": "10.0.2.30 sends three short DNS queries under pirate.sea to select the encoding.",
+    "source_text": "Three more short queries (sbhi1c, obsi1d, obli1e) selected the upstream and downstream codecs.",
+    "mitre_tag": "T1071.004"
+  },
+  {
+    "step_id": 7,
+    "text": "10.0.2.30 sends DNS queries with long, high-entropy, binary-looking query names split across several labels to 10.0.2.20 on port 53.",
+    "source_text": "Once the codecs were agreed, the client sent upstream data as long query names made of high-entropy, binary-looking labels split across several dot-separated segments.",
+    "mitre_tag": "T1048"
+  },
+  {
+    "step_id": 8,
+    "text": "10.0.2.20 answers each data query with a DNS response carrying a payload in a NULL record back to 10.0.2.30.",
+    "source_text": "Each of these queries was answered by a response that echoed the name and carried the downstream payload in the NULL record.",
+    "mitre_tag": "T1071.004"
+  },
+  {
+    "step_id": 9,
+    "text": "Between data bursts 10.0.2.30 sends short polling DNS queries under pirate.sea to 10.0.2.20.",
+    "source_text": "Between data bursts the client kept polling with short queries such as paeacg2y.pirate.sea and paficihq.pirate.sea so the server could push data back at any time.",
+    "mitre_tag": "T1071.004"
+  },
+  {
+    "step_id": 10,
+    "text": "DNS queries from 10.0.2.30 arrive on average every 120 milliseconds with highly irregular spacing, from back-to-back bursts to pauses of several seconds.",
+    "source_text": "Queries arrived on average every 120 milliseconds but very irregularly, from bursts of back-to-back queries to pauses of several seconds.",
+    "mitre_tag": null
+  },
+  {
+    "step_id": 11,
+    "text": "10.0.2.30 sends 222 DNS queries totalling about 26 kB and receives 212 DNS responses totalling about 44 kB from 10.0.2.20.",
+    "source_text": "The client sent 222 queries (about 26 kB) and received 212 responses (about 44 kB), so more data flowed from the server to the client than the other way around.",
+    "mitre_tag": null
+  },
+  {
+    "step_id": 12,
+    "text": "10.0.2.30 and 10.0.2.20 exchange two ARP requests and two ARP replies.",
+    "source_text": "All traffic stayed on the single pair 10.0.2.30 and 10.0.2.20; the only other packets were two ARP request/reply exchanges between the two hosts.",
+    "mitre_tag": null
+  }
+]

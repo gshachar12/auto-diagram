@@ -1,0 +1,483 @@
+{
+  "pcap": "sbus.pcap",
+  "settings": {
+    "token_budget": 10000,
+    "filtering_limit": 3,
+    "delta_t": 300.0,
+    "max_packets": null
+  },
+  "generated_at": "2026-10-13T12:07:12+00:00",
+  "output": {
+    "clusters": [
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",null,5050,null,3730081]",
+        "representative_items": [
+          {
+            "packet_id": 1,
+            "timestamp": "2005-06-17T19:05:00.361278",
+            "protocol": "UDP",
+            "src": "172.16.1.120",
+            "dst": "172.16.1.135",
+            "length": 55,
+            "info": "DPort:5050",
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,5050,null,3730081]"
+          },
+          {
+            "packet_id": 3,
+            "timestamp": "2005-06-17T19:05:00.369033",
+            "protocol": "UDP",
+            "src": "172.16.1.120",
+            "dst": "172.16.1.135",
+            "length": 59,
+            "info": "DPort:5050",
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,5050,null,3730081]"
+          },
+          {
+            "packet_id": 5,
+            "timestamp": "2005-06-17T19:05:00.377012",
+            "protocol": "UDP",
+            "src": "172.16.1.120",
+            "dst": "172.16.1.135",
+            "length": 67,
+            "info": "DPort:5050",
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,5050,null,3730081]"
+          }
+        ],
+        "aggregate": {
+          "count": 439,
+          "total_bytes": 24651,
+          "unique_sources": [
+            "172.16.1.120"
+          ],
+          "unique_destinations": [
+            "172.16.1.135"
+          ],
+          "first_seen": "2005-06-17T19:05:00.361278",
+          "last_seen": "2005-06-17T19:08:27.220309",
+          "iat_mean": 0.4722808926072839,
+          "iat_std": 0.4722727327244169,
+          "iat_min": 0.005839109420776367,
+          "iat_max": 1.0010108947753906,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "remnant",
+          "traffic_share": 0.4672909597558433,
+          "tfidf_weight": 0.12205370549596851,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "packet_rate": 0.674,
+            "byte_volume": 0.674,
+            "iat_mean": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP traffic on port 5050. 439 packets (24651 bytes total) from one source to one destination. Inter-arrival time: mean 472.28ms (low packet rate). Accounts for 46.7% of total capture traffic. Relevance tier: REMNANT (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",null,2467,null,3730081]",
+        "representative_items": [
+          {
+            "packet_id": 2,
+            "timestamp": "2005-06-17T19:05:00.368026",
+            "protocol": "UDP",
+            "src": "172.16.1.135",
+            "dst": "172.16.1.120",
+            "length": 62,
+            "info": "DPort:2467",
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,2467,null,3730081]"
+          },
+          {
+            "packet_id": 4,
+            "timestamp": "2005-06-17T19:05:00.376367",
+            "protocol": "UDP",
+            "src": "172.16.1.135",
+            "dst": "172.16.1.120",
+            "length": 60,
+            "info": "DPort:2467",
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,2467,null,3730081]"
+          },
+          {
+            "packet_id": 6,
+            "timestamp": "2005-06-17T19:05:00.386335",
+            "protocol": "UDP",
+            "src": "172.16.1.135",
+            "dst": "172.16.1.120",
+            "length": 60,
+            "info": "DPort:2467",
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,2467,null,3730081]"
+          }
+        ],
+        "aggregate": {
+          "count": 436,
+          "total_bytes": 27922,
+          "unique_sources": [
+            "172.16.1.135"
+          ],
+          "unique_destinations": [
+            "172.16.1.120"
+          ],
+          "first_seen": "2005-06-17T19:05:00.368026",
+          "last_seen": "2005-06-17T19:08:27.228205",
+          "iat_mean": 0.4755406412585028,
+          "iat_std": 0.4741813288569099,
+          "iat_min": 0.008085012435913086,
+          "iat_max": 1.080000877380371,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "remnant",
+          "traffic_share": 0.5292969120239607,
+          "tfidf_weight": 0.12326115897448327,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "packet_rate": 0.674,
+            "byte_volume": 0.674,
+            "iat_mean": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP traffic on port 2467. 436 packets (27922 bytes total) from one source to one destination. Inter-arrival time: mean 475.54ms (low packet rate). Accounts for 52.9% of total capture traffic. Relevance tier: REMNANT (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"IP_RAW\",\"IP_RAW\",null,null,\"medium\",3730081]",
+        "representative_items": [
+          {
+            "packet_id": 29,
+            "timestamp": "2005-06-17T19:05:04.460501",
+            "protocol": "IP_RAW",
+            "src": "00:04:75:e2:f2:df",
+            "dst": "00:04:75:e2:f2:df",
+            "length": 60,
+            "info": "Entropy:medium",
+            "fingerprint_key": "[\"IP_RAW\",\"IP_RAW\",null,null,\"medium\",3730081]"
+          },
+          {
+            "packet_id": 337,
+            "timestamp": "2005-06-17T19:06:33.806504",
+            "protocol": "IP_RAW",
+            "src": "00:04:75:e2:f2:b0",
+            "dst": "00:04:75:e2:f2:b0",
+            "length": 60,
+            "info": "Entropy:medium",
+            "fingerprint_key": "[\"IP_RAW\",\"IP_RAW\",null,null,\"medium\",3730081]"
+          },
+          {
+            "packet_id": 652,
+            "timestamp": "2005-06-17T19:07:44.112875",
+            "protocol": "IP_RAW",
+            "src": "00:04:75:e2:f1:69",
+            "dst": "00:04:75:e2:f1:69",
+            "length": 60,
+            "info": "Entropy:medium",
+            "fingerprint_key": "[\"IP_RAW\",\"IP_RAW\",null,null,\"medium\",3730081]"
+          }
+        ],
+        "aggregate": {
+          "count": 3,
+          "total_bytes": 180,
+          "unique_sources": [
+            "00:04:75:e2:f2:df",
+            "00:04:75:e2:f2:b0",
+            "00:04:75:e2:f1:69"
+          ],
+          "unique_destinations": [
+            "00:04:75:e2:f2:df",
+            "00:04:75:e2:f2:b0",
+            "00:04:75:e2:f1:69"
+          ],
+          "first_seen": "2005-06-17T19:05:04.460501",
+          "last_seen": "2005-06-17T19:07:44.112875",
+          "iat_mean": 79.82618701457977,
+          "iat_std": 9.519816040992737,
+          "iat_min": 70.30637097358704,
+          "iat_max": 89.34600305557251,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.0034121282201960076,
+          "tfidf_weight": 1.0,
+          "dst_port_class": null,
+          "dst_port_service": null,
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "IP_RAW traffic. 3 packets (180 bytes total) from 3 unique sources to 3 unique destinations. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 79826.19ms (low packet rate). Accounts for 0.3% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      }
+    ],
+    "compression_stats": {
+      "raw_packet_count_in": 878,
+      "packet_count_out": 9,
+      "cluster_count": 3,
+      "estimated_tokens_out": 879,
+      "dropped_parse_failures": 0,
+      "compression_ratio": 0.9897
+    },
+    "budget_status": "within_budget",
+    "attack_context": {
+      "suspected_protocols": [],
+      "suspected_behaviors": [],
+      "target_indicators": [],
+      "raw_description": "OT Traffic Review: S-Bus Session to PLC 172.16.1.135\n====================================================\n\nSummary\n-------\nThe OT monitoring system flagged two cold restarts of the Saia PCD\ncontroller 172.16.1.135 on 2005-06-17 between 19:05 and 19:08 UTC. This\nreview of the 207-second capture (878 packets) finds an engineering\nsession from the workstation 172.16.1.120 that matches routine\ncommissioning work. The restarts were issued by that workstation and\nnothing indicates an unauthorized party.\n\nSession\n-------\nAll application traffic is Saia S-Bus over UDP between the workstation's\nport 2467 and the controller's port 5050. The workstation sent 436\nrequests and the controller answered every one, mostly with data\nresponses and in a few cases with an acknowledgement. Requests were\nsmall (55 to 67 bytes on the wire) and responses mostly 60 to 94 bytes.\nEach request was answered within about 15 milliseconds.\n\nMost of the session is monitoring. About once per second the workstation\nread the controller's status (211 \"read PCD status\" requests) and often\nits instruction pointer (69 requests), as the programming software does\nwhile it displays the running program. It also read user memory 64\ntimes and occasionally the firmware version, system information,\nregisters, timers and counters.\n\nState-changing commands\n-----------------------\nSeven requests changed the controller's state, and the controller\nacknowledged each one:\n  - a \"write byte\" at the very start of the session,\n  - a \"write register\" at 49 s,\n  - a cold restart of all CPUs at 70 s, followed within a second by a\n    \"write byte\", and a \"run procedure\" command at 74 s,\n  - a second cold restart of all CPUs at 145 s, again followed by a\n    \"write byte\" under a second later.\nThe controller rejected one later request with a NAK at 156 s. After\neach restart the workstation's polling became noticeably denser for a\nwhile, as expected when an engineer watches a program start up.\n\nOther traffic\n-------------\nThree Ethernet configuration-test (loopback) frames from three different\n3Com-addressed devices appear at 4 s, 93 s and 164 s. These are normal\nkeep-alive frames from network equipment.\n\nAssessment\n----------\nRestart-write-run sequences like these are how a program is downloaded\nand started on a PCD controller. The change window matches the plant's\nmaintenance schedule, so the alert is closed as authorized activity.\nEngineering access to the controller network should still be restricted\nto the engineering workstation.\n"
+    },
+    "budget_status_detail": null,
+    "ip_summary": [
+      {
+        "ip": "172.16.1.120",
+        "total_traffic": 875,
+        "packets_as_source": 439,
+        "packets_as_destination": 436,
+        "unique_destinations": 1,
+        "unique_sources": 1,
+        "unique_dst_ports": 1,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,5050,null,3730081]",
+            "count": 439
+          }
+        ],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,2467,null,3730081]",
+            "count": 436
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": [
+          {
+            "packet_id": 1,
+            "timestamp": "2005-06-17T19:05:00.361278",
+            "protocol": "UDP",
+            "src": "172.16.1.120",
+            "dst": "172.16.1.135",
+            "length": 55,
+            "info": "DPort:5050"
+          },
+          {
+            "packet_id": 2,
+            "timestamp": "2005-06-17T19:05:00.368026",
+            "protocol": "UDP",
+            "src": "172.16.1.135",
+            "dst": "172.16.1.120",
+            "length": 62,
+            "info": "DPort:2467"
+          },
+          {
+            "packet_id": 3,
+            "timestamp": "2005-06-17T19:05:00.369033",
+            "protocol": "UDP",
+            "src": "172.16.1.120",
+            "dst": "172.16.1.135",
+            "length": 59,
+            "info": "DPort:5050"
+          }
+        ]
+      },
+      {
+        "ip": "172.16.1.135",
+        "total_traffic": 875,
+        "packets_as_source": 436,
+        "packets_as_destination": 439,
+        "unique_destinations": 1,
+        "unique_sources": 1,
+        "unique_dst_ports": 1,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,2467,null,3730081]",
+            "count": 436
+          }
+        ],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,5050,null,3730081]",
+            "count": 439
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": [
+          {
+            "packet_id": 1,
+            "timestamp": "2005-06-17T19:05:00.361278",
+            "protocol": "UDP",
+            "src": "172.16.1.120",
+            "dst": "172.16.1.135",
+            "length": 55,
+            "info": "DPort:5050"
+          },
+          {
+            "packet_id": 2,
+            "timestamp": "2005-06-17T19:05:00.368026",
+            "protocol": "UDP",
+            "src": "172.16.1.135",
+            "dst": "172.16.1.120",
+            "length": 62,
+            "info": "DPort:2467"
+          },
+          {
+            "packet_id": 3,
+            "timestamp": "2005-06-17T19:05:00.369033",
+            "protocol": "UDP",
+            "src": "172.16.1.120",
+            "dst": "172.16.1.135",
+            "length": 59,
+            "info": "DPort:5050"
+          }
+        ]
+      },
+      {
+        "ip": "00:04:75:e2:f1:69",
+        "total_traffic": 6,
+        "packets_as_source": 3,
+        "packets_as_destination": 3,
+        "unique_destinations": 3,
+        "unique_sources": 3,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 0,
+        "top_source_fingerprints": [
+          {
+            "fingerprint_key": "[\"IP_RAW\",\"IP_RAW\",null,null,\"medium\",3730081]",
+            "count": 3
+          }
+        ],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"IP_RAW\",\"IP_RAW\",null,null,\"medium\",3730081]",
+            "count": 3
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": [
+          {
+            "packet_id": 652,
+            "timestamp": "2005-06-17T19:07:44.112875",
+            "protocol": "IP_RAW",
+            "src": "00:04:75:e2:f1:69",
+            "dst": "00:04:75:e2:f1:69",
+            "length": 60,
+            "info": "Entropy:medium"
+          },
+          {
+            "packet_id": 652,
+            "timestamp": "2005-06-17T19:07:44.112875",
+            "protocol": "IP_RAW",
+            "src": "00:04:75:e2:f1:69",
+            "dst": "00:04:75:e2:f1:69",
+            "length": 60,
+            "info": "Entropy:medium"
+          }
+        ]
+      },
+      {
+        "ip": "00:04:75:e2:f2:df",
+        "total_traffic": 6,
+        "packets_as_source": 3,
+        "packets_as_destination": 3,
+        "unique_destinations": 3,
+        "unique_sources": 3,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 0,
+        "top_source_fingerprints": [
+          {
+            "fingerprint_key": "[\"IP_RAW\",\"IP_RAW\",null,null,\"medium\",3730081]",
+            "count": 3
+          }
+        ],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"IP_RAW\",\"IP_RAW\",null,null,\"medium\",3730081]",
+            "count": 3
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": [
+          {
+            "packet_id": 29,
+            "timestamp": "2005-06-17T19:05:04.460501",
+            "protocol": "IP_RAW",
+            "src": "00:04:75:e2:f2:df",
+            "dst": "00:04:75:e2:f2:df",
+            "length": 60,
+            "info": "Entropy:medium"
+          },
+          {
+            "packet_id": 29,
+            "timestamp": "2005-06-17T19:05:04.460501",
+            "protocol": "IP_RAW",
+            "src": "00:04:75:e2:f2:df",
+            "dst": "00:04:75:e2:f2:df",
+            "length": 60,
+            "info": "Entropy:medium"
+          }
+        ]
+      },
+      {
+        "ip": "00:04:75:e2:f2:b0",
+        "total_traffic": 6,
+        "packets_as_source": 3,
+        "packets_as_destination": 3,
+        "unique_destinations": 3,
+        "unique_sources": 3,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 0,
+        "top_source_fingerprints": [
+          {
+            "fingerprint_key": "[\"IP_RAW\",\"IP_RAW\",null,null,\"medium\",3730081]",
+            "count": 3
+          }
+        ],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"IP_RAW\",\"IP_RAW\",null,null,\"medium\",3730081]",
+            "count": 3
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": [
+          {
+            "packet_id": 337,
+            "timestamp": "2005-06-17T19:06:33.806504",
+            "protocol": "IP_RAW",
+            "src": "00:04:75:e2:f2:b0",
+            "dst": "00:04:75:e2:f2:b0",
+            "length": 60,
+            "info": "Entropy:medium"
+          },
+          {
+            "packet_id": 337,
+            "timestamp": "2005-06-17T19:06:33.806504",
+            "protocol": "IP_RAW",
+            "src": "00:04:75:e2:f2:b0",
+            "dst": "00:04:75:e2:f2:b0",
+            "length": 60,
+            "info": "Entropy:medium"
+          }
+        ]
+      }
+    ],
+    "anomalies": [],
+    "filter_string_used": null
+  }
+}

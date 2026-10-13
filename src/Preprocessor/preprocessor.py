@@ -1,178 +1,266 @@
 """
-PAnGEA — Preprocessor.
- 
-The top-level entry point for the Preprocessing stage. Wires together the
-two sub-components per the spec:
- 
-    Attack Description ──▶ Filter Generator ──▶ filter_string ──┐
-                                                                  ▼
-    PCAP ─────────────────────────────────────────────────▶ Reducer ──▶ Reduced Representation
- 
-Deliberately mirrors the R2 boundary at the call-site level: this function
-accepts `attack_description` and passes it ONLY to `generate_filter`. The
-Reducer is called with the resulting `filter_string`, never the description
-itself — there's no code path here that could leak it through.
+PAnGEA — Preprocessor orchestrator.
+
+Exposes a single public function:
+
+    run_preprocessing(pcap_bytes, attack_description, token_budget, ...) -> ReducerOutput
+
+This is the entry point called by pipeline_runner.py. It owns:
+  - the pcap loading and iteration loop (the only place pyshark is touched
+    outside of layer1_dissection.py, which only receives individual packets)
+  - the budget tracking loop
+  - wiring all four layers together in order
+  - constructing the final ReducerOutput
+
+Layer responsibilities (this file only orchestrates; logic lives in layers):
+  layer0  extract_attack_context   — description → AttackContext
+  layer1  dissect_packet           — pyshark pkt → PacketFeatures
+  layer2  build_fingerprint_key    — PacketFeatures → fingerprint key string
+  layer3  process_packet           — packet + key → update Cluster dict
+          finalise_clusters        — Cluster dict → list[Cluster] with IAT stats
+  layer4  analyse_clusters         — list[Cluster] → enriched with metadata + tiers
+
+Design constraints honoured here:
+  R1  Every ReducedItem carries packet_id + timestamp.
+  R2  attack_description is passed only to layer0; never to layers 1–4.
+  R3  Aggregate updated even under budget pressure (layer3 responsibility).
+  R4  Chronological order preserved (dict insertion order, Python 3.7+).
+  R5  Budget exceeded → processing stops, partial result returned with
+      EXCEEDED status and detail string.
+  R6  No attack-type branching here or in any layer.
 """
 from __future__ import annotations
- 
-import argparse
-import json
-import sys
-from dataclasses import asdict
-from pathlib import Path
-from typing import Optional
- 
-from .filter_generator import generate_filter, LLMClient
-from .reducer import reduce_pcap
-from .schemas import ReducerOutput
- 
- 
+
+import asyncio
+import logging
+import os
+import subprocess
+import tempfile
+from typing import Callable, Optional
+
+import pyshark
+
+from Preprocessor.layer0_attack_context import extract_attack_context
+from Preprocessor.layer1_dissection import dissect_packet
+from Preprocessor.layer2_fingerprint import build_fingerprint_key, DEFAULT_DELTA_T
+from Preprocessor.layer3_clustering import process_packet, finalise_clusters
+from Preprocessor.layer4_analysis import analyse_clusters
+from Preprocessor.schemas import (
+    BudgetStatus,
+    Cluster,
+    CompressionStats,
+    ReducerOutput,
+)
+from Preprocessor.token_budget import estimate_item_tokens
+
+logger = logging.getLogger(__name__)
+
+LLMClient = Callable[[str], str]
+
+
+# ---------------------------------------------------------------------------
+# Public entry point
+# ---------------------------------------------------------------------------
+
 def run_preprocessing(
     pcap_bytes: bytes,
     attack_description: str,
     token_budget: int,
     filtering_limit: int = 3,
+    delta_t: float = DEFAULT_DELTA_T,
     max_packets: Optional[int] = None,
-    llm_client: Optional[LLMClient] = None,
-    verbose: bool = False,
+    attack_context_llm_client: Optional[LLMClient] = None,
 ) -> ReducerOutput:
     """
-    Full Preprocessing stage: Filter Generator -> Reducer.
- 
+    Full preprocessing pipeline.
+
     Args:
-        pcap_bytes: raw PCAP file contents.
-        attack_description: free text. Seen ONLY by generate_filter — never
-            forwarded to reduce_pcap (R2, enforced structurally: reduce_pcap's
-            signature has no parameter for it at all).
-        token_budget: final, pre-computed token budget for the Reducer's
-            output. Computing this (context window - system prompt -
-            description - expected output - safety margin) is an
-            orchestration-level concern upstream of this function, not the
-            Preprocessor's job — see prior spec discussion on why this must
-            live outside Preprocessing (R2 also blocks Preprocessing from
-            being able to compute it itself, since that would require
-            reading the description's own token length).
-        filtering_limit: raw samples retained per fingerprint before folding
-            into aggregate-only stats.
-        max_packets: optional cheap circuit breaker (item count).
-        llm_client: optional callable passed through to the Filter
-            Generator. If omitted, the deterministic keyword fallback is
-            used instead of a live LLM call.
- 
+        pcap_bytes:                   raw PCAP file contents.
+        attack_description:           free-text description. Passed ONLY to
+                                      layer0; never reaches layers 1–4 (R2).
+        token_budget:                 max tokens for ReducedItems output.
+                                      Computed upstream (pipeline_runner.py).
+        filtering_limit:              max representative ReducedItems per cluster.
+        delta_t:                      temporal bucket size in seconds. Packets
+                                      more than delta_t apart with the same
+                                      fingerprint go into separate clusters.
+        max_packets:                  optional hard cap on packets processed.
+        attack_context_llm_client:    optional LLM backend for layer0.
+                                      If None, keyword fallback is used.
+
     Returns:
-        ReducerOutput — the full Preprocessing result (reduced
-        representation, fingerprint_index, compression stats, budget status).
+        ReducerOutput — see schemas.py. Always returns a result; budget
+        exhaustion is reported in budget_status, not as an exception.
     """
-    filter_string = generate_filter(attack_description, llm_client=llm_client)
-    if verbose:
-        print(f"Filter Generator produced filter string:\n{filter_string}\n", file=sys.stderr)
-    return reduce_pcap(
-        pcap_bytes=pcap_bytes,
-        token_budget=token_budget,
-        filtering_limit=filtering_limit,
-        filter_string=filter_string,
-        max_packets=max_packets,
+
+    # ------------------------------------------------------------------
+    # Layer 0 — extract attack context from description (R2 boundary)
+    # ------------------------------------------------------------------
+    attack_context = extract_attack_context(
+        description=attack_description,
+        llm_client=attack_context_llm_client,
     )
- 
- 
-def reducer_output_to_dict(output: ReducerOutput) -> dict:
-    """JSON-serializable form of ReducerOutput (dataclasses -> dicts, enum -> value)."""
-    d = asdict(output)
-    d["budget_status"] = output.budget_status.value
-    return d
- 
- 
-def reducer_output_to_json(output: ReducerOutput, indent: int = 2) -> str:
-    return json.dumps(reducer_output_to_dict(output), indent=indent)
- 
- 
-# --------------------------------------------------------------------------
-# CLI
-# --------------------------------------------------------------------------
- 
-def _build_arg_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(
-        prog="preprocessor",
-        description="Run the PAnGEA Preprocessing stage (Filter Generator + Reducer) "
-                    "on a PCAP file and emit the reduced representation as JSON.",
+    logger.info(
+        "AttackContext: protocols=%s behaviors=%s indicators=%s",
+        [p.value for p in attack_context.suspected_protocols],
+        [b.value for b in attack_context.suspected_behaviors],
+        [i.value for i in attack_context.target_indicators],
     )
-    parser.add_argument("pcap_path", type=str, help="Path to the input .pcap/.pcapng file")
-    parser.add_argument(
-        "--description", type=str, default="",
-        help="Attack/traffic description text (seen only by the Filter "
-             "Generator, never the Reducer). Omit for a no-op filter.",
+
+    # ------------------------------------------------------------------
+    # PCAP loading
+    # ------------------------------------------------------------------
+    loop = asyncio.new_event_loop()
+    tmp = tempfile.NamedTemporaryFile(suffix=".pcap", delete=False)
+    pcap_path = tmp.name
+
+    clusters: dict[str, Cluster] = {} # fingerprint_key → Cluster
+    _iat_scratch: dict[str, list[float]] = {} # fingerprint_key → list of IAT values
+    _last_ts: dict[str, float] = {} # fingerprint_key → last seen timestamp
+    handshakes_completed: set[str] = set()
+
+    total_raw_packets    = 0
+    dropped_parse_failures = 0
+    running_tokens       = 0
+    total_bytes          = 0
+    budget_status        = BudgetStatus.WITHIN_BUDGET
+    budget_status_detail: Optional[str] = None
+
+    try:
+        tmp.write(pcap_bytes)
+        tmp.close()
+
+        cap = pyshark.FileCapture(
+            pcap_path,
+            eventloop=loop,
+            keep_packets=False,
+        )
+
+        try:
+            for pkt in cap:
+                total_raw_packets += 1
+
+                if max_packets is not None and total_raw_packets > max_packets:
+                    break
+
+                # ----------------------------------------------------------
+                # Layer 1 — dissect
+                # ----------------------------------------------------------
+                features = dissect_packet(pkt)
+                if features is None:
+                    dropped_parse_failures += 1
+                    continue
+
+                total_bytes += features.total_length
+
+                # ----------------------------------------------------------
+                # Layer 2 — fingerprint
+                # ----------------------------------------------------------
+                fkey = build_fingerprint_key(
+                    features=features,
+                    handshakes_completed=handshakes_completed,
+                    delta_t=delta_t,
+                )
+                if fkey is None:
+                    dropped_parse_failures += 1
+                    continue
+
+                # ----------------------------------------------------------
+                # Layer 3 — cluster
+                # ----------------------------------------------------------
+                running_tokens, status, detail = process_packet(
+                    features=features,
+                    fingerprint_key=fkey,
+                    clusters=clusters,
+                    _iat_scratch=_iat_scratch,
+                    _last_ts=_last_ts,
+                    filtering_limit=filtering_limit,
+                    token_budget=token_budget,
+                    running_tokens=running_tokens,
+                )
+
+                if status == BudgetStatus.EXCEEDED:
+                    budget_status = BudgetStatus.EXCEEDED
+                    budget_status_detail = detail
+                    # Do NOT break — we continue iterating to update aggregates.
+                    # layer3.process_packet skips ReducedItem creation when
+                    # budget is exceeded but still updates aggregate (R3).
+
+        finally:
+            cap.close()
+
+    finally:
+        try:
+            if os.path.exists(pcap_path):
+                os.remove(pcap_path)
+        except OSError:
+            pass
+        loop.close()
+
+    # ------------------------------------------------------------------
+    # Layer 3 finalisation — IAT stats
+    # ------------------------------------------------------------------
+    cluster_list = finalise_clusters(clusters, _iat_scratch)
+
+    # ------------------------------------------------------------------
+    # Layer 4 — analysis, metadata, tier assignment
+    # ------------------------------------------------------------------
+    cluster_list, ip_summary, anomalies = analyse_clusters(
+        clusters=cluster_list,
+        attack_context=attack_context,
+        total_bytes=total_bytes,
     )
-    parser.add_argument(
-        "--description-file", type=str, default=None,
-        help="Path to a text file containing the description, as an "
-             "alternative to --description.",
+
+    # ------------------------------------------------------------------
+    # Assemble output
+    # ------------------------------------------------------------------
+    total_items = sum(len(c.representative_items) for c in cluster_list)
+    compression_ratio = (
+        1.0 - (total_items / total_raw_packets)
+        if total_raw_packets > 0 else 0.0
     )
-    parser.add_argument(
-        "--token-budget", type=int, default=4000,
-        help="Final token budget for the reduced output (default: 4000). "
-             "Computing this from the model's context window is expected "
-             "to happen upstream; this is just the resulting number.",
+
+    stats = CompressionStats(
+        raw_packet_count_in=total_raw_packets,
+        packet_count_out=total_items,
+        cluster_count=len(cluster_list),
+        estimated_tokens_out=running_tokens,
+        dropped_parse_failures=dropped_parse_failures,
+        compression_ratio=round(compression_ratio, 4),
     )
-    parser.add_argument(
-        "--filtering-limit", type=int, default=3,
-        help="Raw samples retained per fingerprint before aggregating (default: 3).",
+
+    return ReducerOutput(
+        clusters=cluster_list,
+        compression_stats=stats,
+        budget_status=budget_status,
+        attack_context=attack_context,
+        budget_status_detail=budget_status_detail,
+        ip_summary=ip_summary,
+        anomalies=anomalies,
+        filter_string_used=None,   # filter_generator removed; kept for pipeline compat
     )
-    parser.add_argument(
-        "--max-packets", type=int, default=None,
-        help="Optional cheap circuit breaker on output item count.",
-    )
-    parser.add_argument(
-        "-o", "--output", type=str, default=None,
-        help="Write JSON output to this path instead of stdout.",
-    )
-    return parser
- 
- 
-def main(argv: Optional[list[str]] = None) -> int:
-    parser = _build_arg_parser()
-    args = parser.parse_args(argv)
- 
-    pcap_path = Path(args.pcap_path)
-    if not pcap_path.exists():
-        print(f"error: PCAP file not found: {pcap_path}", file=sys.stderr)
-        return 1
- 
-    description = args.description
-    if args.description_file:
-        desc_path = Path(args.description_file)
-        if not desc_path.exists():
-            print(f"error: description file not found: {desc_path}", file=sys.stderr)
-            return 1
-        description = desc_path.read_text()
- 
-    pcap_bytes = pcap_path.read_bytes()
- 
+if __name__ == "__main__":
+    import sys
+    import json
+    from dataclasses import asdict
+
+    if len(sys.argv) != 3:
+        print("Usage: python -m Preprocessor.preprocessor <pcap_file> <description_file_or_text>")
+        sys.exit(1)
+
+    pcap_file = sys.argv[1]
+    attack_description = sys.argv[2]
+    if os.path.isfile(attack_description):
+        with open(attack_description, "r", encoding="utf-8") as f:
+            attack_description = f.read()
+
+    with open(pcap_file, "rb") as f:
+        pcap_bytes = f.read()
+
     output = run_preprocessing(
         pcap_bytes=pcap_bytes,
-        attack_description=description,
-        token_budget=args.token_budget,
-        filtering_limit=args.filtering_limit,
-        max_packets=args.max_packets,
-        verbose=args.verbose,
+        attack_description=attack_description,
+        token_budget=10000,  # Example token budget
     )
- 
-    json_str = reducer_output_to_json(output)
- 
-    if args.output:
-        Path(args.output).write_text(json_str)
-        print(f"Wrote reduced representation to {args.output}", file=sys.stderr)
-        print(
-            f"packets_in={output.compression_stats.raw_packet_count_in} "
-            f"packets_out={output.compression_stats.packet_count_out} "
-            f"budget_status={output.budget_status.value}",
-            file=sys.stderr,
-        )
-    else:
-        print(json_str)
- 
-    return 0
- 
- 
-if __name__ == "__main__":
-    sys.exit(main())
- 
+
+    print(json.dumps(asdict(output), indent=4))

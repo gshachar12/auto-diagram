@@ -1,0 +1,1000 @@
+{
+  "pcap": "http.cap",
+  "settings": {
+    "token_budget": 10000,
+    "filtering_limit": 3,
+    "delta_t": 300.0,
+    "max_packets": null
+  },
+  "generated_at": "2026-10-13T12:07:08+00:00",
+  "output": {
+    "clusters": [
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",\"HTTP\",80,null,3614811]",
+        "representative_items": [
+          {
+            "packet_id": 1,
+            "timestamp": "2004-05-13T13:17:07.311224",
+            "protocol": "HTTP",
+            "src": "145.254.160.237",
+            "dst": "65.208.228.223",
+            "length": 62,
+            "info": "Flags:0x0002 | DPort:80 | L7:HTTP",
+            "fingerprint_key": "[\"TCP\",\"SYN\",\"HTTP\",80,null,3614811]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 62,
+          "unique_sources": [
+            "145.254.160.237"
+          ],
+          "unique_destinations": [
+            "65.208.228.223"
+          ],
+          "first_seen": "2004-05-13T13:17:07.311224",
+          "last_seen": "2004-05-13T13:17:07.311224",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.0024710055398350006,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "well_known",
+          "dst_port_service": "HTTP",
+          "zscore_anomalies": {
+            "byte_volume": 0.607
+          },
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) carrying HTTP traffic on port 80 (HTTP). 1 packets (62 bytes total) from one source to one destination. Accounts for 0.2% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,3372,null,3614811]",
+        "representative_items": [
+          {
+            "packet_id": 2,
+            "timestamp": "2004-05-13T13:17:08.222534",
+            "protocol": "TCP",
+            "src": "65.208.228.223",
+            "dst": "145.254.160.237",
+            "length": 62,
+            "info": "Flags:0x0012 | DPort:3372",
+            "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,3372,null,3614811]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 62,
+          "unique_sources": [
+            "65.208.228.223"
+          ],
+          "unique_destinations": [
+            "145.254.160.237"
+          ],
+          "first_seen": "2004-05-13T13:17:08.222534",
+          "last_seen": "2004-05-13T13:17:08.222534",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.0024710055398350006,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.607
+          },
+          "context_match": false,
+          "cluster_text": "TCP connection response (SYN-ACK) on port 3372. 1 packets (62 bytes total) from one source to one destination. Accounts for 0.2% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,3614811]",
+        "representative_items": [
+          {
+            "packet_id": 3,
+            "timestamp": "2004-05-13T13:17:08.222534",
+            "protocol": "HTTP",
+            "src": "145.254.160.237",
+            "dst": "65.208.228.223",
+            "length": 54,
+            "info": "Flags:0x0010 | DPort:80 | L7:HTTP",
+            "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,3614811]"
+          },
+          {
+            "packet_id": 18,
+            "timestamp": "2004-05-13T13:17:10.295515",
+            "protocol": "HTTP",
+            "src": "145.254.160.237",
+            "dst": "216.239.59.99",
+            "length": 775,
+            "info": "Flags:0x0018 | DPort:80 | L7:HTTP",
+            "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,3614811]"
+          },
+          {
+            "packet_id": 41,
+            "timestamp": "2004-05-13T13:17:25.216971",
+            "protocol": "HTTP",
+            "src": "145.254.160.237",
+            "dst": "65.208.228.223",
+            "length": 54,
+            "info": "Flags:0x0010 | DPort:80 | L7:HTTP",
+            "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,3614811]"
+          }
+        ],
+        "aggregate": {
+          "count": 3,
+          "total_bytes": 883,
+          "unique_sources": [
+            "145.254.160.237"
+          ],
+          "unique_destinations": [
+            "65.208.228.223",
+            "216.239.59.99"
+          ],
+          "first_seen": "2004-05-13T13:17:08.222534",
+          "last_seen": "2004-05-13T13:17:25.216971",
+          "iat_mean": 8.497218489646912,
+          "iat_std": 6.424237370491028,
+          "iat_min": 2.072981119155884,
+          "iat_max": 14.92145586013794,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.03519190147861783,
+          "tfidf_weight": 0.7079091101576428,
+          "dst_port_class": "well_known",
+          "dst_port_service": "HTTP",
+          "zscore_anomalies": {
+            "byte_volume": 0.699
+          },
+          "context_match": true,
+          "cluster_text": "TCP handshake completion (ACK) carrying HTTP traffic on port 80 (HTTP). 3 packets (883 bytes total) from one source to 2 unique destinations. Inter-arrival time: mean 8497.22ms (low packet rate). Accounts for 3.5% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,3614811]",
+        "representative_items": [
+          {
+            "packet_id": 4,
+            "timestamp": "2004-05-13T13:17:08.222534",
+            "protocol": "HTTP",
+            "src": "145.254.160.237",
+            "dst": "65.208.228.223",
+            "length": 533,
+            "info": "Flags:0x0018 | DPort:80 | L7:HTTP",
+            "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,3614811]"
+          },
+          {
+            "packet_id": 7,
+            "timestamp": "2004-05-13T13:17:09.123830",
+            "protocol": "HTTP",
+            "src": "145.254.160.237",
+            "dst": "65.208.228.223",
+            "length": 54,
+            "info": "Flags:0x0010 | DPort:80 | L7:HTTP",
+            "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,3614811]"
+          },
+          {
+            "packet_id": 9,
+            "timestamp": "2004-05-13T13:17:09.324118",
+            "protocol": "HTTP",
+            "src": "145.254.160.237",
+            "dst": "65.208.228.223",
+            "length": 54,
+            "info": "Flags:0x0010 | DPort:80 | L7:HTTP",
+            "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,3614811]"
+          }
+        ],
+        "aggregate": {
+          "count": 14,
+          "total_bytes": 1235,
+          "unique_sources": [
+            "145.254.160.237"
+          ],
+          "unique_destinations": [
+            "65.208.228.223",
+            "216.239.59.99"
+          ],
+          "first_seen": "2004-05-13T13:17:08.222534",
+          "last_seen": "2004-05-13T13:17:12.328438",
+          "iat_mean": 0.3158387771019569,
+          "iat_std": 0.20623220584571209,
+          "iat_min": 0.14020085334777832,
+          "iat_max": 0.9012961387634277,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.04922083615639074,
+          "tfidf_weight": 0.29834700403102105,
+          "dst_port_class": "well_known",
+          "dst_port_service": "HTTP",
+          "zscore_anomalies": {
+            "byte_volume": 0.865
+          },
+          "context_match": true,
+          "cluster_text": "TCP established data transfer carrying HTTP traffic on port 80 (HTTP). 14 packets (1235 bytes total) from one source to 2 unique destinations. Inter-arrival time: mean 315.84ms (low packet rate). Accounts for 4.9% of total capture traffic. Relevance tier: SECONDARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"DATA\",null,3372,null,3614811]",
+        "representative_items": [
+          {
+            "packet_id": 5,
+            "timestamp": "2004-05-13T13:17:08.783340",
+            "protocol": "TCP",
+            "src": "65.208.228.223",
+            "dst": "145.254.160.237",
+            "length": 54,
+            "info": "Flags:0x0010 | DPort:3372",
+            "fingerprint_key": "[\"TCP\",\"DATA\",null,3372,null,3614811]"
+          },
+          {
+            "packet_id": 6,
+            "timestamp": "2004-05-13T13:17:08.993643",
+            "protocol": "TCP",
+            "src": "65.208.228.223",
+            "dst": "145.254.160.237",
+            "length": 1434,
+            "info": "Flags:0x0010 | DPort:3372",
+            "fingerprint_key": "[\"TCP\",\"DATA\",null,3372,null,3614811]"
+          },
+          {
+            "packet_id": 8,
+            "timestamp": "2004-05-13T13:17:09.123830",
+            "protocol": "TCP",
+            "src": "65.208.228.223",
+            "dst": "145.254.160.237",
+            "length": 1434,
+            "info": "Flags:0x0010 | DPort:3372",
+            "fingerprint_key": "[\"TCP\",\"DATA\",null,3372,null,3614811]"
+          }
+        ],
+        "aggregate": {
+          "count": 14,
+          "total_bytes": 18696,
+          "unique_sources": [
+            "65.208.228.223"
+          ],
+          "unique_destinations": [
+            "145.254.160.237"
+          ],
+          "first_seen": "2004-05-13T13:17:08.783340",
+          "last_seen": "2004-05-13T13:17:11.807689",
+          "iat_mean": 0.23264222878676194,
+          "iat_std": 0.17090746173865168,
+          "iat_min": 0.08011484146118164,
+          "iat_max": 0.6309068202972412,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.7451277350444383,
+          "tfidf_weight": 0.29834700403102105,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 2.209
+          },
+          "context_match": false,
+          "cluster_text": "TCP established data transfer on port 3372. 14 packets (18696 bytes total) from one source to one destination. Inter-arrival time: mean 232.64ms (low packet rate). Statistically anomalous: byte volume (Z=2.2). Accounts for 74.5% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",3614811]",
+        "representative_items": [
+          {
+            "packet_id": 13,
+            "timestamp": "2004-05-13T13:17:09.864896",
+            "protocol": "DNS",
+            "src": "145.254.160.237",
+            "dst": "145.253.2.203",
+            "length": 89,
+            "info": "DPort:53 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",3614811]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 89,
+          "unique_sources": [
+            "145.254.160.237"
+          ],
+          "unique_destinations": [
+            "145.253.2.203"
+          ],
+          "first_seen": "2004-05-13T13:17:09.864896",
+          "last_seen": "2004-05-13T13:17:09.864896",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.0035470885975050813,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "well_known",
+          "dst_port_service": "DNS",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 53 (DNS). 1 packets (89 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.4% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",3009,\"medium\",3614811]",
+        "representative_items": [
+          {
+            "packet_id": 17,
+            "timestamp": "2004-05-13T13:17:10.225414",
+            "protocol": "DNS",
+            "src": "145.253.2.203",
+            "dst": "145.254.160.237",
+            "length": 188,
+            "info": "DPort:3009 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",3009,\"medium\",3614811]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 188,
+          "unique_sources": [
+            "145.253.2.203"
+          ],
+          "unique_destinations": [
+            "145.254.160.237"
+          ],
+          "first_seen": "2004-05-13T13:17:10.225414",
+          "last_seen": "2004-05-13T13:17:10.225414",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.007492726475628712,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 3009. 1 packets (188 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.7% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"DATA\",null,3371,null,3614811]",
+        "representative_items": [
+          {
+            "packet_id": 24,
+            "timestamp": "2004-05-13T13:17:10.956465",
+            "protocol": "TCP",
+            "src": "216.239.59.99",
+            "dst": "145.254.160.237",
+            "length": 54,
+            "info": "Flags:0x0010 | DPort:3371",
+            "fingerprint_key": "[\"TCP\",\"DATA\",null,3371,null,3614811]"
+          },
+          {
+            "packet_id": 26,
+            "timestamp": "2004-05-13T13:17:11.226854",
+            "protocol": "TCP",
+            "src": "216.239.59.99",
+            "dst": "145.254.160.237",
+            "length": 1484,
+            "info": "Flags:0x0018 | DPort:3371",
+            "fingerprint_key": "[\"TCP\",\"DATA\",null,3371,null,3614811]"
+          },
+          {
+            "packet_id": 36,
+            "timestamp": "2004-05-13T13:17:12.088092",
+            "protocol": "TCP",
+            "src": "216.239.59.99",
+            "dst": "145.254.160.237",
+            "length": 1484,
+            "info": "Flags:0x0018 | DPort:3371",
+            "fingerprint_key": "[\"TCP\",\"DATA\",null,3371,null,3614811]"
+          }
+        ],
+        "aggregate": {
+          "count": 3,
+          "total_bytes": 3022,
+          "unique_sources": [
+            "216.239.59.99"
+          ],
+          "unique_destinations": [
+            "145.254.160.237"
+          ],
+          "first_seen": "2004-05-13T13:17:10.956465",
+          "last_seen": "2004-05-13T13:17:12.088092",
+          "iat_mean": 0.5658135414123535,
+          "iat_std": 0.2954244613647461,
+          "iat_min": 0.2703890800476074,
+          "iat_max": 0.8612380027770996,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.12044159260292535,
+          "tfidf_weight": 0.7079091101576428,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 1.308
+          },
+          "context_match": false,
+          "cluster_text": "TCP established data transfer on port 3371. 3 packets (3022 bytes total) from one source to one destination. Inter-arrival time: mean 565.81ms (low packet rate). Accounts for 12.0% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",3371,\"medium\",3614811]",
+        "representative_items": [
+          {
+            "packet_id": 27,
+            "timestamp": "2004-05-13T13:17:11.266912",
+            "protocol": "HTTP",
+            "src": "216.239.59.99",
+            "dst": "145.254.160.237",
+            "length": 214,
+            "info": "Flags:0x0018 | DPort:3371 | L7:HTTP | Entropy:medium",
+            "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",3371,\"medium\",3614811]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 214,
+          "unique_sources": [
+            "216.239.59.99"
+          ],
+          "unique_destinations": [
+            "145.254.160.237"
+          ],
+          "first_seen": "2004-05-13T13:17:11.266912",
+          "last_seen": "2004-05-13T13:17:11.266912",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.008528954605236937,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP established data transfer carrying HTTP traffic on port 3371. 1 packets (214 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.9% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",3372,\"medium\",3614811]",
+        "representative_items": [
+          {
+            "packet_id": 38,
+            "timestamp": "2004-05-13T13:17:12.158193",
+            "protocol": "HTTP",
+            "src": "65.208.228.223",
+            "dst": "145.254.160.237",
+            "length": 478,
+            "info": "Flags:0x0018 | DPort:3372 | L7:HTTP | Entropy:medium",
+            "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",3372,\"medium\",3614811]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 478,
+          "unique_sources": [
+            "65.208.228.223"
+          ],
+          "unique_destinations": [
+            "145.254.160.237"
+          ],
+          "first_seen": "2004-05-13T13:17:12.158193",
+          "last_seen": "2004-05-13T13:17:12.158193",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.019050655613566617,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.396
+          },
+          "context_match": true,
+          "cluster_text": "TCP established data transfer carrying HTTP traffic on port 3372. 1 packets (478 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 1.9% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"FIN\",null,3372,null,3614811]",
+        "representative_items": [
+          {
+            "packet_id": 40,
+            "timestamp": "2004-05-13T13:17:25.216971",
+            "protocol": "TCP",
+            "src": "65.208.228.223",
+            "dst": "145.254.160.237",
+            "length": 54,
+            "info": "Flags:0x0011 | DPort:3372",
+            "fingerprint_key": "[\"TCP\",\"FIN\",null,3372,null,3614811]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 54,
+          "unique_sources": [
+            "65.208.228.223"
+          ],
+          "unique_destinations": [
+            "145.254.160.237"
+          ],
+          "first_seen": "2004-05-13T13:17:25.216971",
+          "last_seen": "2004-05-13T13:17:25.216971",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.002152166115340162,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "TCP graceful connection close (FIN) on port 3372. 1 packets (54 bytes total) from one source to one destination. Accounts for 0.2% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"FIN\",\"HTTP\",80,null,3614811]",
+        "representative_items": [
+          {
+            "packet_id": 42,
+            "timestamp": "2004-05-13T13:17:37.374452",
+            "protocol": "HTTP",
+            "src": "145.254.160.237",
+            "dst": "65.208.228.223",
+            "length": 54,
+            "info": "Flags:0x0011 | DPort:80 | L7:HTTP",
+            "fingerprint_key": "[\"TCP\",\"FIN\",\"HTTP\",80,null,3614811]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 54,
+          "unique_sources": [
+            "145.254.160.237"
+          ],
+          "unique_destinations": [
+            "65.208.228.223"
+          ],
+          "first_seen": "2004-05-13T13:17:37.374452",
+          "last_seen": "2004-05-13T13:17:37.374452",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.002152166115340162,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "well_known",
+          "dst_port_service": "HTTP",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": true,
+          "cluster_text": "TCP graceful connection close (FIN) carrying HTTP traffic on port 80 (HTTP). 1 packets (54 bytes total) from one source to one destination. Accounts for 0.2% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",null,3372,null,3614811]",
+        "representative_items": [
+          {
+            "packet_id": 43,
+            "timestamp": "2004-05-13T13:17:37.704928",
+            "protocol": "TCP",
+            "src": "65.208.228.223",
+            "dst": "145.254.160.237",
+            "length": 54,
+            "info": "Flags:0x0010 | DPort:3372",
+            "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",null,3372,null,3614811]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 54,
+          "unique_sources": [
+            "65.208.228.223"
+          ],
+          "unique_destinations": [
+            "145.254.160.237"
+          ],
+          "first_seen": "2004-05-13T13:17:37.704928",
+          "last_seen": "2004-05-13T13:17:37.704928",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.002152166115340162,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "TCP handshake completion (ACK) on port 3372. 1 packets (54 bytes total) from one source to one destination. Accounts for 0.2% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      }
+    ],
+    "compression_stats": {
+      "raw_packet_count_in": 43,
+      "packet_count_out": 21,
+      "cluster_count": 13,
+      "estimated_tokens_out": 2214,
+      "dropped_parse_failures": 0,
+      "compression_ratio": 0.5116
+    },
+    "budget_status": "within_budget",
+    "attack_context": {
+      "suspected_protocols": [
+        "HTTP"
+      ],
+      "suspected_behaviors": [],
+      "target_indicators": [],
+      "raw_description": "Traffic Review: Web Page Download from www.ethereal.com\n======================================================\n\nSummary\n-------\nSample capture of an ordinary web page load from a Windows XP workstation\nrunning Mozilla 1.6, recorded on 2004-05-13 at 13:17 UTC. The client\n145.254.160.237 downloads the Ethereal download page and an embedded\nGoogle advertisement. The capture contains 43 packets over 30 seconds and\nnothing malicious.\n\nPage download\n-------------\nThe client opened a TCP connection from port 3372 to www.ethereal.com\n(65.208.228.223) on port 80. The three-way handshake completed after\nabout 0.9 seconds and the client immediately sent \"GET /download.html\".\nThe Apache server answered with HTTP 200 and an 18,070-byte HTML page,\ndelivered in TCP segments of up to 1,380 bytes. The last part of the\nresponse arrived about 3.9 seconds after the request.\n\nAdvertisement\n-------------\nWhile the page was still arriving the browser looked up\npagead2.googlesyndication.com with a DNS query to the ISP resolver\n145.253.2.203. The answer pointed through two CNAME records to the\naddresses 216.239.59.104 and 216.239.59.99. The browser then opened a\nsecond TCP connection to 216.239.59.99 on port 80 and requested\n/pagead/ads with a long query string describing the ad slot. Google's\nserver replied with HTTP 200 and a 1,272-byte HTML fragment. One segment\nof that response was retransmitted and the client sent a duplicate ACK.\n\nConnection close\n----------------\nThe web server closed its connection with a FIN 13 seconds after the\npage finished loading, and the client closed its side about 12 seconds\nafter that.\n\nAssessment\n----------\nRoutine browsing. The page was served without errors and the ad request\nis expected for this site. No follow-up needed.\n"
+    },
+    "budget_status_detail": null,
+    "ip_summary": [
+      {
+        "ip": "145.254.160.237",
+        "total_traffic": 43,
+        "packets_as_source": 20,
+        "packets_as_destination": 23,
+        "unique_destinations": 3,
+        "unique_sources": 3,
+        "unique_dst_ports": 2,
+        "unique_src_ports": 3,
+        "top_source_fingerprints": [
+          {
+            "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,3614811]",
+            "count": 14
+          },
+          {
+            "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,3614811]",
+            "count": 3
+          },
+          {
+            "fingerprint_key": "[\"TCP\",\"SYN\",\"HTTP\",80,null,3614811]",
+            "count": 1
+          }
+        ],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"TCP\",\"DATA\",null,3372,null,3614811]",
+            "count": 14
+          },
+          {
+            "fingerprint_key": "[\"TCP\",\"DATA\",null,3371,null,3614811]",
+            "count": 3
+          },
+          {
+            "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,3372,null,3614811]",
+            "count": 1
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [
+            "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,3614811]",
+            "[\"TCP\",\"DATA\",\"HTTP\",80,null,3614811]"
+          ],
+          "as_destination": []
+        },
+        "sample_packets": [
+          {
+            "packet_id": 1,
+            "timestamp": "2004-05-13T13:17:07.311224",
+            "protocol": "HTTP",
+            "src": "145.254.160.237",
+            "dst": "65.208.228.223",
+            "length": 62,
+            "info": "Flags:0x0002 | DPort:80 | L7:HTTP"
+          },
+          {
+            "packet_id": 2,
+            "timestamp": "2004-05-13T13:17:08.222534",
+            "protocol": "TCP",
+            "src": "65.208.228.223",
+            "dst": "145.254.160.237",
+            "length": 62,
+            "info": "Flags:0x0012 | DPort:3372"
+          },
+          {
+            "packet_id": 3,
+            "timestamp": "2004-05-13T13:17:08.222534",
+            "protocol": "HTTP",
+            "src": "145.254.160.237",
+            "dst": "65.208.228.223",
+            "length": 54,
+            "info": "Flags:0x0010 | DPort:80 | L7:HTTP"
+          }
+        ]
+      },
+      {
+        "ip": "65.208.228.223",
+        "total_traffic": 37,
+        "packets_as_source": 18,
+        "packets_as_destination": 19,
+        "unique_destinations": 1,
+        "unique_sources": 1,
+        "unique_dst_ports": 1,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [
+          {
+            "fingerprint_key": "[\"TCP\",\"DATA\",null,3372,null,3614811]",
+            "count": 14
+          },
+          {
+            "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,3372,null,3614811]",
+            "count": 1
+          },
+          {
+            "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",3372,\"medium\",3614811]",
+            "count": 1
+          }
+        ],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,3614811]",
+            "count": 14
+          },
+          {
+            "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,3614811]",
+            "count": 3
+          },
+          {
+            "fingerprint_key": "[\"TCP\",\"SYN\",\"HTTP\",80,null,3614811]",
+            "count": 1
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": [
+            "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,3614811]",
+            "[\"TCP\",\"DATA\",\"HTTP\",80,null,3614811]"
+          ]
+        },
+        "sample_packets": [
+          {
+            "packet_id": 1,
+            "timestamp": "2004-05-13T13:17:07.311224",
+            "protocol": "HTTP",
+            "src": "145.254.160.237",
+            "dst": "65.208.228.223",
+            "length": 62,
+            "info": "Flags:0x0002 | DPort:80 | L7:HTTP"
+          },
+          {
+            "packet_id": 2,
+            "timestamp": "2004-05-13T13:17:08.222534",
+            "protocol": "TCP",
+            "src": "65.208.228.223",
+            "dst": "145.254.160.237",
+            "length": 62,
+            "info": "Flags:0x0012 | DPort:3372"
+          },
+          {
+            "packet_id": 3,
+            "timestamp": "2004-05-13T13:17:08.222534",
+            "protocol": "HTTP",
+            "src": "145.254.160.237",
+            "dst": "65.208.228.223",
+            "length": 54,
+            "info": "Flags:0x0010 | DPort:80 | L7:HTTP"
+          }
+        ]
+      },
+      {
+        "ip": "216.239.59.99",
+        "total_traffic": 21,
+        "packets_as_source": 4,
+        "packets_as_destination": 17,
+        "unique_destinations": 1,
+        "unique_sources": 1,
+        "unique_dst_ports": 1,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [
+          {
+            "fingerprint_key": "[\"TCP\",\"DATA\",null,3371,null,3614811]",
+            "count": 3
+          },
+          {
+            "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",3371,\"medium\",3614811]",
+            "count": 1
+          }
+        ],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,3614811]",
+            "count": 14
+          },
+          {
+            "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,3614811]",
+            "count": 3
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": [
+            "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,3614811]",
+            "[\"TCP\",\"DATA\",\"HTTP\",80,null,3614811]"
+          ]
+        },
+        "sample_packets": [
+          {
+            "packet_id": 18,
+            "timestamp": "2004-05-13T13:17:10.295515",
+            "protocol": "HTTP",
+            "src": "145.254.160.237",
+            "dst": "216.239.59.99",
+            "length": 775,
+            "info": "Flags:0x0018 | DPort:80 | L7:HTTP"
+          },
+          {
+            "packet_id": 24,
+            "timestamp": "2004-05-13T13:17:10.956465",
+            "protocol": "TCP",
+            "src": "216.239.59.99",
+            "dst": "145.254.160.237",
+            "length": 54,
+            "info": "Flags:0x0010 | DPort:3371"
+          },
+          {
+            "packet_id": 26,
+            "timestamp": "2004-05-13T13:17:11.226854",
+            "protocol": "TCP",
+            "src": "216.239.59.99",
+            "dst": "145.254.160.237",
+            "length": 1484,
+            "info": "Flags:0x0018 | DPort:3371"
+          }
+        ]
+      },
+      {
+        "ip": "145.253.2.203",
+        "total_traffic": 2,
+        "packets_as_source": 1,
+        "packets_as_destination": 1,
+        "unique_destinations": 1,
+        "unique_sources": 1,
+        "unique_dst_ports": 1,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",3009,\"medium\",3614811]",
+            "count": 1
+          }
+        ],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",3614811]",
+            "count": 1
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": [
+          {
+            "packet_id": 13,
+            "timestamp": "2004-05-13T13:17:09.864896",
+            "protocol": "DNS",
+            "src": "145.254.160.237",
+            "dst": "145.253.2.203",
+            "length": 89,
+            "info": "DPort:53 | L7:DNS | Entropy:medium"
+          },
+          {
+            "packet_id": 17,
+            "timestamp": "2004-05-13T13:17:10.225414",
+            "protocol": "DNS",
+            "src": "145.253.2.203",
+            "dst": "145.254.160.237",
+            "length": 188,
+            "info": "DPort:3009 | L7:DNS | Entropy:medium"
+          }
+        ]
+      }
+    ],
+    "anomalies": [
+      {
+        "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,3614811]",
+        "protocol": "TCP",
+        "tier": "primary",
+        "source_cardinality": 1,
+        "source_cardinality_anomalous": false,
+        "typical_source_cardinality": 1,
+        "destination_cardinality": 2,
+        "destination_cardinality_anomalous": true,
+        "typical_destination_cardinality": 1,
+        "unique_sources": [
+          "145.254.160.237"
+        ],
+        "unique_destinations": [
+          "65.208.228.223",
+          "216.239.59.99"
+        ],
+        "count": 3
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,3614811]",
+        "protocol": "TCP",
+        "tier": "secondary",
+        "source_cardinality": 1,
+        "source_cardinality_anomalous": false,
+        "typical_source_cardinality": 1,
+        "destination_cardinality": 2,
+        "destination_cardinality_anomalous": true,
+        "typical_destination_cardinality": 1,
+        "unique_sources": [
+          "145.254.160.237"
+        ],
+        "unique_destinations": [
+          "65.208.228.223",
+          "216.239.59.99"
+        ],
+        "count": 14
+      }
+    ],
+    "filter_string_used": null
+  }
+}

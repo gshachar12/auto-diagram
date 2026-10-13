@@ -1,0 +1,41 @@
+Incident Report: Spoofed SYN Flood against a Minecraft Server
+=============================================================
+
+Summary
+-------
+On 2021-04-28 at 13:30:21 UTC the game server 10.10.10.10 received a TCP
+SYN flood aimed at its Minecraft port 25565. In 23.7 seconds the sensor
+recorded 37,841 SYN packets from 37,623 different source addresses. The
+customer reported that players were disconnected during the attack.
+
+Attack traffic
+--------------
+Every packet in the capture is a bare TCP SYN to 10.10.10.10 port 25565.
+The source addresses are scattered across the whole IPv4 space and almost
+never repeat: 37,405 addresses sent exactly one SYN and only 218 sent
+two. Source ports are random. The packets carry a TCP window of 0, no
+TCP options and no payload, and arrive with a TTL of 242 or 244 whatever
+their claimed origin. Genuine clients from thousands of networks would
+show varied TTLs and normal TCP options, so the sources are almost
+certainly spoofed by a single flooding tool or booter service.
+
+Timeline
+--------
+The attack came in three phases. It opened with a burst of 23,620 SYNs
+in the first second and 675 in the next. After a short pause a second
+burst delivered 10,193 SYNs in the fourth second and 2,551 in the fifth.
+The sender then went quiet for about eight seconds and resumed at a low,
+steady rate of 60 to 95 SYNs per second from 13 seconds until the end of
+the capture.
+
+Victim response
+---------------
+The capture contains no SYN-ACK or RST packets from 10.10.10.10. Either
+the server's backlog was already full and it stopped answering, or the
+sensor only mirrors inbound traffic.
+
+Assessment
+----------
+Minecraft servers are a common target for paid DDoS services, often
+after in-game disputes. We recommend enabling SYN cookies on the server
+and asking the hosting provider for upstream filtering of spoofed SYNs.

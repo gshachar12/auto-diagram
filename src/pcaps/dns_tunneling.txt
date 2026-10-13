@@ -1,0 +1,57 @@
+Incident Report: Covert DNS Tunnel to pirate.sea
+=================================================
+
+Summary
+-------
+A Linux workstation at 10.0.2.30 established a covert channel to the
+host 10.0.2.20 by encoding data inside DNS queries and responses. The
+naming scheme, the use of NULL records and the encoding negotiation are
+characteristic of the iodine tunnelling tool. The capture covers 24.5
+seconds on 2010-08-21 starting at 05:10:40 UTC and contains 438 packets.
+
+Infrastructure
+--------------
+  Client (tunnel endpoint):   10.0.2.30
+  Tunnel server / rogue DNS:  10.0.2.20, UDP port 53
+  Tunnel domain:              pirate.sea
+  Record type:                NULL (type 10) for every query
+
+Phase 1 - Handshake and encoding negotiation
+--------------------------------------------
+The client opened with a short check-in query for vaaaakardli.pirate.sea
+and the server answered within a millisecond. The client then sent a
+query with a 32-character random-looking label to log in and receive the
+tunnel's network parameters. Next came a series of "zi" test queries
+whose labels contain long runs of mixed-case letters, digits, accented
+characters and raw high-bit bytes; the server echoed each name back. This
+is how iodine discovers which characters survive the DNS path. Three more
+short queries (sbhi1c, obsi1d, obli1e) selected the upstream and
+downstream codecs. The whole handshake took less than 20 milliseconds.
+
+Phase 2 - Data transfer
+-----------------------
+Once the codecs were agreed, the client sent upstream data as long query
+names made of high-entropy, binary-looking labels split across several
+dot-separated segments. Each of these queries was answered by a response
+that echoed the name and carried the downstream payload in the NULL
+record. Between data bursts the client kept polling with short queries
+such as paeacg2y.pirate.sea and paficihq.pirate.sea so the server could
+push data back at any time. Queries arrived on average every 120
+milliseconds but very irregularly, from bursts of back-to-back queries to
+pauses of several seconds.
+
+Volume
+------
+The client sent 222 queries (about 26 kB) and received 212 responses
+(about 44 kB), so more data flowed from the server to the client than the
+other way around. All traffic stayed on the single pair 10.0.2.30 and
+10.0.2.20; the only other packets were two ARP request/reply exchanges
+between the two hosts.
+
+Assessment
+----------
+The operator most likely used the tunnel to bypass the perimeter firewall,
+which allows outbound DNS. We assess that the channel was used for
+interactive access rather than bulk exfiltration, given the modest
+volume. Recommended actions: block NULL-record queries at the resolver,
+alert on long or high-entropy query labels, and reimage 10.0.2.30.

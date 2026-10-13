@@ -1,0 +1,59 @@
+Incident Report: ARP Cache Poisoning on 192.168.1.0/24
+======================================================
+
+Summary
+-------
+A host on the local network, 192.168.1.105, poisoned the ARP cache of the
+workstation 192.168.1.104 so that the workstation sent its internet-bound
+traffic through the attacker instead of the gateway. The capture lasts
+543 seconds (16,285 packets, about 14.9 MB). The capture clock was not
+set, so timestamps start at the Unix epoch; times below are seconds from
+the start of the capture.
+
+Hosts
+-----
+  Gateway:   192.168.1.1    MAC 08:00:27:5e:01:7c
+  Victim:    192.168.1.104  MAC 08:00:27:b8:b7:58 (Linux, Firefox 60)
+  Attacker:  192.168.1.105  MAC 08:00:27:2d:f8:5a
+
+Normal activity (0 - 480 s)
+---------------------------
+The capture opens at 17.5 s with DHCP and IPv6 neighbour discovery as the
+machines came up. The victim then browsed the web. It resolved names
+through the gateway at 192.168.1.1 over DNS, made plain-HTTP OCSP and
+captive-portal checks, and opened HTTPS sessions to Reddit's content
+delivery network (151.101.x.140) and to Google and Mozilla services. From
+about 387 s the Reddit sessions on port 443 delivered roughly 14 MB to the
+victim. Every minute or two the victim sent an ARP request for
+192.168.1.1 and the genuine gateway MAC answered.
+
+Poisoning (481 - 533 s)
+-----------------------
+At 481 s the attacker broadcast an ARP request for 192.168.1.104 and the
+victim replied. Starting at 482 s the attacker sent unsolicited ARP
+replies to the victim every two seconds, 26 in total until 532 s, each
+claiming that 192.168.1.1 is at the attacker's MAC 08:00:27:2d:f8:5a.
+
+Interception (505 - 534 s)
+--------------------------
+From 505 s the victim addressed its internet-bound frames to the
+attacker's MAC: 2,191 frames that should have gone to the gateway went to
+the attacker instead. Return traffic from the internet still came from
+the real gateway MAC directly to the victim, so only the outbound
+direction was intercepted. While forwarding, the attacker sent nine ICMP
+redirect messages (type 5, code 1) to the victim between 505 s and 522 s
+pointing it back at 192.168.1.1.
+
+Recovery (534 - 539 s)
+----------------------
+At 534 s five ARP replies, about one per second, mapped 192.168.1.1 back
+to its genuine MAC 08:00:27:5e:01:7c and the victim's traffic returned to
+the gateway.
+
+Assessment
+----------
+The pattern matches tools such as arpspoof or Ettercap run from a Kali
+machine. Because the victim's sessions were TLS-encrypted, the attacker
+could see destinations and volumes but probably not page contents. We
+recommend dynamic ARP inspection on the access switch and static ARP
+entries for the gateway on sensitive hosts.

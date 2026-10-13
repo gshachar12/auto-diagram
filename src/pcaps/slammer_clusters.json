@@ -1,0 +1,141 @@
+{
+  "pcap": "slammer.pcap",
+  "settings": {
+    "token_budget": 10000,
+    "filtering_limit": 3,
+    "delta_t": 300.0,
+    "max_packets": null
+  },
+  "generated_at": "2026-10-13T12:07:12+00:00",
+  "output": {
+    "clusters": [
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",null,1434,null,3552744]",
+        "representative_items": [
+          {
+            "packet_id": 1,
+            "timestamp": "2003-10-11T00:02:49.239104",
+            "protocol": "UDP",
+            "src": "213.76.212.22",
+            "dst": "65.165.167.86",
+            "length": 418,
+            "info": "DPort:1434",
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,1434,null,3552744]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 418,
+          "unique_sources": [
+            "213.76.212.22"
+          ],
+          "unique_destinations": [
+            "65.165.167.86"
+          ],
+          "first_seen": "2003-10-11T00:02:49.239104",
+          "last_seen": "2003-10-11T00:02:49.239104",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "remnant",
+          "traffic_share": 1.0,
+          "tfidf_weight": 0.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "UDP traffic on port 1434. 1 packets (418 bytes total) from one source to one destination. Accounts for 100.0% of total capture traffic. Relevance tier: REMNANT (no context match)."
+        }
+      }
+    ],
+    "compression_stats": {
+      "raw_packet_count_in": 1,
+      "packet_count_out": 1,
+      "cluster_count": 1,
+      "estimated_tokens_out": 95,
+      "dropped_parse_failures": 0,
+      "compression_ratio": 0.0
+    },
+    "budget_status": "within_budget",
+    "attack_context": {
+      "suspected_protocols": [],
+      "suspected_behaviors": [],
+      "target_indicators": [],
+      "raw_description": "Incident Report: SQL Slammer Worm Probe on UDP 1434\n===================================================\n\nSummary\n-------\nOn 2003-10-11 at 00:02:49 UTC the perimeter sensor recorded an SQL\nSlammer infection attempt against 65.165.167.86. The source,\n213.76.212.22, is an external host that is still infected with the worm\nmonths after the January 2003 outbreak. The capture holds a single\npacket, which is the entire worm.\n\nObserved packet\n---------------\n213.76.212.22 sent one UDP datagram from source port 20199 to\ndestination port 1434, the Microsoft SQL Server Resolution Service. The\ndatagram carries 376 bytes of payload in a 418-byte frame and arrived\nwith a TTL of 113. The payload starts with the byte 0x04, the Resolution\nService request type that triggers the stack overflow, followed by a long\nrun of 0x01 filler bytes, a short NOP sled and x86 machine code. Readable\nstrings inside the code name the Windows functions the worm needs:\nkernel32.dll, GetTickCount, ws2_32.dll, socket and sendto. Wireshark\nmis-decodes the datagram as a DCE/RPC ping because nothing else on the\nport looks like SQL traffic.\n\nThere is no reply from 65.165.167.86 in the capture and no follow-up\ntraffic.\n\nBackground\n----------\nSlammer fits in a single datagram. Once it runs inside SQL Server it\nseeds a random number generator from GetTickCount and sends copies of\nitself to random addresses as fast as the host's network allows, which\nis why the 2003 outbreak saturated links worldwide within minutes.\n\nAssessment\n----------\nSince the target did not answer, it is probably not running a vulnerable\nSQL Server. The edge firewall should drop inbound UDP 1434 regardless,\nand the owner of 213.76.212.22 should be notified.\n"
+    },
+    "budget_status_detail": null,
+    "ip_summary": [
+      {
+        "ip": "213.76.212.22",
+        "total_traffic": 1,
+        "packets_as_source": 1,
+        "packets_as_destination": 0,
+        "unique_destinations": 1,
+        "unique_sources": 0,
+        "unique_dst_ports": 1,
+        "unique_src_ports": 0,
+        "top_source_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,1434,null,3552744]",
+            "count": 1
+          }
+        ],
+        "top_destination_fingerprints": [],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": [
+          {
+            "packet_id": 1,
+            "timestamp": "2003-10-11T00:02:49.239104",
+            "protocol": "UDP",
+            "src": "213.76.212.22",
+            "dst": "65.165.167.86",
+            "length": 418,
+            "info": "DPort:1434"
+          }
+        ]
+      },
+      {
+        "ip": "65.165.167.86",
+        "total_traffic": 1,
+        "packets_as_source": 0,
+        "packets_as_destination": 1,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,1434,null,3552744]",
+            "count": 1
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": [
+          {
+            "packet_id": 1,
+            "timestamp": "2003-10-11T00:02:49.239104",
+            "protocol": "UDP",
+            "src": "213.76.212.22",
+            "dst": "65.165.167.86",
+            "length": 418,
+            "info": "DPort:1434"
+          }
+        ]
+      }
+    ],
+    "anomalies": [],
+    "filter_string_used": null
+  }
+}

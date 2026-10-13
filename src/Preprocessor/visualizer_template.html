@@ -1,0 +1,609 @@
+<title>PAnGEA Cluster Explorer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: summary strip on top, bubble map + sticky detail pane side by side, then the full cluster table and host/anomaly tables. */
+:root {
+  --bg: #f3f5f8;
+  --surface: #ffffff;
+  --sunken: #e9edf2;
+  --ink: #17202a;
+  --muted: #586675;
+  --line: #d8dee6;
+  --accent: #1d5c96;
+  --primary: #c23b2c;
+  --secondary: #d4961c;
+  --remnant: #8e9aa8;
+  --on-primary: #ffffff;
+  --on-secondary: #2a1d00;
+  --on-remnant: #17202a;
+  --sel: #17202a;
+  --font-display: "IBM Plex Sans Condensed", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #10151b; --surface: #171f28; --sunken: #1e2833; --ink: #e5eaef; --muted: #98a6b4;
+    --line: #2a3644; --accent: #77afe3; --primary: #e5604d; --secondary: #e8b54e; --remnant: #6d7b8a;
+    --on-primary: #1a0603; --on-secondary: #241800; --on-remnant: #0f141a; --sel: #f2f5f8;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #10151b; --surface: #171f28; --sunken: #1e2833; --ink: #e5eaef; --muted: #98a6b4;
+  --line: #2a3644; --accent: #77afe3; --primary: #e5604d; --secondary: #e8b54e; --remnant: #6d7b8a;
+  --on-primary: #1a0603; --on-secondary: #241800; --on-remnant: #0f141a; --sel: #f2f5f8;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 14px; line-height: 1.5; }
+.wrap { max-width: 1320px; margin: 0 auto; padding-inline: 20px; padding-block: 20px 48px; display: grid; gap: 20px; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; margin: 0; text-wrap: balance; letter-spacing: 0.005em; }
+h1 { font-size: 1.6rem; }
+h2 { font-size: 1.15rem; }
+h3 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); font-weight: 600; }
+.mono { font-family: var(--font-data); }
+.muted { color: var(--muted); }
+.num { font-variant-numeric: tabular-nums; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Header */
+.head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; }
+.head .src { font-family: var(--font-data); font-size: 0.85rem; color: var(--muted); overflow-wrap: anywhere; }
+.stats { display: flex; flex-wrap: wrap; gap: 8px 28px; }
+.stat { display: grid; }
+.stat b { font-family: var(--font-data); font-size: 1.15rem; font-weight: 500; font-variant-numeric: tabular-nums; }
+.stat span { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); }
+.stat.warn b { color: var(--primary); }
+
+.context { display: flex; flex-wrap: wrap; gap: 6px 16px; align-items: baseline; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding-block: 10px; }
+.context .grp { display: flex; flex-wrap: wrap; gap: 4px; align-items: baseline; }
+.context .lbl { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-right: 4px; }
+.chip { font-family: var(--font-data); font-size: 0.78rem; padding: 1px 7px; border-radius: 3px; background: var(--sunken); white-space: nowrap; }
+details.desc summary { cursor: pointer; color: var(--accent); font-size: 0.85rem; }
+details.desc pre { white-space: pre-wrap; font-family: var(--font-body); font-size: 0.85rem; background: var(--surface); border: 1px solid var(--line); padding: 12px 14px; max-height: 320px; overflow: auto; margin: 8px 0 0; max-width: 80ch; }
+
+/* Main */
+.main { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 420px); gap: 20px; align-items: start; }
+@media (max-width: 900px) { .main { grid-template-columns: minmax(0, 1fr); } }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; min-width: 0; }
+.mapbar { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; justify-content: space-between; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+.seg button { background: transparent; border: 0; padding: 4px 10px; cursor: pointer; font-size: 0.82rem; }
+.seg button + button { border-left: 1px solid var(--line); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 0.8rem; color: var(--muted); align-items: center; }
+.legend .tierbtn { display: inline-flex; gap: 6px; align-items: center; background: none; border: 0; cursor: pointer; padding: 2px 0; color: var(--ink); }
+.legend .tierbtn[aria-pressed="false"] { opacity: 0.4; text-decoration: line-through; }
+.dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+.dot.ring { background: transparent; border: 1.5px dashed var(--muted); }
+.dot.solid { background: transparent; border: 1.5px solid var(--muted); }
+#map { display: block; width: 100%; height: auto; }
+#map .bubble { cursor: pointer; }
+#map .bubble circle { stroke-width: 1.5; }
+#map .bubble:hover circle.body { filter: brightness(1.08); }
+#map .bubble:focus { outline: none; }
+#map .bubble:focus-visible circle.sel, #map .bubble.selected circle.sel { stroke: var(--sel); stroke-width: 2.5; opacity: 1; }
+#map circle.sel { fill: none; opacity: 0; }
+#map text { pointer-events: none; font-family: var(--font-data); }
+#map .glabel { font-family: var(--font-display); font-size: 13px; font-weight: 600; fill: var(--muted); letter-spacing: 0.03em; }
+.maphint { padding: 8px 14px 12px; font-size: 0.8rem; color: var(--muted); border-top: 1px solid var(--line); }
+kbd { font-family: var(--font-data); font-size: 0.75rem; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 3px; padding: 0 4px; background: var(--bg); }
+
+/* Detail */
+.detail { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); max-height: calc(100vh - 24px); overflow: auto; }
+@media (max-width: 900px) { .detail { position: static; max-height: none; } }
+.dhead { padding: 14px 16px 12px; border-bottom: 1px solid var(--line); display: grid; gap: 8px; }
+.dhead .row { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.dhead h2 { font-size: 1.35rem; }
+.nav { display: flex; gap: 6px; margin-left: auto; }
+.nav button { border: 1px solid var(--line); background: var(--surface); border-radius: 4px; padding: 2px 9px; cursor: pointer; }
+.pill { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; padding: 2px 8px; border-radius: 999px; }
+.pill.primary { background: var(--primary); color: var(--on-primary); }
+.pill.secondary { background: var(--secondary); color: var(--on-secondary); }
+.pill.remnant { background: var(--remnant); color: var(--on-remnant); }
+.pill.ctx { background: transparent; border: 1px solid var(--line); color: var(--muted); }
+.pill.ctx.yes { border-color: var(--accent); color: var(--accent); }
+.sec { padding: 12px 16px; border-bottom: 1px solid var(--line); display: grid; gap: 8px; }
+.sec:last-child { border-bottom: 0; }
+.ground { font-size: 0.9rem; line-height: 1.55; margin: 0; padding-left: 10px; border-left: 2px solid var(--line); color: var(--ink); }
+.kv { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 3px 14px; font-size: 0.86rem; margin: 0; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; font-family: var(--font-data); font-size: 0.82rem; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.fp { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; }
+.fp div { background: var(--surface); padding: 6px 8px; min-width: 0; }
+.fp span { display: block; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); }
+.fp b { font-family: var(--font-data); font-weight: 500; font-size: 0.85rem; overflow-wrap: anywhere; }
+.fp b.null { color: var(--muted); font-weight: 400; }
+.bar { display: grid; grid-template-columns: 9.5em minmax(0, 1fr) 3.6em; gap: 8px; align-items: center; font-size: 0.82rem; }
+.bar .track { position: relative; height: 8px; background: var(--sunken); border-radius: 2px; }
+.bar .fill { position: absolute; inset: 0 auto 0 0; background: var(--accent); border-radius: 2px; }
+.bar .fill.hot { background: var(--primary); }
+.bar .mark { position: absolute; top: -3px; bottom: -3px; width: 0; border-left: 1.5px dashed var(--muted); }
+.bar .v { text-align: right; font-family: var(--font-data); font-variant-numeric: tabular-nums; }
+.note { font-size: 0.76rem; color: var(--muted); margin: 0; }
+.copy { border: 1px solid var(--line); background: var(--surface); border-radius: 4px; padding: 1px 8px; cursor: pointer; font-size: 0.75rem; }
+.rawkey { font-family: var(--font-data); font-size: 0.78rem; color: var(--muted); overflow-wrap: anywhere; }
+
+/* Tables */
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 0.84rem; }
+th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); font-weight: 600; position: sticky; top: 0; background: var(--surface); }
+th.sortable { cursor: pointer; user-select: none; }
+th.sortable[aria-sort="ascending"]::after { content: " ↑"; }
+th.sortable[aria-sort="descending"]::after { content: " ↓"; }
+td.r, th.r { text-align: right; }
+td { font-variant-numeric: tabular-nums; }
+td .mono, td.mono { font-family: var(--font-data); font-size: 0.8rem; }
+tbody tr.click { cursor: pointer; }
+tbody tr.click:hover { background: var(--sunken); }
+tbody tr.selected { background: var(--sunken); box-shadow: inset 3px 0 0 var(--accent); }
+.tdot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; margin-right: 6px; vertical-align: 0; }
+.tablehead { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: space-between; padding: 12px 14px; border-bottom: 1px solid var(--line); }
+input[type="search"] { font: inherit; font-size: 0.85rem; padding: 5px 9px; border: 1px solid var(--line); border-radius: 4px; background: var(--bg); color: var(--ink); width: min(280px, 100%); }
+.fpchip { font-family: var(--font-data); font-size: 0.75rem; border: 1px solid var(--line); background: var(--bg); border-radius: 3px; padding: 0 6px; cursor: pointer; margin: 1px 4px 1px 0; }
+.empty { padding: 16px 14px; color: var(--muted); font-size: 0.88rem; }
+.mini { width: 70px; height: 6px; background: var(--sunken); border-radius: 2px; display: inline-block; vertical-align: middle; margin-right: 6px; position: relative; }
+.mini i { position: absolute; inset: 0 auto 0 0; background: var(--accent); border-radius: 2px; }
+.cols2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; }
+@media (max-width: 900px) { .cols2 { grid-template-columns: minmax(0, 1fr); } }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<script type="application/json" id="pangea-data">__PANGEA_DATA__</script>
+
+<div class="wrap">
+  <header class="head">
+    <div>
+      <h1>PAnGEA Cluster Explorer</h1>
+      <div class="src" id="src"></div>
+    </div>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <section class="context" id="context" aria-label="Attack context from the description"></section>
+
+  <div class="main">
+    <section class="panel" aria-label="Cluster map">
+      <div class="mapbar">
+        <div class="legend" id="legend"></div>
+        <div class="seg" role="group" aria-label="Group bubbles by" id="groupby">
+          <button type="button" data-g="tier" aria-pressed="true">Tier</button>
+          <button type="button" data-g="proto" aria-pressed="false">Protocol</button>
+          <button type="button" data-g="port" aria-pressed="false">Dst port</button>
+          <button type="button" data-g="time" aria-pressed="false">Time window</button>
+        </div>
+      </div>
+      <svg id="map" role="group" aria-label="Clusters as bubbles"></svg>
+      <div class="maphint">Bubble area = packet count. Solid outline = matches the attack context, dashed = no match. Click a bubble for details, or use <kbd>←</kbd> <kbd>→</kbd> to step through clusters in table order.</div>
+    </section>
+
+    <aside class="panel detail" id="detail" aria-live="polite"></aside>
+  </div>
+
+  <section class="panel" aria-label="All clusters">
+    <div class="tablehead">
+      <h2>All clusters <span class="muted num" id="tcount"></span></h2>
+      <input type="search" id="q" placeholder="Filter by protocol, port, IP, text…" aria-label="Filter clusters">
+    </div>
+    <div class="tablewrap"><table id="ctable"></table></div>
+  </section>
+
+  <div class="cols2">
+    <section class="panel" aria-label="Hosts">
+      <div class="tablehead"><h2>Hosts</h2><span class="muted" style="font-size:.8rem">Per-IP profile. Click a fingerprint to open its cluster.</span></div>
+      <div class="tablewrap" id="hosts"></div>
+    </section>
+    <section class="panel" aria-label="Fanout anomalies">
+      <div class="tablehead"><h2>Fanout anomalies</h2><span class="muted" style="font-size:.8rem">Unusually many distinct sources or destinations vs. protocol peers.</span></div>
+      <div class="tablewrap" id="anoms"></div>
+    </section>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script>
+(function () {
+  const RAW = JSON.parse(document.getElementById('pangea-data').textContent);
+  const OUT = RAW.output, META = RAW.meta || {};
+  const TH = Object.assign({ tfidf_primary: 0.6, tfidf_remnant: 0.15, zscore: 2.0, delta_t: 300 }, META.thresholds || {});
+  const TIERS = ['primary', 'secondary', 'remnant'];
+  const TIER_LABEL = { primary: 'Primary', secondary: 'Secondary', remnant: 'Remnant' };
+  const Z_LABEL = { packet_rate: 'Packet rate', byte_volume: 'Byte volume', src_cardinality: 'Unique sources', dst_cardinality: 'Unique destinations', iat_mean: 'Inter-arrival time' };
+
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const fmtInt = n => n == null ? '—' : Number(n).toLocaleString('en-US');
+  const fmtBytes = b => b == null ? '—' : b < 1024 ? b + ' B' : b < 1048576 ? (b / 1024).toFixed(1) + ' KB' : (b / 1048576).toFixed(2) + ' MB';
+  const fmtPct = f => f == null ? '—' : (f * 100 < 0.1 && f > 0 ? '<0.1' : (f * 100).toFixed(1)) + '%';
+  const fmtMs = s => s == null ? '—' : s < 1 ? (s * 1000).toFixed(s < 0.01 ? 3 : 1) + ' ms' : s.toFixed(2) + ' s';
+  const fmtTime = iso => iso ? iso.replace('T', ' ').replace(/(\.\d{3})\d+/, '$1') : '—';
+  const clock = iso => iso ? iso.split('T')[1].replace(/(\.\d{3})\d+/, '$1') : '—';
+  const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+  // ---- Prepare clusters ------------------------------------------------
+  const clusters = OUT.clusters.map((c, i) => {
+    const k = JSON.parse(c.fingerprint_key);
+    const fp = { l4: k[0], state: k[1], l7: k[2], port: k[3], entropy: k[4], bucket: k[5] };
+    const m = c.metadata || {}, a = c.aggregate || {};
+    const z = m.zscore_anomalies || {};
+    return Object.assign(c, {
+      idx: i, fp, m, a,
+      tier: m.tier || 'remnant',
+      count: a.count || 0,
+      maxZ: Math.max(0, ...Object.values(z)),
+      name: shortName(fp),
+      proto: fp.l7 || fp.l4 || 'Unknown',
+    });
+  });
+  const byKey = new Map(clusters.map(c => [c.fingerprint_key, c]));
+
+  function shortName(fp) {
+    if (fp.l4 === 'ARP' && fp.state) {
+      const p = fp.state.split(':'), op = p[1], mac = p.slice(2).join(':');
+      return { title: op === '1' ? 'ARP request' : op === '2' ? 'ARP reply' : 'ARP op ' + op, sub: mac };
+    }
+    if (fp.l4 === 'ICMP' && fp.state) {
+      const p = fp.state.split(':');
+      const names = { '8': 'echo request', '0': 'echo reply', '3': 'unreachable', '11': 'time exceeded' };
+      return { title: 'ICMP ' + (names[p[1]] || 'type ' + p[1]), sub: 'type ' + p[1] + ' code ' + p[2] };
+    }
+    const title = (fp.l7 || fp.l4 || '?') + (fp.port != null ? ' :' + fp.port : '');
+    const sub = [];
+    if (fp.l4 === 'TCP' && fp.state) sub.push(fp.state);
+    if (fp.entropy) sub.push(fp.entropy.replace('_', ' ') + ' entropy');
+    if (!sub.length && fp.l4 && fp.l7) sub.push(fp.l4);
+    return { title, sub: sub.join(' · ') };
+  }
+
+  // ---- Header ----------------------------------------------------------
+  const cs = OUT.compression_stats || {};
+  document.getElementById('src').textContent = [META.source, META.description_file && ('description: ' + META.description_file)].filter(Boolean).join('  ·  ');
+  const first = d3.min(clusters, c => c.a.first_seen), last = d3.max(clusters, c => c.a.last_seen);
+  const statItems = [
+    ['Packets in', fmtInt(cs.raw_packet_count_in)],
+    ['Clusters', fmtInt(cs.cluster_count ?? clusters.length)],
+    ['Kept as samples', fmtInt(cs.packet_count_out)],
+    ['Parse failures', fmtInt(cs.dropped_parse_failures), cs.dropped_parse_failures > 0],
+    ['Token budget', (OUT.budget_status || '—').replace('_', ' '), OUT.budget_status === 'exceeded'],
+    ['Capture span', first ? fmtTime(first).slice(0, 10) + ' ' + clock(first).slice(0, 8) + ' → ' + clock(last).slice(0, 8) : '—'],
+  ];
+  document.getElementById('stats').innerHTML = statItems.map(([l, v, warn]) =>
+    `<div class="stat${warn ? ' warn' : ''}"><b>${esc(v)}</b><span>${esc(l)}</span></div>`).join('');
+
+  const ac = OUT.attack_context || {};
+  const grp = (lbl, arr) => arr && arr.length ? `<div class="grp"><span class="lbl">${lbl}</span>${arr.map(x => `<span class="chip">${esc(x)}</span>`).join('')}</div>` : '';
+  document.getElementById('context').innerHTML =
+    `<h3 style="margin-right:4px">Attack context</h3>` +
+    (grp('Protocols', ac.suspected_protocols) + grp('Behaviors', ac.suspected_behaviors) + grp('Indicators', ac.target_indicators) || '<span class="muted">No attack context extracted.</span>') +
+    (ac.raw_description ? `<details class="desc" style="flex-basis:100%"><summary>Show the input description</summary><pre>${esc(ac.raw_description)}</pre></details>` : '');
+
+  // ---- State -----------------------------------------------------------
+  const state = { group: 'tier', tiers: new Set(TIERS), q: '', sort: { key: 'tier', dir: 1 }, sel: null };
+  const tierRank = t => TIERS.indexOf(t);
+  const visible = () => clusters.filter(c => state.tiers.has(c.tier) && matchesQ(c));
+  function matchesQ(c) {
+    if (!state.q) return true;
+    const hay = [c.name.title, c.name.sub, c.fingerprint_key, c.m.cluster_text, c.m.dst_port_service,
+      ...(c.a.unique_sources || []), ...(c.a.unique_destinations || [])].join(' ').toLowerCase();
+    return state.q.split(/\s+/).every(t => hay.includes(t));
+  }
+
+  // ---- Legend ----------------------------------------------------------
+  const tierCount = t => clusters.filter(c => c.tier === t).length;
+  function renderLegend() {
+    document.getElementById('legend').innerHTML = TIERS.map(t =>
+      `<button type="button" class="tierbtn" data-t="${t}" aria-pressed="${state.tiers.has(t)}" title="Show or hide ${TIER_LABEL[t]} clusters">
+         <span class="dot" style="background:var(--${t})"></span>${TIER_LABEL[t]} <span class="num muted">${tierCount(t)}</span></button>`).join('') +
+      `<span><span class="dot solid"></span> context match</span><span><span class="dot ring"></span> no match</span>`;
+  }
+  document.getElementById('legend').addEventListener('click', e => {
+    const b = e.target.closest('.tierbtn'); if (!b) return;
+    const t = b.dataset.t;
+    if (state.tiers.has(t) && state.tiers.size > 1) state.tiers.delete(t); else state.tiers.add(t);
+    renderAll(true);
+  });
+
+  // ---- Bubble map ------------------------------------------------------
+  const svg = d3.select('#map');
+  let positions = new Map();
+
+  function groupOf(c) {
+    switch (state.group) {
+      case 'tier': return { key: c.tier, label: TIER_LABEL[c.tier], order: tierRank(c.tier) };
+      case 'proto': return { key: c.proto, label: c.proto, order: c.proto };
+      case 'port': return c.fp.port == null ? { key: 'none', label: 'no port', order: 1e9 } :
+        { key: String(c.fp.port), label: ':' + c.fp.port + (c.m.dst_port_service && c.m.dst_port_service !== 'unknown' ? ' ' + c.m.dst_port_service : ''), order: c.fp.port };
+      case 'time': {
+        const start = new Date(c.fp.bucket * TH.delta_t * 1000).toISOString();
+        return { key: String(c.fp.bucket), label: clock(start).slice(0, 5) + ' UTC', order: c.fp.bucket };
+      }
+    }
+  }
+
+  function layout(animate) {
+    const data = visible();
+    const box = svg.node().parentNode.getBoundingClientRect();
+    const W = Math.max(320, Math.floor(box.width));
+    const H = W < 560 ? 380 : 460;
+    svg.attr('viewBox', `0 0 ${W} ${H}`).attr('width', W).attr('height', H);
+
+    const gmap = new Map();
+    data.forEach(c => { const g = groupOf(c); c._g = g.key; if (!gmap.has(g.key)) gmap.set(g.key, g); });
+    let groups = [...gmap.values()].sort((a, b) => a.order < b.order ? -1 : a.order > b.order ? 1 : 0);
+    // Too many groups to lay out side by side: keep them in a grid of rows.
+    const perRow = Math.min(groups.length, W < 560 ? 3 : 6) || 1;
+    const rows = Math.ceil(groups.length / perRow) || 1;
+    const top = 30, rowH = (H - top) / rows;
+    groups.forEach((g, i) => {
+      const r = Math.floor(i / perRow), col = i % perRow, inRow = Math.min(perRow, groups.length - r * perRow);
+      g.x = (W / inRow) * (col + 0.5); g.y = top + rowH * (r + 0.5); g.ly = top + rowH * r - 8;
+    });
+
+    const total = d3.sum(data, c => c.count) || 1;
+    const k = Math.sqrt(0.28 * W * H / (Math.PI * total));
+    const rMax = Math.min(rowH / 2.3, W / perRow / 2.3);
+    data.forEach(c => { c.r = Math.max(7, Math.min(rMax, k * Math.sqrt(c.count))); });
+
+    const nodes = data.map(c => {
+      const p = positions.get(c.idx), g = gmap.get(c._g);
+      // Deterministic jitter so the same output always draws the same layout.
+      const jx = ((c.idx * 37) % 21) - 10, jy = ((c.idx * 53) % 21) - 10;
+      return { c, x: p ? p.x : g.x + jx, y: p ? p.y : g.y + jy, gx: g.x, gy: g.y };
+    });
+    const sim = d3.forceSimulation(nodes)
+      .force('x', d3.forceX(d => d.gx).strength(0.14))
+      .force('y', d3.forceY(d => d.gy).strength(0.14))
+      .force('collide', d3.forceCollide(d => d.c.r + 2.5).iterations(3))
+      .stop();
+    for (let i = 0; i < 320; i++) {
+      sim.tick();
+      nodes.forEach(n => { n.x = Math.max(n.c.r + 2, Math.min(W - n.c.r - 2, n.x)); n.y = Math.max(top + n.c.r, Math.min(H - n.c.r - 2, n.y)); });
+    }
+    positions = new Map(nodes.map(n => [n.c.idx, { x: n.x, y: n.y }]));
+
+    // Group labels
+    const gl = svg.selectAll('text.glabel').data(groups, g => g.key);
+    gl.exit().remove();
+    gl.enter().append('text').attr('class', 'glabel').attr('text-anchor', 'middle')
+      .merge(gl).attr('x', g => g.x).attr('y', g => Math.max(16, g.ly + 6))
+      .text(g => `${g.label}  ·  ${data.filter(c => c._g === g.key).length}`);
+
+    const sel = svg.selectAll('g.bubble').data(nodes, n => n.c.idx);
+    sel.exit().remove();
+    const enter = sel.enter().append('g').attr('class', 'bubble').attr('tabindex', 0).attr('role', 'button')
+      .attr('transform', n => `translate(${n.x},${n.y})`);
+    enter.append('circle').attr('class', 'sel');
+    enter.append('circle').attr('class', 'body');
+    enter.append('text').attr('class', 't1').attr('text-anchor', 'middle');
+    enter.append('text').attr('class', 't2').attr('text-anchor', 'middle');
+    enter.append('title');
+    enter.on('click', (e, n) => select(n.c.idx, false))
+      .on('keydown', (e, n) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(n.c.idx, false); } });
+
+    const all = enter.merge(sel);
+    all.attr('aria-label', n => `${n.c.name.title} ${n.c.name.sub}, ${n.c.count} packets, ${n.c.tier}`);
+    all.select('title').text(n => `${n.c.name.title}${n.c.name.sub ? ' — ' + n.c.name.sub : ''}\n${fmtInt(n.c.count)} packets · ${fmtBytes(n.c.a.total_bytes)} · ${TIER_LABEL[n.c.tier]}`);
+    all.select('circle.body').attr('r', n => n.c.r)
+      .style('fill', n => `var(--${n.c.tier})`)
+      .style('fill-opacity', 0.92)
+      .style('stroke', n => n.c.m.context_match ? 'var(--ink)' : 'var(--muted)')
+      .style('stroke-dasharray', n => n.c.m.context_match ? null : '3 2.5')
+      .style('stroke-opacity', n => n.c.m.context_match ? 0.55 : 0.9);
+    all.select('circle.sel').attr('r', n => n.c.r + 4);
+    all.select('text.t1')
+      .attr('y', n => n.c.r >= 30 ? -2 : 4)
+      .style('font-size', n => Math.min(13, Math.max(10, n.c.r / 3.4)) + 'px')
+      .style('font-weight', 500)
+      .style('fill', n => `var(--on-${n.c.tier})`)
+      .text(n => n.c.r >= 30 ? fit(n.c.name.title, n.c.r) : n.c.r >= 15 ? fmtInt(n.c.count) : '');
+    all.select('text.t2')
+      .attr('y', n => 13)
+      .style('font-size', '10.5px')
+      .style('fill', n => `var(--on-${n.c.tier})`)
+      .style('opacity', 0.85)
+      .text(n => n.c.r >= 30 ? fmtInt(n.c.count) + ' pkts' : '');
+    all.classed('selected', n => n.c.idx === state.sel);
+
+    if (animate && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      all.transition().duration(550).ease(d3.easeCubicOut).attr('transform', n => `translate(${n.x},${n.y})`);
+    } else {
+      all.attr('transform', n => `translate(${n.x},${n.y})`);
+    }
+    if (!data.length) {
+      svg.selectAll('text.emptymsg').data([1]).join('text').attr('class', 'emptymsg glabel').attr('x', W / 2).attr('y', H / 2).attr('text-anchor', 'middle').text('No clusters match the filter.');
+    } else svg.selectAll('text.emptymsg').remove();
+  }
+  function fit(s, r) { const max = Math.floor((r * 1.75) / 7); return s.length > max ? s.slice(0, max - 1) + '…' : s; }
+
+  document.getElementById('groupby').addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    state.group = b.dataset.g;
+    document.querySelectorAll('#groupby button').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+    positions = new Map();
+    layout(false);
+  });
+
+  // ---- Table -----------------------------------------------------------
+  const COLS = [
+    { key: 'name', label: 'Cluster', get: c => c.name.title + ' ' + c.name.sub, cell: c => `<span class="tdot" style="background:var(--${c.tier})"></span><span class="mono">${esc(c.name.title)}</span> <span class="muted">${esc(c.name.sub)}</span>` },
+    { key: 'tier', label: 'Tier', get: c => tierRank(c.tier) * 1e9 - c.count, cell: c => TIER_LABEL[c.tier] },
+    { key: 'count', label: 'Packets', r: 1, get: c => c.count, cell: c => fmtInt(c.count) },
+    { key: 'bytes', label: 'Bytes', r: 1, get: c => c.a.total_bytes || 0, cell: c => fmtBytes(c.a.total_bytes) },
+    { key: 'share', label: 'Share', r: 1, get: c => c.m.traffic_share || 0, cell: c => fmtPct(c.m.traffic_share) },
+    { key: 'rarity', label: 'Rarity', get: c => c.m.tfidf_weight || 0, cell: c => `<span class="mini"><i style="width:${(c.m.tfidf_weight || 0) * 100}%"></i></span><span class="num">${(c.m.tfidf_weight ?? 0).toFixed(2)}</span>` },
+    { key: 'z', label: 'Max Z', r: 1, get: c => c.maxZ, cell: c => c.maxZ ? `<span style="${c.maxZ >= TH.zscore ? 'color:var(--primary);font-weight:600' : ''}">${c.maxZ.toFixed(2)}</span>` : '—' },
+    { key: 'ctx', label: 'Context', get: c => c.m.context_match ? 1 : 0, cell: c => c.m.context_match ? 'match' : '<span class="muted">—</span>' },
+    { key: 'first', label: 'First seen', get: c => c.a.first_seen || '', cell: c => `<span class="mono">${clock(c.a.first_seen)}</span>` },
+  ];
+  function sortedVisible() {
+    const col = COLS.find(x => x.key === state.sort.key);
+    return visible().sort((a, b) => { const x = col.get(a), y = col.get(b); return (x < y ? -1 : x > y ? 1 : a.idx - b.idx) * state.sort.dir; });
+  }
+  function renderTable() {
+    const rows = sortedVisible();
+    document.getElementById('tcount').textContent = rows.length === clusters.length ? `· ${clusters.length}` : `· ${rows.length} of ${clusters.length}`;
+    const t = document.getElementById('ctable');
+    t.innerHTML = `<thead><tr>${COLS.map(c => `<th class="sortable${c.r ? ' r' : ''}" data-k="${c.key}" tabindex="0" aria-sort="${state.sort.key === c.key ? (state.sort.dir > 0 ? 'ascending' : 'descending') : 'none'}">${c.label}</th>`).join('')}</tr></thead>
+      <tbody>${rows.map(c => `<tr class="click${c.idx === state.sel ? ' selected' : ''}" data-i="${c.idx}">${COLS.map(col => `<td class="${col.r ? 'r' : ''}">${col.cell(c)}</td>`).join('')}</tr>`).join('')
+      || `<tr><td colspan="${COLS.length}" class="empty">No clusters match the filter.</td></tr>`}</tbody>`;
+  }
+  document.getElementById('ctable').addEventListener('click', e => {
+    const th = e.target.closest('th.sortable');
+    if (th) { const k = th.dataset.k; state.sort = { key: k, dir: state.sort.key === k ? -state.sort.dir : (['name', 'tier', 'first'].includes(k) ? 1 : -1) }; renderTable(); return; }
+    const tr = e.target.closest('tr[data-i]'); if (tr) select(+tr.dataset.i, false);
+  });
+  document.getElementById('ctable').addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('th.sortable')) e.target.click(); });
+  document.getElementById('q').addEventListener('input', e => { state.q = e.target.value.trim().toLowerCase(); renderAll(true); });
+
+  // ---- Detail ----------------------------------------------------------
+  function bar(label, v, max, marks, hot, valText) {
+    const w = Math.max(0, Math.min(1, (v || 0) / max)) * 100;
+    return `<div class="bar"><span>${label}</span><span class="track"><span class="fill${hot ? ' hot' : ''}" style="width:${w}%"></span>${(marks || []).map(m => `<span class="mark" style="left:${Math.min(100, m / max * 100)}%" title="threshold ${m}"></span>`).join('')}</span><span class="v">${valText ?? (v == null ? '—' : (+v).toFixed(2))}</span></div>`;
+  }
+  function renderDetail() {
+    const el = document.getElementById('detail');
+    const c = clusters[state.sel];
+    if (!c) { el.innerHTML = '<div class="empty">Select a cluster to see its details.</div>'; return; }
+    const { a, m, fp } = c;
+    const span = a.first_seen && a.last_seen ? (new Date(a.last_seen) - new Date(a.first_seen)) / 1000 : null;
+    const cv = a.iat_mean ? a.iat_std / a.iat_mean : null;
+    const zs = Object.entries(m.zscore_anomalies || {}).sort((x, y) => y[1] - x[1]);
+    const zMax = Math.max(TH.zscore * 1.6, ...zs.map(z => z[1]));
+    const srcs = a.unique_sources || [], dsts = a.unique_destinations || [];
+    const list = (arr) => arr.length <= 4 ? arr.map(esc).join(', ') : arr.slice(0, 4).map(esc).join(', ') + ` <span class="muted">+${arr.length - 4} more</span>`;
+    const pos = sortedVisible().findIndex(x => x.idx === c.idx);
+    const fpCell = (l, v, extra) => `<div><span>${l}</span><b class="${v == null ? 'null' : ''}">${v == null ? 'none' : esc(v)}${extra ? ` <span class="muted" style="font-weight:400">${esc(extra)}</span>` : ''}</b></div>`;
+    const bucketStart = new Date(fp.bucket * TH.delta_t * 1000).toISOString();
+
+    el.innerHTML = `
+      <div class="dhead">
+        <div class="row">
+          <span class="pill ${c.tier}">${TIER_LABEL[c.tier]}</span>
+          <span class="pill ctx${m.context_match ? ' yes' : ''}">${m.context_match ? 'Matches attack context' : 'No context match'}</span>
+          <span class="nav"><button type="button" id="prev" aria-label="Previous cluster" title="Previous (←)">←</button><span class="muted num" style="align-self:center;font-size:.8rem">${pos >= 0 ? pos + 1 : '–'} / ${sortedVisible().length}</span><button type="button" id="next" aria-label="Next cluster" title="Next (→)">→</button></span>
+        </div>
+        <h2 class="mono" style="font-family:var(--font-data);font-weight:500">${esc(c.name.title)}</h2>
+        <div class="muted">${esc(c.name.sub)}</div>
+      </div>
+
+      <div class="sec">
+        <h3>Cluster Serialization</h3>
+        <p class="ground">${esc(m.cluster_text || 'No serialized text.')}</p>
+      </div>
+
+      <div class="sec">
+        <h3>Fingerprint</h3>
+        <div class="fp">
+          ${fpCell('L4', fp.l4)}${fpCell('State', fp.state)}${fpCell('L7', fp.l7)}
+          ${fpCell('Dst port', fp.port, fp.port != null && m.dst_port_service && m.dst_port_service !== 'unknown' ? m.dst_port_service : (m.dst_port_class ? m.dst_port_class.replace('_', ' ') : ''))}
+          ${fpCell('Entropy', fp.entropy ? fp.entropy.replace('_', ' ') : null)}${fpCell('Time window', clock(bucketStart).slice(0, 8), '#' + fp.bucket)}
+        </div>
+        <div style="display:flex;gap:8px;align-items:center"><span class="rawkey">${esc(c.fingerprint_key)}</span><button type="button" class="copy" id="copykey">Copy key</button></div>
+      </div>
+
+      <div class="sec">
+        <h3>Scale</h3>
+        <dl class="kv">
+          <dt>Packets</dt><dd>${fmtInt(c.count)}</dd>
+          <dt>Bytes</dt><dd>${fmtInt(a.total_bytes)} (${fmtBytes(a.total_bytes)})</dd>
+          <dt>Sources (${srcs.length})</dt><dd>${list(srcs) || '—'}</dd>
+          <dt>Destinations (${dsts.length})</dt><dd>${list(dsts) || '—'}</dd>
+          ${a.outbound_bytes != null || a.inbound_bytes != null ? `<dt>Out / in bytes</dt><dd>${fmtInt(a.outbound_bytes)} / ${fmtInt(a.inbound_bytes)}</dd>` : ''}
+        </dl>
+        ${bar('Traffic share', m.traffic_share, 1, null, false, fmtPct(m.traffic_share))}
+      </div>
+
+      <div class="sec">
+        <h3>Timing</h3>
+        <dl class="kv">
+          <dt>First seen</dt><dd>${fmtTime(a.first_seen)}</dd>
+          <dt>Last seen</dt><dd>${fmtTime(a.last_seen)}</dd>
+          <dt>Duration</dt><dd>${span == null ? '—' : fmtMs(span)}</dd>
+          <dt>Inter-arrival</dt><dd>${a.iat_mean == null ? 'single packet' : `mean ${fmtMs(a.iat_mean)} · std ${fmtMs(a.iat_std)}<br>min ${fmtMs(a.iat_min)} · max ${fmtMs(a.iat_max)}`}</dd>
+          ${cv != null ? `<dt>Regularity (CV)</dt><dd>${cv.toFixed(2)} <span class="muted">${cv < 0.1 ? 'very regular, beacon-like' : cv > 1 ? 'bursty / irregular' : 'moderately regular'}</span></dd>` : ''}
+        </dl>
+      </div>
+
+      <div class="sec">
+        <h3>Why this tier</h3>
+        ${bar('Rarity (IDF)', m.tfidf_weight, 1, [TH.tfidf_remnant, TH.tfidf_primary], (m.tfidf_weight || 0) >= TH.tfidf_primary)}
+        <p class="note">Dashed marks: below ${TH.tfidf_remnant} counts as common, ${TH.tfidf_primary} and above as rare. Rare plus a context match gives Primary.</p>
+        ${zs.length ? zs.map(([k, v]) => bar(Z_LABEL[k] || k, v, zMax, [TH.zscore], v >= TH.zscore)).join('') : '<p class="note">No Z-score deviations recorded (compared within its protocol group).</p>'}
+        ${zs.length ? `<p class="note">Robust Z-score within the ${esc(fp.l4)} group. Dashed mark: anomaly threshold ${TH.zscore}.</p>` : ''}
+      </div>
+
+      <div class="sec">
+        <h3>Sample packets <span style="text-transform:none;letter-spacing:0;font-weight:400">· ${(c.representative_items || []).length} of ${fmtInt(c.count)}</span></h3>
+        <div class="tablewrap"><table>
+          <thead><tr><th class="r">#</th><th>Time</th><th>Src → Dst</th><th class="r">Len</th><th>Info</th></tr></thead>
+          <tbody>${(c.representative_items || []).map(p => `<tr><td class="r mono">${p.packet_id}</td><td class="mono">${clock(p.timestamp)}</td><td class="mono">${esc(p.src)} → ${esc(p.dst)}</td><td class="r">${p.length}</td><td class="mono muted">${esc(p.info)}</td></tr>`).join('') || '<tr><td colspan="5" class="empty">No samples kept (budget or filtering limit).</td></tr>'}</tbody>
+        </table></div>
+      </div>`;
+    el.querySelector('#prev').onclick = () => step(-1);
+    el.querySelector('#next').onclick = () => step(1);
+    el.querySelector('#copykey').onclick = (e) => {
+      const b = e.currentTarget;
+      const done = () => { b.textContent = 'Copied'; setTimeout(() => b.textContent = 'Copy key', 1400); };
+      if (navigator.clipboard) navigator.clipboard.writeText(c.fingerprint_key).then(done, () => selectText(el.querySelector('.rawkey')));
+      else selectText(el.querySelector('.rawkey'));
+    };
+  }
+  function selectText(node) { const r = document.createRange(); r.selectNodeContents(node); const s = getSelection(); s.removeAllRanges(); s.addRange(r); }
+
+  function select(idx, scroll) {
+    state.sel = idx;
+    svg.selectAll('g.bubble').classed('selected', n => n.c.idx === idx);
+    renderTable();
+    renderDetail();
+    if (scroll) document.querySelector(`#ctable tr[data-i="${idx}"]`)?.scrollIntoView({ block: 'nearest' });
+  }
+  function step(d) {
+    const rows = sortedVisible(); if (!rows.length) return;
+    const i = rows.findIndex(c => c.idx === state.sel);
+    select(rows[(i + d + rows.length) % rows.length].idx, true);
+  }
+  document.addEventListener('keydown', e => {
+    if (e.target.matches('input, textarea')) return;
+    if (e.key === 'ArrowRight' || e.key === 'j') { e.preventDefault(); step(1); }
+    if (e.key === 'ArrowLeft' || e.key === 'k') { e.preventDefault(); step(-1); }
+  });
+
+  // ---- Hosts & anomalies ----------------------------------------------
+  const fpChips = arr => (arr || []).map(f => { const c = byKey.get(f.fingerprint_key); return c ? `<button type="button" class="fpchip" data-i="${c.idx}" title="${esc(f.fingerprint_key)}">${esc(c.name.title)}${c.name.sub ? ' ' + esc(c.name.sub.split(' · ')[0]) : ''} ×${fmtInt(f.count)}</button>` : ''; }).join('');
+  const hosts = OUT.ip_summary || [];
+  document.getElementById('hosts').innerHTML = hosts.length ? `<table>
+    <thead><tr><th>IP</th><th class="r">Sent</th><th class="r">Received</th><th class="r">Peers out</th><th class="r">Peers in</th><th>Sends</th><th>Receives</th></tr></thead>
+    <tbody>${hosts.map(h => `<tr><td class="mono">${esc(h.ip)}</td><td class="r">${fmtInt(h.packets_as_source)}</td><td class="r">${fmtInt(h.packets_as_destination)}</td><td class="r">${fmtInt(h.unique_destinations)}</td><td class="r">${fmtInt(h.unique_sources)}</td><td>${fpChips(h.top_source_fingerprints)}</td><td>${fpChips(h.top_destination_fingerprints)}</td></tr>`).join('')}</tbody></table>`
+    : '<div class="empty">No host summary in this output.</div>';
+  const an = OUT.anomalies || [];
+  document.getElementById('anoms').innerHTML = an.length ? `<table>
+    <thead><tr><th>Cluster</th><th class="r">Sources</th><th class="r">Typical</th><th class="r">Destinations</th><th class="r">Typical</th></tr></thead>
+    <tbody>${an.map(x => { const c = byKey.get(x.fingerprint_key); return `<tr class="click" data-i="${c ? c.idx : ''}"><td><span class="tdot" style="background:var(--${c ? c.tier : 'remnant'})"></span><span class="mono">${esc(c ? c.name.title : x.fingerprint_key)}</span></td>
+      <td class="r" style="${x.source_cardinality_anomalous ? 'color:var(--primary);font-weight:600' : ''}">${fmtInt(x.source_cardinality)}</td><td class="r muted">${x.typical_source_cardinality ?? '—'}</td>
+      <td class="r" style="${x.destination_cardinality_anomalous ? 'color:var(--primary);font-weight:600' : ''}">${fmtInt(x.destination_cardinality)}</td><td class="r muted">${x.typical_destination_cardinality ?? '—'}</td></tr>`; }).join('')}</tbody></table>`
+    : '<div class="empty">None flagged. No cluster has noticeably more distinct sources or destinations than others of its protocol.</div>';
+  document.querySelector('.cols2').addEventListener('click', e => {
+    const b = e.target.closest('[data-i]'); if (!b || b.dataset.i === '') return;
+    select(+b.dataset.i, false);
+    document.getElementById('detail').scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'nearest' });
+  });
+
+  // ---- Boot ------------------------------------------------------------
+  function renderAll(animate) {
+    renderLegend();
+    layout(animate);
+    if (state.sel != null && !visible().some(c => c.idx === state.sel)) state.sel = sortedVisible()[0]?.idx ?? null;
+    renderTable();
+    renderDetail();
+  }
+  // Open on the most prominent cluster: primary first, then by packet count.
+  state.sel = [...clusters].sort((x, y) => tierRank(x.tier) - tierRank(y.tier) || y.count - x.count)[0]?.idx ?? null;
+  renderAll(false);
+  let rt; new ResizeObserver(() => { clearTimeout(rt); rt = setTimeout(() => layout(false), 120); }).observe(svg.node().parentNode);
+})();
+</script>

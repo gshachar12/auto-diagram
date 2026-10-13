@@ -1,0 +1,38 @@
+Incident Report: TCP SYN Port Scan against 10.100.18.12
+=======================================================
+
+Summary
+-------
+The internal host 10.100.25.14 probed 29 well-known TCP ports on the
+server 10.100.18.12 on 2006-08-24 at 17:35:25 UTC. The scan lasted 2.8
+seconds. It looks like the reconnaissance stage before a targeted
+intrusion, most likely an Nmap-style half-open scan.
+
+Scan traffic
+------------
+The scanner sent exactly one TCP SYN packet to each port, 29 SYNs in
+total, roughly every 100 milliseconds. It started with the Windows
+networking ports 139 (NetBIOS), 135 (RPC) and 445 (SMB), then moved on to
+80 (HTTP), 22 (SSH), 515 (printer), 23 (Telnet), 21 (FTP) and 6000 (X11),
+and continued with 1025, 25, 111, 1028, 9100, 1029, 79, 497, 548, 5000,
+1917, 53, 161, 9001, 65535, 443, 113, 993, 8080 and 2869. No port was
+probed twice.
+
+Every SYN came from a different random source port, had no payload, a
+TTL of 64 and an unusually small TCP window of 8 bytes. A real operating
+system never opens connections with such a window, which shows that the
+packets were crafted by a scanning tool.
+
+Responses
+---------
+No packets from 10.100.18.12 back to the scanner appear in the capture:
+no SYN-ACKs from open ports and no RSTs from closed ports. Either a
+host firewall dropped the probes silently or the sensor only saw one
+direction of the traffic.
+
+Assessment
+----------
+The choice of ports suggests the attacker was looking for file-sharing,
+remote administration and printer services. The scanning host should be
+investigated for compromise, and the server's firewall logs checked for
+follow-up connection attempts.

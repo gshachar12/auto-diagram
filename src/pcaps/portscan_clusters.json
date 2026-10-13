@@ -1,0 +1,1407 @@
+{
+  "pcap": "portscan.pcap",
+  "settings": {
+    "token_budget": 10000,
+    "filtering_limit": 3,
+    "delta_t": 300.0,
+    "max_packets": null
+  },
+  "generated_at": "2026-10-13T12:07:09+00:00",
+  "output": {
+    "clusters": [
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",null,139,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 1,
+            "timestamp": "2006-08-24T17:35:25.417872",
+            "protocol": "TCP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:139",
+            "fingerprint_key": "[\"TCP\",\"SYN\",null,139,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:25.417872",
+          "last_seen": "2006-08-24T17:35:25.417872",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "well_known",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) on port 139. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",null,135,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 2,
+            "timestamp": "2006-08-24T17:35:25.518348",
+            "protocol": "TCP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:135",
+            "fingerprint_key": "[\"TCP\",\"SYN\",null,135,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:25.518348",
+          "last_seen": "2006-08-24T17:35:25.518348",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "well_known",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) on port 135. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",null,445,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 3,
+            "timestamp": "2006-08-24T17:35:25.619024",
+            "protocol": "TCP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:445",
+            "fingerprint_key": "[\"TCP\",\"SYN\",null,445,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:25.619024",
+          "last_seen": "2006-08-24T17:35:25.619024",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "well_known",
+          "dst_port_service": "SMB",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) on port 445 (SMB). 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",\"HTTP\",80,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 4,
+            "timestamp": "2006-08-24T17:35:25.719586",
+            "protocol": "HTTP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:80 | L7:HTTP",
+            "fingerprint_key": "[\"TCP\",\"SYN\",\"HTTP\",80,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:25.719586",
+          "last_seen": "2006-08-24T17:35:25.719586",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "well_known",
+          "dst_port_service": "HTTP",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) carrying HTTP traffic on port 80 (HTTP). 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",\"SSH\",22,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 5,
+            "timestamp": "2006-08-24T17:35:25.821005",
+            "protocol": "SSH",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:22 | L7:SSH",
+            "fingerprint_key": "[\"TCP\",\"SYN\",\"SSH\",22,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:25.821005",
+          "last_seen": "2006-08-24T17:35:25.821005",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "well_known",
+          "dst_port_service": "SSH",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) carrying SSH traffic on port 22 (SSH). 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",null,515,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 6,
+            "timestamp": "2006-08-24T17:35:25.921476",
+            "protocol": "TCP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:515",
+            "fingerprint_key": "[\"TCP\",\"SYN\",null,515,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:25.921476",
+          "last_seen": "2006-08-24T17:35:25.921476",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "well_known",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) on port 515. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",null,23,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 7,
+            "timestamp": "2006-08-24T17:35:26.025384",
+            "protocol": "TCP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:23",
+            "fingerprint_key": "[\"TCP\",\"SYN\",null,23,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:26.025384",
+          "last_seen": "2006-08-24T17:35:26.025384",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "well_known",
+          "dst_port_service": "Telnet",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) on port 23 (Telnet). 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",\"FTP\",21,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 8,
+            "timestamp": "2006-08-24T17:35:26.125858",
+            "protocol": "FTP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:21 | L7:FTP",
+            "fingerprint_key": "[\"TCP\",\"SYN\",\"FTP\",21,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:26.125858",
+          "last_seen": "2006-08-24T17:35:26.125858",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "well_known",
+          "dst_port_service": "FTP",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) carrying FTP traffic on port 21 (FTP). 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",null,6000,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 9,
+            "timestamp": "2006-08-24T17:35:26.226212",
+            "protocol": "TCP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:6000",
+            "fingerprint_key": "[\"TCP\",\"SYN\",null,6000,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:26.226212",
+          "last_seen": "2006-08-24T17:35:26.226212",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) on port 6000. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",null,1025,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 10,
+            "timestamp": "2006-08-24T17:35:26.322821",
+            "protocol": "TCP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:1025",
+            "fingerprint_key": "[\"TCP\",\"SYN\",null,1025,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:26.322821",
+          "last_seen": "2006-08-24T17:35:26.322821",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) on port 1025. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",\"SMTP\",25,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 11,
+            "timestamp": "2006-08-24T17:35:26.422107",
+            "protocol": "SMTP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:25 | L7:SMTP",
+            "fingerprint_key": "[\"TCP\",\"SYN\",\"SMTP\",25,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:26.422107",
+          "last_seen": "2006-08-24T17:35:26.422107",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "well_known",
+          "dst_port_service": "SMTP",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) carrying SMTP traffic on port 25 (SMTP). 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",null,111,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 12,
+            "timestamp": "2006-08-24T17:35:26.528755",
+            "protocol": "TCP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:111",
+            "fingerprint_key": "[\"TCP\",\"SYN\",null,111,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:26.528755",
+          "last_seen": "2006-08-24T17:35:26.528755",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "well_known",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) on port 111. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",null,1028,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 13,
+            "timestamp": "2006-08-24T17:35:26.630708",
+            "protocol": "TCP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:1028",
+            "fingerprint_key": "[\"TCP\",\"SYN\",null,1028,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:26.630708",
+          "last_seen": "2006-08-24T17:35:26.630708",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) on port 1028. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",null,9100,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 14,
+            "timestamp": "2006-08-24T17:35:26.725643",
+            "protocol": "TCP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:9100",
+            "fingerprint_key": "[\"TCP\",\"SYN\",null,9100,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:26.725643",
+          "last_seen": "2006-08-24T17:35:26.725643",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) on port 9100. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",null,1029,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 15,
+            "timestamp": "2006-08-24T17:35:26.824924",
+            "protocol": "TCP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:1029",
+            "fingerprint_key": "[\"TCP\",\"SYN\",null,1029,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:26.824924",
+          "last_seen": "2006-08-24T17:35:26.824924",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) on port 1029. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",null,79,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 16,
+            "timestamp": "2006-08-24T17:35:26.930610",
+            "protocol": "TCP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:79",
+            "fingerprint_key": "[\"TCP\",\"SYN\",null,79,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:26.930610",
+          "last_seen": "2006-08-24T17:35:26.930610",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "well_known",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) on port 79. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",null,497,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 17,
+            "timestamp": "2006-08-24T17:35:27.032520",
+            "protocol": "TCP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:497",
+            "fingerprint_key": "[\"TCP\",\"SYN\",null,497,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:27.032520",
+          "last_seen": "2006-08-24T17:35:27.032520",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "well_known",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) on port 497. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",null,548,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 18,
+            "timestamp": "2006-08-24T17:35:27.126489",
+            "protocol": "TCP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:548",
+            "fingerprint_key": "[\"TCP\",\"SYN\",null,548,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:27.126489",
+          "last_seen": "2006-08-24T17:35:27.126489",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "well_known",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) on port 548. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",null,5000,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 19,
+            "timestamp": "2006-08-24T17:35:27.225017",
+            "protocol": "TCP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:5000",
+            "fingerprint_key": "[\"TCP\",\"SYN\",null,5000,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:27.225017",
+          "last_seen": "2006-08-24T17:35:27.225017",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) on port 5000. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",null,1917,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 20,
+            "timestamp": "2006-08-24T17:35:27.323318",
+            "protocol": "TCP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:1917",
+            "fingerprint_key": "[\"TCP\",\"SYN\",null,1917,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:27.323318",
+          "last_seen": "2006-08-24T17:35:27.323318",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) on port 1917. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",\"DNS\",53,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 21,
+            "timestamp": "2006-08-24T17:35:27.435280",
+            "protocol": "DNS",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:53 | L7:DNS",
+            "fingerprint_key": "[\"TCP\",\"SYN\",\"DNS\",53,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:27.435280",
+          "last_seen": "2006-08-24T17:35:27.435280",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "well_known",
+          "dst_port_service": "DNS",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) carrying DNS traffic on port 53 (DNS). 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",null,161,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 22,
+            "timestamp": "2006-08-24T17:35:27.538318",
+            "protocol": "TCP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:161",
+            "fingerprint_key": "[\"TCP\",\"SYN\",null,161,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:27.538318",
+          "last_seen": "2006-08-24T17:35:27.538318",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "well_known",
+          "dst_port_service": "SNMP",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) on port 161 (SNMP). 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",null,9001,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 23,
+            "timestamp": "2006-08-24T17:35:27.630540",
+            "protocol": "TCP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:9001",
+            "fingerprint_key": "[\"TCP\",\"SYN\",null,9001,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:27.630540",
+          "last_seen": "2006-08-24T17:35:27.630540",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) on port 9001. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",null,65535,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 24,
+            "timestamp": "2006-08-24T17:35:27.729784",
+            "protocol": "TCP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:65535",
+            "fingerprint_key": "[\"TCP\",\"SYN\",null,65535,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:27.729784",
+          "last_seen": "2006-08-24T17:35:27.729784",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) on port 65535. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",\"TLS\",443,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 25,
+            "timestamp": "2006-08-24T17:35:27.836293",
+            "protocol": "TLS",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:443 | L7:TLS",
+            "fingerprint_key": "[\"TCP\",\"SYN\",\"TLS\",443,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:27.836293",
+          "last_seen": "2006-08-24T17:35:27.836293",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "well_known",
+          "dst_port_service": "HTTPS/TLS",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) carrying TLS traffic on port 443 (HTTPS/TLS). 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",null,113,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 26,
+            "timestamp": "2006-08-24T17:35:27.938259",
+            "protocol": "TCP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:113",
+            "fingerprint_key": "[\"TCP\",\"SYN\",null,113,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:27.938259",
+          "last_seen": "2006-08-24T17:35:27.938259",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "well_known",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) on port 113. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",null,993,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 27,
+            "timestamp": "2006-08-24T17:35:28.034487",
+            "protocol": "TCP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:993",
+            "fingerprint_key": "[\"TCP\",\"SYN\",null,993,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:28.034487",
+          "last_seen": "2006-08-24T17:35:28.034487",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "well_known",
+          "dst_port_service": "IMAPS",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) on port 993. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",\"HTTP\",8080,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 28,
+            "timestamp": "2006-08-24T17:35:28.134616",
+            "protocol": "HTTP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:8080 | L7:HTTP",
+            "fingerprint_key": "[\"TCP\",\"SYN\",\"HTTP\",8080,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:28.134616",
+          "last_seen": "2006-08-24T17:35:28.134616",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "HTTP-alt",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) carrying HTTP traffic on port 8080 (HTTP-alt). 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",null,2869,null,3854767]",
+        "representative_items": [
+          {
+            "packet_id": 29,
+            "timestamp": "2006-08-24T17:35:28.237462",
+            "protocol": "TCP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:2869",
+            "fingerprint_key": "[\"TCP\",\"SYN\",null,2869,null,3854767]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.100.25.14"
+          ],
+          "unique_destinations": [
+            "10.100.18.12"
+          ],
+          "first_seen": "2006-08-24T17:35:28.237462",
+          "last_seen": "2006-08-24T17:35:28.237462",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.034482758620689655,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) on port 2869. 1 packets (60 bytes total) from one source to one destination. Accounts for 3.4% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      }
+    ],
+    "compression_stats": {
+      "raw_packet_count_in": 29,
+      "packet_count_out": 29,
+      "cluster_count": 29,
+      "estimated_tokens_out": 2986,
+      "dropped_parse_failures": 0,
+      "compression_ratio": 0.0
+    },
+    "budget_status": "within_budget",
+    "attack_context": {
+      "suspected_protocols": [
+        "HTTP",
+        "SSH",
+        "TCP",
+        "UDP"
+      ],
+      "suspected_behaviors": [
+        "scanning"
+      ],
+      "target_indicators": [
+        "single_dst",
+        "single_src"
+      ],
+      "raw_description": "Incident Report: TCP SYN Port Scan against 10.100.18.12\n=======================================================\n\nSummary\n-------\nThe internal host 10.100.25.14 probed 29 well-known TCP ports on the\nserver 10.100.18.12 on 2006-08-24 at 17:35:25 UTC. The scan lasted 2.8\nseconds. It looks like the reconnaissance stage before a targeted\nintrusion, most likely an Nmap-style half-open scan.\n\nScan traffic\n------------\nThe scanner sent exactly one TCP SYN packet to each port, 29 SYNs in\ntotal, roughly every 100 milliseconds. It started with the Windows\nnetworking ports 139 (NetBIOS), 135 (RPC) and 445 (SMB), then moved on to\n80 (HTTP), 22 (SSH), 515 (printer), 23 (Telnet), 21 (FTP) and 6000 (X11),\nand continued with 1025, 25, 111, 1028, 9100, 1029, 79, 497, 548, 5000,\n1917, 53, 161, 9001, 65535, 443, 113, 993, 8080 and 2869. No port was\nprobed twice.\n\nEvery SYN came from a different random source port, had no payload, a\nTTL of 64 and an unusually small TCP window of 8 bytes. A real operating\nsystem never opens connections with such a window, which shows that the\npackets were crafted by a scanning tool.\n\nResponses\n---------\nNo packets from 10.100.18.12 back to the scanner appear in the capture:\nno SYN-ACKs from open ports and no RSTs from closed ports. Either a\nhost firewall dropped the probes silently or the sensor only saw one\ndirection of the traffic.\n\nAssessment\n----------\nThe choice of ports suggests the attacker was looking for file-sharing,\nremote administration and printer services. The scanning host should be\ninvestigated for compromise, and the server's firewall logs checked for\nfollow-up connection attempts.\n"
+    },
+    "budget_status_detail": null,
+    "ip_summary": [
+      {
+        "ip": "10.100.25.14",
+        "total_traffic": 29,
+        "packets_as_source": 29,
+        "packets_as_destination": 0,
+        "unique_destinations": 1,
+        "unique_sources": 0,
+        "unique_dst_ports": 29,
+        "unique_src_ports": 0,
+        "top_source_fingerprints": [
+          {
+            "fingerprint_key": "[\"TCP\",\"SYN\",null,139,null,3854767]",
+            "count": 1
+          },
+          {
+            "fingerprint_key": "[\"TCP\",\"SYN\",null,135,null,3854767]",
+            "count": 1
+          },
+          {
+            "fingerprint_key": "[\"TCP\",\"SYN\",null,445,null,3854767]",
+            "count": 1
+          }
+        ],
+        "top_destination_fingerprints": [],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": [
+          {
+            "packet_id": 1,
+            "timestamp": "2006-08-24T17:35:25.417872",
+            "protocol": "TCP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:139"
+          },
+          {
+            "packet_id": 2,
+            "timestamp": "2006-08-24T17:35:25.518348",
+            "protocol": "TCP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:135"
+          },
+          {
+            "packet_id": 3,
+            "timestamp": "2006-08-24T17:35:25.619024",
+            "protocol": "TCP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:445"
+          }
+        ]
+      },
+      {
+        "ip": "10.100.18.12",
+        "total_traffic": 29,
+        "packets_as_source": 0,
+        "packets_as_destination": 29,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 29,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"TCP\",\"SYN\",null,139,null,3854767]",
+            "count": 1
+          },
+          {
+            "fingerprint_key": "[\"TCP\",\"SYN\",null,135,null,3854767]",
+            "count": 1
+          },
+          {
+            "fingerprint_key": "[\"TCP\",\"SYN\",null,445,null,3854767]",
+            "count": 1
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": [
+          {
+            "packet_id": 1,
+            "timestamp": "2006-08-24T17:35:25.417872",
+            "protocol": "TCP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:139"
+          },
+          {
+            "packet_id": 2,
+            "timestamp": "2006-08-24T17:35:25.518348",
+            "protocol": "TCP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:135"
+          },
+          {
+            "packet_id": 3,
+            "timestamp": "2006-08-24T17:35:25.619024",
+            "protocol": "TCP",
+            "src": "10.100.25.14",
+            "dst": "10.100.18.12",
+            "length": 60,
+            "info": "Flags:0x0002 | DPort:445"
+          }
+        ]
+      }
+    ],
+    "anomalies": [],
+    "filter_string_used": null
+  }
+}

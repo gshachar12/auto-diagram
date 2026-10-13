@@ -1,0 +1,58 @@
+Lab Report: NRDelegationAttack Reproduction (Figure 1 Scenario)
+===============================================================
+
+Summary
+-------
+This capture reproduces the NRDelegationAttack against a recursive DNS
+resolver in a loopback testbed on 2025-09-20. The attacker makes the
+resolver chase a referral whose many name-server names all resolve to an
+address where no DNS server is listening. Each name forces the resolver
+into further lookups, so one client query turns into more than 150
+packets and a large amount of resolver CPU work before the resolver
+gives up with SERVFAIL. The capture spans 0.72 seconds.
+
+Testbed
+-------
+  Victim resolver:            127.0.0.1
+  Authoritative/referral NS:  127.0.0.2
+  Non-responsive address:     127.0.0.89 (no DNS service)
+  Attack name:                attack0.home.lan
+
+Attack sequence
+---------------
+1. The attacker's client sent one DNS query for the A record of
+   attack0.home.lan to the resolver at 127.0.0.1.
+
+2. The referral for home.lan lists a long set of name servers named
+   ns<N>.fake<N>.fake0. For each of them the resolver asked the
+   authoritative server 127.0.0.2 for both an A and an AAAA record. In
+   this capture it resolved 23 such names, from ns28.fake28.fake0 to
+   ns51.fake51.fake0, sending 46 queries. Every A query was answered
+   with the address 127.0.0.89 together with a referral to the root
+   (a.root-servers.net at 127.0.0.2); every AAAA query was answered with
+   no address, only an SOA record. The resolver also re-checked the root
+   name servers twice with NS queries.
+
+3. Each time a name resolved to 127.0.0.89, the resolver tried to send
+   the original question for attack0.home.lan there. It sent 28 such
+   queries, and each one immediately bounced with an ICMP "port
+   unreachable" message because nothing listens on port 53 at that
+   address.
+
+4. After 0.72 seconds the resolver stopped and answered the client with
+   a DNS SERVFAIL response.
+
+All DNS queries and responses were small, between 82 and 151 bytes on
+the wire. The resolver also exchanged two one-byte UDP datagrams with
+itself on loopback at the start of the capture, which are internal
+wake-up signals rather than attack traffic.
+
+Discussion
+----------
+The real cost of the attack is not the packet count but the work inside
+the resolver. For every batch of name servers it re-scans the whole
+delegation list, so the processing grows with the square of the number
+of names. In the paper's measurements this amplifies a single query
+into thousands of instructions per name and can make the resolver drop
+legitimate clients. Mitigations include capping the number of
+name-server lookups per referral, as patched BIND releases do.

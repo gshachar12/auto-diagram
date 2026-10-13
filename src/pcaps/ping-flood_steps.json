@@ -1,0 +1,26 @@
+[
+  {
+    "step_id": 1,
+    "text": "192.168.100.2 sends 480,590 ICMP echo requests to 192.168.100.1 at a steady rate of about 7,600 per second, one every 130 microseconds.",
+    "source_text": "192.168.100.2 sent 480,590 ICMP echo requests (type 8, code 0) to 192.168.100.1, a steady rate of about 7,600 requests per second, one every 130 microseconds, with no pauses from the first packet to the last.",
+    "mitre_tag": "T1498.001"
+  },
+  {
+    "step_id": 2,
+    "text": "The echo requests carry no payload data and are minimum-size 60-byte frames, all with the same ICMP identifier and an incrementing sequence number.",
+    "source_text": "The requests carry no payload data: each is a minimum-size 60-byte Ethernet frame. All of them use the same ICMP identifier, 0xcf6b, and the sequence number simply increments by one per packet, wrapping around as it overflows.",
+    "mitre_tag": "T1498.001"
+  },
+  {
+    "step_id": 3,
+    "text": "192.168.100.1 answers every request with a 42-byte ICMP echo reply to 192.168.100.2 about 13 microseconds later.",
+    "source_text": "192.168.100.1 answered each request with an ICMP echo reply (type 0) of 42 bytes, about 13 microseconds after the request.",
+    "mitre_tag": null
+  },
+  {
+    "step_id": 4,
+    "text": "The echo requests and replies between the two hosts together reach about 6.2 Mbit/s for 63 seconds.",
+    "source_text": "In total 480,590 replies were sent back to 192.168.100.2, one for every request, and the two directions together reached about 6.2 Mbit/s.",
+    "mitre_tag": "T1498.001"
+  }
+]

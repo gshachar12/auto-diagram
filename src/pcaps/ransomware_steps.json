@@ -1,0 +1,62 @@
+[
+  {
+    "step_id": 1,
+    "text": "10.12.13.103 sends an HTTP GET for /precautions-attachments/... with Host www.domaincop247.com to 104.28.11.141 on TCP port 80.",
+    "source_text": "The victim's Internet Explorer 11 requested http://www.domaincop247.com/precautions-attachments/... from 104.28.11.141 on port 80.",
+    "mitre_tag": "T1566.002"
+  },
+  {
+    "step_id": 2,
+    "text": "After about six seconds 104.28.11.141 replies with an HTTP 302 redirect to report.domaincop247.com.",
+    "source_text": "After a six-second wait the server replied with an HTTP 302 redirect to report.domaincop247.com.",
+    "mitre_tag": null
+  },
+  {
+    "step_id": 3,
+    "text": "10.12.13.103 sends an HTTP GET for Domain_Abuse_Report_Viewer.js to 104.28.10.141 on TCP port 80.",
+    "source_text": "The browser followed it to 104.28.10.141 and downloaded Domain_Abuse_Report_Viewer.js, a 9,032-byte file served as application/js.",
+    "mitre_tag": "T1204.002"
+  },
+  {
+    "step_id": 4,
+    "text": "104.28.10.141 returns HTTP 200 with a 9,032-byte application/js body to 10.12.13.103.",
+    "source_text": "The browser followed it to 104.28.10.141 and downloaded Domain_Abuse_Report_Viewer.js, a 9,032-byte file served as application/js.",
+    "mitre_tag": "T1204.002"
+  },
+  {
+    "step_id": 5,
+    "text": "10.12.13.103 sends an HTTP GET for /kqaer2c56ds34caq12/file.exe with Host ggjghhfhfh.com to 185.153.198.117, using an MSIE 7.0 user agent.",
+    "source_text": "Fifteen seconds later the script fetched the ransomware itself: http://ggjghhfhfh.com/kqaer2c56ds34caq12/file.exe from 185.153.198.117. This request used a different user agent (an old MSIE 7.0 string) because it came from the script rather than the browser.",
+    "mitre_tag": "T1105"
+  },
+  {
+    "step_id": 6,
+    "text": "185.153.198.117 sends about 252 kB of executable data to 10.12.13.103 over TCP port 80 within about one second.",
+    "source_text": "About 252 kB of executable data arrived in roughly one second.",
+    "mitre_tag": "T1105"
+  },
+  {
+    "step_id": 7,
+    "text": "10.12.13.103 sends three one-second bursts of UDP datagrams to destination port 6892, each burst reaching 576 different addresses in 194.165.16.0/24, 194.165.17.0/24, 15.49.2.0 and 122.1.13.0.",
+    "source_text": "Shortly after the executable ran, the victim sent three bursts of small UDP datagrams to destination port 6892, at about 25 s, 39 s and 63 s. Each burst lasted about a second and hit 576 different addresses: all of 194.165.16.0/24 and 194.165.17.0/24 plus 32 addresses in each of 15.49.2.0 and 122.1.13.0.",
+    "mitre_tag": "T1095"
+  },
+  {
+    "step_id": 8,
+    "text": "The 1,728 UDP datagrams to port 6892 carry 10 to 24 bytes of payload each and receive no reply.",
+    "source_text": "In total 1,728 datagrams of 10 to 24 bytes of payload were sent and none were answered.",
+    "mitre_tag": "T1095"
+  },
+  {
+    "step_id": 9,
+    "text": "10.12.13.103 sends an HTTP GET for /0123-4567-89AB-CDEF-0123 with Host ftoxmpdipwobp4qy.1mznhc.top to 37.10.71.202 on TCP port 80.",
+    "source_text": "At 410 s the victim requested http://ftoxmpdipwobp4qy.1mznhc.top/0123-4567-89AB-CDEF-0123 from 37.10.71.202, the personal decryption page linked in the ransom note.",
+    "mitre_tag": null
+  },
+  {
+    "step_id": 10,
+    "text": "37.10.71.202 answers with an HTTP 302 redirect to the /intro path.",
+    "source_text": "The server answered with an HTTP 302 redirect to the page's \"intro\" path.",
+    "mitre_tag": null
+  }
+]

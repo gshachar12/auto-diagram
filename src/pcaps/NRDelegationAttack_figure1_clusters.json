@@ -1,0 +1,2736 @@
+{
+  "pcap": "NRDelegationAttack_figure1.pcap",
+  "settings": {
+    "token_budget": 10000,
+    "filtering_limit": 3,
+    "delta_t": 300.0,
+    "max_packets": null
+  },
+  "generated_at": "2026-10-13T12:07:08+00:00",
+  "output": {
+    "clusters": [
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",null,59212,\"low\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 1,
+            "timestamp": "2025-09-20T16:50:43.864164",
+            "protocol": "UDP",
+            "src": "127.0.0.1",
+            "dst": "127.0.0.1",
+            "length": 43,
+            "info": "DPort:59212 | Entropy:low",
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,59212,\"low\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 43,
+          "unique_sources": [
+            "127.0.0.1"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.864164",
+          "last_seen": "2025-09-20T16:50:43.864164",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.002341792833024725,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 11.612
+          },
+          "context_match": false,
+          "cluster_text": "UDP traffic on port 59212. 1 packets (43 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Statistically anomalous: byte volume (Z=11.6). Accounts for 0.2% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",null,35006,\"low\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 2,
+            "timestamp": "2025-09-20T16:50:43.864210",
+            "protocol": "UDP",
+            "src": "::1",
+            "dst": "::1",
+            "length": 63,
+            "info": "DPort:35006 | Entropy:low",
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,35006,\"low\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 63,
+          "unique_sources": [
+            "::1"
+          ],
+          "unique_destinations": [
+            "::1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.864210",
+          "last_seen": "2025-09-20T16:50:43.864210",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.003430998801873434,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 7.899
+          },
+          "context_match": false,
+          "cluster_text": "UDP traffic on port 35006. 1 packets (63 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Statistically anomalous: byte volume (Z=7.9). Accounts for 0.3% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 3,
+            "timestamp": "2025-09-20T16:50:43.864295",
+            "protocol": "DNS",
+            "src": "127.0.0.1",
+            "dst": "127.0.0.1",
+            "length": 99,
+            "info": "DPort:53 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]"
+          },
+          {
+            "packet_id": 4,
+            "timestamp": "2025-09-20T16:50:43.881913",
+            "protocol": "DNS",
+            "src": "127.0.0.1",
+            "dst": "127.0.0.89",
+            "length": 99,
+            "info": "DPort:53 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]"
+          },
+          {
+            "packet_id": 6,
+            "timestamp": "2025-09-20T16:50:43.882155",
+            "protocol": "DNS",
+            "src": "127.0.0.1",
+            "dst": "127.0.0.2",
+            "length": 100,
+            "info": "DPort:53 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 75,
+          "total_bytes": 7471,
+          "unique_sources": [
+            "127.0.0.1"
+          ],
+          "unique_destinations": [
+            "127.0.0.1",
+            "127.0.0.89",
+            "127.0.0.2"
+          ],
+          "first_seen": "2025-09-20T16:50:43.864295",
+          "last_seen": "2025-09-20T16:50:44.582782",
+          "iat_mean": 0.009709284112260148,
+          "iat_std": 0.050729216187845774,
+          "iat_min": 2.8133392333984375e-05,
+          "iat_max": 0.31834912300109863,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.4068728896634354,
+          "tfidf_weight": 0.14502748051862163,
+          "dst_port_class": "well_known",
+          "dst_port_service": "DNS",
+          "zscore_anomalies": {
+            "byte_volume": 39.279
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 53 (DNS). 75 packets (7471 bytes total) from one source to 3 unique destinations. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 9.71ms (very high packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=39.3). Accounts for 40.7% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"ICMP\",\"ICMP:3:3\",null,null,null,5861254]",
+        "representative_items": [
+          {
+            "packet_id": 5,
+            "timestamp": "2025-09-20T16:50:43.881944",
+            "protocol": "ICMP",
+            "src": "127.0.0.89",
+            "dst": "127.0.0.1",
+            "length": 127,
+            "info": "Type:3 Code:3",
+            "fingerprint_key": "[\"ICMP\",\"ICMP:3:3\",null,null,null,5861254]"
+          },
+          {
+            "packet_id": 29,
+            "timestamp": "2025-09-20T16:50:43.883328",
+            "protocol": "ICMP",
+            "src": "127.0.0.89",
+            "dst": "127.0.0.1",
+            "length": 127,
+            "info": "Type:3 Code:3",
+            "fingerprint_key": "[\"ICMP\",\"ICMP:3:3\",null,null,null,5861254]"
+          },
+          {
+            "packet_id": 31,
+            "timestamp": "2025-09-20T16:50:43.884092",
+            "protocol": "ICMP",
+            "src": "127.0.0.89",
+            "dst": "127.0.0.1",
+            "length": 127,
+            "info": "Type:3 Code:3",
+            "fingerprint_key": "[\"ICMP\",\"ICMP:3:3\",null,null,null,5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 28,
+          "total_bytes": 3556,
+          "unique_sources": [
+            "127.0.0.89"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.881944",
+          "last_seen": "2025-09-20T16:50:43.888716",
+          "iat_mean": 0.00025081634521484375,
+          "iat_std": 0.00025378671936751205,
+          "iat_min": 9.608268737792969e-05,
+          "iat_max": 0.0013840198516845703,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.19366082126130052,
+          "tfidf_weight": 0.3401387078381017,
+          "dst_port_class": null,
+          "dst_port_service": null,
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "ICMP traffic (type 3 code 3). 28 packets (3556 bytes total) from one source to one destination. Inter-arrival time: mean 0.25ms (extremely high packet rate). Accounts for 19.4% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",49799,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 9,
+            "timestamp": "2025-09-20T16:50:43.882419",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 151,
+            "info": "DPort:49799 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",49799,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 151,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.882419",
+          "last_seen": "2025-09-20T16:50:43.882419",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.008223505064807755,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 49799. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",36762,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 10,
+            "timestamp": "2025-09-20T16:50:43.882426",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 141,
+            "info": "DPort:36762 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",36762,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 141,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.882426",
+          "last_seen": "2025-09-20T16:50:43.882426",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.007678902080383401,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 36762. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42692,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 11,
+            "timestamp": "2025-09-20T16:50:43.882437",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 151,
+            "info": "DPort:42692 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42692,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 151,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.882437",
+          "last_seen": "2025-09-20T16:50:43.882437",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.008223505064807755,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 42692. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",59661,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 13,
+            "timestamp": "2025-09-20T16:50:43.882484",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 141,
+            "info": "DPort:59661 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",59661,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 141,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.882484",
+          "last_seen": "2025-09-20T16:50:43.882484",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.007678902080383401,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 59661. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",59448,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 15,
+            "timestamp": "2025-09-20T16:50:43.882525",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 151,
+            "info": "DPort:59448 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",59448,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 151,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.882525",
+          "last_seen": "2025-09-20T16:50:43.882525",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.008223505064807755,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 59448. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53627,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 17,
+            "timestamp": "2025-09-20T16:50:43.882668",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 141,
+            "info": "DPort:53627 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53627,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 141,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.882668",
+          "last_seen": "2025-09-20T16:50:43.882668",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.007678902080383401,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 53627. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 18,
+            "timestamp": "2025-09-20T16:50:43.882693",
+            "protocol": "DNS",
+            "src": "127.0.0.1",
+            "dst": "127.0.0.2",
+            "length": 82,
+            "info": "DPort:53 | L7:DNS | Entropy:low",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",5861254]"
+          },
+          {
+            "packet_id": 142,
+            "timestamp": "2025-09-20T16:50:44.278146",
+            "protocol": "DNS",
+            "src": "127.0.0.1",
+            "dst": "127.0.0.2",
+            "length": 82,
+            "info": "DPort:53 | L7:DNS | Entropy:low",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 2,
+          "total_bytes": 164,
+          "unique_sources": [
+            "127.0.0.1"
+          ],
+          "unique_destinations": [
+            "127.0.0.2"
+          ],
+          "first_seen": "2025-09-20T16:50:43.882693",
+          "last_seen": "2025-09-20T16:50:44.278146",
+          "iat_mean": 0.39545297622680664,
+          "iat_std": 0.0,
+          "iat_min": 0.39545297622680664,
+          "iat_max": 0.39545297622680664,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.008931488944559416,
+          "tfidf_weight": 0.862739218788641,
+          "dst_port_class": "well_known",
+          "dst_port_service": "DNS",
+          "zscore_anomalies": {
+            "byte_volume": 1.488
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 53 (DNS). 2 packets (164 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 395.45ms (low packet rate, highly regular interval (possible beaconing)). Accounts for 0.9% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",58868,\"low\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 19,
+            "timestamp": "2025-09-20T16:50:43.882803",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 117,
+            "info": "DPort:58868 | L7:DNS | Entropy:low",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",58868,\"low\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 117,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.882803",
+          "last_seen": "2025-09-20T16:50:43.882803",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.00637185491776495,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 1.835
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 58868. 1 packets (117 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Accounts for 0.6% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",59975,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 21,
+            "timestamp": "2025-09-20T16:50:43.882946",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 151,
+            "info": "DPort:59975 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",59975,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 151,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.882946",
+          "last_seen": "2025-09-20T16:50:43.882946",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.008223505064807755,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 59975. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",55249,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 23,
+            "timestamp": "2025-09-20T16:50:43.883085",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 141,
+            "info": "DPort:55249 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",55249,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 141,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.883085",
+          "last_seen": "2025-09-20T16:50:43.883085",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.007678902080383401,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 55249. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",59996,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 26,
+            "timestamp": "2025-09-20T16:50:43.883177",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 151,
+            "info": "DPort:59996 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",59996,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 151,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.883177",
+          "last_seen": "2025-09-20T16:50:43.883177",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.008223505064807755,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 59996. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",46638,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 27,
+            "timestamp": "2025-09-20T16:50:43.883188",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 141,
+            "info": "DPort:46638 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",46638,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 141,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.883188",
+          "last_seen": "2025-09-20T16:50:43.883188",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.007678902080383401,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 46638. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",60114,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 84,
+            "timestamp": "2025-09-20T16:50:43.903596",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 151,
+            "info": "DPort:60114 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",60114,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 151,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.903596",
+          "last_seen": "2025-09-20T16:50:43.903596",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.008223505064807755,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 60114. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",45139,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 85,
+            "timestamp": "2025-09-20T16:50:43.903604",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 141,
+            "info": "DPort:45139 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",45139,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 141,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.903604",
+          "last_seen": "2025-09-20T16:50:43.903604",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.007678902080383401,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 45139. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",55305,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 87,
+            "timestamp": "2025-09-20T16:50:43.903641",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 151,
+            "info": "DPort:55305 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",55305,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 151,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.903641",
+          "last_seen": "2025-09-20T16:50:43.903641",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.008223505064807755,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 55305. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",34822,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 89,
+            "timestamp": "2025-09-20T16:50:43.903674",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 141,
+            "info": "DPort:34822 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",34822,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 141,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.903674",
+          "last_seen": "2025-09-20T16:50:43.903674",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.007678902080383401,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 34822. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",38795,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 91,
+            "timestamp": "2025-09-20T16:50:43.903713",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 151,
+            "info": "DPort:38795 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",38795,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 151,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.903713",
+          "last_seen": "2025-09-20T16:50:43.903713",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.008223505064807755,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 38795. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",46203,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 94,
+            "timestamp": "2025-09-20T16:50:43.903888",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 141,
+            "info": "DPort:46203 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",46203,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 141,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.903888",
+          "last_seen": "2025-09-20T16:50:43.903888",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.007678902080383401,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 46203. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",43474,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 96,
+            "timestamp": "2025-09-20T16:50:43.903932",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 151,
+            "info": "DPort:43474 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",43474,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 151,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.903932",
+          "last_seen": "2025-09-20T16:50:43.903932",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.008223505064807755,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 43474. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",34124,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 97,
+            "timestamp": "2025-09-20T16:50:43.903940",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 141,
+            "info": "DPort:34124 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",34124,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 141,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.903940",
+          "last_seen": "2025-09-20T16:50:43.903940",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.007678902080383401,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 34124. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",33009,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 100,
+            "timestamp": "2025-09-20T16:50:43.904096",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 151,
+            "info": "DPort:33009 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",33009,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 151,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.904096",
+          "last_seen": "2025-09-20T16:50:43.904096",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.008223505064807755,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 33009. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",50457,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 101,
+            "timestamp": "2025-09-20T16:50:43.904102",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 141,
+            "info": "DPort:50457 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",50457,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 141,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.904102",
+          "last_seen": "2025-09-20T16:50:43.904102",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.007678902080383401,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 50457. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",52129,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 104,
+            "timestamp": "2025-09-20T16:50:43.958672",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 151,
+            "info": "DPort:52129 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",52129,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 151,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.958672",
+          "last_seen": "2025-09-20T16:50:43.958672",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.008223505064807755,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 52129. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",55113,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 106,
+            "timestamp": "2025-09-20T16:50:43.958678",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 141,
+            "info": "DPort:55113 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",55113,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 141,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.958678",
+          "last_seen": "2025-09-20T16:50:43.958678",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.007678902080383401,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 55113. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",35052,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 107,
+            "timestamp": "2025-09-20T16:50:43.958687",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 151,
+            "info": "DPort:35052 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",35052,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 151,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.958687",
+          "last_seen": "2025-09-20T16:50:43.958687",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.008223505064807755,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 35052. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",51983,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 110,
+            "timestamp": "2025-09-20T16:50:43.958815",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 141,
+            "info": "DPort:51983 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",51983,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 141,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.958815",
+          "last_seen": "2025-09-20T16:50:43.958815",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.007678902080383401,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 51983. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",54982,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 111,
+            "timestamp": "2025-09-20T16:50:43.958865",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 151,
+            "info": "DPort:54982 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",54982,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 151,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.958865",
+          "last_seen": "2025-09-20T16:50:43.958865",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.008223505064807755,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 54982. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",37604,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 113,
+            "timestamp": "2025-09-20T16:50:43.958938",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 141,
+            "info": "DPort:37604 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",37604,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 141,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.958938",
+          "last_seen": "2025-09-20T16:50:43.958938",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.007678902080383401,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 37604. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",57394,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 116,
+            "timestamp": "2025-09-20T16:50:43.959108",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 151,
+            "info": "DPort:57394 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",57394,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 151,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.959108",
+          "last_seen": "2025-09-20T16:50:43.959108",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.008223505064807755,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 57394. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",48283,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 117,
+            "timestamp": "2025-09-20T16:50:43.959117",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 141,
+            "info": "DPort:48283 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",48283,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 141,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.959117",
+          "last_seen": "2025-09-20T16:50:43.959117",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.007678902080383401,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 48283. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",60913,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 119,
+            "timestamp": "2025-09-20T16:50:43.959200",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 151,
+            "info": "DPort:60913 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",60913,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 151,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.959200",
+          "last_seen": "2025-09-20T16:50:43.959200",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.008223505064807755,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 60913. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",57170,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 121,
+            "timestamp": "2025-09-20T16:50:43.959231",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 141,
+            "info": "DPort:57170 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",57170,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 141,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:43.959231",
+          "last_seen": "2025-09-20T16:50:43.959231",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.007678902080383401,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 57170. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",32844,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 124,
+            "timestamp": "2025-09-20T16:50:44.277674",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 151,
+            "info": "DPort:32844 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",32844,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 151,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:44.277674",
+          "last_seen": "2025-09-20T16:50:44.277674",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.008223505064807755,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 32844. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",51842,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 125,
+            "timestamp": "2025-09-20T16:50:44.277684",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 141,
+            "info": "DPort:51842 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",51842,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 141,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:44.277684",
+          "last_seen": "2025-09-20T16:50:44.277684",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.007678902080383401,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 51842. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",58997,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 128,
+            "timestamp": "2025-09-20T16:50:44.277776",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 151,
+            "info": "DPort:58997 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",58997,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 151,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:44.277776",
+          "last_seen": "2025-09-20T16:50:44.277776",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.008223505064807755,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 58997. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",39406,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 129,
+            "timestamp": "2025-09-20T16:50:44.277786",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 141,
+            "info": "DPort:39406 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",39406,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 141,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:44.277786",
+          "last_seen": "2025-09-20T16:50:44.277786",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.007678902080383401,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 39406. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42804,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 131,
+            "timestamp": "2025-09-20T16:50:44.277816",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 151,
+            "info": "DPort:42804 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42804,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 151,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:44.277816",
+          "last_seen": "2025-09-20T16:50:44.277816",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.008223505064807755,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 42804. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",54174,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 133,
+            "timestamp": "2025-09-20T16:50:44.277891",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 141,
+            "info": "DPort:54174 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",54174,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 141,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:44.277891",
+          "last_seen": "2025-09-20T16:50:44.277891",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.007678902080383401,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 54174. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",48470,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 135,
+            "timestamp": "2025-09-20T16:50:44.277970",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 151,
+            "info": "DPort:48470 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",48470,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 151,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:44.277970",
+          "last_seen": "2025-09-20T16:50:44.277970",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.008223505064807755,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 48470. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",35894,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 137,
+            "timestamp": "2025-09-20T16:50:44.278054",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 141,
+            "info": "DPort:35894 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",35894,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 141,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:44.278054",
+          "last_seen": "2025-09-20T16:50:44.278054",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.007678902080383401,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 35894. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",57964,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 139,
+            "timestamp": "2025-09-20T16:50:44.278086",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 151,
+            "info": "DPort:57964 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",57964,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 151,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:44.278086",
+          "last_seen": "2025-09-20T16:50:44.278086",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.008223505064807755,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 57964. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53011,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 141,
+            "timestamp": "2025-09-20T16:50:44.278115",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 141,
+            "info": "DPort:53011 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53011,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 141,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:44.278115",
+          "last_seen": "2025-09-20T16:50:44.278115",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.007678902080383401,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 53011. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",45615,\"low\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 143,
+            "timestamp": "2025-09-20T16:50:44.278167",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 117,
+            "info": "DPort:45615 | L7:DNS | Entropy:low",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",45615,\"low\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 117,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:44.278167",
+          "last_seen": "2025-09-20T16:50:44.278167",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.00637185491776495,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 1.835
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 45615. 1 packets (117 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Accounts for 0.6% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",52204,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 146,
+            "timestamp": "2025-09-20T16:50:44.582497",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 151,
+            "info": "DPort:52204 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",52204,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 151,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:44.582497",
+          "last_seen": "2025-09-20T16:50:44.582497",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.008223505064807755,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 52204. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",33773,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 147,
+            "timestamp": "2025-09-20T16:50:44.582509",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 141,
+            "info": "DPort:33773 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",33773,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 141,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:44.582509",
+          "last_seen": "2025-09-20T16:50:44.582509",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.007678902080383401,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 33773. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",39677,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 150,
+            "timestamp": "2025-09-20T16:50:44.582752",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 151,
+            "info": "DPort:39677 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",39677,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 151,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:44.582752",
+          "last_seen": "2025-09-20T16:50:44.582752",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.008223505064807755,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 39677. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",38620,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 152,
+            "timestamp": "2025-09-20T16:50:44.582758",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 141,
+            "info": "DPort:38620 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",38620,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 141,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:44.582758",
+          "last_seen": "2025-09-20T16:50:44.582758",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.007678902080383401,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 38620. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42493,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 153,
+            "timestamp": "2025-09-20T16:50:44.582765",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 151,
+            "info": "DPort:42493 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42493,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 151,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:44.582765",
+          "last_seen": "2025-09-20T16:50:44.582765",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.008223505064807755,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 42493. 1 packets (151 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",36196,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 155,
+            "timestamp": "2025-09-20T16:50:44.582835",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 141,
+            "info": "DPort:36196 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",36196,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 141,
+          "unique_sources": [
+            "127.0.0.2"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:44.582835",
+          "last_seen": "2025-09-20T16:50:44.582835",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.007678902080383401,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {},
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 36196. 1 packets (141 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Accounts for 0.8% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",48994,\"medium\",5861254]",
+        "representative_items": [
+          {
+            "packet_id": 156,
+            "timestamp": "2025-09-20T16:50:44.583187",
+            "protocol": "DNS",
+            "src": "127.0.0.1",
+            "dst": "127.0.0.1",
+            "length": 115,
+            "info": "DPort:48994 | L7:DNS | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",48994,\"medium\",5861254]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 115,
+          "unique_sources": [
+            "127.0.0.1"
+          ],
+          "unique_destinations": [
+            "127.0.0.1"
+          ],
+          "first_seen": "2025-09-20T16:50:44.583187",
+          "last_seen": "2025-09-20T16:50:44.583187",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.006262934320880078,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 2.004
+          },
+          "context_match": false,
+          "cluster_text": "UDP DNS traffic on port 48994. 1 packets (115 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Statistically anomalous: byte volume (Z=2.0). Accounts for 0.6% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      }
+    ],
+    "compression_stats": {
+      "raw_packet_count_in": 156,
+      "packet_count_out": 59,
+      "cluster_count": 54,
+      "estimated_tokens_out": 6207,
+      "dropped_parse_failures": 0,
+      "compression_ratio": 0.6218
+    },
+    "budget_status": "within_budget",
+    "attack_context": {
+      "suspected_protocols": [],
+      "suspected_behaviors": [],
+      "target_indicators": [],
+      "raw_description": "Lab Report: NRDelegationAttack Reproduction (Figure 1 Scenario)\n===============================================================\n\nSummary\n-------\nThis capture reproduces the NRDelegationAttack against a recursive DNS\nresolver in a loopback testbed on 2025-09-20. The attacker makes the\nresolver chase a referral whose many name-server names all resolve to an\naddress where no DNS server is listening. Each name forces the resolver\ninto further lookups, so one client query turns into more than 150\npackets and a large amount of resolver CPU work before the resolver\ngives up with SERVFAIL. The capture spans 0.72 seconds.\n\nTestbed\n-------\n  Victim resolver:            127.0.0.1\n  Authoritative/referral NS:  127.0.0.2\n  Non-responsive address:     127.0.0.89 (no DNS service)\n  Attack name:                attack0.home.lan\n\nAttack sequence\n---------------\n1. The attacker's client sent one DNS query for the A record of\n   attack0.home.lan to the resolver at 127.0.0.1.\n\n2. The referral for home.lan lists a long set of name servers named\n   ns<N>.fake<N>.fake0. For each of them the resolver asked the\n   authoritative server 127.0.0.2 for both an A and an AAAA record. In\n   this capture it resolved 23 such names, from ns28.fake28.fake0 to\n   ns51.fake51.fake0, sending 46 queries. Every A query was answered\n   with the address 127.0.0.89 together with a referral to the root\n   (a.root-servers.net at 127.0.0.2); every AAAA query was answered with\n   no address, only an SOA record. The resolver also re-checked the root\n   name servers twice with NS queries.\n\n3. Each time a name resolved to 127.0.0.89, the resolver tried to send\n   the original question for attack0.home.lan there. It sent 28 such\n   queries, and each one immediately bounced with an ICMP \"port\n   unreachable\" message because nothing listens on port 53 at that\n   address.\n\n4. After 0.72 seconds the resolver stopped and answered the client with\n   a DNS SERVFAIL response.\n\nAll DNS queries and responses were small, between 82 and 151 bytes on\nthe wire. The resolver also exchanged two one-byte UDP datagrams with\nitself on loopback at the start of the capture, which are internal\nwake-up signals rather than attack traffic.\n\nDiscussion\n----------\nThe real cost of the attack is not the packet count but the work inside\nthe resolver. For every batch of name servers it re-scans the whole\ndelegation list, so the processing grows with the square of the number\nof names. In the paper's measurements this amplifies a single query\ninto thousands of instructions per name and can make the resolver drop\nlegitimate clients. Mitigations include capping the number of\nname-server lookups per referral, as patched BIND releases do.\n"
+    },
+    "budget_status_detail": null,
+    "ip_summary": [
+      {
+        "ip": "127.0.0.1",
+        "total_traffic": 232,
+        "packets_as_source": 79,
+        "packets_as_destination": 153,
+        "unique_destinations": 3,
+        "unique_sources": 3,
+        "unique_dst_ports": 3,
+        "unique_src_ports": 51,
+        "top_source_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]",
+            "count": 75
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",5861254]",
+            "count": 2
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,59212,\"low\",5861254]",
+            "count": 1
+          }
+        ],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]",
+            "count": 75
+          },
+          {
+            "fingerprint_key": "[\"ICMP\",\"ICMP:3:3\",null,null,null,5861254]",
+            "count": 28
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,59212,\"low\",5861254]",
+            "count": 1
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [
+            "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]"
+          ],
+          "as_destination": [
+            "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]"
+          ]
+        },
+        "sample_packets": [
+          {
+            "packet_id": 1,
+            "timestamp": "2025-09-20T16:50:43.864164",
+            "protocol": "UDP",
+            "src": "127.0.0.1",
+            "dst": "127.0.0.1",
+            "length": 43,
+            "info": "DPort:59212 | Entropy:low"
+          },
+          {
+            "packet_id": 1,
+            "timestamp": "2025-09-20T16:50:43.864164",
+            "protocol": "UDP",
+            "src": "127.0.0.1",
+            "dst": "127.0.0.1",
+            "length": 43,
+            "info": "DPort:59212 | Entropy:low"
+          },
+          {
+            "packet_id": 3,
+            "timestamp": "2025-09-20T16:50:43.864295",
+            "protocol": "DNS",
+            "src": "127.0.0.1",
+            "dst": "127.0.0.1",
+            "length": 99,
+            "info": "DPort:53 | L7:DNS | Entropy:medium"
+          }
+        ]
+      },
+      {
+        "ip": "127.0.0.2",
+        "total_traffic": 125,
+        "packets_as_source": 48,
+        "packets_as_destination": 77,
+        "unique_destinations": 1,
+        "unique_sources": 1,
+        "unique_dst_ports": 48,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",49799,\"medium\",5861254]",
+            "count": 1
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",36762,\"medium\",5861254]",
+            "count": 1
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",42692,\"medium\",5861254]",
+            "count": 1
+          }
+        ],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]",
+            "count": 75
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"low\",5861254]",
+            "count": 2
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": [
+            "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]"
+          ]
+        },
+        "sample_packets": [
+          {
+            "packet_id": 6,
+            "timestamp": "2025-09-20T16:50:43.882155",
+            "protocol": "DNS",
+            "src": "127.0.0.1",
+            "dst": "127.0.0.2",
+            "length": 100,
+            "info": "DPort:53 | L7:DNS | Entropy:medium"
+          },
+          {
+            "packet_id": 9,
+            "timestamp": "2025-09-20T16:50:43.882419",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 151,
+            "info": "DPort:49799 | L7:DNS | Entropy:medium"
+          },
+          {
+            "packet_id": 10,
+            "timestamp": "2025-09-20T16:50:43.882426",
+            "protocol": "DNS",
+            "src": "127.0.0.2",
+            "dst": "127.0.0.1",
+            "length": 141,
+            "info": "DPort:36762 | L7:DNS | Entropy:medium"
+          }
+        ]
+      },
+      {
+        "ip": "127.0.0.89",
+        "total_traffic": 103,
+        "packets_as_source": 28,
+        "packets_as_destination": 75,
+        "unique_destinations": 1,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [
+          {
+            "fingerprint_key": "[\"ICMP\",\"ICMP:3:3\",null,null,null,5861254]",
+            "count": 28
+          }
+        ],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]",
+            "count": 75
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": [
+            "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]"
+          ]
+        },
+        "sample_packets": [
+          {
+            "packet_id": 4,
+            "timestamp": "2025-09-20T16:50:43.881913",
+            "protocol": "DNS",
+            "src": "127.0.0.1",
+            "dst": "127.0.0.89",
+            "length": 99,
+            "info": "DPort:53 | L7:DNS | Entropy:medium"
+          },
+          {
+            "packet_id": 5,
+            "timestamp": "2025-09-20T16:50:43.881944",
+            "protocol": "ICMP",
+            "src": "127.0.0.89",
+            "dst": "127.0.0.1",
+            "length": 127,
+            "info": "Type:3 Code:3"
+          },
+          {
+            "packet_id": 29,
+            "timestamp": "2025-09-20T16:50:43.883328",
+            "protocol": "ICMP",
+            "src": "127.0.0.89",
+            "dst": "127.0.0.1",
+            "length": 127,
+            "info": "Type:3 Code:3"
+          }
+        ]
+      },
+      {
+        "ip": "::1",
+        "total_traffic": 2,
+        "packets_as_source": 1,
+        "packets_as_destination": 1,
+        "unique_destinations": 1,
+        "unique_sources": 1,
+        "unique_dst_ports": 1,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,35006,\"low\",5861254]",
+            "count": 1
+          }
+        ],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,35006,\"low\",5861254]",
+            "count": 1
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": [
+          {
+            "packet_id": 2,
+            "timestamp": "2025-09-20T16:50:43.864210",
+            "protocol": "UDP",
+            "src": "::1",
+            "dst": "::1",
+            "length": 63,
+            "info": "DPort:35006 | Entropy:low"
+          },
+          {
+            "packet_id": 2,
+            "timestamp": "2025-09-20T16:50:43.864210",
+            "protocol": "UDP",
+            "src": "::1",
+            "dst": "::1",
+            "length": 63,
+            "info": "DPort:35006 | Entropy:low"
+          }
+        ]
+      }
+    ],
+    "anomalies": [
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",\"DNS\",53,\"medium\",5861254]",
+        "protocol": "UDP",
+        "tier": "secondary",
+        "source_cardinality": 1,
+        "source_cardinality_anomalous": false,
+        "typical_source_cardinality": 1,
+        "destination_cardinality": 3,
+        "destination_cardinality_anomalous": true,
+        "typical_destination_cardinality": 1,
+        "unique_sources": [
+          "127.0.0.1"
+        ],
+        "unique_destinations": [
+          "127.0.0.1",
+          "127.0.0.89",
+          "127.0.0.2"
+        ],
+        "count": 75
+      }
+    ],
+    "filter_string_used": null
+  }
+}

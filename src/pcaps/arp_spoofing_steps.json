@@ -1,0 +1,74 @@
+[
+  {
+    "step_id": 1,
+    "text": "DHCP broadcast messages and IPv6 neighbour discovery packets appear as hosts come up on 192.168.1.0/24.",
+    "source_text": "The capture opens at 17.5 s with DHCP and IPv6 neighbour discovery as the machines came up.",
+    "mitre_tag": null
+  },
+  {
+    "step_id": 2,
+    "text": "192.168.1.104 sends DNS queries to the gateway 192.168.1.1 on UDP port 53 and receives DNS responses.",
+    "source_text": "It resolved names through the gateway at 192.168.1.1 over DNS, made plain-HTTP OCSP and captive-portal checks, and opened HTTPS sessions to Reddit's content delivery network (151.101.x.140) and to Google and Mozilla services.",
+    "mitre_tag": null
+  },
+  {
+    "step_id": 3,
+    "text": "192.168.1.104 makes plain HTTP requests on TCP port 80 for OCSP and captive-portal checks.",
+    "source_text": "It resolved names through the gateway at 192.168.1.1 over DNS, made plain-HTTP OCSP and captive-portal checks, and opened HTTPS sessions to Reddit's content delivery network (151.101.x.140) and to Google and Mozilla services.",
+    "mitre_tag": null
+  },
+  {
+    "step_id": 4,
+    "text": "192.168.1.104 opens TLS sessions on TCP port 443 to 151.101.x.140 and other web servers, and receives about 14 MB of encrypted data from them.",
+    "source_text": "From about 387 s the Reddit sessions on port 443 delivered roughly 14 MB to the victim.",
+    "mitre_tag": null
+  },
+  {
+    "step_id": 5,
+    "text": "192.168.1.104 periodically sends an ARP request for 192.168.1.1 and receives an ARP reply from MAC 08:00:27:5e:01:7c.",
+    "source_text": "Every minute or two the victim sent an ARP request for 192.168.1.1 and the genuine gateway MAC answered.",
+    "mitre_tag": null
+  },
+  {
+    "step_id": 6,
+    "text": "192.168.1.105 (MAC 08:00:27:2d:f8:5a) broadcasts an ARP request for 192.168.1.104.",
+    "source_text": "At 481 s the attacker broadcast an ARP request for 192.168.1.104 and the victim replied.",
+    "mitre_tag": "T1557.002"
+  },
+  {
+    "step_id": 7,
+    "text": "192.168.1.104 sends an ARP reply to 192.168.1.105.",
+    "source_text": "At 481 s the attacker broadcast an ARP request for 192.168.1.104 and the victim replied.",
+    "mitre_tag": null
+  },
+  {
+    "step_id": 8,
+    "text": "MAC 08:00:27:2d:f8:5a sends 26 unsolicited ARP replies to 192.168.1.104, one every two seconds, each claiming that 192.168.1.1 is at 08:00:27:2d:f8:5a.",
+    "source_text": "Starting at 482 s the attacker sent unsolicited ARP replies to the victim every two seconds, 26 in total until 532 s, each claiming that 192.168.1.1 is at the attacker's MAC 08:00:27:2d:f8:5a.",
+    "mitre_tag": "T1557.002"
+  },
+  {
+    "step_id": 9,
+    "text": "192.168.1.104 sends its internet-bound frames to destination MAC 08:00:27:2d:f8:5a instead of the gateway MAC.",
+    "source_text": "From 505 s the victim addressed its internet-bound frames to the attacker's MAC: 2,191 frames that should have gone to the gateway went to the attacker instead.",
+    "mitre_tag": "T1557.002"
+  },
+  {
+    "step_id": 10,
+    "text": "Return traffic from internet hosts reaches 192.168.1.104 from the gateway MAC 08:00:27:5e:01:7c.",
+    "source_text": "Return traffic from the internet still came from the real gateway MAC directly to the victim, so only the outbound direction was intercepted.",
+    "mitre_tag": null
+  },
+  {
+    "step_id": 11,
+    "text": "192.168.1.105 sends nine ICMP redirect messages (type 5, code 1) to 192.168.1.104 pointing to 192.168.1.1.",
+    "source_text": "While forwarding, the attacker sent nine ICMP redirect messages (type 5, code 1) to the victim between 505 s and 522 s pointing it back at 192.168.1.1.",
+    "mitre_tag": null
+  },
+  {
+    "step_id": 12,
+    "text": "Five ARP replies, about one per second, map 192.168.1.1 to MAC 08:00:27:5e:01:7c.",
+    "source_text": "At 534 s five ARP replies, about one per second, mapped 192.168.1.1 back to its genuine MAC 08:00:27:5e:01:7c and the victim's traffic returned to the gateway.",
+    "mitre_tag": null
+  }
+]

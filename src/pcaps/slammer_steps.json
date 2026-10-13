@@ -1,0 +1,20 @@
+[
+  {
+    "step_id": 1,
+    "text": "213.76.212.22 sends a single UDP datagram from source port 20199 to 65.165.167.86 on destination port 1434.",
+    "source_text": "213.76.212.22 sent one UDP datagram from source port 20199 to destination port 1434, the Microsoft SQL Server Resolution Service.",
+    "mitre_tag": "T1210"
+  },
+  {
+    "step_id": 2,
+    "text": "The UDP datagram carries a 376-byte payload starting with byte 0x04, followed by a long run of 0x01 bytes, a NOP sled and x86 machine code.",
+    "source_text": "The payload starts with the byte 0x04, the Resolution Service request type that triggers the stack overflow, followed by a long run of 0x01 filler bytes, a short NOP sled and x86 machine code.",
+    "mitre_tag": "T1210"
+  },
+  {
+    "step_id": 3,
+    "text": "65.165.167.86 sends no reply to 213.76.212.22.",
+    "source_text": "There is no reply from 65.165.167.86 in the capture and no follow-up traffic.",
+    "mitre_tag": null
+  }
+]

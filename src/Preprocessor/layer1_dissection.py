@@ -189,8 +189,9 @@ def _dissect_l4(pkt, features: PacketFeatures) -> None:
         features.icmp_code = _safe_str(pkt.icmp, "code")
 
     elif hasattr(pkt, "arp"):
-        # ARP has no L4 — already handled at L3, nothing to add here.
-        pass
+        # ARP has no L4 — fields handled at L3. l4_proto is still set so
+        # layer 2 can dispatch to the ARP state signature.
+        features.l4_proto = "ARP"
 
 
 # ---------------------------------------------------------------------------
@@ -230,7 +231,7 @@ def _dissect_l7(pkt, features: PacketFeatures) -> None:
     #    TLS record starts with 0x16 (handshake) or 0x17 (application data)
     if features.l4_proto in ("TCP", "UDP") and features.dst_port is not None:
         raw = _get_raw_payload(pkt)
-        if raw and len(raw) >= 1 and raw[0] in (0x16, 0x17):
+        if raw and len(raw) >= 1 and raw[0] in (0x16, 0x17): # TLS handshake or application data
             features.l7_proto = "TLS"
             return
 
@@ -243,7 +244,7 @@ def _dissect_l7(pkt, features: PacketFeatures) -> None:
 # ---------------------------------------------------------------------------
 
 def _compute_entropy(pkt, features: PacketFeatures) -> None:
-    raw = _get_raw_payload(pkt)
+    raw = _get_app_payload(pkt)
     if not raw:
         features.payload_length  = 0
         features.payload_entropy = None
@@ -284,6 +285,38 @@ def _bucket_entropy(entropy: float) -> EntropyBucket:
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
+# (layer, field) pairs holding the application payload, checked in order.
+# Protocol headers are excluded — entropy is payload-only.
+# Third element: whether pyshark renders the field as colon-separated hex.
+_APP_PAYLOAD_FIELDS = [
+    ("dns",  "qry_name",         False),  # high-entropy labels = tunneling signal
+    ("http", "file_data",        False),  # HTTP body
+    ("tls",  "app_data",         True),   # TLS application data record
+    ("ssh",  "encrypted_packet", True),
+]
+
+
+def _get_app_payload(pkt) -> Optional[bytes]:
+    """
+    Extract application payload bytes for entropy computation.
+    Uses the protocol-specific payload field when present, falling back
+    to the DATA layer.
+    """
+    for layer_name, field_name, is_hex in _APP_PAYLOAD_FIELDS:
+        if not hasattr(pkt, layer_name):
+            continue
+        val = _safe_str(getattr(pkt, layer_name), field_name)
+        if not val:
+            continue
+        if is_hex:
+            try:
+                return bytes.fromhex(val.replace(":", ""))
+            except ValueError:
+                continue
+        return val.encode("utf-8", errors="replace")
+    return _get_raw_payload(pkt)
+
 
 def _get_raw_payload(pkt) -> Optional[bytes]:
     """

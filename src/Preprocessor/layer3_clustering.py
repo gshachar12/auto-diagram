@@ -76,10 +76,10 @@ def process_packet(
     # -----------------------------------------------------------------------
     # IAT update (before anything else — we want this even on budget exceeded)
     # -----------------------------------------------------------------------
-    if fingerprint_key in _last_ts:
+    if fingerprint_key in _last_ts: # compute IAT and store in scratch space
         iat = features.timestamp - _last_ts[fingerprint_key]
         _iat_scratch.setdefault(fingerprint_key, []).append(iat)
-    _last_ts[fingerprint_key] = features.timestamp
+    _last_ts[fingerprint_key] = features.timestamp # update last-seen timestamp for this cluster
 
     # -----------------------------------------------------------------------
     # New fingerprint — create cluster

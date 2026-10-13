@@ -1,0 +1,32 @@
+[
+  {
+    "step_id": 1,
+    "text": "192.168.0.114 sends four ICMP echo requests, one second apart, to its gateway 192.168.0.1.",
+    "source_text": "It sent four ICMP echo requests one second apart and the gateway answered each with an echo reply in about 1 to 2 milliseconds.",
+    "mitre_tag": null
+  },
+  {
+    "step_id": 2,
+    "text": "192.168.0.1 answers each echo request with an ICMP echo reply to 192.168.0.114 within 1 to 2 milliseconds.",
+    "source_text": "It sent four ICMP echo requests one second apart and the gateway answered each with an echo reply in about 1 to 2 milliseconds.",
+    "mitre_tag": null
+  },
+  {
+    "step_id": 3,
+    "text": "192.168.0.114 sends four ICMP echo requests, one second apart, to the external host 72.14.207.99.",
+    "source_text": "About three seconds later the workstation pinged the external address 72.14.207.99, a Google server, again four echo requests one second apart.",
+    "mitre_tag": null
+  },
+  {
+    "step_id": 4,
+    "text": "72.14.207.99 answers each echo request with an ICMP echo reply after 62 to 81 milliseconds, arriving with TTL 232.",
+    "source_text": "Each was answered in 62 to 81 milliseconds. The replies arrived with a TTL of 232, consistent with a remote host many hops away, while the gateway's replies had a TTL of 127.",
+    "mitre_tag": null
+  },
+  {
+    "step_id": 5,
+    "text": "All eight echo requests use the same ICMP identifier with sequence numbers 1 to 8, and every frame is 74 bytes with 32 bytes of data.",
+    "source_text": "All eight requests share one ICMP identifier and consecutive sequence numbers 1 to 8, as produced by the Windows ping utility, and every frame is 74 bytes long (32 bytes of padding data).",
+    "mitre_tag": null
+  }
+]

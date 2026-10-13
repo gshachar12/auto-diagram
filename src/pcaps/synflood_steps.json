@@ -1,0 +1,44 @@
+[
+  {
+    "step_id": 1,
+    "text": "10.10.10.10 receives 37,841 bare TCP SYN packets on destination port 25565 within 23.7 seconds.",
+    "source_text": "Every packet in the capture is a bare TCP SYN to 10.10.10.10 port 25565.",
+    "mitre_tag": "T1499.001"
+  },
+  {
+    "step_id": 2,
+    "text": "The SYNs come from 37,623 different source addresses spread across the IPv4 space, almost all sending a single SYN, from random source ports.",
+    "source_text": "The source addresses are scattered across the whole IPv4 space and almost never repeat: 37,405 addresses sent exactly one SYN and only 218 sent two. Source ports are random.",
+    "mitre_tag": "T1499.001"
+  },
+  {
+    "step_id": 3,
+    "text": "Each SYN has a TCP window of 0, no TCP options, no payload, and a TTL of 242 or 244.",
+    "source_text": "The packets carry a TCP window of 0, no TCP options and no payload, and arrive with a TTL of 242 or 244 whatever their claimed origin.",
+    "mitre_tag": "T1499.001"
+  },
+  {
+    "step_id": 4,
+    "text": "A burst of 23,620 SYNs arrives in the first second, followed by 675 in the next second.",
+    "source_text": "It opened with a burst of 23,620 SYNs in the first second and 675 in the next.",
+    "mitre_tag": "T1499.001"
+  },
+  {
+    "step_id": 5,
+    "text": "A second burst delivers 10,193 SYNs in the fourth second and 2,551 in the fifth.",
+    "source_text": "After a short pause a second burst delivered 10,193 SYNs in the fourth second and 2,551 in the fifth.",
+    "mitre_tag": "T1499.001"
+  },
+  {
+    "step_id": 6,
+    "text": "After about eight quiet seconds, SYNs to port 25565 continue at a low steady rate of 60 to 95 per second until the end of the capture.",
+    "source_text": "The sender then went quiet for about eight seconds and resumed at a low, steady rate of 60 to 95 SYNs per second from 13 seconds until the end of the capture.",
+    "mitre_tag": "T1499.001"
+  },
+  {
+    "step_id": 7,
+    "text": "10.10.10.10 sends no SYN-ACK or RST packets in response.",
+    "source_text": "The capture contains no SYN-ACK or RST packets from 10.10.10.10.",
+    "mitre_tag": null
+  }
+]

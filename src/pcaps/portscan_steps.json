@@ -1,0 +1,26 @@
+[
+  {
+    "step_id": 1,
+    "text": "10.100.25.14 sends one TCP SYN to each of 29 different destination ports on 10.100.18.12, about every 100 milliseconds.",
+    "source_text": "The scanner sent exactly one TCP SYN packet to each port, 29 SYNs in total, roughly every 100 milliseconds.",
+    "mitre_tag": "T1046"
+  },
+  {
+    "step_id": 2,
+    "text": "The first SYN probes target TCP ports 139, 135 and 445 on 10.100.18.12, followed by ports 80, 22, 515, 23, 21 and 6000.",
+    "source_text": "It started with the Windows networking ports 139 (NetBIOS), 135 (RPC) and 445 (SMB), then moved on to 80 (HTTP), 22 (SSH), 515 (printer), 23 (Telnet), 21 (FTP) and 6000 (X11), and continued with 1025, 25, 111, 1028, 9100, 1029, 79, 497, 548, 5000, 1917, 53, 161, 9001, 65535, 443, 113, 993, 8080 and 2869.",
+    "mitre_tag": "T1046"
+  },
+  {
+    "step_id": 3,
+    "text": "Each SYN probe comes from a different random source port, carries no payload, has TTL 64 and a TCP window of 8 bytes.",
+    "source_text": "Every SYN came from a different random source port, had no payload, a TTL of 64 and an unusually small TCP window of 8 bytes.",
+    "mitre_tag": "T1046"
+  },
+  {
+    "step_id": 4,
+    "text": "10.100.18.12 does not answer: no SYN-ACK and no RST packets go back to 10.100.25.14.",
+    "source_text": "No packets from 10.100.18.12 back to the scanner appear in the capture: no SYN-ACKs from open ports and no RSTs from closed ports.",
+    "mitre_tag": null
+  }
+]

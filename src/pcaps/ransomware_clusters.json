@@ -1,0 +1,3978 @@
+{
+  "pcap": "ransomware.pcap",
+  "settings": {
+    "token_budget": 10000,
+    "filtering_limit": 3,
+    "delta_t": 300.0,
+    "max_packets": null
+  },
+  "generated_at": "2026-10-13T12:07:11+00:00",
+  "output": {
+    "clusters": [
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",\"HTTP\",80,null,4938862]",
+        "representative_items": [
+          {
+            "packet_id": 1,
+            "timestamp": "2016-12-13T21:52:44.963695",
+            "protocol": "HTTP",
+            "src": "10.12.13.103",
+            "dst": "104.28.11.141",
+            "length": 66,
+            "info": "Flags:0x0002 | DPort:80 | L7:HTTP",
+            "fingerprint_key": "[\"TCP\",\"SYN\",\"HTTP\",80,null,4938862]"
+          },
+          {
+            "packet_id": 8,
+            "timestamp": "2016-12-13T21:52:51.120592",
+            "protocol": "HTTP",
+            "src": "10.12.13.103",
+            "dst": "104.28.10.141",
+            "length": 66,
+            "info": "Flags:0x0002 | DPort:80 | L7:HTTP",
+            "fingerprint_key": "[\"TCP\",\"SYN\",\"HTTP\",80,null,4938862]"
+          },
+          {
+            "packet_id": 23,
+            "timestamp": "2016-12-13T21:53:06.294776",
+            "protocol": "HTTP",
+            "src": "10.12.13.103",
+            "dst": "185.153.198.117",
+            "length": 66,
+            "info": "Flags:0x0002 | DPort:80 | L7:HTTP",
+            "fingerprint_key": "[\"TCP\",\"SYN\",\"HTTP\",80,null,4938862]"
+          }
+        ],
+        "aggregate": {
+          "count": 3,
+          "total_bytes": 198,
+          "unique_sources": [
+            "10.12.13.103"
+          ],
+          "unique_destinations": [
+            "104.28.11.141",
+            "104.28.10.141",
+            "185.153.198.117"
+          ],
+          "first_seen": "2016-12-13T21:52:44.963695",
+          "last_seen": "2016-12-13T21:53:06.294776",
+          "iat_mean": 10.66554045677185,
+          "iat_std": 4.508643388748169,
+          "iat_min": 6.156897068023682,
+          "iat_max": 15.17418384552002,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.0005104039924934524,
+          "tfidf_weight": 0.8557081099317349,
+          "dst_port_class": "well_known",
+          "dst_port_service": "HTTP",
+          "zscore_anomalies": {
+            "byte_volume": 16.327
+          },
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) carrying HTTP traffic on port 80 (HTTP). 3 packets (198 bytes total) from one source to 3 unique destinations. Inter-arrival time: mean 10665.54ms (low packet rate). Statistically anomalous: byte volume (Z=16.3). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49165,null,4938862]",
+        "representative_items": [
+          {
+            "packet_id": 2,
+            "timestamp": "2016-12-13T21:52:44.986097",
+            "protocol": "TCP",
+            "src": "104.28.11.141",
+            "dst": "10.12.13.103",
+            "length": 60,
+            "info": "Flags:0x0012 | DPort:49165",
+            "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49165,null,4938862]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "104.28.11.141"
+          ],
+          "unique_destinations": [
+            "10.12.13.103"
+          ],
+          "first_seen": "2016-12-13T21:52:44.986097",
+          "last_seen": "2016-12-13T21:52:44.986097",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.0001546678765131674,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "TCP connection response (SYN-ACK) on port 49165. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,4938862]",
+        "representative_items": [
+          {
+            "packet_id": 3,
+            "timestamp": "2016-12-13T21:52:44.986337",
+            "protocol": "HTTP",
+            "src": "10.12.13.103",
+            "dst": "104.28.11.141",
+            "length": 60,
+            "info": "Flags:0x0010 | DPort:80 | L7:HTTP",
+            "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,4938862]"
+          },
+          {
+            "packet_id": 10,
+            "timestamp": "2016-12-13T21:52:51.142659",
+            "protocol": "HTTP",
+            "src": "10.12.13.103",
+            "dst": "104.28.10.141",
+            "length": 60,
+            "info": "Flags:0x0010 | DPort:80 | L7:HTTP",
+            "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,4938862]"
+          },
+          {
+            "packet_id": 25,
+            "timestamp": "2016-12-13T21:53:06.504069",
+            "protocol": "HTTP",
+            "src": "10.12.13.103",
+            "dst": "185.153.198.117",
+            "length": 60,
+            "info": "Flags:0x0010 | DPort:80 | L7:HTTP",
+            "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,4938862]"
+          }
+        ],
+        "aggregate": {
+          "count": 6,
+          "total_bytes": 360,
+          "unique_sources": [
+            "10.12.13.103"
+          ],
+          "unique_destinations": [
+            "104.28.11.141",
+            "104.28.10.141",
+            "185.153.198.117"
+          ],
+          "first_seen": "2016-12-13T21:52:44.986337",
+          "last_seen": "2016-12-13T21:53:37.567642",
+          "iat_mean": 10.516261005401612,
+          "iat_std": 10.741792213813563,
+          "iat_min": 0.4091949462890625,
+          "iat_max": 29.21968913078308,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.0009280072590790044,
+          "tfidf_weight": 0.7646700632886045,
+          "dst_port_class": "well_known",
+          "dst_port_service": "HTTP",
+          "zscore_anomalies": {
+            "byte_volume": 24.891
+          },
+          "context_match": true,
+          "cluster_text": "TCP handshake completion (ACK) carrying HTTP traffic on port 80 (HTTP). 6 packets (360 bytes total) from one source to 3 unique destinations. Inter-arrival time: mean 10516.26ms (low packet rate). Statistically anomalous: byte volume (Z=24.9). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938862]",
+        "representative_items": [
+          {
+            "packet_id": 4,
+            "timestamp": "2016-12-13T21:52:44.986516",
+            "protocol": "HTTP",
+            "src": "10.12.13.103",
+            "dst": "104.28.11.141",
+            "length": 386,
+            "info": "Flags:0x0018 | DPort:80 | L7:HTTP",
+            "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938862]"
+          },
+          {
+            "packet_id": 7,
+            "timestamp": "2016-12-13T21:52:51.079517",
+            "protocol": "HTTP",
+            "src": "10.12.13.103",
+            "dst": "104.28.11.141",
+            "length": 60,
+            "info": "Flags:0x0010 | DPort:80 | L7:HTTP",
+            "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938862]"
+          },
+          {
+            "packet_id": 11,
+            "timestamp": "2016-12-13T21:52:51.142882",
+            "protocol": "HTTP",
+            "src": "10.12.13.103",
+            "dst": "104.28.10.141",
+            "length": 435,
+            "info": "Flags:0x0018 | DPort:80 | L7:HTTP",
+            "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938862]"
+          }
+        ],
+        "aggregate": {
+          "count": 85,
+          "total_bytes": 6143,
+          "unique_sources": [
+            "10.12.13.103"
+          ],
+          "unique_destinations": [
+            "104.28.11.141",
+            "104.28.10.141",
+            "185.153.198.117"
+          ],
+          "first_seen": "2016-12-13T21:52:44.986516",
+          "last_seen": "2016-12-13T21:53:07.938535",
+          "iat_mean": 0.27323832114537555,
+          "iat_std": 1.7430233078202781,
+          "iat_min": 5.0067901611328125e-06,
+          "iat_max": 14.964946985244751,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.015835412757006454,
+          "tfidf_weight": 0.41650156900183904,
+          "dst_port_class": "well_known",
+          "dst_port_service": "HTTP",
+          "zscore_anomalies": {
+            "byte_volume": 65.645
+          },
+          "context_match": true,
+          "cluster_text": "TCP established data transfer carrying HTTP traffic on port 80 (HTTP). 85 packets (6143 bytes total) from one source to 3 unique destinations. Inter-arrival time: mean 273.24ms (low packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=65.6). Accounts for 1.6% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"DATA\",null,49165,null,4938862]",
+        "representative_items": [
+          {
+            "packet_id": 5,
+            "timestamp": "2016-12-13T21:52:44.986573",
+            "protocol": "TCP",
+            "src": "104.28.11.141",
+            "dst": "10.12.13.103",
+            "length": 60,
+            "info": "Flags:0x0010 | DPort:49165",
+            "fingerprint_key": "[\"TCP\",\"DATA\",null,49165,null,4938862]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "104.28.11.141"
+          ],
+          "unique_destinations": [
+            "10.12.13.103"
+          ],
+          "first_seen": "2016-12-13T21:52:44.986573",
+          "last_seen": "2016-12-13T21:52:44.986573",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.0001546678765131674,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "TCP established data transfer on port 49165. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49165,\"low\",4938862]",
+        "representative_items": [
+          {
+            "packet_id": 6,
+            "timestamp": "2016-12-13T21:52:51.079398",
+            "protocol": "HTTP",
+            "src": "104.28.11.141",
+            "dst": "10.12.13.103",
+            "length": 563,
+            "info": "Flags:0x0018 | DPort:49165 | L7:HTTP | Entropy:low",
+            "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49165,\"low\",4938862]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 563,
+          "unique_sources": [
+            "104.28.11.141"
+          ],
+          "unique_destinations": [
+            "10.12.13.103"
+          ],
+          "first_seen": "2016-12-13T21:52:51.079398",
+          "last_seen": "2016-12-13T21:52:51.079398",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.0014513002412818875,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 31.306
+          },
+          "context_match": true,
+          "cluster_text": "TCP established data transfer carrying HTTP traffic on port 49165. 1 packets (563 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Statistically anomalous: byte volume (Z=31.3). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49168,null,4938862]",
+        "representative_items": [
+          {
+            "packet_id": 9,
+            "timestamp": "2016-12-13T21:52:51.142466",
+            "protocol": "TCP",
+            "src": "104.28.10.141",
+            "dst": "10.12.13.103",
+            "length": 60,
+            "info": "Flags:0x0012 | DPort:49168",
+            "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49168,null,4938862]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "104.28.10.141"
+          ],
+          "unique_destinations": [
+            "10.12.13.103"
+          ],
+          "first_seen": "2016-12-13T21:52:51.142466",
+          "last_seen": "2016-12-13T21:52:51.142466",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.0001546678765131674,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "TCP connection response (SYN-ACK) on port 49168. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"DATA\",null,49168,null,4938862]",
+        "representative_items": [
+          {
+            "packet_id": 12,
+            "timestamp": "2016-12-13T21:52:51.142930",
+            "protocol": "TCP",
+            "src": "104.28.10.141",
+            "dst": "10.12.13.103",
+            "length": 60,
+            "info": "Flags:0x0010 | DPort:49168",
+            "fingerprint_key": "[\"TCP\",\"DATA\",null,49168,null,4938862]"
+          },
+          {
+            "packet_id": 13,
+            "timestamp": "2016-12-13T21:52:51.538112",
+            "protocol": "TCP",
+            "src": "104.28.10.141",
+            "dst": "10.12.13.103",
+            "length": 1514,
+            "info": "Flags:0x0018 | DPort:49168",
+            "fingerprint_key": "[\"TCP\",\"DATA\",null,49168,null,4938862]"
+          },
+          {
+            "packet_id": 15,
+            "timestamp": "2016-12-13T21:52:51.538880",
+            "protocol": "TCP",
+            "src": "104.28.10.141",
+            "dst": "10.12.13.103",
+            "length": 1514,
+            "info": "Flags:0x0018 | DPort:49168",
+            "fingerprint_key": "[\"TCP\",\"DATA\",null,49168,null,4938862]"
+          }
+        ],
+        "aggregate": {
+          "count": 7,
+          "total_bytes": 9144,
+          "unique_sources": [
+            "104.28.10.141"
+          ],
+          "unique_destinations": [
+            "10.12.13.103"
+          ],
+          "first_seen": "2016-12-13T21:52:51.142930",
+          "last_seen": "2016-12-13T21:52:51.539272",
+          "iat_mean": 0.06605700651804607,
+          "iat_std": 0.14718938742408996,
+          "iat_min": 2.1457672119140625e-06,
+          "iat_max": 0.39518189430236816,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.02357138438060671,
+          "tfidf_weight": 0.7444238916618983,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 71.364
+          },
+          "context_match": false,
+          "cluster_text": "TCP established data transfer on port 49168. 7 packets (9144 bytes total) from one source to one destination. Inter-arrival time: mean 66.06ms (moderate packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=71.4). Accounts for 2.4% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49168,\"low\",4938862]",
+        "representative_items": [
+          {
+            "packet_id": 21,
+            "timestamp": "2016-12-13T21:52:51.539274",
+            "protocol": "HTTP",
+            "src": "104.28.10.141",
+            "dst": "10.12.13.103",
+            "length": 738,
+            "info": "Flags:0x0018 | DPort:49168 | L7:HTTP | Entropy:low",
+            "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49168,\"low\",4938862]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 738,
+          "unique_sources": [
+            "104.28.10.141"
+          ],
+          "unique_destinations": [
+            "10.12.13.103"
+          ],
+          "first_seen": "2016-12-13T21:52:51.539274",
+          "last_seen": "2016-12-13T21:52:51.539274",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.0019024148811119588,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 35.192
+          },
+          "context_match": true,
+          "cluster_text": "TCP established data transfer carrying HTTP traffic on port 49168. 1 packets (738 bytes total) from one source to one destination. Payload: low entropy (structured, human-readable payload). Statistically anomalous: byte volume (Z=35.2). Accounts for 0.2% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49176,null,4938862]",
+        "representative_items": [
+          {
+            "packet_id": 24,
+            "timestamp": "2016-12-13T21:53:06.503801",
+            "protocol": "TCP",
+            "src": "185.153.198.117",
+            "dst": "10.12.13.103",
+            "length": 60,
+            "info": "Flags:0x0012 | DPort:49176",
+            "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49176,null,4938862]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "185.153.198.117"
+          ],
+          "unique_destinations": [
+            "10.12.13.103"
+          ],
+          "first_seen": "2016-12-13T21:53:06.503801",
+          "last_seen": "2016-12-13T21:53:06.503801",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.0001546678765131674,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "TCP connection response (SYN-ACK) on port 49176. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"DATA\",null,49176,null,4938862]",
+        "representative_items": [
+          {
+            "packet_id": 27,
+            "timestamp": "2016-12-13T21:53:06.504446",
+            "protocol": "TCP",
+            "src": "185.153.198.117",
+            "dst": "10.12.13.103",
+            "length": 60,
+            "info": "Flags:0x0010 | DPort:49176",
+            "fingerprint_key": "[\"TCP\",\"DATA\",null,49176,null,4938862]"
+          },
+          {
+            "packet_id": 28,
+            "timestamp": "2016-12-13T21:53:06.847708",
+            "protocol": "TCP",
+            "src": "185.153.198.117",
+            "dst": "10.12.13.103",
+            "length": 1502,
+            "info": "Flags:0x0018 | DPort:49176",
+            "fingerprint_key": "[\"TCP\",\"DATA\",null,49176,null,4938862]"
+          },
+          {
+            "packet_id": 30,
+            "timestamp": "2016-12-13T21:53:06.848336",
+            "protocol": "TCP",
+            "src": "185.153.198.117",
+            "dst": "10.12.13.103",
+            "length": 1514,
+            "info": "Flags:0x0010 | DPort:49176",
+            "fingerprint_key": "[\"TCP\",\"DATA\",null,49176,null,4938862]"
+          }
+        ],
+        "aggregate": {
+          "count": 175,
+          "total_bytes": 261516,
+          "unique_sources": [
+            "185.153.198.117"
+          ],
+          "unique_destinations": [
+            "10.12.13.103"
+          ],
+          "first_seen": "2016-12-13T21:53:06.504446",
+          "last_seen": "2016-12-13T21:53:07.938628",
+          "iat_mean": 0.008242424877210596,
+          "iat_std": 0.03621126791425518,
+          "iat_min": 9.5367431640625e-07,
+          "iat_max": 0.3432619571685791,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.6741354065702914,
+          "tfidf_weight": 0.3216562952531973,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 119.579
+          },
+          "context_match": false,
+          "cluster_text": "TCP established data transfer on port 49176. 175 packets (261516 bytes total) from one source to one destination. Inter-arrival time: mean 8.24ms (very high packet rate, highly irregular interval). Statistically anomalous: byte volume (Z=119.6). Accounts for 67.4% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"FIN\",null,49176,null,4938862]",
+        "representative_items": [
+          {
+            "packet_id": 280,
+            "timestamp": "2016-12-13T21:53:07.938629",
+            "protocol": "TCP",
+            "src": "185.153.198.117",
+            "dst": "10.12.13.103",
+            "length": 473,
+            "info": "Flags:0x0019 | DPort:49176",
+            "fingerprint_key": "[\"TCP\",\"FIN\",null,49176,null,4938862]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 473,
+          "unique_sources": [
+            "185.153.198.117"
+          ],
+          "unique_destinations": [
+            "10.12.13.103"
+          ],
+          "first_seen": "2016-12-13T21:53:07.938629",
+          "last_seen": "2016-12-13T21:53:07.938629",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.0012192984265121363,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 28.806
+          },
+          "context_match": false,
+          "cluster_text": "TCP graceful connection close (FIN) on port 49176. 1 packets (473 bytes total) from one source to one destination. Statistically anomalous: byte volume (Z=28.8). Accounts for 0.1% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"FIN\",\"HTTP\",80,null,4938862]",
+        "representative_items": [
+          {
+            "packet_id": 282,
+            "timestamp": "2016-12-13T21:53:07.938904",
+            "protocol": "HTTP",
+            "src": "10.12.13.103",
+            "dst": "185.153.198.117",
+            "length": 60,
+            "info": "Flags:0x0011 | DPort:80 | L7:HTTP",
+            "fingerprint_key": "[\"TCP\",\"FIN\",\"HTTP\",80,null,4938862]"
+          },
+          {
+            "packet_id": 2016,
+            "timestamp": "2016-12-13T21:54:38.537374",
+            "protocol": "HTTP",
+            "src": "10.12.13.103",
+            "dst": "104.28.10.141",
+            "length": 60,
+            "info": "Flags:0x0011 | DPort:80 | L7:HTTP",
+            "fingerprint_key": "[\"TCP\",\"FIN\",\"HTTP\",80,null,4938862]"
+          },
+          {
+            "packet_id": 2018,
+            "timestamp": "2016-12-13T21:54:38.537787",
+            "protocol": "HTTP",
+            "src": "10.12.13.103",
+            "dst": "104.28.11.141",
+            "length": 60,
+            "info": "Flags:0x0011 | DPort:80 | L7:HTTP",
+            "fingerprint_key": "[\"TCP\",\"FIN\",\"HTTP\",80,null,4938862]"
+          }
+        ],
+        "aggregate": {
+          "count": 3,
+          "total_bytes": 180,
+          "unique_sources": [
+            "10.12.13.103"
+          ],
+          "unique_destinations": [
+            "185.153.198.117",
+            "104.28.10.141",
+            "104.28.11.141"
+          ],
+          "first_seen": "2016-12-13T21:53:07.938904",
+          "last_seen": "2016-12-13T21:54:38.537787",
+          "iat_mean": 45.29944145679474,
+          "iat_std": 45.299028515815735,
+          "iat_min": 0.00041294097900390625,
+          "iat_max": 90.59846997261047,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.0004640036295395022,
+          "tfidf_weight": 0.8557081099317349,
+          "dst_port_class": "well_known",
+          "dst_port_service": "HTTP",
+          "zscore_anomalies": {
+            "byte_volume": 14.964
+          },
+          "context_match": true,
+          "cluster_text": "TCP graceful connection close (FIN) carrying HTTP traffic on port 80 (HTTP). 3 packets (180 bytes total) from one source to 3 unique destinations. Inter-arrival time: mean 45299.44ms (low packet rate). Statistically anomalous: byte volume (Z=15.0). Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",null,49176,null,4938862]",
+        "representative_items": [
+          {
+            "packet_id": 283,
+            "timestamp": "2016-12-13T21:53:07.938959",
+            "protocol": "TCP",
+            "src": "185.153.198.117",
+            "dst": "10.12.13.103",
+            "length": 60,
+            "info": "Flags:0x0010 | DPort:49176",
+            "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",null,49176,null,4938862]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "185.153.198.117"
+          ],
+          "unique_destinations": [
+            "10.12.13.103"
+          ],
+          "first_seen": "2016-12-13T21:53:07.938959",
+          "last_seen": "2016-12-13T21:53:07.938959",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.0001546678765131674,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "TCP handshake completion (ACK) on port 49176. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+        "representative_items": [
+          {
+            "packet_id": 284,
+            "timestamp": "2016-12-13T21:53:10.460326",
+            "protocol": "UDP",
+            "src": "10.12.13.103",
+            "dst": "15.49.2.0",
+            "length": 60,
+            "info": "DPort:6892 | Entropy:low",
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]"
+          },
+          {
+            "packet_id": 285,
+            "timestamp": "2016-12-13T21:53:10.460375",
+            "protocol": "UDP",
+            "src": "10.12.13.103",
+            "dst": "15.49.2.1",
+            "length": 60,
+            "info": "DPort:6892 | Entropy:low",
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]"
+          },
+          {
+            "packet_id": 286,
+            "timestamp": "2016-12-13T21:53:10.460401",
+            "protocol": "UDP",
+            "src": "10.12.13.103",
+            "dst": "15.49.2.2",
+            "length": 60,
+            "info": "DPort:6892 | Entropy:low",
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]"
+          }
+        ],
+        "aggregate": {
+          "count": 576,
+          "total_bytes": 34560,
+          "unique_sources": [
+            "10.12.13.103"
+          ],
+          "unique_destinations": [
+            "15.49.2.0",
+            "15.49.2.1",
+            "15.49.2.2",
+            "15.49.2.3",
+            "15.49.2.4",
+            "15.49.2.5",
+            "15.49.2.6",
+            "15.49.2.7",
+            "15.49.2.8",
+            "15.49.2.9",
+            "15.49.2.10",
+            "15.49.2.11",
+            "15.49.2.12",
+            "15.49.2.13",
+            "15.49.2.14",
+            "15.49.2.15",
+            "15.49.2.16",
+            "15.49.2.17",
+            "15.49.2.18",
+            "15.49.2.19",
+            "15.49.2.20",
+            "15.49.2.21",
+            "15.49.2.22",
+            "15.49.2.23",
+            "15.49.2.24",
+            "15.49.2.25",
+            "15.49.2.26",
+            "15.49.2.27",
+            "15.49.2.28",
+            "15.49.2.29",
+            "15.49.2.30",
+            "15.49.2.31",
+            "122.1.13.0",
+            "122.1.13.1",
+            "122.1.13.2",
+            "122.1.13.3",
+            "122.1.13.4",
+            "122.1.13.5",
+            "122.1.13.6",
+            "122.1.13.7",
+            "122.1.13.8",
+            "122.1.13.9",
+            "122.1.13.10",
+            "122.1.13.11",
+            "122.1.13.12",
+            "122.1.13.13",
+            "122.1.13.14",
+            "122.1.13.15",
+            "122.1.13.16",
+            "122.1.13.17",
+            "122.1.13.18",
+            "122.1.13.19",
+            "122.1.13.20",
+            "122.1.13.21",
+            "122.1.13.22",
+            "122.1.13.23",
+            "122.1.13.24",
+            "122.1.13.25",
+            "122.1.13.26",
+            "122.1.13.27",
+            "122.1.13.28",
+            "122.1.13.29",
+            "122.1.13.30",
+            "122.1.13.31",
+            "194.165.16.0",
+            "194.165.16.1",
+            "194.165.16.2",
+            "194.165.16.3",
+            "194.165.16.4",
+            "194.165.16.5",
+            "194.165.16.6",
+            "194.165.16.7",
+            "194.165.16.8",
+            "194.165.16.9",
+            "194.165.16.10",
+            "194.165.16.11",
+            "194.165.16.12",
+            "194.165.16.13",
+            "194.165.16.14",
+            "194.165.16.15",
+            "194.165.16.16",
+            "194.165.16.17",
+            "194.165.16.18",
+            "194.165.16.19",
+            "194.165.16.20",
+            "194.165.16.21",
+            "194.165.16.22",
+            "194.165.16.23",
+            "194.165.16.24",
+            "194.165.16.25",
+            "194.165.16.26",
+            "194.165.16.27",
+            "194.165.16.28",
+            "194.165.16.29",
+            "194.165.16.30",
+            "194.165.16.31",
+            "194.165.16.32",
+            "194.165.16.33",
+            "194.165.16.34",
+            "194.165.16.35",
+            "194.165.16.36",
+            "194.165.16.37",
+            "194.165.16.38",
+            "194.165.16.39",
+            "194.165.16.40",
+            "194.165.16.41",
+            "194.165.16.42",
+            "194.165.16.43",
+            "194.165.16.44",
+            "194.165.16.45",
+            "194.165.16.46",
+            "194.165.16.47",
+            "194.165.16.48",
+            "194.165.16.49",
+            "194.165.16.50",
+            "194.165.16.51",
+            "194.165.16.52",
+            "194.165.16.53",
+            "194.165.16.54",
+            "194.165.16.55",
+            "194.165.16.56",
+            "194.165.16.57",
+            "194.165.16.58",
+            "194.165.16.59",
+            "194.165.16.60",
+            "194.165.16.61",
+            "194.165.16.62",
+            "194.165.16.63",
+            "194.165.16.64",
+            "194.165.16.65",
+            "194.165.16.66",
+            "194.165.16.67",
+            "194.165.16.68",
+            "194.165.16.69",
+            "194.165.16.70",
+            "194.165.16.71",
+            "194.165.16.72",
+            "194.165.16.73",
+            "194.165.16.74",
+            "194.165.16.75",
+            "194.165.16.76",
+            "194.165.16.77",
+            "194.165.16.78",
+            "194.165.16.79",
+            "194.165.16.80",
+            "194.165.16.81",
+            "194.165.16.82",
+            "194.165.16.83",
+            "194.165.16.84",
+            "194.165.16.85",
+            "194.165.16.86",
+            "194.165.16.87",
+            "194.165.16.88",
+            "194.165.16.89",
+            "194.165.16.90",
+            "194.165.16.91",
+            "194.165.16.92",
+            "194.165.16.93",
+            "194.165.16.94",
+            "194.165.16.95",
+            "194.165.16.96",
+            "194.165.16.97",
+            "194.165.16.98",
+            "194.165.16.99",
+            "194.165.16.100",
+            "194.165.16.101",
+            "194.165.16.102",
+            "194.165.16.103",
+            "194.165.16.104",
+            "194.165.16.105",
+            "194.165.16.106",
+            "194.165.16.107",
+            "194.165.16.108",
+            "194.165.16.109",
+            "194.165.16.110",
+            "194.165.16.111",
+            "194.165.16.112",
+            "194.165.16.113",
+            "194.165.16.114",
+            "194.165.16.115",
+            "194.165.16.116",
+            "194.165.16.117",
+            "194.165.16.118",
+            "194.165.16.119",
+            "194.165.16.120",
+            "194.165.16.121",
+            "194.165.16.122",
+            "194.165.16.123",
+            "194.165.16.124",
+            "194.165.16.125",
+            "194.165.16.126",
+            "194.165.16.127",
+            "194.165.16.128",
+            "194.165.16.129",
+            "194.165.16.130",
+            "194.165.16.131",
+            "194.165.16.132",
+            "194.165.16.133",
+            "194.165.16.134",
+            "194.165.16.135",
+            "194.165.16.136",
+            "194.165.16.137",
+            "194.165.16.138",
+            "194.165.16.139",
+            "194.165.16.140",
+            "194.165.16.141",
+            "194.165.16.142",
+            "194.165.16.143",
+            "194.165.16.144",
+            "194.165.16.145",
+            "194.165.16.146",
+            "194.165.16.147",
+            "194.165.16.148",
+            "194.165.16.149",
+            "194.165.16.150",
+            "194.165.16.151",
+            "194.165.16.152",
+            "194.165.16.153",
+            "194.165.16.154",
+            "194.165.16.155",
+            "194.165.16.156",
+            "194.165.16.157",
+            "194.165.16.158",
+            "194.165.16.159",
+            "194.165.16.160",
+            "194.165.16.161",
+            "194.165.16.162",
+            "194.165.16.163",
+            "194.165.16.164",
+            "194.165.16.165",
+            "194.165.16.166",
+            "194.165.16.167",
+            "194.165.16.168",
+            "194.165.16.169",
+            "194.165.16.170",
+            "194.165.16.171",
+            "194.165.16.172",
+            "194.165.16.173",
+            "194.165.16.174",
+            "194.165.16.175",
+            "194.165.16.176",
+            "194.165.16.177",
+            "194.165.16.178",
+            "194.165.16.179",
+            "194.165.16.180",
+            "194.165.16.181",
+            "194.165.16.182",
+            "194.165.16.183",
+            "194.165.16.184",
+            "194.165.16.185",
+            "194.165.16.186",
+            "194.165.16.187",
+            "194.165.16.188",
+            "194.165.16.189",
+            "194.165.16.190",
+            "194.165.16.191",
+            "194.165.16.192",
+            "194.165.16.193",
+            "194.165.16.194",
+            "194.165.16.195",
+            "194.165.16.196",
+            "194.165.16.197",
+            "194.165.16.198",
+            "194.165.16.199",
+            "194.165.16.200",
+            "194.165.16.201",
+            "194.165.16.202",
+            "194.165.16.203",
+            "194.165.16.204",
+            "194.165.16.205",
+            "194.165.16.206",
+            "194.165.16.207",
+            "194.165.16.208",
+            "194.165.16.209",
+            "194.165.16.210",
+            "194.165.16.211",
+            "194.165.16.212",
+            "194.165.16.213",
+            "194.165.16.214",
+            "194.165.16.215",
+            "194.165.16.216",
+            "194.165.16.217",
+            "194.165.16.218",
+            "194.165.16.219",
+            "194.165.16.220",
+            "194.165.16.221",
+            "194.165.16.222",
+            "194.165.16.223",
+            "194.165.16.224",
+            "194.165.16.225",
+            "194.165.16.226",
+            "194.165.16.227",
+            "194.165.16.228",
+            "194.165.16.229",
+            "194.165.16.230",
+            "194.165.16.231",
+            "194.165.16.232",
+            "194.165.16.233",
+            "194.165.16.234",
+            "194.165.16.235",
+            "194.165.16.236",
+            "194.165.16.237",
+            "194.165.16.238",
+            "194.165.16.239",
+            "194.165.16.240",
+            "194.165.16.241",
+            "194.165.16.242",
+            "194.165.16.243",
+            "194.165.16.244",
+            "194.165.16.245",
+            "194.165.16.246",
+            "194.165.16.247",
+            "194.165.16.248",
+            "194.165.16.249",
+            "194.165.16.250",
+            "194.165.16.251",
+            "194.165.16.252",
+            "194.165.16.253",
+            "194.165.16.254",
+            "194.165.16.255",
+            "194.165.17.0",
+            "194.165.17.1",
+            "194.165.17.2",
+            "194.165.17.3",
+            "194.165.17.4",
+            "194.165.17.5",
+            "194.165.17.6",
+            "194.165.17.7",
+            "194.165.17.8",
+            "194.165.17.9",
+            "194.165.17.10",
+            "194.165.17.11",
+            "194.165.17.12",
+            "194.165.17.13",
+            "194.165.17.14",
+            "194.165.17.15",
+            "194.165.17.16",
+            "194.165.17.17",
+            "194.165.17.18",
+            "194.165.17.19",
+            "194.165.17.20",
+            "194.165.17.21",
+            "194.165.17.22",
+            "194.165.17.23",
+            "194.165.17.24",
+            "194.165.17.25",
+            "194.165.17.26",
+            "194.165.17.27",
+            "194.165.17.28",
+            "194.165.17.29",
+            "194.165.17.30",
+            "194.165.17.31",
+            "194.165.17.32",
+            "194.165.17.33",
+            "194.165.17.34",
+            "194.165.17.35",
+            "194.165.17.36",
+            "194.165.17.37",
+            "194.165.17.38",
+            "194.165.17.39",
+            "194.165.17.40",
+            "194.165.17.41",
+            "194.165.17.42",
+            "194.165.17.43",
+            "194.165.17.44",
+            "194.165.17.45",
+            "194.165.17.46",
+            "194.165.17.47",
+            "194.165.17.48",
+            "194.165.17.49",
+            "194.165.17.50",
+            "194.165.17.51",
+            "194.165.17.52",
+            "194.165.17.53",
+            "194.165.17.54",
+            "194.165.17.55",
+            "194.165.17.56",
+            "194.165.17.57",
+            "194.165.17.58",
+            "194.165.17.59",
+            "194.165.17.60",
+            "194.165.17.61",
+            "194.165.17.62",
+            "194.165.17.63",
+            "194.165.17.64",
+            "194.165.17.65",
+            "194.165.17.66",
+            "194.165.17.67",
+            "194.165.17.68",
+            "194.165.17.69",
+            "194.165.17.70",
+            "194.165.17.71",
+            "194.165.17.72",
+            "194.165.17.73",
+            "194.165.17.74",
+            "194.165.17.75",
+            "194.165.17.76",
+            "194.165.17.77",
+            "194.165.17.78",
+            "194.165.17.79",
+            "194.165.17.80",
+            "194.165.17.81",
+            "194.165.17.82",
+            "194.165.17.83",
+            "194.165.17.84",
+            "194.165.17.85",
+            "194.165.17.86",
+            "194.165.17.87",
+            "194.165.17.88",
+            "194.165.17.89",
+            "194.165.17.90",
+            "194.165.17.91",
+            "194.165.17.92",
+            "194.165.17.93",
+            "194.165.17.94",
+            "194.165.17.95",
+            "194.165.17.96",
+            "194.165.17.97",
+            "194.165.17.98",
+            "194.165.17.99",
+            "194.165.17.100",
+            "194.165.17.101",
+            "194.165.17.102",
+            "194.165.17.103",
+            "194.165.17.104",
+            "194.165.17.105",
+            "194.165.17.106",
+            "194.165.17.107",
+            "194.165.17.108",
+            "194.165.17.109",
+            "194.165.17.110",
+            "194.165.17.111",
+            "194.165.17.112",
+            "194.165.17.113",
+            "194.165.17.114",
+            "194.165.17.115",
+            "194.165.17.116",
+            "194.165.17.117",
+            "194.165.17.118",
+            "194.165.17.119",
+            "194.165.17.120",
+            "194.165.17.121",
+            "194.165.17.122",
+            "194.165.17.123",
+            "194.165.17.124",
+            "194.165.17.125",
+            "194.165.17.126",
+            "194.165.17.127",
+            "194.165.17.128",
+            "194.165.17.129",
+            "194.165.17.130",
+            "194.165.17.131",
+            "194.165.17.132",
+            "194.165.17.133",
+            "194.165.17.134",
+            "194.165.17.135",
+            "194.165.17.136",
+            "194.165.17.137",
+            "194.165.17.138",
+            "194.165.17.139",
+            "194.165.17.140",
+            "194.165.17.141",
+            "194.165.17.142",
+            "194.165.17.143",
+            "194.165.17.144",
+            "194.165.17.145",
+            "194.165.17.146",
+            "194.165.17.147",
+            "194.165.17.148",
+            "194.165.17.149",
+            "194.165.17.150",
+            "194.165.17.151",
+            "194.165.17.152",
+            "194.165.17.153",
+            "194.165.17.154",
+            "194.165.17.155",
+            "194.165.17.156",
+            "194.165.17.157",
+            "194.165.17.158",
+            "194.165.17.159",
+            "194.165.17.160",
+            "194.165.17.161",
+            "194.165.17.162",
+            "194.165.17.163",
+            "194.165.17.164",
+            "194.165.17.165",
+            "194.165.17.166",
+            "194.165.17.167",
+            "194.165.17.168",
+            "194.165.17.169",
+            "194.165.17.170",
+            "194.165.17.171",
+            "194.165.17.172",
+            "194.165.17.173",
+            "194.165.17.174",
+            "194.165.17.175",
+            "194.165.17.176",
+            "194.165.17.177",
+            "194.165.17.178",
+            "194.165.17.179",
+            "194.165.17.180",
+            "194.165.17.181",
+            "194.165.17.182",
+            "194.165.17.183",
+            "194.165.17.184",
+            "194.165.17.185",
+            "194.165.17.186",
+            "194.165.17.187",
+            "194.165.17.188",
+            "194.165.17.189",
+            "194.165.17.190",
+            "194.165.17.191",
+            "194.165.17.192",
+            "194.165.17.193",
+            "194.165.17.194",
+            "194.165.17.195",
+            "194.165.17.196",
+            "194.165.17.197",
+            "194.165.17.198",
+            "194.165.17.199",
+            "194.165.17.200",
+            "194.165.17.201",
+            "194.165.17.202",
+            "194.165.17.203",
+            "194.165.17.204",
+            "194.165.17.205",
+            "194.165.17.206",
+            "194.165.17.207",
+            "194.165.17.208",
+            "194.165.17.209",
+            "194.165.17.210",
+            "194.165.17.211",
+            "194.165.17.212",
+            "194.165.17.213",
+            "194.165.17.214",
+            "194.165.17.215",
+            "194.165.17.216",
+            "194.165.17.217",
+            "194.165.17.218",
+            "194.165.17.219",
+            "194.165.17.220",
+            "194.165.17.221",
+            "194.165.17.222",
+            "194.165.17.223",
+            "194.165.17.224",
+            "194.165.17.225",
+            "194.165.17.226",
+            "194.165.17.227",
+            "194.165.17.228",
+            "194.165.17.229",
+            "194.165.17.230",
+            "194.165.17.231",
+            "194.165.17.232",
+            "194.165.17.233",
+            "194.165.17.234",
+            "194.165.17.235",
+            "194.165.17.236",
+            "194.165.17.237",
+            "194.165.17.238",
+            "194.165.17.239",
+            "194.165.17.240",
+            "194.165.17.241",
+            "194.165.17.242",
+            "194.165.17.243",
+            "194.165.17.244",
+            "194.165.17.245",
+            "194.165.17.246",
+            "194.165.17.247",
+            "194.165.17.248",
+            "194.165.17.249",
+            "194.165.17.250",
+            "194.165.17.251",
+            "194.165.17.252",
+            "194.165.17.253",
+            "194.165.17.254",
+            "194.165.17.255"
+          ],
+          "first_seen": "2016-12-13T21:53:10.460326",
+          "last_seen": "2016-12-13T21:53:12.512920",
+          "iat_mean": 0.003569728602533755,
+          "iat_std": 0.05918742553955425,
+          "iat_min": 1.9073486328125e-06,
+          "iat_max": 1.0060999393463135,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.08908869687158442,
+          "tfidf_weight": 0.16518794000468762,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "packet_rate": 0.674,
+            "byte_volume": 0.674,
+            "iat_mean": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP traffic on port 6892. 576 packets (34560 bytes total) from one source to 576 unique destinations. Payload: low entropy (structured, human-readable payload). Inter-arrival time: mean 3.57ms (very high packet rate, highly irregular interval). Accounts for 8.9% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+        "representative_items": [
+          {
+            "packet_id": 860,
+            "timestamp": "2016-12-13T21:53:24.734381",
+            "protocol": "UDP",
+            "src": "10.12.13.103",
+            "dst": "15.49.2.0",
+            "length": 66,
+            "info": "DPort:6892 | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]"
+          },
+          {
+            "packet_id": 861,
+            "timestamp": "2016-12-13T21:53:24.734394",
+            "protocol": "UDP",
+            "src": "10.12.13.103",
+            "dst": "15.49.2.1",
+            "length": 66,
+            "info": "DPort:6892 | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]"
+          },
+          {
+            "packet_id": 862,
+            "timestamp": "2016-12-13T21:53:24.734428",
+            "protocol": "UDP",
+            "src": "10.12.13.103",
+            "dst": "15.49.2.2",
+            "length": 66,
+            "info": "DPort:6892 | Entropy:medium",
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]"
+          }
+        ],
+        "aggregate": {
+          "count": 1152,
+          "total_bytes": 72576,
+          "unique_sources": [
+            "10.12.13.103"
+          ],
+          "unique_destinations": [
+            "15.49.2.0",
+            "15.49.2.1",
+            "15.49.2.2",
+            "15.49.2.3",
+            "15.49.2.4",
+            "15.49.2.5",
+            "15.49.2.6",
+            "15.49.2.7",
+            "15.49.2.8",
+            "15.49.2.9",
+            "15.49.2.10",
+            "15.49.2.11",
+            "15.49.2.12",
+            "15.49.2.13",
+            "15.49.2.14",
+            "15.49.2.15",
+            "15.49.2.16",
+            "15.49.2.17",
+            "15.49.2.18",
+            "15.49.2.19",
+            "15.49.2.20",
+            "15.49.2.21",
+            "15.49.2.22",
+            "15.49.2.23",
+            "15.49.2.24",
+            "15.49.2.25",
+            "15.49.2.26",
+            "15.49.2.27",
+            "15.49.2.28",
+            "15.49.2.29",
+            "15.49.2.30",
+            "15.49.2.31",
+            "122.1.13.0",
+            "122.1.13.1",
+            "122.1.13.2",
+            "122.1.13.3",
+            "122.1.13.4",
+            "122.1.13.5",
+            "122.1.13.6",
+            "122.1.13.7",
+            "122.1.13.8",
+            "122.1.13.9",
+            "122.1.13.10",
+            "122.1.13.11",
+            "122.1.13.12",
+            "122.1.13.13",
+            "122.1.13.14",
+            "122.1.13.15",
+            "122.1.13.16",
+            "122.1.13.17",
+            "122.1.13.18",
+            "122.1.13.19",
+            "122.1.13.20",
+            "122.1.13.21",
+            "122.1.13.22",
+            "122.1.13.23",
+            "122.1.13.24",
+            "122.1.13.25",
+            "122.1.13.26",
+            "122.1.13.27",
+            "122.1.13.28",
+            "122.1.13.29",
+            "122.1.13.30",
+            "122.1.13.31",
+            "194.165.16.0",
+            "194.165.16.1",
+            "194.165.16.2",
+            "194.165.16.3",
+            "194.165.16.4",
+            "194.165.16.5",
+            "194.165.16.6",
+            "194.165.16.7",
+            "194.165.16.8",
+            "194.165.16.9",
+            "194.165.16.10",
+            "194.165.16.11",
+            "194.165.16.12",
+            "194.165.16.13",
+            "194.165.16.14",
+            "194.165.16.15",
+            "194.165.16.16",
+            "194.165.16.17",
+            "194.165.16.18",
+            "194.165.16.19",
+            "194.165.16.20",
+            "194.165.16.21",
+            "194.165.16.22",
+            "194.165.16.23",
+            "194.165.16.24",
+            "194.165.16.25",
+            "194.165.16.26",
+            "194.165.16.27",
+            "194.165.16.28",
+            "194.165.16.29",
+            "194.165.16.30",
+            "194.165.16.31",
+            "194.165.16.32",
+            "194.165.16.33",
+            "194.165.16.34",
+            "194.165.16.35",
+            "194.165.16.36",
+            "194.165.16.37",
+            "194.165.16.38",
+            "194.165.16.39",
+            "194.165.16.40",
+            "194.165.16.41",
+            "194.165.16.42",
+            "194.165.16.43",
+            "194.165.16.44",
+            "194.165.16.45",
+            "194.165.16.46",
+            "194.165.16.47",
+            "194.165.16.48",
+            "194.165.16.49",
+            "194.165.16.50",
+            "194.165.16.51",
+            "194.165.16.52",
+            "194.165.16.53",
+            "194.165.16.54",
+            "194.165.16.55",
+            "194.165.16.56",
+            "194.165.16.57",
+            "194.165.16.58",
+            "194.165.16.59",
+            "194.165.16.60",
+            "194.165.16.61",
+            "194.165.16.62",
+            "194.165.16.63",
+            "194.165.16.64",
+            "194.165.16.65",
+            "194.165.16.66",
+            "194.165.16.67",
+            "194.165.16.68",
+            "194.165.16.69",
+            "194.165.16.70",
+            "194.165.16.71",
+            "194.165.16.72",
+            "194.165.16.73",
+            "194.165.16.74",
+            "194.165.16.75",
+            "194.165.16.76",
+            "194.165.16.77",
+            "194.165.16.78",
+            "194.165.16.79",
+            "194.165.16.80",
+            "194.165.16.81",
+            "194.165.16.82",
+            "194.165.16.83",
+            "194.165.16.84",
+            "194.165.16.85",
+            "194.165.16.86",
+            "194.165.16.87",
+            "194.165.16.88",
+            "194.165.16.89",
+            "194.165.16.90",
+            "194.165.16.91",
+            "194.165.16.92",
+            "194.165.16.93",
+            "194.165.16.94",
+            "194.165.16.95",
+            "194.165.16.96",
+            "194.165.16.97",
+            "194.165.16.98",
+            "194.165.16.99",
+            "194.165.16.100",
+            "194.165.16.101",
+            "194.165.16.102",
+            "194.165.16.103",
+            "194.165.16.104",
+            "194.165.16.105",
+            "194.165.16.106",
+            "194.165.16.107",
+            "194.165.16.108",
+            "194.165.16.109",
+            "194.165.16.110",
+            "194.165.16.111",
+            "194.165.16.112",
+            "194.165.16.113",
+            "194.165.16.114",
+            "194.165.16.115",
+            "194.165.16.116",
+            "194.165.16.117",
+            "194.165.16.118",
+            "194.165.16.119",
+            "194.165.16.120",
+            "194.165.16.121",
+            "194.165.16.122",
+            "194.165.16.123",
+            "194.165.16.124",
+            "194.165.16.125",
+            "194.165.16.126",
+            "194.165.16.127",
+            "194.165.16.128",
+            "194.165.16.129",
+            "194.165.16.130",
+            "194.165.16.131",
+            "194.165.16.132",
+            "194.165.16.133",
+            "194.165.16.134",
+            "194.165.16.135",
+            "194.165.16.136",
+            "194.165.16.137",
+            "194.165.16.138",
+            "194.165.16.139",
+            "194.165.16.140",
+            "194.165.16.141",
+            "194.165.16.142",
+            "194.165.16.143",
+            "194.165.16.144",
+            "194.165.16.145",
+            "194.165.16.146",
+            "194.165.16.147",
+            "194.165.16.148",
+            "194.165.16.149",
+            "194.165.16.150",
+            "194.165.16.151",
+            "194.165.16.152",
+            "194.165.16.153",
+            "194.165.16.154",
+            "194.165.16.155",
+            "194.165.16.156",
+            "194.165.16.157",
+            "194.165.16.158",
+            "194.165.16.159",
+            "194.165.16.160",
+            "194.165.16.161",
+            "194.165.16.162",
+            "194.165.16.163",
+            "194.165.16.164",
+            "194.165.16.165",
+            "194.165.16.166",
+            "194.165.16.167",
+            "194.165.16.168",
+            "194.165.16.169",
+            "194.165.16.170",
+            "194.165.16.171",
+            "194.165.16.172",
+            "194.165.16.173",
+            "194.165.16.174",
+            "194.165.16.175",
+            "194.165.16.176",
+            "194.165.16.177",
+            "194.165.16.178",
+            "194.165.16.179",
+            "194.165.16.180",
+            "194.165.16.181",
+            "194.165.16.182",
+            "194.165.16.183",
+            "194.165.16.184",
+            "194.165.16.185",
+            "194.165.16.186",
+            "194.165.16.187",
+            "194.165.16.188",
+            "194.165.16.189",
+            "194.165.16.190",
+            "194.165.16.191",
+            "194.165.16.192",
+            "194.165.16.193",
+            "194.165.16.194",
+            "194.165.16.195",
+            "194.165.16.196",
+            "194.165.16.197",
+            "194.165.16.198",
+            "194.165.16.199",
+            "194.165.16.200",
+            "194.165.16.201",
+            "194.165.16.202",
+            "194.165.16.203",
+            "194.165.16.204",
+            "194.165.16.205",
+            "194.165.16.206",
+            "194.165.16.207",
+            "194.165.16.208",
+            "194.165.16.209",
+            "194.165.16.210",
+            "194.165.16.211",
+            "194.165.16.212",
+            "194.165.16.213",
+            "194.165.16.214",
+            "194.165.16.215",
+            "194.165.16.216",
+            "194.165.16.217",
+            "194.165.16.218",
+            "194.165.16.219",
+            "194.165.16.220",
+            "194.165.16.221",
+            "194.165.16.222",
+            "194.165.16.223",
+            "194.165.16.224",
+            "194.165.16.225",
+            "194.165.16.226",
+            "194.165.16.227",
+            "194.165.16.228",
+            "194.165.16.229",
+            "194.165.16.230",
+            "194.165.16.231",
+            "194.165.16.232",
+            "194.165.16.233",
+            "194.165.16.234",
+            "194.165.16.235",
+            "194.165.16.236",
+            "194.165.16.237",
+            "194.165.16.238",
+            "194.165.16.239",
+            "194.165.16.240",
+            "194.165.16.241",
+            "194.165.16.242",
+            "194.165.16.243",
+            "194.165.16.244",
+            "194.165.16.245",
+            "194.165.16.246",
+            "194.165.16.247",
+            "194.165.16.248",
+            "194.165.16.249",
+            "194.165.16.250",
+            "194.165.16.251",
+            "194.165.16.252",
+            "194.165.16.253",
+            "194.165.16.254",
+            "194.165.16.255",
+            "194.165.17.0",
+            "194.165.17.1",
+            "194.165.17.2",
+            "194.165.17.3",
+            "194.165.17.4",
+            "194.165.17.5",
+            "194.165.17.6",
+            "194.165.17.7",
+            "194.165.17.8",
+            "194.165.17.9",
+            "194.165.17.10",
+            "194.165.17.11",
+            "194.165.17.12",
+            "194.165.17.13",
+            "194.165.17.14",
+            "194.165.17.15",
+            "194.165.17.16",
+            "194.165.17.17",
+            "194.165.17.18",
+            "194.165.17.19",
+            "194.165.17.20",
+            "194.165.17.21",
+            "194.165.17.22",
+            "194.165.17.23",
+            "194.165.17.24",
+            "194.165.17.25",
+            "194.165.17.26",
+            "194.165.17.27",
+            "194.165.17.28",
+            "194.165.17.29",
+            "194.165.17.30",
+            "194.165.17.31",
+            "194.165.17.32",
+            "194.165.17.33",
+            "194.165.17.34",
+            "194.165.17.35",
+            "194.165.17.36",
+            "194.165.17.37",
+            "194.165.17.38",
+            "194.165.17.39",
+            "194.165.17.40",
+            "194.165.17.41",
+            "194.165.17.42",
+            "194.165.17.43",
+            "194.165.17.44",
+            "194.165.17.45",
+            "194.165.17.46",
+            "194.165.17.47",
+            "194.165.17.48",
+            "194.165.17.49",
+            "194.165.17.50",
+            "194.165.17.51",
+            "194.165.17.52",
+            "194.165.17.53",
+            "194.165.17.54",
+            "194.165.17.55",
+            "194.165.17.56",
+            "194.165.17.57",
+            "194.165.17.58",
+            "194.165.17.59",
+            "194.165.17.60",
+            "194.165.17.61",
+            "194.165.17.62",
+            "194.165.17.63",
+            "194.165.17.64",
+            "194.165.17.65",
+            "194.165.17.66",
+            "194.165.17.67",
+            "194.165.17.68",
+            "194.165.17.69",
+            "194.165.17.70",
+            "194.165.17.71",
+            "194.165.17.72",
+            "194.165.17.73",
+            "194.165.17.74",
+            "194.165.17.75",
+            "194.165.17.76",
+            "194.165.17.77",
+            "194.165.17.78",
+            "194.165.17.79",
+            "194.165.17.80",
+            "194.165.17.81",
+            "194.165.17.82",
+            "194.165.17.83",
+            "194.165.17.84",
+            "194.165.17.85",
+            "194.165.17.86",
+            "194.165.17.87",
+            "194.165.17.88",
+            "194.165.17.89",
+            "194.165.17.90",
+            "194.165.17.91",
+            "194.165.17.92",
+            "194.165.17.93",
+            "194.165.17.94",
+            "194.165.17.95",
+            "194.165.17.96",
+            "194.165.17.97",
+            "194.165.17.98",
+            "194.165.17.99",
+            "194.165.17.100",
+            "194.165.17.101",
+            "194.165.17.102",
+            "194.165.17.103",
+            "194.165.17.104",
+            "194.165.17.105",
+            "194.165.17.106",
+            "194.165.17.107",
+            "194.165.17.108",
+            "194.165.17.109",
+            "194.165.17.110",
+            "194.165.17.111",
+            "194.165.17.112",
+            "194.165.17.113",
+            "194.165.17.114",
+            "194.165.17.115",
+            "194.165.17.116",
+            "194.165.17.117",
+            "194.165.17.118",
+            "194.165.17.119",
+            "194.165.17.120",
+            "194.165.17.121",
+            "194.165.17.122",
+            "194.165.17.123",
+            "194.165.17.124",
+            "194.165.17.125",
+            "194.165.17.126",
+            "194.165.17.127",
+            "194.165.17.128",
+            "194.165.17.129",
+            "194.165.17.130",
+            "194.165.17.131",
+            "194.165.17.132",
+            "194.165.17.133",
+            "194.165.17.134",
+            "194.165.17.135",
+            "194.165.17.136",
+            "194.165.17.137",
+            "194.165.17.138",
+            "194.165.17.139",
+            "194.165.17.140",
+            "194.165.17.141",
+            "194.165.17.142",
+            "194.165.17.143",
+            "194.165.17.144",
+            "194.165.17.145",
+            "194.165.17.146",
+            "194.165.17.147",
+            "194.165.17.148",
+            "194.165.17.149",
+            "194.165.17.150",
+            "194.165.17.151",
+            "194.165.17.152",
+            "194.165.17.153",
+            "194.165.17.154",
+            "194.165.17.155",
+            "194.165.17.156",
+            "194.165.17.157",
+            "194.165.17.158",
+            "194.165.17.159",
+            "194.165.17.160",
+            "194.165.17.161",
+            "194.165.17.162",
+            "194.165.17.163",
+            "194.165.17.164",
+            "194.165.17.165",
+            "194.165.17.166",
+            "194.165.17.167",
+            "194.165.17.168",
+            "194.165.17.169",
+            "194.165.17.170",
+            "194.165.17.171",
+            "194.165.17.172",
+            "194.165.17.173",
+            "194.165.17.174",
+            "194.165.17.175",
+            "194.165.17.176",
+            "194.165.17.177",
+            "194.165.17.178",
+            "194.165.17.179",
+            "194.165.17.180",
+            "194.165.17.181",
+            "194.165.17.182",
+            "194.165.17.183",
+            "194.165.17.184",
+            "194.165.17.185",
+            "194.165.17.186",
+            "194.165.17.187",
+            "194.165.17.188",
+            "194.165.17.189",
+            "194.165.17.190",
+            "194.165.17.191",
+            "194.165.17.192",
+            "194.165.17.193",
+            "194.165.17.194",
+            "194.165.17.195",
+            "194.165.17.196",
+            "194.165.17.197",
+            "194.165.17.198",
+            "194.165.17.199",
+            "194.165.17.200",
+            "194.165.17.201",
+            "194.165.17.202",
+            "194.165.17.203",
+            "194.165.17.204",
+            "194.165.17.205",
+            "194.165.17.206",
+            "194.165.17.207",
+            "194.165.17.208",
+            "194.165.17.209",
+            "194.165.17.210",
+            "194.165.17.211",
+            "194.165.17.212",
+            "194.165.17.213",
+            "194.165.17.214",
+            "194.165.17.215",
+            "194.165.17.216",
+            "194.165.17.217",
+            "194.165.17.218",
+            "194.165.17.219",
+            "194.165.17.220",
+            "194.165.17.221",
+            "194.165.17.222",
+            "194.165.17.223",
+            "194.165.17.224",
+            "194.165.17.225",
+            "194.165.17.226",
+            "194.165.17.227",
+            "194.165.17.228",
+            "194.165.17.229",
+            "194.165.17.230",
+            "194.165.17.231",
+            "194.165.17.232",
+            "194.165.17.233",
+            "194.165.17.234",
+            "194.165.17.235",
+            "194.165.17.236",
+            "194.165.17.237",
+            "194.165.17.238",
+            "194.165.17.239",
+            "194.165.17.240",
+            "194.165.17.241",
+            "194.165.17.242",
+            "194.165.17.243",
+            "194.165.17.244",
+            "194.165.17.245",
+            "194.165.17.246",
+            "194.165.17.247",
+            "194.165.17.248",
+            "194.165.17.249",
+            "194.165.17.250",
+            "194.165.17.251",
+            "194.165.17.252",
+            "194.165.17.253",
+            "194.165.17.254",
+            "194.165.17.255"
+          ],
+          "first_seen": "2016-12-13T21:53:24.734381",
+          "last_seen": "2016-12-13T21:53:50.937481",
+          "iat_mean": 0.022765508224195652,
+          "iat_std": 0.6540124397498506,
+          "iat_min": 9.5367431640625e-07,
+          "iat_max": 22.11061692237854,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "remnant",
+          "traffic_share": 0.18708626343032728,
+          "tfidf_weight": 0.07414989336155729,
+          "dst_port_class": "registered",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "packet_rate": 0.674,
+            "byte_volume": 0.674,
+            "iat_mean": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "UDP traffic on port 6892. 1152 packets (72576 bytes total) from one source to 576 unique destinations. Payload: medium entropy (readable protocol data). Inter-arrival time: mean 22.77ms (moderate packet rate, highly irregular interval). Accounts for 18.7% of total capture traffic. Relevance tier: REMNANT (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"FIN\",null,49165,null,4938862]",
+        "representative_items": [
+          {
+            "packet_id": 1436,
+            "timestamp": "2016-12-13T21:53:37.158368",
+            "protocol": "TCP",
+            "src": "104.28.11.141",
+            "dst": "10.12.13.103",
+            "length": 60,
+            "info": "Flags:0x0019 | DPort:49165",
+            "fingerprint_key": "[\"TCP\",\"FIN\",null,49165,null,4938862]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "104.28.11.141"
+          ],
+          "unique_destinations": [
+            "10.12.13.103"
+          ],
+          "first_seen": "2016-12-13T21:53:37.158368",
+          "last_seen": "2016-12-13T21:53:37.158368",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.0001546678765131674,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "TCP graceful connection close (FIN) on port 49165. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"FIN\",null,49168,null,4938862]",
+        "representative_items": [
+          {
+            "packet_id": 1438,
+            "timestamp": "2016-12-13T21:53:37.567520",
+            "protocol": "TCP",
+            "src": "104.28.10.141",
+            "dst": "10.12.13.103",
+            "length": 60,
+            "info": "Flags:0x0019 | DPort:49168",
+            "fingerprint_key": "[\"TCP\",\"FIN\",null,49168,null,4938862]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "104.28.10.141"
+          ],
+          "unique_destinations": [
+            "10.12.13.103"
+          ],
+          "first_seen": "2016-12-13T21:53:37.567520",
+          "last_seen": "2016-12-13T21:53:37.567520",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.0001546678765131674,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "TCP graceful connection close (FIN) on port 49168. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",null,49168,null,4938862]",
+        "representative_items": [
+          {
+            "packet_id": 2017,
+            "timestamp": "2016-12-13T21:54:38.537433",
+            "protocol": "TCP",
+            "src": "104.28.10.141",
+            "dst": "10.12.13.103",
+            "length": 60,
+            "info": "Flags:0x0010 | DPort:49168",
+            "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",null,49168,null,4938862]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "104.28.10.141"
+          ],
+          "unique_destinations": [
+            "10.12.13.103"
+          ],
+          "first_seen": "2016-12-13T21:54:38.537433",
+          "last_seen": "2016-12-13T21:54:38.537433",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.0001546678765131674,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "TCP handshake completion (ACK) on port 49168. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",null,49165,null,4938862]",
+        "representative_items": [
+          {
+            "packet_id": 2019,
+            "timestamp": "2016-12-13T21:54:38.537841",
+            "protocol": "TCP",
+            "src": "104.28.11.141",
+            "dst": "10.12.13.103",
+            "length": 60,
+            "info": "Flags:0x0010 | DPort:49165",
+            "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",null,49165,null,4938862]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "104.28.11.141"
+          ],
+          "unique_destinations": [
+            "10.12.13.103"
+          ],
+          "first_seen": "2016-12-13T21:54:38.537841",
+          "last_seen": "2016-12-13T21:54:38.537841",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.0001546678765131674,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "TCP handshake completion (ACK) on port 49165. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",\"HTTP\",80,null,4938863]",
+        "representative_items": [
+          {
+            "packet_id": 2020,
+            "timestamp": "2016-12-13T21:59:35.361230",
+            "protocol": "HTTP",
+            "src": "10.12.13.103",
+            "dst": "37.10.71.202",
+            "length": 66,
+            "info": "Flags:0x0002 | DPort:80 | L7:HTTP",
+            "fingerprint_key": "[\"TCP\",\"SYN\",\"HTTP\",80,null,4938863]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 66,
+          "unique_sources": [
+            "10.12.13.103"
+          ],
+          "unique_destinations": [
+            "37.10.71.202"
+          ],
+          "first_seen": "2016-12-13T21:59:35.361230",
+          "last_seen": "2016-12-13T21:59:35.361230",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.00017013466416448413,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "well_known",
+          "dst_port_service": "HTTP",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": true,
+          "cluster_text": "TCP connection initiation (SYN) carrying HTTP traffic on port 80 (HTTP). 1 packets (66 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49185,null,4938863]",
+        "representative_items": [
+          {
+            "packet_id": 2021,
+            "timestamp": "2016-12-13T21:59:35.506705",
+            "protocol": "TCP",
+            "src": "37.10.71.202",
+            "dst": "10.12.13.103",
+            "length": 60,
+            "info": "Flags:0x0012 | DPort:49185",
+            "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49185,null,4938863]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "37.10.71.202"
+          ],
+          "unique_destinations": [
+            "10.12.13.103"
+          ],
+          "first_seen": "2016-12-13T21:59:35.506705",
+          "last_seen": "2016-12-13T21:59:35.506705",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.0001546678765131674,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "TCP connection response (SYN-ACK) on port 49185. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,4938863]",
+        "representative_items": [
+          {
+            "packet_id": 2022,
+            "timestamp": "2016-12-13T21:59:35.506979",
+            "protocol": "HTTP",
+            "src": "10.12.13.103",
+            "dst": "37.10.71.202",
+            "length": 60,
+            "info": "Flags:0x0010 | DPort:80 | L7:HTTP",
+            "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,4938863]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "10.12.13.103"
+          ],
+          "unique_destinations": [
+            "37.10.71.202"
+          ],
+          "first_seen": "2016-12-13T21:59:35.506979",
+          "last_seen": "2016-12-13T21:59:35.506979",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.0001546678765131674,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "well_known",
+          "dst_port_service": "HTTP",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": true,
+          "cluster_text": "TCP handshake completion (ACK) carrying HTTP traffic on port 80 (HTTP). 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938863]",
+        "representative_items": [
+          {
+            "packet_id": 2023,
+            "timestamp": "2016-12-13T21:59:35.508237",
+            "protocol": "HTTP",
+            "src": "10.12.13.103",
+            "dst": "37.10.71.202",
+            "length": 340,
+            "info": "Flags:0x0018 | DPort:80 | L7:HTTP",
+            "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938863]"
+          },
+          {
+            "packet_id": 2026,
+            "timestamp": "2016-12-13T21:59:36.585762",
+            "protocol": "HTTP",
+            "src": "10.12.13.103",
+            "dst": "37.10.71.202",
+            "length": 60,
+            "info": "Flags:0x0010 | DPort:80 | L7:HTTP",
+            "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938863]"
+          }
+        ],
+        "aggregate": {
+          "count": 2,
+          "total_bytes": 400,
+          "unique_sources": [
+            "10.12.13.103"
+          ],
+          "unique_destinations": [
+            "37.10.71.202"
+          ],
+          "first_seen": "2016-12-13T21:59:35.508237",
+          "last_seen": "2016-12-13T21:59:36.585762",
+          "iat_mean": 1.0775251388549805,
+          "iat_std": 0.0,
+          "iat_min": 1.0775251388549805,
+          "iat_max": 1.0775251388549805,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.0010311191767544492,
+          "tfidf_weight": 0.9089619533568697,
+          "dst_port_class": "well_known",
+          "dst_port_service": "HTTP",
+          "zscore_anomalies": {
+            "byte_volume": 26.402
+          },
+          "context_match": true,
+          "cluster_text": "TCP established data transfer carrying HTTP traffic on port 80 (HTTP). 2 packets (400 bytes total) from one source to one destination. Inter-arrival time: mean 1077.53ms (low packet rate, highly regular interval (possible beaconing)). Statistically anomalous: byte volume (Z=26.4). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"DATA\",null,49185,null,4938863]",
+        "representative_items": [
+          {
+            "packet_id": 2024,
+            "timestamp": "2016-12-13T21:59:35.508251",
+            "protocol": "TCP",
+            "src": "37.10.71.202",
+            "dst": "10.12.13.103",
+            "length": 60,
+            "info": "Flags:0x0010 | DPort:49185",
+            "fingerprint_key": "[\"TCP\",\"DATA\",null,49185,null,4938863]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 60,
+          "unique_sources": [
+            "37.10.71.202"
+          ],
+          "unique_destinations": [
+            "10.12.13.103"
+          ],
+          "first_seen": "2016-12-13T21:59:35.508251",
+          "last_seen": "2016-12-13T21:59:35.508251",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "secondary",
+          "traffic_share": 0.0001546678765131674,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 0.674
+          },
+          "context_match": false,
+          "cluster_text": "TCP established data transfer on port 49185. 1 packets (60 bytes total) from one source to one destination. Accounts for 0.0% of total capture traffic. Relevance tier: SECONDARY (no context match)."
+        }
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49185,\"medium\",4938863]",
+        "representative_items": [
+          {
+            "packet_id": 2025,
+            "timestamp": "2016-12-13T21:59:36.585517",
+            "protocol": "HTTP",
+            "src": "37.10.71.202",
+            "dst": "10.12.13.103",
+            "length": 291,
+            "info": "Flags:0x0018 | DPort:49185 | L7:HTTP | Entropy:medium",
+            "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",49185,\"medium\",4938863]"
+          }
+        ],
+        "aggregate": {
+          "count": 1,
+          "total_bytes": 291,
+          "unique_sources": [
+            "37.10.71.202"
+          ],
+          "unique_destinations": [
+            "10.12.13.103"
+          ],
+          "first_seen": "2016-12-13T21:59:36.585517",
+          "last_seen": "2016-12-13T21:59:36.585517",
+          "iat_mean": null,
+          "iat_std": null,
+          "iat_min": null,
+          "iat_max": null,
+          "outbound_bytes": null,
+          "inbound_bytes": null
+        },
+        "metadata": {
+          "tier": "primary",
+          "traffic_share": 0.0007501392010888619,
+          "tfidf_weight": 1.0,
+          "dst_port_class": "ephemeral",
+          "dst_port_service": "unknown",
+          "zscore_anomalies": {
+            "byte_volume": 21.841
+          },
+          "context_match": true,
+          "cluster_text": "TCP established data transfer carrying HTTP traffic on port 49185. 1 packets (291 bytes total) from one source to one destination. Payload: medium entropy (readable protocol data). Statistically anomalous: byte volume (Z=21.8). Accounts for 0.1% of total capture traffic. Relevance tier: PRIMARY (matches attack context)."
+        }
+      }
+    ],
+    "compression_stats": {
+      "raw_packet_count_in": 2026,
+      "packet_count_out": 43,
+      "cluster_count": 26,
+      "estimated_tokens_out": 4515,
+      "dropped_parse_failures": 0,
+      "compression_ratio": 0.9788
+    },
+    "budget_status": "within_budget",
+    "attack_context": {
+      "suspected_protocols": [
+        "HTTP"
+      ],
+      "suspected_behaviors": [],
+      "target_indicators": [],
+      "raw_description": "Incident Report: Cerber Ransomware Infection of 10.12.13.103\n============================================================\n\nSummary\n-------\nOn 2016-12-13 at 21:52 UTC a Windows 7 workstation, 10.12.13.103, was\ninfected with Cerber ransomware after the user clicked a link in a fake\n\"domain abuse\" email. The capture covers 412 seconds (2,026 packets) and\nshows the full chain: lure page, malicious JavaScript download, payload\ndownload, Cerber's UDP check-in, and finally a visit to the ransom\npayment site. No DNS traffic was captured, so only the HTTP Host headers\nreveal the domain names.\n\nStage 1 - Lure and script download (0 - 7 s)\n--------------------------------------------\nThe victim's Internet Explorer 11 requested\nhttp://www.domaincop247.com/precautions-attachments/... from\n104.28.11.141 on port 80. After a six-second wait the server replied with\nan HTTP 302 redirect to report.domaincop247.com. The browser followed it\nto 104.28.10.141 and downloaded Domain_Abuse_Report_Viewer.js, a 9,032-byte\nfile served as application/js. The user then opened the script.\n\nStage 2 - Payload download (21 - 23 s)\n--------------------------------------\nFifteen seconds later the script fetched the ransomware itself:\nhttp://ggjghhfhfh.com/kqaer2c56ds34caq12/file.exe from 185.153.198.117.\nThis request used a different user agent (an old MSIE 7.0 string)\nbecause it came from the script rather than the browser. About 252 kB of\nexecutable data arrived in roughly one second.\n\nStage 3 - UDP check-in (25 - 66 s)\n----------------------------------\nShortly after the executable ran, the victim sent three bursts of small\nUDP datagrams to destination port 6892, at about 25 s, 39 s and 63 s.\nEach burst lasted about a second and hit 576 different addresses: all of\n194.165.16.0/24 and 194.165.17.0/24 plus 32 addresses in each of\n15.49.2.0 and 122.1.13.0. In total 1,728 datagrams of 10 to 24 bytes of\npayload were sent and none were answered. Cerber uses this spray to\nreport the new infection to a server hidden somewhere in the range.\n\nEncryption\n----------\nFor the next five minutes the host produced no new connections (only the\nidle lure connection was closed at 113 s) while Cerber encrypted the\nuser's documents and dropped its ransom note.\n\nStage 4 - Payment site (410 - 412 s)\n------------------------------------\nAt 410 s the victim requested\nhttp://ftoxmpdipwobp4qy.1mznhc.top/0123-4567-89AB-CDEF-0123 from\n37.10.71.202, the personal decryption page linked in the ransom note. The\nserver answered with an HTTP 302 redirect to the page's \"intro\" path.\n\nAssessment\n----------\nThe workstation must be isolated and restored from backup. Block the\nlisted domains and addresses, and alert on outbound UDP to port 6892.\n"
+    },
+    "budget_status_detail": null,
+    "ip_summary": [
+      {
+        "ip": "10.12.13.103",
+        "total_traffic": 2026,
+        "packets_as_source": 1829,
+        "packets_as_destination": 197,
+        "unique_destinations": 580,
+        "unique_sources": 4,
+        "unique_dst_ports": 2,
+        "unique_src_ports": 4,
+        "top_source_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          },
+          {
+            "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938862]",
+            "count": 85
+          }
+        ],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"TCP\",\"DATA\",null,49176,null,4938862]",
+            "count": 175
+          },
+          {
+            "fingerprint_key": "[\"TCP\",\"DATA\",null,49168,null,4938862]",
+            "count": 7
+          },
+          {
+            "fingerprint_key": "[\"TCP\",\"SYN-ACK\",null,49165,null,4938862]",
+            "count": 1
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [
+            "[\"TCP\",\"SYN\",\"HTTP\",80,null,4938862]",
+            "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,4938862]",
+            "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938862]",
+            "[\"TCP\",\"FIN\",\"HTTP\",80,null,4938862]"
+          ],
+          "as_destination": []
+        },
+        "sample_packets": [
+          {
+            "packet_id": 1,
+            "timestamp": "2016-12-13T21:52:44.963695",
+            "protocol": "HTTP",
+            "src": "10.12.13.103",
+            "dst": "104.28.11.141",
+            "length": 66,
+            "info": "Flags:0x0002 | DPort:80 | L7:HTTP"
+          },
+          {
+            "packet_id": 2,
+            "timestamp": "2016-12-13T21:52:44.986097",
+            "protocol": "TCP",
+            "src": "104.28.11.141",
+            "dst": "10.12.13.103",
+            "length": 60,
+            "info": "Flags:0x0012 | DPort:49165"
+          },
+          {
+            "packet_id": 3,
+            "timestamp": "2016-12-13T21:52:44.986337",
+            "protocol": "HTTP",
+            "src": "10.12.13.103",
+            "dst": "104.28.11.141",
+            "length": 60,
+            "info": "Flags:0x0010 | DPort:80 | L7:HTTP"
+          }
+        ]
+      },
+      {
+        "ip": "194.165.16.166",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.16.43",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.16.50",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.17.215",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.17.66",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.17.137",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.16.115",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.16.69",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "122.1.13.29",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.17.222",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.16.125",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.16.186",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.17.35",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "122.1.13.19",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.16.76",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.17.26",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.16.9",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.16.196",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.17.216",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.16.96",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.17.210",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.17.98",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.16.32",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.16.206",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.17.74",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.16.149",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.16.190",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.16.168",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.16.175",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.16.133",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.16.252",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "122.1.13.0",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.16.173",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.17.173",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.17.59",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.16.54",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.16.99",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.16.29",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.17.142",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.17.159",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "122.1.13.23",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.17.133",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.17.85",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.16.20",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.16.201",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.16.240",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.17.25",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.16.197",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "194.165.16.45",
+        "total_traffic": 1728,
+        "packets_as_source": 0,
+        "packets_as_destination": 1728,
+        "unique_destinations": 0,
+        "unique_sources": 1,
+        "unique_dst_ports": 0,
+        "unique_src_ports": 1,
+        "top_source_fingerprints": [],
+        "top_destination_fingerprints": [
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"medium\",4938862]",
+            "count": 1152
+          },
+          {
+            "fingerprint_key": "[\"UDP\",\"UDP\",null,6892,\"low\",4938862]",
+            "count": 576
+          }
+        ],
+        "anomaly_involvement": {
+          "as_source": [],
+          "as_destination": []
+        },
+        "sample_packets": []
+      },
+      {
+        "ip": "[531 additional IPs not shown]",
+        "total_traffic": 911148,
+        "packets_as_source": 197,
+        "packets_as_destination": 910951,
+        "unique_destinations": null,
+        "unique_sources": null,
+        "note": "tail summarised — individual IPs omitted to stay within token budget"
+      }
+    ],
+    "anomalies": [
+      {
+        "fingerprint_key": "[\"TCP\",\"SYN\",\"HTTP\",80,null,4938862]",
+        "protocol": "TCP",
+        "tier": "primary",
+        "source_cardinality": 1,
+        "source_cardinality_anomalous": false,
+        "typical_source_cardinality": 1.0,
+        "destination_cardinality": 3,
+        "destination_cardinality_anomalous": true,
+        "typical_destination_cardinality": 1.0,
+        "unique_sources": [
+          "10.12.13.103"
+        ],
+        "unique_destinations": [
+          "104.28.11.141",
+          "104.28.10.141",
+          "185.153.198.117"
+        ],
+        "count": 3
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"ACK_HANDSHAKE\",\"HTTP\",80,null,4938862]",
+        "protocol": "TCP",
+        "tier": "primary",
+        "source_cardinality": 1,
+        "source_cardinality_anomalous": false,
+        "typical_source_cardinality": 1.0,
+        "destination_cardinality": 3,
+        "destination_cardinality_anomalous": true,
+        "typical_destination_cardinality": 1.0,
+        "unique_sources": [
+          "10.12.13.103"
+        ],
+        "unique_destinations": [
+          "104.28.11.141",
+          "104.28.10.141",
+          "185.153.198.117"
+        ],
+        "count": 6
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"DATA\",\"HTTP\",80,null,4938862]",
+        "protocol": "TCP",
+        "tier": "primary",
+        "source_cardinality": 1,
+        "source_cardinality_anomalous": false,
+        "typical_source_cardinality": 1.0,
+        "destination_cardinality": 3,
+        "destination_cardinality_anomalous": true,
+        "typical_destination_cardinality": 1.0,
+        "unique_sources": [
+          "10.12.13.103"
+        ],
+        "unique_destinations": [
+          "104.28.11.141",
+          "104.28.10.141",
+          "185.153.198.117"
+        ],
+        "count": 85
+      },
+      {
+        "fingerprint_key": "[\"TCP\",\"FIN\",\"HTTP\",80,null,4938862]",
+        "protocol": "TCP",
+        "tier": "primary",
+        "source_cardinality": 1,
+        "source_cardinality_anomalous": false,
+        "typical_source_cardinality": 1.0,
+        "destination_cardinality": 3,
+        "destination_cardinality_anomalous": true,
+        "typical_destination_cardinality": 1.0,
+        "unique_sources": [
+          "10.12.13.103"
+        ],
+        "unique_destinations": [
+          "185.153.198.117",
+          "104.28.10.141",
+          "104.28.11.141"
+        ],
+        "count": 3
+      }
+    ],
+    "filter_string_used": null
+  }
+}

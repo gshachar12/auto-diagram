@@ -6,3 +6,6 @@ tiktoken>=0.11.0
 platformdirs==4.4.0
 pydantic>=2.11.7
 google-genai>=1.39.1
+pyshark>=0.6
+sentence-transformers>=5.0,<6   # grounder bi-encoder + cross-encoder
+transformers>=4.45,<5           # 5.x requires torch newer than 2.6

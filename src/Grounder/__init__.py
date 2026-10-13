@@ -14,10 +14,10 @@ Implements the LLM Grounder component of the PANGEA pipeline, per PANGEA_SPEC:
                                         ▼
                               Matching JSON (final Grounder output)
 
-See grounder.py for the top-level Grounder class that wires these together.
+See legacy_grounder.py for the top-level (LLM) Grounder class that wires these together.
 """
 
-from .grounder import Grounder
+from .legacy_grounder import Grounder
 from .steps_extractor import StepExtractor
 from .evidence_matcher import EvidenceMatcher
 from .models import (

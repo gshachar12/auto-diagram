@@ -1,0 +1,56 @@
+[
+  {
+    "step_id": 1,
+    "text": "172.16.1.120 sends 436 small S-Bus requests over UDP from port 2467 to the controller 172.16.1.135 on port 5050.",
+    "source_text": "All application traffic is Saia S-Bus over UDP between the workstation's port 2467 and the controller's port 5050. The workstation sent 436 requests and the controller answered every one, mostly with data responses and in a few cases with an acknowledgement.",
+    "mitre_tag": null
+  },
+  {
+    "step_id": 2,
+    "text": "172.16.1.135 answers every request with an S-Bus response or acknowledgement over UDP to port 2467 within about 15 milliseconds.",
+    "source_text": "The workstation sent 436 requests and the controller answered every one, mostly with data responses and in a few cases with an acknowledgement.",
+    "mitre_tag": null
+  },
+  {
+    "step_id": 3,
+    "text": "About once per second 172.16.1.120 sends S-Bus requests reading the controller status and instruction pointer.",
+    "source_text": "About once per second the workstation read the controller's status (211 \"read PCD status\" requests) and often its instruction pointer (69 requests), as the programming software does while it displays the running program.",
+    "mitre_tag": "T0801"
+  },
+  {
+    "step_id": 4,
+    "text": "172.16.1.120 sends S-Bus requests reading user memory, firmware version, system information, registers, timers and counters.",
+    "source_text": "It also read user memory 64 times and occasionally the firmware version, system information, registers, timers and counters.",
+    "mitre_tag": "T0801"
+  },
+  {
+    "step_id": 5,
+    "text": "172.16.1.120 sends S-Bus write-byte and write-register commands to 172.16.1.135, each acknowledged by the controller.",
+    "source_text": "Seven requests changed the controller's state, and the controller acknowledged each one:",
+    "mitre_tag": "T0836"
+  },
+  {
+    "step_id": 6,
+    "text": "172.16.1.120 sends two S-Bus cold-restart-all-CPUs commands to 172.16.1.135, at 70 s and 145 s.",
+    "source_text": "a cold restart of all CPUs at 70 s, followed within a second by a \"write byte\", and a \"run procedure\" command at 74 s, - a second cold restart of all CPUs at 145 s, again followed by a \"write byte\" under a second later.",
+    "mitre_tag": "T0816"
+  },
+  {
+    "step_id": 7,
+    "text": "172.16.1.120 sends an S-Bus run-procedure command to 172.16.1.135.",
+    "source_text": "a cold restart of all CPUs at 70 s, followed within a second by a \"write byte\", and a \"run procedure\" command at 74 s,",
+    "mitre_tag": "T0858"
+  },
+  {
+    "step_id": 8,
+    "text": "172.16.1.135 rejects one S-Bus request with a NAK.",
+    "source_text": "The controller rejected one later request with a NAK at 156 s.",
+    "mitre_tag": null
+  },
+  {
+    "step_id": 9,
+    "text": "Three Ethernet configuration-test (loopback) frames are sent by three different devices.",
+    "source_text": "Three Ethernet configuration-test (loopback) frames from three different 3Com-addressed devices appear at 4 s, 93 s and 164 s.",
+    "mitre_tag": null
+  }
+]

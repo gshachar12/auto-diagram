@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import json
 
-from .grounder import Grounder
+from .legacy_grounder import Grounder
 from .llm_client import MockLLMClient
 
 TRAFFIC_DESCRIPTION = """\

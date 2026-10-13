@@ -1,0 +1,41 @@
+Traffic Review: Web Page Download from www.ethereal.com
+======================================================
+
+Summary
+-------
+Sample capture of an ordinary web page load from a Windows XP workstation
+running Mozilla 1.6, recorded on 2004-05-13 at 13:17 UTC. The client
+145.254.160.237 downloads the Ethereal download page and an embedded
+Google advertisement. The capture contains 43 packets over 30 seconds and
+nothing malicious.
+
+Page download
+-------------
+The client opened a TCP connection from port 3372 to www.ethereal.com
+(65.208.228.223) on port 80. The three-way handshake completed after
+about 0.9 seconds and the client immediately sent "GET /download.html".
+The Apache server answered with HTTP 200 and an 18,070-byte HTML page,
+delivered in TCP segments of up to 1,380 bytes. The last part of the
+response arrived about 3.9 seconds after the request.
+
+Advertisement
+-------------
+While the page was still arriving the browser looked up
+pagead2.googlesyndication.com with a DNS query to the ISP resolver
+145.253.2.203. The answer pointed through two CNAME records to the
+addresses 216.239.59.104 and 216.239.59.99. The browser then opened a
+second TCP connection to 216.239.59.99 on port 80 and requested
+/pagead/ads with a long query string describing the ad slot. Google's
+server replied with HTTP 200 and a 1,272-byte HTML fragment. One segment
+of that response was retransmitted and the client sent a duplicate ACK.
+
+Connection close
+----------------
+The web server closed its connection with a FIN 13 seconds after the
+page finished loading, and the client closed its side about 12 seconds
+after that.
+
+Assessment
+----------
+Routine browsing. The page was served without errors and the ad request
+is expected for this site. No follow-up needed.

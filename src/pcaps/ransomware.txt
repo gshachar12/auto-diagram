@@ -1,0 +1,57 @@
+Incident Report: Cerber Ransomware Infection of 10.12.13.103
+============================================================
+
+Summary
+-------
+On 2016-12-13 at 21:52 UTC a Windows 7 workstation, 10.12.13.103, was
+infected with Cerber ransomware after the user clicked a link in a fake
+"domain abuse" email. The capture covers 412 seconds (2,026 packets) and
+shows the full chain: lure page, malicious JavaScript download, payload
+download, Cerber's UDP check-in, and finally a visit to the ransom
+payment site. No DNS traffic was captured, so only the HTTP Host headers
+reveal the domain names.
+
+Stage 1 - Lure and script download (0 - 7 s)
+--------------------------------------------
+The victim's Internet Explorer 11 requested
+http://www.domaincop247.com/precautions-attachments/... from
+104.28.11.141 on port 80. After a six-second wait the server replied with
+an HTTP 302 redirect to report.domaincop247.com. The browser followed it
+to 104.28.10.141 and downloaded Domain_Abuse_Report_Viewer.js, a 9,032-byte
+file served as application/js. The user then opened the script.
+
+Stage 2 - Payload download (21 - 23 s)
+--------------------------------------
+Fifteen seconds later the script fetched the ransomware itself:
+http://ggjghhfhfh.com/kqaer2c56ds34caq12/file.exe from 185.153.198.117.
+This request used a different user agent (an old MSIE 7.0 string)
+because it came from the script rather than the browser. About 252 kB of
+executable data arrived in roughly one second.
+
+Stage 3 - UDP check-in (25 - 66 s)
+----------------------------------
+Shortly after the executable ran, the victim sent three bursts of small
+UDP datagrams to destination port 6892, at about 25 s, 39 s and 63 s.
+Each burst lasted about a second and hit 576 different addresses: all of
+194.165.16.0/24 and 194.165.17.0/24 plus 32 addresses in each of
+15.49.2.0 and 122.1.13.0. In total 1,728 datagrams of 10 to 24 bytes of
+payload were sent and none were answered. Cerber uses this spray to
+report the new infection to a server hidden somewhere in the range.
+
+Encryption
+----------
+For the next five minutes the host produced no new connections (only the
+idle lure connection was closed at 113 s) while Cerber encrypted the
+user's documents and dropped its ransom note.
+
+Stage 4 - Payment site (410 - 412 s)
+------------------------------------
+At 410 s the victim requested
+http://ftoxmpdipwobp4qy.1mznhc.top/0123-4567-89AB-CDEF-0123 from
+37.10.71.202, the personal decryption page linked in the ransom note. The
+server answered with an HTTP 302 redirect to the page's "intro" path.
+
+Assessment
+----------
+The workstation must be isolated and restored from backup. Block the
+listed domains and addresses, and alert on outbound UDP to port 6892.

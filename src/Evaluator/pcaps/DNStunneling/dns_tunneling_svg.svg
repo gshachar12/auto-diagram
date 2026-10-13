@@ -1,0 +1,249 @@
+<svg width="100%" viewBox="0 0 1000 900" role="img" xmlns="http://www.w3.org/2000/svg">
+<title>DNS Tunneling over NULL Records (pirate.sea)</title>
+<desc>Three-phase sequence diagram illustrating a DNS tunneling attack from 10.0.2.30 to rogue DNS 10.0.2.20 using Base128/Base64, zlib, and numeric-prefixed bulk exfiltration.</desc>
+
+<defs>
+  <!-- Arrow markers -->
+  <marker id="arrow-solid" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+  <marker id="arrow-open" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+
+  <style>
+    svg { font-family: "Segoe UI", Helvetica, Arial, sans-serif; }
+
+    /* Actor boxes */
+    .actor-victim { fill:#eaf3de; stroke:#5a9e2b; stroke-width:1.5; }
+    .actor-c2     { fill:#fdeeee; stroke:#c23b3b; stroke-width:1.5; }
+
+    .actor-name { font-size:11px; font-weight:700; text-anchor:middle; fill:#1a1a1a; }
+    .actor-sub  { font-size:9px;  text-anchor:middle; fill:#4d4d4d; }
+
+    /* Lifelines */
+    .lifeline { stroke-width:1; stroke-dasharray:5 5; }
+    .ll-victim { stroke:#5a9e2b; }
+    .ll-c2     { stroke:#c23b3b; }
+
+    /* Phases */
+    .phase-bar { rx:6; }
+    .p1 { fill:#2e7d32; }
+    .p2 { fill:#ef6c00; }
+    .p3 { fill:#512da8; }
+
+    .phase-label { fill:#fff; text-anchor:middle; }
+    .phase-title { font-size:12px; font-weight:700; }
+    .phase-sub   { font-size:9px; opacity:0.95; }
+
+    .phase-bg   { rx:4; opacity:0.35; }
+    .bg-p1      { fill:#dff3e1; }
+    .bg-p2      { fill:#fff3e0; }
+    .bg-p3      { fill:#ede7f6; }
+
+    .div-p1 { stroke:#2e7d32; stroke-width:0.8; stroke-dasharray:4 3; }
+    .div-p2 { stroke:#ef6c00; stroke-width:0.8; stroke-dasharray:4 3; }
+    .div-p3 { stroke:#512da8; stroke-width:0.8; stroke-dasharray:4 3; }
+
+    /* Arrows */
+    .a-p1 { stroke:#2e7d32; stroke-width:2; fill:none; }
+    .a-p2 { stroke:#ef6c00; stroke-width:2; fill:none; }
+    .a-p3 { stroke:#512da8; stroke-width:2; fill:none; }
+    .dash { stroke-dasharray:5 4; }
+
+    /* Labels */
+    .lbl       { text-anchor:middle; fill:#1a1a1a; }
+    .lbl-main  { font-size:11px; font-weight:600; }
+    .lbl-sub   { font-size:9px; fill:#555; }
+
+    /* Step badges */
+    .badge     { fill:#111; }
+    .b1 { fill:#2e7d32; }
+    .b2 { fill:#ef6c00; }
+    .b3 { fill:#512da8; }
+    .badge-label { fill:#fff; font-weight:700; font-size:9px; text-anchor:middle; }
+
+    /* Annotations */
+    .annot { fill:#fff; stroke:#cfcfcf; stroke-width:1; rx:4; }
+    .annot-title { font-size:10px; font-weight:700; fill:#333; }
+    .mono  { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; font-size:9px; fill:#333; }
+
+    /* Footer */
+    .footer { fill:#fff7e6; stroke:#caa46a; stroke-width:1; rx:5; }
+    .footer-text { font-size:12px; font-weight:700; fill:#6b4d1f; text-anchor:middle; }
+  </style>
+</defs>
+
+<!-- Title -->
+<text x="500" y="26" text-anchor="middle" font-size="18" font-weight="700" fill="#1a1a1a">DNS Tunneling — NULL (Type 10), Base128/Base64, zlib</text>
+<text x="500" y="44" text-anchor="middle" font-size="11" fill="#555">Victim 10.0.2.30 ↔ Rogue DNS/C2 10.0.2.20 | Domain: pirate.sea | Duration ~24.5 s | 434 DNS pkts</text>
+
+<!-- Actors -->
+<!-- Victim (x=200) -->
+<g transform="translate(200,70)">
+  <rect x="-70" y="0" width="140" height="60" rx="7" class="actor-victim"/>
+  <image href="https://img.icons8.com/color/96/laptop.png" x="-20" y="4" width="40" height="40"/>
+  <text x="0" y="46" class="actor-name">Victim Client</text>
+  <text x="0" y="58" class="actor-sub">10.0.2.30</text>
+</g>
+
+<!-- C2 (x=800) -->
+<g transform="translate(800,70)">
+  <rect x="-70" y="0" width="140" height="60" rx="7" class="actor-c2"/>
+  <image href="https://img.icons8.com/color/96/dns.png" x="-20" y="4" width="40" height="40"/>
+  <text x="0" y="46" class="actor-name">Rogue DNS / C2</text>
+  <text x="0" y="58" class="actor-sub">10.0.2.20 (pirate.sea)</text>
+</g>
+
+<!-- Lifelines -->
+<line x1="200" y1="130" x2="200" y2="850" class="lifeline ll-victim"/>
+<line x1="800" y1="130" x2="800" y2="850" class="lifeline ll-c2"/>
+
+<!-- Phase 1 -->
+<rect x="20" y="130" width="116" height="270" class="phase-bar p1"/>
+<text x="78" y="162" class="phase-label phase-title">Phase 1</text>
+<text x="78" y="178" class="phase-label phase-sub">Handshake</text>
+<text x="78" y="194" class="phase-label phase-sub">+ Negotiation</text>
+<rect x="136" y="130" width="844" height="270" class="phase-bg bg-p1"/>
+<line x1="20" y1="400" x2="980" y2="400" class="div-p1"/>
+
+<!-- 1.1 Beacon: vaaaakardli.pirate.sea -->
+<circle cx="200" cy="155" r="8" class="b1"/>
+<text x="200" y="159" class="badge-label">1.1</text>
+<line x1="208" y1="155" x2="792" y2="165" class="a-p1" marker-end="url(#arrow-solid)"/>
+<g transform="translate(500,150) rotate(1.5)">
+  <text x="0" y="0" class="lbl lbl-main">DNS Q (NULL/10) — vaaaakardli.pirate.sea</text>
+  <text x="0" y="12" class="lbl lbl-sub">Hello beacon</text>
+</g>
+<line x1="792" y1="182" x2="208" y2="192" class="a-p1 dash" marker-end="url(#arrow-open)"/>
+<g transform="translate(500,188) rotate(-1.5)">
+  <text x="0" y="0" class="lbl lbl-main">DNS R — 'VACKD'</text>
+  <text x="0" y="12" class="lbl lbl-sub">C2 alive/ready</text>
+</g>
+
+<!-- 1.2 Parameters -->
+<circle cx="200" cy="215" r="8" class="b1"/>
+<text x="200" y="219" class="badge-label">1.2</text>
+<line x1="208" y1="215" x2="792" y2="225" class="a-p1" marker-end="url(#arrow-solid)"/>
+<g transform="translate(500,210) rotate(1.5)">
+  <text x="0" y="0" class="lbl lbl-main">DNS Q — laegpumiplhhpz...pirate.sea</text>
+  <text x="0" y="12" class="lbl lbl-sub">Request tunnel config</text>
+</g>
+<line x1="792" y1="242" x2="208" y2="252" class="a-p1 dash" marker-end="url(#arrow-open)"/>
+<g transform="translate(500,248) rotate(-1.5)">
+  <text x="0" y="0" class="lbl lbl-main">DNS R — 10.20.30.1-10.20.30.3-1130-24</text>
+  <text x="0" y="12" class="lbl lbl-sub">NS, VIP, Port, /24</text>
+</g>
+<rect x="600" y="154" width="360" height="52" class="annot"/>
+<text x="612" y="170" class="annot-title">Assigned</text>
+<text x="612" y="185" class="mono">NS:10.20.30.1 | VIP:10.20.30.3 | Port:1130 | /24</text>
+
+<!-- 1.3 Capability structure -->
+<circle cx="200" cy="275" r="8" class="b1"/>
+<text x="200" y="279" class="badge-label">1.3</text>
+<line x1="208" y1="275" x2="792" y2="285" class="a-p1" marker-end="url(#arrow-solid)"/>
+<g transform="translate(500,270) rotate(1.5)">
+  <text x="0" y="0" class="lbl lbl-main">DNS Q — yrbi02.pirate.sea</text>
+  <text x="0" y="12" class="lbl lbl-sub">Capabilities?</text>
+</g>
+<line x1="792" y1="302" x2="208" y2="312" class="a-p1 dash" marker-end="url(#arrow-open)"/>
+<g transform="translate(500,308) rotate(-1.5)">
+  <text x="0" y="0" class="lbl lbl-main">DNS R — 48-byte capability blob</text>
+  <text x="0" y="12" class="lbl lbl-sub">Codecs: Base128/Base64, zlib</text>
+</g>
+
+<!-- 1.4 Character echo tests (5x) -->
+<circle cx="200" cy="335" r="8" class="b1"/>
+<text x="200" y="339" class="badge-label">1.4</text>
+<line x1="208" y1="335" x2="792" y2="345" class="a-p1" marker-end="url(#arrow-solid)"/>
+<g transform="translate(500,330) rotate(1.5)">
+  <text x="0" y="0" class="lbl lbl-main">DNS Q — zi03..zi1b (5x)</text>
+  <text x="0" y="12" class="lbl lbl-sub">Alphabet survivability probes</text>
+</g>
+<line x1="792" y1="362" x2="208" y2="372" class="a-p1 dash" marker-end="url(#arrow-open)"/>
+<g transform="translate(500,368) rotate(-1.5)">
+  <text x="0" y="0" class="lbl lbl-main">DNS R — Echoed bytes</text>
+  <text x="0" y="12" class="lbl lbl-sub">Agreed safe alphabet</text>
+</g>
+
+<!-- 1.5 Codec selection (3 control queries) -->
+<circle cx="200" cy="385" r="8" class="b1"/>
+<text x="200" y="389" class="badge-label">1.5</text>
+<line x1="208" y1="385" x2="792" y2="392" class="a-p1" marker-end="url(#arrow-solid)"/>
+<g transform="translate(500,382) rotate(0.6)">
+  <text x="0" y="0" class="lbl lbl-main">DNS Q — sbhi1c/obsi1d/obli1e</text>
+  <text x="0" y="12" class="lbl lbl-sub">Up: Base128 | Down: Base64 | Fallback: Lazy</text>
+</g>
+
+<!-- Phase 2 -->
+<rect x="20" y="410" width="116" height="220" class="phase-bar p2"/>
+<text x="78" y="442" class="phase-label phase-title">Phase 2</text>
+<text x="78" y="458" class="phase-label phase-sub">Tunnel +</text>
+<text x="78" y="474" class="phase-label phase-sub">Data Xfer</text>
+<rect x="136" y="410" width="844" height="220" class="phase-bg bg-p2"/>
+<line x1="20" y1="630" x2="980" y2="630" class="div-p2"/>
+
+<!-- 2.1 Upstream chunks rc/rd (13x) -->
+<circle cx="200" cy="440" r="8" class="b2"/>
+<text x="200" y="444" class="badge-label">2.1</text>
+<line x1="208" y1="440" x2="792" y2="450" class="a-p2" marker-end="url(#arrow-solid)"/>
+<g transform="translate(500,435) rotate(1.5)">
+  <text x="0" y="0" class="lbl lbl-main">DNS Q — rc*/rd* (Base128 chunks) ×13</text>
+  <text x="0" y="12" class="lbl lbl-sub">≈62 B/label, multi-label QNAME</text>
+</g>
+<line x1="792" y1="467" x2="208" y2="477" class="a-p2 dash" marker-end="url(#arrow-open)"/>
+<g transform="translate(500,473) rotate(-1.5)">
+  <text x="0" y="0" class="lbl lbl-main">DNS R — 0.8–1.2 KB blobs</text>
+  <text x="0" y="12" class="lbl lbl-sub">Bidirectional data begins</text>
+</g>
+<rect x="570" y="418" width="380" height="44" class="annot"/>
+<text x="582" y="434" class="annot-title">Throughput Tactics</text>
+<text x="582" y="448" class="mono">Chunk split across labels; maximize QNAME length</text>
+
+<!-- 2.2 Keepalive/polling (174x) -->
+<circle cx="200" cy="500" r="8" class="b2"/>
+<text x="200" y="504" class="badge-label">2.2</text>
+<line x1="208" y1="500" x2="792" y2="510" class="a-p2" marker-end="url(#arrow-solid)"/>
+<g transform="translate(500,495) rotate(1.5)">
+  <text x="0" y="0" class="lbl lbl-main">DNS Q — na*/pa* short polls ×174</text>
+  <text x="0" y="12" class="lbl lbl-sub">Heartbeat + downlink fetch</text>
+</g>
+<line x1="792" y1="527" x2="208" y2="537" class="a-p2 dash" marker-end="url(#arrow-open)"/>
+<g transform="translate(500,533) rotate(-1.5)">
+  <text x="0" y="0" class="lbl lbl-main">DNS R — zlib-compressed data</text>
+  <text x="0" y="12" class="lbl lbl-sub">~14,725 B total (0x78 0xDA)</text>
+</g>
+<rect x="560" y="540" width="390" height="52" class="annot"/>
+<text x="572" y="556" class="annot-title">Polling Loop Metrics</text>
+<text x="572" y="571" class="mono">Exchanges: 174 | Downlink (compressed): ~14.7 KB</text>
+
+<!-- Phase 3 -->
+<rect x="20" y="650" width="116" height="170" class="phase-bar p3"/>
+<text x="78" y="682" class="phase-label phase-title">Phase 3</text>
+<text x="78" y="698" class="phase-label phase-sub">Bulk</text>
+<text x="78" y="714" class="phase-label phase-sub">Exfiltration</text>
+<rect x="136" y="650" width="844" height="170" class="phase-bg bg-p3"/>
+<line x1="20" y1="820" x2="980" y2="820" class="div-p3"/>
+
+<!-- 3.1 Numeric-prefixed max-length exfil (24x) -->
+<circle cx="200" cy="690" r="8" class="b3"/>
+<text x="200" y="694" class="badge-label">3.1</text>
+<line x1="208" y1="690" x2="792" y2="700" class="a-p3" marker-end="url(#arrow-solid)"/>
+<g transform="translate(500,685) rotate(1.5)">
+  <text x="0" y="0" class="lbl lbl-main">DNS Q — numeric-prefixed labels ×24</text>
+  <text x="0" y="12" class="lbl lbl-sub">~250 B/QNAME (maximized)</text>
+</g>
+<line x1="792" y1="717" x2="208" y2="727" class="a-p3 dash" marker-end="url(#arrow-open)"/>
+<g transform="translate(500,723) rotate(-1.5)">
+  <text x="0" y="0" class="lbl lbl-main">DNS R — 2-byte sequence ACK</text>
+  <text x="0" y="12" class="lbl lbl-sub">e.g., a0 20, b0 20</text>
+</g>
+<rect x="540" y="730" width="410" height="52" class="annot"/>
+<text x="552" y="746" class="annot-title">Exfil Window</text>
+<text x="552" y="761" class="mono">Begins ~13 s into session | Total queries: 24 | ACKs: 24</text>
+
+<!-- Footer -->
+<rect x="20" y="830" width="960" height="48" class="footer"/>
+<text x="500" y="852" class="footer-text">Strong DNS tunneling indicators: Type 10 usage, asymmetric Base128/Base64 codecs, sustained polling with zlib payloads, and late-session bulk exfil.</text>
+
+</svg>

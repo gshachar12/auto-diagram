@@ -1,0 +1,39 @@
+Incident Report: SQL Slammer Worm Probe on UDP 1434
+===================================================
+
+Summary
+-------
+On 2003-10-11 at 00:02:49 UTC the perimeter sensor recorded an SQL
+Slammer infection attempt against 65.165.167.86. The source,
+213.76.212.22, is an external host that is still infected with the worm
+months after the January 2003 outbreak. The capture holds a single
+packet, which is the entire worm.
+
+Observed packet
+---------------
+213.76.212.22 sent one UDP datagram from source port 20199 to
+destination port 1434, the Microsoft SQL Server Resolution Service. The
+datagram carries 376 bytes of payload in a 418-byte frame and arrived
+with a TTL of 113. The payload starts with the byte 0x04, the Resolution
+Service request type that triggers the stack overflow, followed by a long
+run of 0x01 filler bytes, a short NOP sled and x86 machine code. Readable
+strings inside the code name the Windows functions the worm needs:
+kernel32.dll, GetTickCount, ws2_32.dll, socket and sendto. Wireshark
+mis-decodes the datagram as a DCE/RPC ping because nothing else on the
+port looks like SQL traffic.
+
+There is no reply from 65.165.167.86 in the capture and no follow-up
+traffic.
+
+Background
+----------
+Slammer fits in a single datagram. Once it runs inside SQL Server it
+seeds a random number generator from GetTickCount and sends copies of
+itself to random addresses as fast as the host's network allows, which
+is why the 2003 outbreak saturated links worldwide within minutes.
+
+Assessment
+----------
+Since the target did not answer, it is probably not running a vulnerable
+SQL Server. The edge firewall should drop inbound UDP 1434 regardless,
+and the owner of 213.76.212.22 should be notified.

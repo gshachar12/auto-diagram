@@ -1,0 +1,50 @@
+[
+  {
+    "step_id": 1,
+    "text": "145.254.160.237 opens a TCP connection from port 3372 to 65.208.228.223 on port 80; the three-way handshake completes after about 0.9 seconds.",
+    "source_text": "The client opened a TCP connection from port 3372 to www.ethereal.com (65.208.228.223) on port 80. The three-way handshake completed after about 0.9 seconds and the client immediately sent \"GET /download.html\".",
+    "mitre_tag": null
+  },
+  {
+    "step_id": 2,
+    "text": "145.254.160.237 sends an HTTP GET for /download.html to 65.208.228.223.",
+    "source_text": "The three-way handshake completed after about 0.9 seconds and the client immediately sent \"GET /download.html\".",
+    "mitre_tag": null
+  },
+  {
+    "step_id": 3,
+    "text": "65.208.228.223 returns HTTP 200 with an 18,070-byte HTML page in TCP segments of up to 1,380 bytes.",
+    "source_text": "The Apache server answered with HTTP 200 and an 18,070-byte HTML page, delivered in TCP segments of up to 1,380 bytes.",
+    "mitre_tag": null
+  },
+  {
+    "step_id": 4,
+    "text": "145.254.160.237 sends a DNS query for pagead2.googlesyndication.com to 145.253.2.203.",
+    "source_text": "While the page was still arriving the browser looked up pagead2.googlesyndication.com with a DNS query to the ISP resolver 145.253.2.203.",
+    "mitre_tag": null
+  },
+  {
+    "step_id": 5,
+    "text": "145.253.2.203 returns a DNS response with two CNAME records and the addresses 216.239.59.104 and 216.239.59.99.",
+    "source_text": "The answer pointed through two CNAME records to the addresses 216.239.59.104 and 216.239.59.99.",
+    "mitre_tag": null
+  },
+  {
+    "step_id": 6,
+    "text": "145.254.160.237 opens a second TCP connection to 216.239.59.99 on port 80 and sends an HTTP GET for /pagead/ads with a long query string.",
+    "source_text": "The browser then opened a second TCP connection to 216.239.59.99 on port 80 and requested /pagead/ads with a long query string describing the ad slot.",
+    "mitre_tag": null
+  },
+  {
+    "step_id": 7,
+    "text": "216.239.59.99 returns HTTP 200 with a 1,272-byte HTML body; one response segment is retransmitted and the client sends a duplicate ACK.",
+    "source_text": "Google's server replied with HTTP 200 and a 1,272-byte HTML fragment. One segment of that response was retransmitted and the client sent a duplicate ACK.",
+    "mitre_tag": null
+  },
+  {
+    "step_id": 8,
+    "text": "65.208.228.223 sends a TCP FIN to close the connection, and 145.254.160.237 sends its own FIN about 12 seconds later.",
+    "source_text": "The web server closed its connection with a FIN 13 seconds after the page finished loading, and the client closed its side about 12 seconds after that.",
+    "mitre_tag": null
+  }
+]
