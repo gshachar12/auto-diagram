@@ -208,3 +208,7 @@ __marimo__/
 
 .*venv
 output/Demo.mov
+
+# Office lock files / editor temp junk
+~$*
+*.tmp
