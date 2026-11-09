@@ -1,0 +1,57 @@
+# DEMO configuration -- NOT the experiment's pre-registered parameters.
+#
+# These values exist so the demo dataset and the test suite can run end to
+# end before the project owner has chosen the real thresholds. They are
+# arbitrary. Nothing measured with this config may be reported: the real
+# config/experiment.yaml keeps its UNSET sentinels until the owner fixes
+# delta, tau, the quantity thresholds and the equivalence margin.
+#
+#
+# Every threshold the analysis depends on lives here and nowhere else. The
+# values marked UNSET are the ones the project owner must fix BEFORE a run:
+# choosing them after seeing results would make the numbers meaningless, so
+# `Config.require_frozen()` refuses to start a run while any UNSET remains.
+#
+# Changing any value here changes `config_hash`, which creates a new run.
+# It never alters a run that already happened.
+
+config_version: 1
+
+thresholds:
+  # Sequence tolerance: a gap smaller than this is "no reliable order".
+  delta_seconds: 0.05
+  # Absence window: how long to wait for a response before "no response".
+  tau_seconds: 2.0
+  # Quantity thresholds, per quantifier used in the claims.
+  quantity:
+    many: 10
+    thousands: 1000
+  # Prompt-effect equivalence margin -- decides whether "no prompt effect"
+  # is even testable at this sample size. Fixed before the run.
+  equivalence_margin:
+    flip_rate: 0.05
+    accuracy_points: 3.0
+
+pcap_tool:
+  # Resolved at call time: PANGEA_TSHARK env var wins, then this, then PATH.
+  tshark_path: null
+  timeout_seconds: 30
+  max_packets_returned: 50
+  max_output_bytes: 1048576
+  # Captures may only be read from inside these roots (read-only jail).
+  allowed_roots:
+    - pcaps
+
+run:
+  repeats: 2
+  randomize_order: true
+  seed: 20261109
+  max_concurrency: 2
+  retry:
+    attempts: 3
+    backoff_seconds: 2.0
+
+analysis:
+  bootstrap_resamples: 2000
+  # Panel statistics treat a model family as one unit, not one vote each.
+  unit: family

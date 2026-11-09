@@ -1,0 +1,34 @@
+# Panel members. `version` is an exact version string -- never an alias such
+# as "latest", because an alias silently changes what the experiment ran on.
+#
+# API keys are read from the environment at call time (`api_key_env`) and are
+# never stored in a config, a manifest or a result row.
+#
+# The real panel is still OPEN (which families/APIs, and which support tool
+# calling). Only the mock panel below is usable today; it costs nothing and
+# every test and the demo run on it.
+
+models:
+  - model_id: mock-a
+    family: mock-alpha
+    version: mock-alpha-1.0
+    adapter: mock
+    supports_tools: true
+    temperature: 0.0
+    api_key_env: null
+  - model_id: mock-b
+    family: mock-beta
+    version: mock-beta-1.0
+    adapter: mock
+    supports_tools: true
+    temperature: 0.0
+    api_key_env: null
+  - model_id: mock-c
+    family: mock-gamma
+    version: mock-gamma-1.0
+    adapter: mock
+    # Records a model with no tool support: reported as a format-error rate,
+    # never silently dropped from the panel.
+    supports_tools: false
+    temperature: 0.0
+    api_key_env: null

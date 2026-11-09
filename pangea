@@ -1,0 +1,19 @@
+#!/bin/sh
+# PAnGEA Dataset Creator launcher.
+#
+# Sets the two things this host needs and nothing else: src/ on PYTHONPATH
+# (the repo has no packaging file; every module is imported this way), and
+# the user-space Wireshark build on PATH, since tshark could not be
+# installed system-wide here. An existing PANGEA_TSHARK always wins.
+set -e
+ROOT=$(cd "$(dirname "$0")" && pwd)
+
+if [ -z "$PANGEA_TSHARK" ] && [ -x "$HOME/.pangea-tools/tshark/usr/bin/tshark" ]; then
+    PANGEA_TSHARK="$HOME/.pangea-tools/tshark/usr/bin/tshark"
+    LD_LIBRARY_PATH="$HOME/.pangea-tools/tshark/usr/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+    export PANGEA_TSHARK LD_LIBRARY_PATH
+fi
+
+PYTHONPATH="$ROOT/src${PYTHONPATH:+:$PYTHONPATH}"
+export PYTHONPATH
+exec "$ROOT/.venv/bin/python" -m Dataset.cli "$@"

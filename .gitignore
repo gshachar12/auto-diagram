@@ -212,3 +212,6 @@ output/Demo.mov
 # Office lock files / editor temp junk
 ~$*
 *.tmp
+
+# PAnGEA Dataset Creator: generated data (append-only results, SQLite)
+data/

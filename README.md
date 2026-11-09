@@ -94,3 +94,19 @@ python src/cli.py create \
 ```
 
 The diagram text (Mermaid) is saved to `output/diagram.mmd`.
+
+## PAnGEA Dataset Creator
+
+The claim-verification dataset and the multi-agent experiment live in
+`src/Dataset/` and are driven by the `./pangea` launcher:
+
+```bash
+./pangea doctor    # check python, git, tshark and the data directory
+./pangea demo      # seed the reproducible demo dataset (MockModel, no API cost)
+./pangea status    # what is stored
+pytest             # the Dataset Creator suite
+```
+
+This part does not use the virtualenv instructions above: `python3 -m venv`
+is unavailable on the lab host, so `.venv` is a micromamba environment and
+`./pangea` runs `.venv/bin/python` directly. See `src/Dataset/README.md`.
