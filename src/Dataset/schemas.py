@@ -291,9 +291,10 @@ class CallRecord(Record):
     model_version: str
     prompt_id: str
     prompt_hash: str
-    repeat: int
-    temperature: float
-    raw_response: str
+    prompt_rendered: str = ""
+    repeat: int = 0
+    temperature: float = 0.0
+    raw_response: str = ""
     parsed: dict[str, Any] | None = None
     tool_calls: list[dict[str, Any]] = Field(default_factory=list)
     format_error: bool = False

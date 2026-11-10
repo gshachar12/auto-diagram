@@ -397,6 +397,24 @@ class PcapService:
                     continue
         return None, None, None
 
+    def head(self, path: str | Path, limit: int | None = None) -> list[dict[str, Any]]:
+        """
+        The first N packets, with no filter and no count.
+
+        `-c N` makes tshark stop after reading N packets, so this is cheap
+        even on a 324 MB capture. query() cannot use it: counting matches
+        requires reading the whole file, and a `-c` there would silently
+        turn "29 matches" into "29 matches in the first N packets".
+        """
+        capture = self.resolve_capture(path)
+        limit = self.max_packets_returned if limit is None else min(int(limit), self.max_packets_returned)
+        result = self._run(
+            ["-r", str(capture), "-c", str(limit), "-T", "fields",
+             *sum((["-e", name] for name in PACKET_FIELDS), []),
+             "-E", "separator=\t", "-E", "occurrence=f"]
+        )
+        return [_parse_packet_line(line).as_dict() for line in result.stdout.splitlines() if line.strip()]
+
     def query(self, path: str | Path, display_filter: str, limit: int | None = None) -> QueryResult:
         """
         Run a display filter: how many packets match, and the first few.

@@ -336,6 +336,50 @@ def sources(db: Database) -> list[dict[str, Any]]:
     return rows
 
 
+def source_files(db: Database, source_id: str) -> list[dict[str, Any]]:
+    """
+    The files behind one source: its steps CSVs, its provenance note and
+    its captures, each one openable.
+
+    Built from the database rather than by listing a directory, which is
+    also what makes the reader safe: a path is served only if a row already
+    refers to it.
+    """
+    files: list[dict[str, Any]] = []
+    source = db.one("SELECT origin FROM sources WHERE source_id = ?", (source_id,))
+    if source is None:
+        return files
+
+    for row in db.query(
+        "SELECT origin_file, COUNT(*) n FROM source_steps WHERE source_id = ? GROUP BY origin_file ORDER BY origin_file",
+        (source_id,),
+    ):
+        files.append({"path": row["origin_file"], "kind": "csv", "rows": row["n"]})
+    if source["origin"]:
+        files.append({"path": f"{source['origin']}/source.md", "kind": "markdown", "rows": None})
+    for row in db.query("SELECT pcap_id, path, packet_count, size_bytes FROM pcaps WHERE source_id = ? ORDER BY path", (source_id,)):
+        files.append(
+            {
+                "path": row["path"],
+                "kind": "pcap",
+                "pcap_id": row["pcap_id"],
+                "packets": row["packet_count"],
+                "size_bytes": row["size_bytes"],
+            }
+        )
+    return files
+
+
+def readable_paths(db: Database) -> set[str]:
+    """Every file path the database refers to. The allowlist for the reader."""
+    paths = {row["origin_file"] for row in db.query("SELECT DISTINCT origin_file FROM source_steps")}
+    paths |= {row["path"] for row in db.query("SELECT path FROM pcaps")}
+    paths |= {
+        f"{row['origin']}/source.md" for row in db.query("SELECT origin FROM sources WHERE origin != ''")
+    }
+    return paths
+
+
 def source_steps(db: Database, source_id: str) -> list[dict[str, Any]]:
     """The steps exactly as transcribed, with the whole original row."""
     return [

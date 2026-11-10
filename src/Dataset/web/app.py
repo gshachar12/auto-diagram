@@ -27,7 +27,10 @@ from fastapi import Body, FastAPI, HTTPException, Request, Response
 from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse
 from fastapi.staticfiles import StaticFiles
 
+from ..config import Config
+from ..manifest import REPO_ROOT
 from ..paths import data_dir, db_path
+from ..pcap import FilterError, PcapService, PcapServiceError, PcapTimeout
 from ..storage.db import Database
 from . import views
 from .auth import COOKIE_NAME, Auth, AuthError
@@ -165,6 +168,104 @@ def create_app(auth: Auth | None = None) -> FastAPI:
         if not steps:
             raise HTTPException(status_code=404, detail=f"no steps for {source_id}")
         return steps
+
+    @app.get("/api/source/{source_id}/files")
+    def source_files(source_id: str) -> list[dict[str, Any]]:
+        return _read(views.source_files, source_id)
+
+    @app.get("/api/file")
+    def read_file(path: str, max_bytes: int = 400_000) -> dict[str, Any]:
+        """
+        Serve a text file the dataset refers to.
+
+        The allowlist is the database itself: a path is readable only if a
+        row already names it. That keeps this from becoming a way to read
+        arbitrary files off the host through the dashboard, which a plain
+        `?path=` endpoint otherwise is.
+        """
+        allowed = _read(views.readable_paths)
+        if path not in allowed:
+            raise HTTPException(status_code=404, detail="not a file this dataset refers to")
+        resolved = (REPO_ROOT / path).resolve()
+        if not resolved.is_relative_to(REPO_ROOT) or not resolved.is_file():
+            raise HTTPException(status_code=404, detail="file missing on disk")
+        if resolved.suffix.lower() in (".pcap", ".pcapng", ".cap"):
+            raise HTTPException(status_code=415, detail="captures are read through /api/pcap/{pcap_id}")
+        raw = resolved.read_bytes()[: max_bytes + 1]
+        truncated = len(raw) > max_bytes
+        return {
+            "path": path,
+            "kind": "csv" if resolved.suffix.lower() == ".csv" else "text",
+            "size_bytes": resolved.stat().st_size,
+            "truncated": truncated,
+            "content": raw[:max_bytes].decode("utf-8", errors="replace"),
+        }
+
+    @app.get("/api/pcap/{pcap_id}")
+    def pcap(pcap_id: str, limit: int = 40) -> dict[str, Any]:
+        """The registry row plus the capture's first packets."""
+        db = _db()
+        try:
+            row = db.one("SELECT * FROM pcaps WHERE pcap_id = ?", (pcap_id,))
+            if row is None:
+                raise HTTPException(status_code=404, detail=f"no capture {pcap_id}")
+            record = dict(row)
+            record["capture_metadata"] = json.loads(record["capture_metadata"])
+            try:
+                service = PcapService.from_config(Config.load(), db=db)
+                record["head"] = service.head(REPO_ROOT / record["path"], limit=limit)
+                record["head_error"] = None
+            except PcapServiceError as exc:
+                # The row is still worth showing; the reason the packets are
+                # missing is data too.
+                record["head"] = []
+                record["head_error"] = str(exc)
+            return record
+        finally:
+            db.close()
+
+    @app.get("/api/pcap/{pcap_id}/query")
+    def pcap_query(pcap_id: str, filter: str, limit: int = 40) -> dict[str, Any]:
+        db = _db()
+        try:
+            row = db.one("SELECT path FROM pcaps WHERE pcap_id = ?", (pcap_id,))
+            if row is None:
+                raise HTTPException(status_code=404, detail=f"no capture {pcap_id}")
+            service = PcapService.from_config(Config.load(), db=db)
+            try:
+                return service.query(REPO_ROOT / row["path"], filter, limit=limit).as_dict()
+            except FilterError as exc:
+                raise HTTPException(status_code=400, detail=str(exc))
+            except PcapTimeout as exc:
+                raise HTTPException(status_code=504, detail=str(exc))
+            except PcapServiceError as exc:
+                raise HTTPException(status_code=503, detail=str(exc))
+        finally:
+            db.close()
+
+    @app.get("/api/prompts/variants")
+    def prompt_variants() -> list[dict[str, Any]]:
+        """Every prompt variant, with its full text."""
+        db = _db()
+        try:
+            return [dict(row) for row in db.query("SELECT * FROM prompt_variants ORDER BY dimension, label")]
+        finally:
+            db.close()
+
+    @app.get("/api/models")
+    def models() -> list[dict[str, Any]]:
+        """The panel as registered: who answered, which version, with tools."""
+        db = _db()
+        try:
+            rows = [dict(row) for row in db.query("SELECT * FROM model_specs ORDER BY family, model_id")]
+            for row in rows:
+                row["supports_tools"] = bool(row["supports_tools"])
+                row["calls"] = db.one(
+                    "SELECT COUNT(*) n FROM calls WHERE model_id = ?", (row["model_id"],)
+                )["n"]
+            return rows
+        finally:
+            db.close()
 
     @app.get("/api/panel")
     def panel(run_id: str | None = None) -> dict[str, Any]:

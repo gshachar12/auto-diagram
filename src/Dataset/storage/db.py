@@ -26,7 +26,7 @@ import sqlite3
 from pathlib import Path
 from typing import Any, Iterable
 
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
 
 RAW_TABLES: tuple[str, ...] = (
     "sources",
@@ -224,6 +224,10 @@ CREATE TABLE IF NOT EXISTS calls (
     prompt_hash   TEXT NOT NULL,
     repeat        INTEGER NOT NULL,
     temperature   REAL NOT NULL,
+    -- Exactly what was sent, not a template plus the hope of re-rendering
+    -- it the same way later. prompt_hash identifies the variant; this is
+    -- the bytes the model actually saw.
+    prompt_rendered TEXT NOT NULL DEFAULT '',
     raw_response  TEXT NOT NULL,
     parsed        TEXT,
     tool_calls    TEXT NOT NULL DEFAULT '[]',
@@ -341,9 +345,23 @@ class Database:
 
     # -- lifecycle --------------------------------------------------------
 
+    #: Columns added after a database may already exist. Adding a column is
+    #: additive -- it rewrites no row -- so it is compatible with the
+    #: append-only rule in a way that changing one would not be.
+    _ADDED_COLUMNS: tuple[tuple[str, str, str], ...] = (
+        ("calls", "prompt_rendered", "TEXT NOT NULL DEFAULT ''"),
+    )
+
+    def _add_missing_columns(self) -> None:
+        for table, column, definition in self._ADDED_COLUMNS:
+            existing = {row["name"] for row in self.conn.execute(f"PRAGMA table_info({table})")}
+            if column not in existing:
+                self.conn.execute(f"ALTER TABLE {table} ADD COLUMN {column} {definition}")
+
     def initialise(self) -> "Database":
         with self.conn:
             self.conn.executescript(_SCHEMA)
+            self._add_missing_columns()
             self.conn.executescript(_append_only_triggers(RAW_TABLES))
             self.conn.execute(
                 "INSERT OR REPLACE INTO meta(key, value) VALUES ('schema_version', ?)",

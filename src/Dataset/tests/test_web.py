@@ -210,3 +210,79 @@ def test_export_csv_has_a_header_and_one_row_per_pair(client):
     rows = client.get("/api/export/claims.csv").text.strip().splitlines()
     assert len(rows) == len(client.get("/api/claims").json()) + 1
     assert "pair_id" in rows[0]
+
+
+# -- reading the samples --------------------------------------------------
+
+def test_a_source_lists_its_steps_file_and_its_captures(db):
+    rows = views.sources(db)
+    source_id = rows[0]["source_id"]
+    kinds = {f["kind"] for f in views.source_files(db, source_id)}
+    assert "pcap" in kinds or "csv" in kinds
+    assert "markdown" in kinds
+
+
+def test_the_readable_allowlist_comes_from_the_database(db):
+    allowed = views.readable_paths(db)
+    assert allowed
+    # Only paths some row already refers to; nothing else on the host.
+    assert all(not p.startswith("/") for p in allowed)
+    assert "README.md" not in allowed
+
+
+@pytest.mark.parametrize("path", ["/etc/passwd", "README.md", "../../etc/passwd", "src/Dataset/cli.py"])
+def test_the_file_reader_refuses_anything_not_referenced(client, path):
+    assert client.get("/api/file", params={"path": path}).status_code == 404
+
+
+def test_the_file_reader_refuses_a_capture(client, db):
+    pcap_path = db.one("SELECT path FROM pcaps")["path"]
+    # Captures go through the PCAP service, which bounds and jails the read.
+    assert client.get("/api/file", params={"path": pcap_path}).status_code == 415
+
+
+def test_a_capture_can_be_read_through_its_registry_row(client, db):
+    pcap_id = db.one("SELECT pcap_id FROM pcaps")["pcap_id"]
+    payload = client.get(f"/api/pcap/{pcap_id}", params={"limit": 5}).json()
+    assert payload["sha256"] and payload["capture_metadata"]
+    assert payload["head_error"] is None or payload["head"] == []
+    if payload["head"]:
+        assert payload["head"][0]["number"] == 1
+
+
+def test_a_hostile_filter_through_the_api_is_a_400(client, db):
+    pcap_id = db.one("SELECT pcap_id FROM pcaps")["pcap_id"]
+    response = client.get(f"/api/pcap/{pcap_id}/query", params={"filter": "tcp; rm -rf /"})
+    assert response.status_code == 400
+
+
+def test_a_missing_capture_is_a_404(client):
+    assert client.get("/api/pcap/pcap_nope").status_code == 404
+
+
+# -- who answered, and with which prompt ----------------------------------
+
+def test_the_panel_participants_are_listed_with_exact_versions(client):
+    models = client.get("/api/models").json()
+    assert models
+    for model in models:
+        assert model["version"] and "latest" not in model["version"]
+        assert model["calls"] > 0
+        assert set(model) >= {"model_id", "family", "version", "adapter", "supports_tools", "temperature"}
+
+
+def test_the_prompt_variants_are_served_with_their_text(client):
+    variants = client.get("/api/prompts/variants").json()
+    assert variants
+    for variant in variants:
+        assert variant["template"] and variant["prompt_hash"]
+
+
+def test_every_call_records_the_prompt_that_produced_it(db):
+    rows = views.claims_table(db)
+    detail = views.pair_detail(db, rows[0]["pair_id"])
+    raw = views.raw_call(db, detail["matrix"][0]["call_id"])
+    assert raw["prompt_rendered"]
+    # The claim is in the prompt; the expected verdict never is.
+    assert raw["prompt_rendered"].strip()
+    assert "expected" not in raw["prompt_rendered"].lower()

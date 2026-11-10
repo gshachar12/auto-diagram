@@ -228,6 +228,7 @@ class Repository:
                 model_version=call.model_version,
                 prompt_id=call.prompt_id,
                 prompt_hash=call.prompt_hash,
+                prompt_rendered=call.prompt_rendered,
                 repeat=call.repeat,
                 temperature=call.temperature,
                 raw_response=call.raw_response,

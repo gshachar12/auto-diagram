@@ -139,6 +139,10 @@ nav .dot{width:17px;height:17px;border-radius:5px;background:currentColor;opacit
                   cursor:pointer;font-family:var(--font)}
 .gate-card button:disabled{opacity:.55}
 .gate-err{color:var(--bad);font-size:13px;margin-top:10px;min-height:18px}
+.filechip{cursor:pointer;background:var(--accent-soft);color:var(--accent);font-weight:500}
+.fltbox{flex:1;padding:9px 11px;border:0.5px solid var(--border-strong);border-radius:9px;
+        background:var(--surface-2);color:var(--text);font-family:var(--mono);font-size:13px}
+.fltbox:focus{outline:none;border-color:var(--accent)}
 .signout{border:0.5px solid var(--border);background:var(--surface);color:var(--muted);
          border-radius:8px;padding:6px 12px;font-size:13px;cursor:pointer;font-family:var(--font)}
 a{color:var(--accent)}
@@ -331,6 +335,8 @@ async function vSources(v){
           ${r.captures.length?`<span class="badge">${r.captures.length} capture${r.captures.length===1?'':'s'}</span>`
                              :'<span class="badge flag">no capture</span>'}
         </div>
+        <h3>Samples</h3>
+        <div class="meta" id="files-${r.source_id}"><span class="ci">loading files…</span></div>
         ${r.captures.length?`<div class="scroll"><table style="margin-top:8px">
           <thead><tr><th>capture</th><th>packets</th><th>size</th><th>both directions</th></tr></thead>
           <tbody>${r.captures.map(c=>`<tr>
@@ -351,6 +357,117 @@ async function vSources(v){
       decision are manual and still unverified for every source. Licences were not inferred: a source
       whose terms are not written down says UNVERIFIED.</p>
     </div>`;
+  loadFiles(rows);
+}
+
+async function loadFiles(rows){
+  // Each source's steps CSV and its captures, side by side and openable --
+  // the pairing is the point: a steps file means nothing without the
+  // capture it is supposed to describe.
+  for(const r of rows){
+    const host = $('files-'+r.source_id);
+    if(!host) continue;
+    try{
+      const files = await api('/source/'+r.source_id+'/files');
+      host.innerHTML = files.map(f => {
+        const name = esc(f.path.split('/').pop());
+        if(f.kind==='pcap')
+          return `<span class="badge filechip" onclick="openPcap('${f.pcap_id}')">pcap · ${name}
+                  ${f.packets!=null?`· ${f.packets.toLocaleString()} pkts`:''} ›</span>`;
+        return `<span class="badge filechip" onclick="openFile('${esc(f.path)}')">${f.kind} · ${name}
+                ${f.rows?`· ${f.rows} rows`:''} ›</span>`;
+      }).join('') || '<span class="ci">no files</span>';
+    } catch(e){ host.innerHTML = `<span class="ci">${esc(e.message)}</span>`; }
+  }
+}
+
+function csvTable(text){
+  // Good enough for these files: quoted cells with commas inside are the
+  // only subtlety, and they do occur in the transcribed step tables.
+  const rows = [];
+  let row = [], cell = '', quoted = false;
+  for(let i=0;i<text.length;i++){
+    const c = text[i];
+    if(quoted){
+      if(c==='"' && text[i+1]==='"'){ cell+='"'; i++; }
+      else if(c==='"'){ quoted = false; }
+      else cell += c;
+    } else if(c==='"'){ quoted = true; }
+    else if(c===','){ row.push(cell); cell=''; }
+    else if(c==='\n'){ row.push(cell); rows.push(row); row=[]; cell=''; }
+    else if(c!=='\r'){ cell += c; }
+  }
+  if(cell||row.length){ row.push(cell); rows.push(row); }
+  const body = rows.filter(r => r.some(x=>x.trim()));
+  if(!body.length) return '<p class="sub">empty</p>';
+  const [head, ...rest] = body;
+  return `<div class="scroll"><table>
+    <thead><tr>${head.map(h=>`<th>${esc(h)}</th>`).join('')}</tr></thead>
+    <tbody>${rest.map(r=>`<tr>${head.map((_,i)=>`<td>${esc(r[i]||'')}</td>`).join('')}</tr>`).join('')}</tbody>
+  </table></div>`;
+}
+
+async function openFile(path){
+  const f = await api('/file?path='+encodeURIComponent(path));
+  openSheet(path.split('/').pop(), `
+    <div class="card">
+      <p class="sub mono">${esc(f.path)}</p>
+      <p class="sub">${(f.size_bytes/1024).toFixed(1)} kB${f.truncated?' · truncated for display':''}</p>
+      ${f.kind==='csv' ? csvTable(f.content) : `<pre>${esc(f.content)}</pre>`}
+    </div>`);
+}
+
+async function openPcap(pcapId){
+  const d = await api('/pcap/'+pcapId+'?limit=40');
+  const meta = d.capture_metadata || {};
+  openSheet(d.path.split('/').pop(), `
+    <div class="card"><h2>Capture</h2>
+      <p class="sub mono">${esc(d.path)}</p>
+      <table><tbody>
+        <tr><td class="sub">packets</td><td class="num">${d.packet_count==null?'<span class="badge flag">uncounted</span>':d.packet_count.toLocaleString()}</td></tr>
+        <tr><td class="sub">size</td><td class="num">${(d.size_bytes/1e6).toFixed(1)} MB</td></tr>
+        <tr><td class="sub">sha256</td><td class="mono">${esc(d.sha256.slice(0,32))}…</td></tr>
+        <tr><td class="sub">both directions</td><td>${meta.both_directions==null?'<span class="badge flag">unknown</span>':(meta.both_directions?'yes':'no')}</td></tr>
+        <tr><td class="sub">vantage point</td><td class="sub">${esc(meta.vantage_point||'')}</td></tr>
+      </tbody></table>
+    </div>
+    <div class="card"><h2>Run a display filter</h2>
+      <form onsubmit="runFilter(event,'${pcapId}')" style="display:flex;gap:7px">
+        <input id="flt" placeholder="e.g. tcp.flags.syn == 1" class="fltbox"
+               autocapitalize="off" autocorrect="off" spellcheck="false">
+        <button class="signout" type="submit">Run</button>
+      </form>
+      <div id="fltout"></div>
+      <div class="note">The filter is compiled by tshark before it runs, the capture is read from a
+      read-only jail, and the scan is bounded by a timeout and an output cap.</div>
+    </div>
+    <div class="card"><h2>First ${d.head.length} packets</h2>
+      ${d.head_error?`<p class="sub">${esc(d.head_error)}</p>`:packetTable(d.head)}
+    </div>`);
+}
+
+function packetTable(packets){
+  if(!packets.length) return '<p class="sub">no packets</p>';
+  return `<div class="scroll"><table>
+    <thead><tr><th>#</th><th>time</th><th>source</th><th>destination</th><th>proto</th><th>info</th></tr></thead>
+    <tbody>${packets.map(p=>`<tr>
+      <td class="num">${p.number}</td><td class="num">${p.time_epoch==null?'':Number(p.time_epoch).toFixed(3)}</td>
+      <td class="mono">${esc(p.source)}</td><td class="mono">${esc(p.destination)}</td>
+      <td>${esc(p.protocol)}</td><td class="sub">${esc((p.info||'').slice(0,80))}</td>
+    </tr>`).join('')}</tbody></table></div>`;
+}
+
+async function runFilter(ev, pcapId){
+  ev.preventDefault();
+  const out = $('fltout'), value = $('flt').value.trim();
+  if(!value) return;
+  out.innerHTML = '<p class="sub">running…</p>';
+  try{
+    const r = await api(`/pcap/${pcapId}/query?limit=40&filter=`+encodeURIComponent(value));
+    out.innerHTML = `<p class="sub" style="margin:8px 0">${r.match_count.toLocaleString()} match${r.match_count===1?'':'es'}
+      ${r.truncated?' (scan truncated at the output cap — the true count is higher)':''}
+      ${r.cached?' · from cache':''}</p>` + packetTable(r.packets);
+  } catch(e){ out.innerHTML = `<p class="sub" style="color:var(--bad)">${esc(e.message)}</p>`; }
 }
 
 async function openSteps(sourceId, title){
@@ -471,14 +588,34 @@ async function openCall(callId){
         <tr><td class="sub">format error</td><td>${c.format_error?'<span class="badge flag">yes</span>':'no'}</td></tr>
         ${c.error?`<tr><td class="sub">error</td><td class="mono">${esc(c.error)}</td></tr>`:''}
       </tbody></table>
+      <h3>Prompt, as sent</h3><pre>${esc(c.prompt_rendered || '(not recorded for this call)')}</pre>
       <h3>Raw response, as stored</h3><pre>${esc(c.raw_response)}</pre>
       <h3>Tool calls</h3><pre>${esc(c.tool_calls)}</pre>
     </div>`);
 }
 
 async function vPanel(v){
-  const d = await api('/panel');
+  const [d, models] = await Promise.all([api('/panel'), api('/models')]);
   v.innerHTML = `
+    <div class="card"><h2>Who answered the survey</h2>
+      <div class="scroll"><table>
+        <thead><tr><th>model</th><th>family</th><th>exact version</th><th>adapter</th><th>tools</th><th>temp</th><th>answers</th></tr></thead>
+        <tbody>${models.map(m=>`<tr>
+          <td class="mono"><b>${esc(m.model_id)}</b></td>
+          <td>${esc(m.family)}</td>
+          <td class="mono">${esc(m.version)}</td>
+          <td>${esc(m.adapter)}</td>
+          <td>${m.supports_tools?'yes':'<span class="badge flag">no</span>'}</td>
+          <td class="num">${m.temperature}</td>
+          <td class="num">${m.calls}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>
+      <div class="note">Versions are exact strings, never an alias such as “latest”, because an alias
+      silently changes what the experiment ran on. ${models.every(m=>m.adapter==='mock')
+        ? 'Every participant here is the <b>MockModel</b> — scripted answers, no API call and no cost. Real providers arrive with the model adapters (B4).'
+        : ''}</div>
+    </div>
+
     <div class="card"><h2>Families <span class="sub">(the unit of analysis)</span></h2>
       <div class="scroll"><table>
         <thead><tr><th>family</th><th>matches expected</th><th>abstains</th><th>format err</th><th>self-consistency</th></tr></thead>
@@ -522,8 +659,20 @@ async function vPanel(v){
 }
 
 async function vPrompts(v){
-  const d = await api('/prompts');
+  const [d, variants] = await Promise.all([api('/prompts'), api('/prompts/variants')]);
   v.innerHTML = `
+    <div class="card"><h2>The prompt variants</h2>
+      <p class="sub" style="margin-bottom:10px">${variants.length} variants, each hashed. The criteria text
+      is identical across variants — only the presentation changes — except the control, which has no
+      criteria at all.</p>
+      ${variants.map(x=>`
+        <h3>${esc(x.label)} <span class="badge">${esc(x.dimension)}</span></h3>
+        <p class="ci mono">${esc(x.prompt_id)} · hash ${esc(x.prompt_hash.slice(0,16))}…</p>
+        <pre>${esc(x.template)}</pre>`).join('')}
+      <div class="note">A solver prompt must never contain the expected verdict, the pair type, the
+      claim’s provenance, the source paper or any Preprocessor cluster. The test that scans every
+      rendered prompt for those arrives with the prompt builder (B4); these demo variants are stubs.</div>
+    </div>`
     <div class="card"><h2>Flip rate vs the noise floor</h2>
       <table><tbody>
         <tr><td class="sub">between prompts</td><td>${rate(d.prompt_flip_rate)}${bar(d.prompt_flip_rate.rate)}</td></tr>

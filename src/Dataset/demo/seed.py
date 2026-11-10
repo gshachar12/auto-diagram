@@ -274,7 +274,14 @@ def seed_demo(
                 created_at=utc_now(),
             ),
         )
-        prompt_rows.append({"prompt_id": prompt_id, "prompt_hash": prompt_hash, "label": variant["label"]})
+        prompt_rows.append(
+            {
+                "prompt_id": prompt_id,
+                "prompt_hash": prompt_hash,
+                "label": variant["label"],
+                "template": variant["template"],
+            }
+        )
 
     model_rows: list[dict[str, Any]] = []
     for spec in config.models:
@@ -292,7 +299,14 @@ def seed_demo(
     # -- the run -----------------------------------------------------------
     config.require_frozen()
     run_id, manifest = build_manifest(
-        config=config, pcaps=pcap_rows, prompts=prompt_rows, models=model_rows, label=DEMO_LABEL, repo_root=root
+        config=config,
+        pcaps=pcap_rows,
+        # The manifest records each variant by id and hash, not its text:
+        # the text lives in prompt_variants and never changes under a hash.
+        prompts=[{k: v for k, v in p.items() if k != "template"} for p in prompt_rows],
+        models=model_rows,
+        label=DEMO_LABEL,
+        repo_root=root,
     )
     repo.add_run(run_id, manifest)
     repo.add_run_event(run_id, "started")
@@ -318,9 +332,10 @@ def seed_demo(
                         packet_count=100,
                     )
                     adapter.plans[call_key] = plan
+                    rendered = _render(prompt, pair, source_claims)
                     request = ModelRequest(
                         system_prompt=prompt["label"],
-                        user_prompt=f"DEMO prompt for pair {pair.pair_id}",
+                        user_prompt=rendered,
                         call_key=call_key,
                         temperature=spec.temperature,
                         max_output_tokens=spec.max_output_tokens,
@@ -339,6 +354,7 @@ def seed_demo(
                             model_version=spec.version,
                             prompt_id=prompt["prompt_id"],
                             prompt_hash=prompt["prompt_hash"],
+                            prompt_rendered=rendered,
                             repeat=repeat,
                             temperature=spec.temperature,
                             raw_response=result.raw_text,
@@ -367,6 +383,23 @@ def seed_demo(
     }
     db.close()
     return summary
+
+
+def _render(prompt: dict[str, Any], pair: Pair, source_claims: list[tuple[Claim, str]]) -> str:
+    """
+    Fill a variant's template for one pair.
+
+    Deliberately contains the claim and the capture, and deliberately not
+    the expected verdict, the pair type, the claim's provenance or the
+    source -- the leak test in B4 checks that separation on real prompts;
+    this keeps the demo honest in the meantime.
+    """
+    claim_text = next(
+        (claim.atomic_text for claim, _ in source_claims if claim.claim_id == pair.claim_id),
+        "(claim text unavailable)",
+    )
+    capture = f"capture {pair.pcap_id}" if pair.pcap_id else "no capture is available for this claim"
+    return prompt["template"].format(claim=claim_text, capture_summary=capture)
 
 
 def _behaviour_for(family: str, call_key: str, seed: int) -> ScriptedBehaviour:
