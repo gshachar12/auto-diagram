@@ -169,7 +169,10 @@ def test_a_misconfigured_model_is_stored_as_a_failure(runner, seeded, monkeypatc
 
 def test_a_run_refuses_to_start_with_unset_thresholds(seeded, tmp_path):
     db, _, _ = seeded
-    shipped = Config.load()
+    # Without overrides: the packaged config is the pre-registration and
+    # keeps its UNSET sentinels. Reading the deployment's overrides here
+    # would make this test depend on whatever the dashboard was last set to.
+    shipped = Config.load(apply_overrides=False)
     runner = Runner(db=db, config=shipped, results_path=tmp_path / "x.jsonl")
     with pytest.raises(ConfigError, match="before a run"):
         runner.create_run(label="test", units=[Unit("p", "m", "base", 0)])

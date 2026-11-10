@@ -20,6 +20,7 @@ Configuration loading and freezing.
 """
 from __future__ import annotations
 
+import json
 import os
 from pathlib import Path
 from typing import Any
@@ -33,6 +34,55 @@ from .schemas import ModelSpec
 UNSET = "UNSET"
 
 CONFIG_DIR = Path(__file__).resolve().parent / "config"
+
+#: Thresholds set from the dashboard land here rather than in the packaged
+#: YAML: the shipped file is the pre-registration (and keeps its UNSET
+#: sentinels in git), while this is what this deployment currently intends
+#: to run with. Both feed config_hash, so either one changing is a new run.
+OVERRIDES_FILENAME = "config_overrides.json"
+
+
+def overrides_path() -> Path:
+    from .paths import data_dir
+
+    return data_dir() / OVERRIDES_FILENAME
+
+
+def read_overrides() -> dict[str, Any]:
+    path = overrides_path()
+    if not path.exists():
+        return {}
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+
+
+def _merge(base: dict[str, Any], overlay: dict[str, Any]) -> dict[str, Any]:
+    """Deep merge, overlay winning. Only dicts recurse; scalars replace."""
+    merged = dict(base)
+    for key, value in (overlay or {}).items():
+        if isinstance(value, dict) and isinstance(merged.get(key), dict):
+            merged[key] = _merge(merged[key], value)
+        else:
+            merged[key] = value
+    return merged
+
+
+def set_override(dotted: str, value: Any) -> dict[str, Any]:
+    """Write one dotted path into the override file and return the result."""
+    overrides = read_overrides()
+    node = overrides
+    parts = dotted.split(".")
+    for part in parts[:-1]:
+        node = node.setdefault(part, {})
+        if not isinstance(node, dict):
+            raise ConfigError(f"{dotted} collides with a scalar already set")
+    node[parts[-1]] = value
+    path = overrides_path()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(overrides, indent=2, sort_keys=True), encoding="utf-8")
+    return overrides
 
 
 class ConfigError(RuntimeError):
@@ -61,8 +111,14 @@ class Config:
         self.experiment = experiment
         self.models_raw = models
         spec_fields = set(ModelSpec.model_fields)
+        entries = models.get("models", [])
+        # A disabled model stays in the file -- so the panel's history is
+        # readable -- but is not planned, called or put in a manifest.
+        self.all_models = [ModelSpec(**{k: v for k, v in e.items() if k in spec_fields}) for e in entries]
         self.models = [
-            ModelSpec(**{k: v for k, v in entry.items() if k in spec_fields}) for entry in models.get("models", [])
+            ModelSpec(**{k: v for k, v in e.items() if k in spec_fields})
+            for e in entries
+            if e.get("enabled", True)
         ]
         # Everything else about a model -- its key's variable, its exact
         # provider model name, its prices -- stays in the raw entry, which
@@ -71,10 +127,13 @@ class Config:
         self._api_key_envs = {entry["model_id"]: entry.get("api_key_env") for entry in models.get("models", [])}
 
     @classmethod
-    def load(cls, config_dir: str | Path | None = None) -> "Config":
+    def load(cls, config_dir: str | Path | None = None, *, apply_overrides: bool = True) -> "Config":
         directory = Path(config_dir) if config_dir else CONFIG_DIR
+        experiment = yaml.safe_load((directory / "experiment.yaml").read_text(encoding="utf-8"))
+        if apply_overrides:
+            experiment = _merge(experiment, read_overrides())
         return cls(
-            experiment=yaml.safe_load((directory / "experiment.yaml").read_text(encoding="utf-8")),
+            experiment=experiment,
             models=yaml.safe_load((directory / "models.yaml").read_text(encoding="utf-8")),
         )
 

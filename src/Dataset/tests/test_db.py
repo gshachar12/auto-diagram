@@ -25,6 +25,7 @@ SEED_ROWS: list[tuple[str, dict]] = [
     ("discards", dict(discard_id="dsc_1", kind="mutation", ref_id="clm_1", reason="stayed true", created_at=utc_now())),
     ("prompt_variants", dict(prompt_id="prm_1", dimension="wording", label="a", template="t", prompt_hash="h", config_version=1, created_at=utc_now())),
     ("model_specs", dict(model_id="m1", family="f", version="v", adapter="mock", supports_tools=1, temperature=0.0, created_at=utc_now())),
+    ("config_changes", dict(change_id="cfg_1", path="thresholds.tau_seconds", old_value="UNSET", new_value="2.0", created_at=utc_now())),
     ("runs", dict(run_id="run_1", manifest="{}", created_at=utc_now())),
     ("run_events", dict(event_id="evt_1", run_id="run_1", status="created", created_at=utc_now())),
     ("calls", dict(call_id="call_1", run_id="run_1", pair_id="pair_1", model_id="m1", model_family="f", model_version="v", prompt_id="prm_1", prompt_hash="h", repeat=0, temperature=0.0, raw_response="{}", timestamp=utc_now())),

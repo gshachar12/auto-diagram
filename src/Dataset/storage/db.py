@@ -26,7 +26,7 @@ import sqlite3
 from pathlib import Path
 from typing import Any, Iterable
 
-SCHEMA_VERSION = 4
+SCHEMA_VERSION = 5
 
 RAW_TABLES: tuple[str, ...] = (
     "sources",
@@ -39,6 +39,7 @@ RAW_TABLES: tuple[str, ...] = (
     "discards",
     "prompt_variants",
     "model_specs",
+    "config_changes",
     "runs",
     "run_events",
     "calls",
@@ -196,6 +197,24 @@ CREATE TABLE IF NOT EXISTS model_specs (
     temperature    REAL NOT NULL,
     max_output_tokens INTEGER NOT NULL DEFAULT 2048,
     created_at     TEXT NOT NULL
+);
+
+-- Every change to a pre-registered parameter, with what it was and what it
+-- became. The dashboard lets these be moved with a slider, which is only
+-- defensible because the move is recorded: the one failure mode that would
+-- invalidate the whole experiment is a threshold quietly tuned after the
+-- results came in, and this table is what makes that visible afterwards.
+CREATE TABLE IF NOT EXISTS config_changes (
+    change_id    TEXT PRIMARY KEY,
+    path         TEXT NOT NULL,
+    old_value    TEXT,
+    new_value    TEXT,
+    config_hash_before TEXT NOT NULL DEFAULT '',
+    config_hash_after  TEXT NOT NULL DEFAULT '',
+    runs_existing INTEGER NOT NULL DEFAULT 0,
+    changed_by   TEXT NOT NULL DEFAULT 'human',
+    note         TEXT NOT NULL DEFAULT '',
+    created_at   TEXT NOT NULL
 );
 
 -- ------------------------------------------------------------------- runs

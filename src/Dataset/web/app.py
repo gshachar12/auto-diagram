@@ -305,6 +305,82 @@ def create_app(auth: Auth | None = None) -> FastAPI:
         finally:
             db.close()
 
+    @app.get("/api/parameters")
+    def parameters() -> dict[str, Any]:
+        from ..parameters import PARAMETERS, change_log, runs_with_results
+
+        db = _db()
+        try:
+            config = Config.load()
+            return {
+                "config_hash": config.config_hash,
+                "runs_with_results": runs_with_results(db),
+                "unset": config.unset(),
+                "parameters": [
+                    {**parameter.as_dict(), "value": config.get(parameter.path)} for parameter in PARAMETERS
+                ],
+                "changes": change_log(db),
+            }
+        finally:
+            db.close()
+
+    @app.post("/api/parameters")
+    def set_parameters(body: dict[str, Any] = Body(...)) -> dict[str, Any]:
+        """
+        Move one or more pre-registered parameters.
+
+        Allowed, and logged. Changing a threshold cannot alter a run that
+        already happened -- thresholds feed the config hash, which feeds the
+        run id -- but changing one *after* results exist is the failure mode
+        that would invalidate the experiment, so the count of runs with
+        stored calls is written into every change record.
+        """
+        from ..config import ConfigError, set_override
+        from ..parameters import BY_PATH, record_change
+
+        values = body.get("values") or {}
+        if not isinstance(values, dict) or not values:
+            raise HTTPException(status_code=400, detail="send {\"values\": {\"<path>\": <number>}}")
+
+        db = _db()
+        try:
+            before = Config.load()
+            applied = []
+            for path, raw_value in values.items():
+                parameter = BY_PATH.get(path)
+                if parameter is None:
+                    raise HTTPException(status_code=400, detail=f"unknown parameter {path!r}")
+                try:
+                    value = int(raw_value) if parameter.integer else float(raw_value)
+                except (TypeError, ValueError):
+                    raise HTTPException(status_code=400, detail=f"{path} must be a number")
+                if not (parameter.minimum <= value <= parameter.maximum):
+                    raise HTTPException(
+                        status_code=400,
+                        detail=f"{path} must be between {parameter.minimum} and {parameter.maximum}",
+                    )
+                old = before.get(path)
+                try:
+                    set_override(path, value)
+                except ConfigError as exc:
+                    raise HTTPException(status_code=400, detail=str(exc))
+                applied.append((path, old, value))
+
+            after = Config.load()
+            for path, old, value in applied:
+                record_change(
+                    db, path=path, old_value=old, new_value=value,
+                    config_hash_before=before.config_hash, config_hash_after=after.config_hash,
+                    changed_by=body.get("changed_by") or "human", note=body.get("note") or "",
+                )
+            return {
+                "config_hash": after.config_hash,
+                "unset": after.unset(),
+                "changed": [{"path": p, "from": o, "to": v} for p, o, v in applied],
+            }
+        finally:
+            db.close()
+
     @app.get("/api/panel")
     def panel(run_id: str | None = None) -> dict[str, Any]:
         return _read(views.panel, run_id)

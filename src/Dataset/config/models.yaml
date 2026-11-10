@@ -51,6 +51,10 @@ models:
     version: claude-sonnet-5-5
     adapter: anthropic
     model_name: claude-sonnet-5-5
+    # Disabled: the key available here returns 401 (it begins sk-ant- but
+    # not sk-ant-api03-). Left in the file so the panel's history reads
+    # straight; re-enable when a working key exists.
+    enabled: false
     supports_tools: true
     temperature: 0.0
     api_key_env: ANTHROPIC_API_KEY

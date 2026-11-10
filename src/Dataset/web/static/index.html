@@ -143,6 +143,7 @@ nav .dot{width:17px;height:17px;border-radius:5px;background:currentColor;opacit
 .fltbox{flex:1;padding:9px 11px;border:0.5px solid var(--border-strong);border-radius:9px;
         background:var(--surface-2);color:var(--text);font-family:var(--mono);font-size:13px}
 .fltbox:focus{outline:none;border-color:var(--accent)}
+input[type=range]{accent-color:var(--accent);height:26px}
 .signout{border:0.5px solid var(--border);background:var(--surface);color:var(--muted);
          border-radius:8px;padding:6px 12px;font-size:13px;cursor:pointer;font-family:var(--font)}
 a{color:var(--accent)}
@@ -184,8 +185,9 @@ a{color:var(--accent)}
 
 <script>
 const TABS = [
-  ['overview','Overview'], ['sources','Sources'], ['review','Review'], ['claims','Claims'], ['panel','Panel'],
-  ['prompts','Prompts'], ['controls','Controls'], ['evidence','Evidence'],
+  ['overview','Overview'], ['sources','Sources'], ['review','Review'], ['claims','Claims'],
+  ['params','Parameters'], ['panel','Panel'], ['prompts','Prompts'], ['controls','Controls'],
+  ['evidence','Evidence'],
 ];
 let state = {tab:'overview', filters:{pair_type:null, level:null, flag:null}, claims:null};
 
@@ -257,8 +259,8 @@ $('sheet').addEventListener('click', e => { if(e.target.id==='sheet') closeSheet
 async function render(){
   const v = $('view');
   v.innerHTML = '<div class="hint">loading…</div>';
-  try { await ({overview:vOverview, sources:vSources, review:vReview, claims:vClaims, panel:vPanel,
-                prompts:vPrompts, controls:vControls, evidence:vEvidence}[state.tab])(v); }
+  try { await ({overview:vOverview, sources:vSources, review:vReview, claims:vClaims, params:vParams,
+                panel:vPanel, prompts:vPrompts, controls:vControls, evidence:vEvidence}[state.tab])(v); }
   catch(e){ v.innerHTML = `<div class="card"><h2>Not available</h2><p class="sub">${esc(e.message)}</p></div>`; }
 }
 
@@ -727,6 +729,79 @@ async function openCall(callId){
       <h3>Raw response, as stored</h3><pre>${esc(c.raw_response)}</pre>
       <h3>Tool calls</h3><pre>${esc(c.tool_calls)}</pre>
     </div>`);
+}
+
+async function vParams(v){
+  const d = await api('/parameters');
+  const unsetCount = d.unset.length;
+  v.innerHTML = `
+    ${d.runs_with_results > 0 ? `<div class="card" style="border-color:var(--warn)">
+      <h2 style="color:var(--warn)">${d.runs_with_results} run${d.runs_with_results===1?'':'s'} already have results</h2>
+      <p class="sub">Moving a threshold now cannot change any of them — a threshold feeds the config hash,
+      which feeds the run id, so a different value is a different run and the old one keeps its own
+      parameters in its own manifest. But choosing a value <i>after</i> seeing results is the one move
+      that would invalidate the experiment, so every change below is recorded with the number of runs
+      that existed when it was made.</p>
+    </div>` : ''}
+
+    ${unsetCount ? `<div class="card"><h2>Not ready to run</h2>
+      <p class="sub">${unsetCount} parameter${unsetCount===1?' is':'s are'} still UNSET. A run refuses to
+      start until every one is chosen.</p></div>` : ''}
+
+    <div class="card">
+      <h2>Pre-registered parameters</h2>
+      <p class="ci mono">config hash ${esc(d.config_hash.slice(0,24))}…</p>
+      ${d.parameters.map((p,i)=>{
+        const unset = p.value === 'UNSET' || p.value === null;
+        const start = unset ? (p.integer ? Math.round((p.min+p.max)/8) : (p.min+p.max)/8) : p.value;
+        return `
+        <div style="margin-top:18px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+            <b>${esc(p.label)}</b>
+            <span class="mono num" id="pv-${i}">${unset?'UNSET':p.value}${p.unit?' '+esc(p.unit):''}</span>
+          </div>
+          <input type="range" id="pr-${i}" min="${p.min}" max="${p.max}" step="${p.step}" value="${start}"
+                 oninput="document.getElementById('pv-${i}').textContent=this.value+'${p.unit?' '+p.unit:''}'"
+                 style="width:100%;margin-top:7px">
+          <p class="sub" style="margin-top:4px">${esc(p.help)}</p>
+          ${unset?'<span class="badge flag">UNSET — the slider shows a starting point, not a value</span>':''}
+        </div>`;}).join('')}
+      <h3>Note <span class="ci">(stored with the change)</span></h3>
+      <input id="p-note" class="fltbox" style="width:100%" placeholder="why these values">
+      <p style="margin-top:12px">
+        <button class="signout" onclick="saveParams()">Save parameters</button>
+        <span id="p-status" class="sub"></span>
+      </p>
+    </div>
+
+    <div class="card"><h2>Change log</h2>
+      ${d.changes.length ? `<div class="scroll"><table>
+        <thead><tr><th>when</th><th>parameter</th><th>from</th><th>to</th><th>runs then</th><th>note</th></tr></thead>
+        <tbody>${d.changes.map(c=>`<tr>
+          <td class="mono">${esc(c.created_at)}</td>
+          <td>${esc(c.path.split('.').slice(1).join('.'))}</td>
+          <td class="num">${esc(c.old_value)}</td><td class="num">${esc(c.new_value)}</td>
+          <td class="num">${c.runs_existing>0?`<span class="badge flag">${c.runs_existing}</span>`:c.runs_existing}</td>
+          <td class="sub">${esc(c.note)}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>` : '<p class="sub">No parameter has been changed yet.</p>'}
+    </div>`;
+  window._params = d.parameters;
+}
+
+async function saveParams(){
+  const status = $('p-status');
+  const values = {};
+  window._params.forEach((p,i) => {
+    const raw = document.getElementById('pr-'+i).value;
+    values[p.path] = p.integer ? parseInt(raw,10) : parseFloat(raw);
+  });
+  status.textContent = 'saving…';
+  try {
+    const r = await post('/parameters', {values, note: $('p-note').value});
+    status.textContent = `saved — config hash now ${r.config_hash.slice(0,12)}…`;
+    render();
+  } catch(e){ status.textContent = e.message; }
 }
 
 async function vPanel(v){

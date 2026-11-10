@@ -23,8 +23,16 @@ def demo_config() -> Config:
 
 @pytest.fixture
 def shipped_config() -> Config:
-    """The real config -- still carrying its UNSET sentinels."""
-    return Config.load()
+    """
+    The packaged config: the pre-registration, still carrying its UNSET
+    sentinels.
+
+    Loaded without overrides on purpose. Overrides are what this deployment
+    currently intends to run with and live in the data directory; reading
+    them here would make these tests depend on whatever the dashboard's
+    sliders were last set to.
+    """
+    return Config.load(apply_overrides=False)
 
 
 @pytest.fixture
