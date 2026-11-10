@@ -116,8 +116,10 @@ pre{background:var(--surface-2);border-radius:9px;padding:11px;overflow-x:auto;
 
 /* tab bar */
 nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background:var(--surface);
-    border-top:0.5px solid var(--border);display:flex;padding-bottom:env(safe-area-inset-bottom)}
-nav button{flex:1;border:0;background:none;padding:9px 2px 10px;font-family:var(--font);font-size:10.5px;
+    border-top:0.5px solid var(--border);display:flex;padding-bottom:env(safe-area-inset-bottom);
+    overflow-x:auto;scrollbar-width:none}
+nav::-webkit-scrollbar{display:none}
+nav button{flex:1 0 auto;min-width:68px;border:0;background:none;padding:9px 2px 10px;font-family:var(--font);font-size:10.5px;
            color:var(--faint);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px}
 nav button.on{color:var(--accent);font-weight:600}
 nav .dot{width:17px;height:17px;border-radius:5px;background:currentColor;opacity:.9}
@@ -185,9 +187,9 @@ a{color:var(--accent)}
 
 <script>
 const TABS = [
-  ['overview','Overview'], ['sources','Sources'], ['review','Review'], ['claims','Claims'],
-  ['params','Parameters'], ['panel','Panel'], ['prompts','Prompts'], ['controls','Controls'],
-  ['evidence','Evidence'],
+  ['overview','Overview'], ['sources','Sources'], ['review','Review'], ['pairs','Pairs'],
+  ['claims','Claims'], ['params','Parameters'], ['panel','Panel'], ['prompts','Prompts'],
+  ['controls','Controls'], ['evidence','Evidence'],
 ];
 let state = {tab:'overview', filters:{pair_type:null, level:null, flag:null}, claims:null};
 
@@ -259,8 +261,9 @@ $('sheet').addEventListener('click', e => { if(e.target.id==='sheet') closeSheet
 async function render(){
   const v = $('view');
   v.innerHTML = '<div class="hint">loading…</div>';
-  try { await ({overview:vOverview, sources:vSources, review:vReview, claims:vClaims, params:vParams,
-                panel:vPanel, prompts:vPrompts, controls:vControls, evidence:vEvidence}[state.tab])(v); }
+  try { await ({overview:vOverview, sources:vSources, review:vReview, pairs:vPairs, claims:vClaims,
+                params:vParams, panel:vPanel, prompts:vPrompts, controls:vControls,
+                evidence:vEvidence}[state.tab])(v); }
   catch(e){ v.innerHTML = `<div class="card"><h2>Not available</h2><p class="sub">${esc(e.message)}</p></div>`; }
 }
 
@@ -622,6 +625,54 @@ function submitSplit(claimId){
   const parts = $('s-parts').value.split('\n').map(x=>x.trim()).filter(Boolean).map(text=>({atomic_text:text}));
   if(parts.length < 2){ alert('a split needs at least two parts'); return; }
   act(claimId, 'split', {notes: $('s-note').value, parts});
+}
+
+async function vPairs(v){
+  const d = await api('/pairs');
+  const stat = (n,l) => `<div class="stat"><div class="n num">${n}</div><div class="l">${esc(l)}</div></div>`;
+  const shown = state.pairFilter ? d.pairs.filter(p=>p.pair_type===state.pairFilter) : d.pairs;
+  v.innerHTML = `
+    <div class="card"><h2>Pair set</h2>
+      <div class="grid">
+        ${Object.entries(d.counts).map(([k,n])=>stat(n,k)).join('')}
+        ${stat(d.total,'total')}
+      </div>
+      <div class="note">Every mutation and every swap below was checked against the capture before it was
+      kept: a mutation must find nothing, and a swap must not be supported. A pair that failed its check
+      was discarded, and the reason is in the log below — not hidden.</div>
+    </div>
+
+    <div class="card"><h2>Discarded while building</h2>
+      ${d.discards.length ? `<p class="sub" style="margin-bottom:8px">${d.discards_total} discarded in total</p>
+      <div class="scroll"><table>
+        <thead><tr><th>n</th><th>kind</th><th>why</th></tr></thead>
+        <tbody>${d.discards.map(g=>`<tr>
+          <td class="num"><b>${g.n}</b></td><td><span class="badge flag">${esc(g.kind)}</span></td>
+          <td>${esc(g.reason)}
+            <div class="ci">${esc(g.examples.map(e=>JSON.stringify(e.details)).join(' · ').slice(0,180))}</div></td>
+        </tr>`).join('')}</tbody>
+      </table></div>` : '<p class="sub">Nothing discarded yet.</p>'}
+    </div>
+
+    <div class="filters">
+      <button class="chip ${!state.pairFilter?'on':''}" onclick="state.pairFilter=null;render()">all</button>
+      ${Object.keys(d.counts).map(k=>`<button class="chip ${state.pairFilter===k?'on':''}"
+        onclick="state.pairFilter='${k}';render()">${esc(k)}</button>`).join('')}
+    </div>
+    ${shown.slice(0,200).map(p=>`
+      <div class="row" onclick="openPair('${p.pair_id}')">
+        <div class="top"><div class="txt">${esc(p.atomic_text)}</div>
+          <span class="pill ${p.expected?'v-'+p.expected:'v-none'}">${esc(p.expected||'not SUPPORTED')}</span></div>
+        <div class="meta">
+          <span class="badge">${esc(p.pair_type)}${p.mutation_type?' · '+esc(p.mutation_type):''}</span>
+          <span class="badge">L${p.level}</span>
+          <span class="badge">${esc(p.expected_basis)}</span>
+          ${p.pcap_path?`<span class="badge mono">${esc(p.pcap_path.split('/').pop().slice(0,30))}</span>`
+                       :'<span class="badge">no capture</span>'}
+        </div>
+        <p class="ci" style="margin-top:6px">${esc(p.notes)}</p>
+      </div>`).join('')}
+    ${shown.length > 200 ? `<p class="hint">showing 200 of ${shown.length}</p>` : ''}`;
 }
 
 async function vClaims(v){

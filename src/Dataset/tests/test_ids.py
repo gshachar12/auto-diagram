@@ -31,3 +31,17 @@ def test_file_sha256_matches_hashlib(tmp_path):
     payload = b"x" * (3 << 20)  # larger than one read chunk
     path.write_bytes(payload)
     assert file_sha256(path) == hashlib.sha256(payload).hexdigest()
+
+
+def test_event_ids_are_unique_even_for_identical_events():
+    """
+    The bug this guards: two mutations of one claim discarded for the same
+    reason in the same second produced the same content hash, and the
+    second insert failed on the primary key. An event is an occurrence, not
+    a value.
+    """
+    from Dataset.ids import event_id
+
+    ids = {event_id("dsc") for _ in range(1000)}
+    assert len(ids) == 1000
+    assert all(i.startswith("dsc_") for i in ids)

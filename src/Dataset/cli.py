@@ -251,6 +251,42 @@ def cmd_run(args: argparse.Namespace) -> int:
         db.close()
 
 
+def cmd_pairs(args: argparse.Namespace) -> int:
+    """Build (claim x capture) pairs, validating every mutation and swap."""
+    from .pairs import PairBuilder, discard_log
+    from .pcap import PcapService, PcapServiceError
+
+    db = Database(args.db).initialise()
+    config = Config.load(args.config_dir)
+    try:
+        service = PcapService.from_config(config, db=db)
+        # Validation is a full scan per candidate, which on a few hundred
+        # megabytes takes far longer than a model's tool call.
+        service.timeout_seconds = args.validation_timeout
+    except PcapServiceError as exc:
+        print(f"error: {exc}\n  pairs cannot be validated without tshark; refusing to build.", file=sys.stderr)
+        db.close()
+        return 2
+
+    builder = PairBuilder(
+        db=db, service=service,
+        max_capture_bytes=int(args.max_capture_mb * 1_000_000) if args.max_capture_mb else None,
+        mutations_per_claim=args.mutations_per_claim,
+        swaps_per_claim=args.swaps_per_claim,
+    )
+    try:
+        summary = builder.build(limit=args.limit)
+        print(json.dumps(summary, indent=2))
+        discards = discard_log(db)
+        if discards:
+            print(f"\ndiscard log: {len(discards)} entries")
+            for entry in discards[: args.show_discards]:
+                print(f"  [{entry['kind']}] {entry['reason']}")
+    finally:
+        db.close()
+    return 0
+
+
 def cmd_status(args: argparse.Namespace) -> int:
     if not Path(args.db).exists():
         print(f"no database at {args.db}; run `pangea demo` first", file=sys.stderr)
@@ -478,6 +514,18 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--pause", action="store_true")
     run.add_argument("--run-id", default=None)
     run.set_defaults(func=cmd_run)
+
+    pairs = sub.add_parser("pairs", help="build and validate (claim x capture) pairs")
+    pairs.add_argument("--limit", type=int, default=None, help="claims to consider")
+    pairs.add_argument("--mutations-per-claim", type=int, default=1)
+    pairs.add_argument("--swaps-per-claim", type=int, default=1)
+    pairs.add_argument(
+        "--max-capture-mb", type=float, default=120.0,
+        help="skip captures larger than this when validating (0 for no limit)",
+    )
+    pairs.add_argument("--validation-timeout", type=float, default=300.0)
+    pairs.add_argument("--show-discards", type=int, default=10)
+    pairs.set_defaults(func=cmd_pairs)
 
     sub.add_parser("status", help="what is stored").set_defaults(func=cmd_status)
     password = sub.add_parser("set-password", help="set the dashboard password")

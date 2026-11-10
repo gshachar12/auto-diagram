@@ -381,6 +381,10 @@ def create_app(auth: Auth | None = None) -> FastAPI:
         finally:
             db.close()
 
+    @app.get("/api/pairs")
+    def pairs_overview() -> dict[str, Any]:
+        return _read(views.pairs_overview)
+
     @app.get("/api/panel")
     def panel(run_id: str | None = None) -> dict[str, Any]:
         return _read(views.panel, run_id)

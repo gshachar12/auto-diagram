@@ -17,6 +17,7 @@ be used later by the analysis only, as a sensitivity comparison.
 ./pangea ingest     # register pcaps/datasets/ (real captures, counted with tshark)
 ./pangea extract    # steps -> atomic claims, conditions run on the source capture
 ./pangea review     # the claims review queue
+./pangea pairs      # build and validate (claim x capture) pairs
 ./pangea set-password   # the dashboard password (--generate to make one up)
 ./pangea models     # which panel members can actually be called
 ./pangea prompts    # the frozen prompt variants (--show <label> renders one)
@@ -92,6 +93,7 @@ overrides it.
 | `ingest.py` | `pcaps/datasets/` → sources, verbatim steps, counted captures, checklist |
 | `extraction.py` | steps → atomic claims, levels, conditions; conditions run on the capture |
 | `review.py` | accept / edit / split / merge / reject, as new versions |
+| `pairs.py` | source / mutation / swap / no_pcap, each validated before it is kept |
 | `prompts/` | the frozen variants, the criteria text, and the leak scanner |
 | `models/providers.py` | Anthropic / OpenAI / Google over httpx, with the tool loop |
 | `runner.py` | the plan, the leak gate, resume, pause, retries, cost estimates |
@@ -321,8 +323,28 @@ Google deprecates sampling parameters on its newer models; set
 here and an invented or aliased name makes a run unreproducible. Fill them
 in before using those providers.
 
-## Not here yet
+## Pairs (B3)
 
-B3 pair builder and mutation
+`./pangea pairs` turns reviewed claims into the items the panel is asked
+about. Nothing is kept on the strength of its name:
+
+- a **source** pair requires the claim's own condition to hold on its own
+  capture — if it finds nothing, the pair is discarded and logged;
+- a **mutation** changes exactly one detail of the *structured predicate*
+  (port, protocol/flag, direction, magnitude, order) and must find
+  **nothing** on that capture. One that still matches is discarded, and
+  that discard is itself a finding: the original condition was too loose to
+  tell the two claims apart;
+- a **swap** must not be supported on the other scenario's capture. One
+  that is gets discarded — the scenarios were less different than assumed;
+- a **no_pcap** probe needs no validation and exists to measure leakage.
+
+Re-running is cheap and safe: a pair that already exists is neither
+re-validated nor replaced by a different candidate.
+
+`--max-capture-mb` skips captures too large to scan within the budget, and
+says so in the discard log rather than silently omitting them.
+
+## Not here yet and mutation
 validation · B4 prompt builder, real model adapters, runner · B5 analysis ·
 B7 pilot and full run.

@@ -22,7 +22,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from .ids import content_id
+from .ids import content_id, event_id
 from .schemas import Claim, ClaimKind, Condition, Provenance, ReasonCode, ReviewAction
 from .storage.db import Database
 from .storage.repository import Repository, utc_now
@@ -194,7 +194,7 @@ def apply_action(
             db.insert(
                 "claim_reviews",
                 dict(
-                    review_id=content_id("rev", [other["claim_id"], "merge", utc_now()]),
+                    review_id=event_id("rev"),
                     claim_id=other["claim_id"], action="merge",
                     result_claim_ids=json.dumps([claim.claim_id]),
                     notes=notes or f"merged into {claim.claim_id}", reviewer=reviewer, created_at=utc_now(),
@@ -204,7 +204,7 @@ def apply_action(
     db.insert(
         "claim_reviews",
         dict(
-            review_id=content_id("rev", [claim_id, action, utc_now(), notes]),
+            review_id=event_id("rev"),
             claim_id=claim_id,
             action=str(verb),
             result_claim_ids=json.dumps(produced),

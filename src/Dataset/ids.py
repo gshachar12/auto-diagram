@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import uuid
 from pathlib import Path
 from typing import Any
 
@@ -50,6 +51,20 @@ def content_hash(payload: Any) -> str:
 def content_id(prefix: str, payload: Any) -> str:
     """A short, stable, content-derived id, e.g. `pair_3f91c0a28b17`."""
     return f"{prefix}_{content_hash(payload)[:ID_DIGEST_LEN]}"
+
+
+def event_id(prefix: str) -> str:
+    """
+    A unique id for a log entry.
+
+    Deliberately NOT content-derived. Events repeat: two mutations of the
+    same claim can be discarded for the same reason in the same second, and
+    hashing (kind, ref, reason, timestamp) then produces the same id twice
+    and the second insert fails. That happened on the first real pair
+    build. An event is an occurrence, not a value, so it gets an identity
+    of its own.
+    """
+    return f"{prefix}_{uuid.uuid4().hex[:ID_DIGEST_LEN]}"
 
 
 def file_sha256(path: str | Path) -> str:

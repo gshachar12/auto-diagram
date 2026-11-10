@@ -17,7 +17,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterator
 
-from ..ids import content_id
+from ..ids import content_id, event_id
 from ..schemas import (
     CallRecord,
     Claim,
@@ -93,7 +93,7 @@ class Repository:
         notes: str = "",
         decided_by: str = "agent",
     ) -> str:
-        check_id = content_id("chk", [source_id, pcap_id, item, status, notes, utc_now()])
+        check_id = event_id("chk")
         self.db.insert(
             "verification_checks",
             dict(
@@ -152,7 +152,7 @@ class Repository:
         return pair.pair_id
 
     def add_discard(self, *, kind: str, ref_id: str, reason: str, details: dict[str, Any] | None = None) -> str:
-        discard_id = content_id("dsc", [kind, ref_id, reason, utc_now()])
+        discard_id = event_id("dsc")
         self.db.insert(
             "discards",
             dict(
@@ -190,12 +190,14 @@ class Repository:
         return run_id
 
     def add_run_event(self, run_id: str, status: str, detail: str = "") -> str:
-        event_id = content_id("evt", [run_id, status, detail, utc_now()])
+        # Named `row_id` rather than `event_id`: the latter is the helper
+        # this calls, and shadowing it made every run event raise.
+        row_id = event_id("evt")
         self.db.insert(
             "run_events",
-            dict(event_id=event_id, run_id=run_id, status=status, detail=detail, created_at=utc_now()),
+            dict(event_id=row_id, run_id=run_id, status=status, detail=detail, created_at=utc_now()),
         )
-        return event_id
+        return row_id
 
     def run_status(self, run_id: str) -> str | None:
         row = self.db.one(
@@ -258,7 +260,7 @@ class Repository:
         tokens_in: int = 0,
         tokens_out: int = 0,
     ) -> str:
-        llm_call_id = content_id("llm", [purpose, ref_id, model_id, prompt, utc_now()])
+        llm_call_id = event_id("llm")
         self.db.insert(
             "llm_calls",
             dict(

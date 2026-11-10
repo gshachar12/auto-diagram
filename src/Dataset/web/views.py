@@ -397,6 +397,63 @@ def source_steps(db: Database, source_id: str) -> list[dict[str, Any]]:
     ]
 
 
+def pairs_overview(db: Database) -> dict[str, Any]:
+    """
+    The pair set and what was thrown away building it.
+
+    The discard log is shown beside the counts rather than behind a link:
+    a mutation that stayed true means the original condition was too loose
+    to tell two claims apart, and a swap that turned out supported means
+    two scenarios were less different than assumed. Both are findings about
+    the dataset, and both are invisible if only the kept pairs are shown.
+    """
+    counts = dict(
+        Counter(row["pair_type"] for row in db.query("SELECT pair_type FROM pairs"))
+    )
+    by_expected = dict(
+        Counter(
+            f"{row['pair_type']}:{row['expected'] or 'not SUPPORTED'}"
+            for row in db.query("SELECT pair_type, expected FROM pairs")
+        )
+    )
+    discards = [dict(row) for row in db.query("SELECT * FROM discards ORDER BY created_at DESC, rowid DESC")]
+    grouped: dict[str, dict[str, Any]] = {}
+    for entry in discards:
+        key = f"{entry['kind']}: {entry['reason']}"
+        bucket = grouped.setdefault(key, {"kind": entry["kind"], "reason": entry["reason"], "n": 0, "examples": []})
+        bucket["n"] += 1
+        if len(bucket["examples"]) < 3:
+            bucket["examples"].append({"ref_id": entry["ref_id"], "details": json.loads(entry["details"] or "{}")})
+
+    rows = []
+    for row in db.query(
+        """
+        SELECT p.*, c.atomic_text, c.mutation_type, s.title AS source_title, pc.path AS pcap_path
+          FROM pairs p JOIN claims c ON c.claim_id = p.claim_id
+          JOIN sources s ON s.source_id = c.source_id
+          LEFT JOIN pcaps pc ON pc.pcap_id = p.pcap_id
+         ORDER BY p.pair_type, p.pair_id
+        """
+    ):
+        rows.append(
+            {
+                "pair_id": row["pair_id"], "pair_type": row["pair_type"], "level": row["level"],
+                "expected": row["expected"], "expected_basis": row["expected_basis"],
+                "atomic_text": row["atomic_text"], "mutation_type": row["mutation_type"],
+                "source_title": row["source_title"], "pcap_path": row["pcap_path"],
+                "notes": row["notes"],
+            }
+        )
+    return {
+        "counts": counts,
+        "total": sum(counts.values()),
+        "by_expected": by_expected,
+        "discards_total": len(discards),
+        "discards": sorted(grouped.values(), key=lambda g: -g["n"]),
+        "pairs": rows,
+    }
+
+
 def claims_table(db: Database, run_id: str | None = None) -> list[dict[str, Any]]:
     run = load_run(db, run_id)
     if not run:

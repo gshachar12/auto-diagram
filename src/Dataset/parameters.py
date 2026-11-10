@@ -27,7 +27,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from .ids import content_id
+from .ids import event_id
 from .storage.db import Database
 from .storage.repository import utc_now
 
@@ -105,7 +105,7 @@ def record_change(
     changed_by: str = "human",
     note: str = "",
 ) -> str:
-    change_id = content_id("cfg", [path, str(old_value), str(new_value), utc_now()])
+    change_id = event_id("cfg")
     db.insert(
         "config_changes",
         dict(
