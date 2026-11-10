@@ -26,7 +26,7 @@ import sqlite3
 from pathlib import Path
 from typing import Any, Iterable
 
-SCHEMA_VERSION = 3
+SCHEMA_VERSION = 4
 
 RAW_TABLES: tuple[str, ...] = (
     "sources",
@@ -50,6 +50,7 @@ DERIVED_TABLES: tuple[str, ...] = (
     "analysis_call_facts",
     "analysis_metrics",
     "pcap_query_cache",
+    "claim_condition_checks",
 )
 
 
@@ -293,6 +294,20 @@ CREATE TABLE IF NOT EXISTS analysis_metrics (
     ci_high     REAL,
     detail      TEXT NOT NULL DEFAULT '{}',
     PRIMARY KEY (analysis_id, scope, scope_id, metric)
+);
+
+-- Did a claim's condition hold on the capture it was extracted from?
+-- Derived: re-running the condition recomputes it exactly, so this is a
+-- cache of an answer the capture gives, not a record of a decision.
+CREATE TABLE IF NOT EXISTS claim_condition_checks (
+    claim_id       TEXT NOT NULL REFERENCES claims(claim_id),
+    pcap_id        TEXT NOT NULL REFERENCES pcaps(pcap_id),
+    display_filter TEXT NOT NULL,
+    match_count    INTEGER,
+    holds          INTEGER,
+    error          TEXT,
+    checked_at     TEXT NOT NULL,
+    PRIMARY KEY (claim_id, pcap_id)
 );
 
 -- tshark results, keyed by (capture hash, filter, limit): a cache, so it is

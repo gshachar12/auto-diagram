@@ -267,6 +267,44 @@ def create_app(auth: Auth | None = None) -> FastAPI:
         finally:
             db.close()
 
+    @app.get("/api/review/queue")
+    def review_queue(include_reviewed: bool = False) -> dict[str, Any]:
+        from ..review import queue, review_stats
+
+        db = _db()
+        try:
+            return {"stats": review_stats(db), "items": queue(db, include_reviewed=include_reviewed)}
+        finally:
+            db.close()
+
+    @app.post("/api/review/{claim_id}")
+    def review_claim(claim_id: str, body: dict[str, Any] = Body(...)) -> dict[str, Any]:
+        """
+        Record one review decision.
+
+        This is the only endpoint in the web layer that writes, and it
+        still never updates a row: an edit, a split or a merge appends new
+        claim versions that supersede the old one.
+        """
+        from ..review import ReviewError, apply_action
+
+        db = _db()
+        try:
+            return apply_action(
+                db,
+                claim_id=claim_id,
+                action=body.get("action", ""),
+                reviewer=body.get("reviewer") or "human",
+                notes=body.get("notes") or "",
+                edits=body.get("edits"),
+                parts=body.get("parts"),
+                merge_with=body.get("merge_with"),
+            )
+        except ReviewError as exc:
+            raise HTTPException(status_code=400, detail=str(exc))
+        finally:
+            db.close()
+
     @app.get("/api/panel")
     def panel(run_id: str | None = None) -> dict[str, Any]:
         return _read(views.panel, run_id)

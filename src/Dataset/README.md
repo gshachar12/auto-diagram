@@ -15,6 +15,8 @@ be used later by the analysis only, as a sensitivity comparison.
 ./pangea doctor     # check python, git, tshark, data dir
 ./pangea demo       # seed the reproducible demo dataset (no API calls, no cost)
 ./pangea ingest     # register pcaps/datasets/ (real captures, counted with tshark)
+./pangea extract    # steps -> atomic claims, conditions run on the source capture
+./pangea review     # the claims review queue
 ./pangea set-password   # the dashboard password (--generate to make one up)
 ./pangea serve      # the dashboard, on http://127.0.0.1:8800
 ./pangea status     # what is stored
@@ -84,6 +86,8 @@ overrides it.
 | `demo/` | the seeded synthetic dataset |
 | `pcap/service.py` | the only thing that runs tshark: `summary`, `query`, and the limits |
 | `ingest.py` | `pcaps/datasets/` → sources, verbatim steps, counted captures, checklist |
+| `extraction.py` | steps → atomic claims, levels, conditions; conditions run on the capture |
+| `review.py` | accept / edit / split / merge / reject, as new versions |
 | `web/` | the read-only dashboard, its read model and its login |
 | `cli.py` | `init`, `demo`, `ingest`, `set-password`, `serve`, `status`, `config`, `doctor` |
 
@@ -181,8 +185,37 @@ serve` is disabled by the tailnet administrator) and a Secure cookie would
 never be sent. The password therefore crosses the tailnet in clear text.
 That is a real limitation, not an oversight.
 
+## Extraction and review (B2)
+
+`./pangea extract` turns each verbatim step into atomic claims: a level
+(1–5), a reason code for the abstention levels, and for levels 1–3 an
+executable condition. Every call is written to `llm_calls` before its output
+is used.
+
+The agent writes conditions; the capture decides. Each level 1–3 condition
+is immediately run against the source's own captures and the result stored
+in `claim_condition_checks` (derived — re-running recomputes it). A
+condition that finds nothing on the very capture it came from is **flagged,
+not dropped and not kept**: exactly one of three things is wrong — the
+condition is too narrow, the step was misread, or that capture is not the
+one the step describes — and only a reviewer can say which. Those items sort
+to the top of the queue.
+
+Today the extractor is `HeuristicExtractionClient`: a keyword table, not a
+model, and it does not pretend otherwise. It exists so the pipeline, the
+checks and the review queue are testable and demonstrable with no API key;
+its claim wording is crude and its output goes through exactly the same
+review a model's would. A real extraction model arrives with the adapters
+(B4).
+
+**Review never overwrites.** An edit, a split or a merge appends new claim
+versions whose `supersedes` points at what they replace, marked `human`; the
+agent's original stays readable forever. The queue's state is derived from
+`claim_reviews` rows, not from a flag. A rejected claim keeps its row and
+simply never becomes a pair.
+
 ## Not here yet
 
-B2 extraction agent and claims review · B3 pair builder and mutation
+B3 pair builder and mutation
 validation · B4 prompt builder, real model adapters, runner · B5 analysis ·
 B7 pilot and full run.

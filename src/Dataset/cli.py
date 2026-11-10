@@ -86,6 +86,51 @@ def cmd_ingest(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_extract(args: argparse.Namespace) -> int:
+    """Run the extraction agent over the registered sources."""
+    from .extraction import extract_all
+    from .pcap import PcapService, PcapServiceError
+
+    db = Database(args.db).initialise()
+    config = Config.load(args.config_dir)
+    try:
+        service = PcapService.from_config(config, db=db)
+        # Conditions are validated by a full scan of the capture, which on a
+        # few hundred megabytes takes far longer than a model's tool call.
+        service.timeout_seconds = args.validation_timeout
+    except PcapServiceError as exc:
+        print(f"warning: {exc}\n  claims will be extracted but no condition can be checked.", file=sys.stderr)
+        service = None
+    try:
+        summary = extract_all(
+            db=db, service=service,
+            source_ids=[args.source] if args.source else None,
+            limit_per_source=args.limit,
+        )
+    finally:
+        db.close()
+    for entry in summary["sources"]:
+        print(
+            f"{entry['source_id']}  steps={entry['steps_processed']:>3}  claims={entry['claims']:>3}  "
+            f"conditions finding nothing={entry['claims_without_support']}"
+        )
+    return 0
+
+
+def cmd_review(args: argparse.Namespace) -> int:
+    from .review import queue, review_stats
+
+    db = Database(args.db)
+    try:
+        print(json.dumps(review_stats(db), indent=2))
+        for item in queue(db)[: args.limit]:
+            flags = (" [" + " ".join(item["flags"]) + "]") if item["flags"] else ""
+            print(f"  L{item['level']} {item['claim_id']}  {item['atomic_text'][:72]}{flags}")
+    finally:
+        db.close()
+    return 0
+
+
 def cmd_status(args: argparse.Namespace) -> int:
     if not Path(args.db).exists():
         print(f"no database at {args.db}; run `pangea demo` first", file=sys.stderr)
@@ -234,6 +279,16 @@ def build_parser() -> argparse.ArgumentParser:
     ingest = sub.add_parser("ingest", help="register the dataset folders under pcaps/datasets/")
     ingest.add_argument("--datasets-dir", default="pcaps/datasets")
     ingest.set_defaults(func=cmd_ingest)
+
+    extract = sub.add_parser("extract", help="run the extraction agent over the registered sources")
+    extract.add_argument("--source", default=None, help="one source_id (default: all)")
+    extract.add_argument("--limit", type=int, default=None, help="steps per source")
+    extract.add_argument("--validation-timeout", type=float, default=300.0)
+    extract.set_defaults(func=cmd_extract)
+
+    review = sub.add_parser("review", help="show the claims review queue")
+    review.add_argument("--limit", type=int, default=20)
+    review.set_defaults(func=cmd_review)
 
     sub.add_parser("status", help="what is stored").set_defaults(func=cmd_status)
     password = sub.add_parser("set-password", help="set the dashboard password")

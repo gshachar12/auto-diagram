@@ -184,7 +184,7 @@ a{color:var(--accent)}
 
 <script>
 const TABS = [
-  ['overview','Overview'], ['sources','Sources'], ['claims','Claims'], ['panel','Panel'],
+  ['overview','Overview'], ['sources','Sources'], ['review','Review'], ['claims','Claims'], ['panel','Panel'],
   ['prompts','Prompts'], ['controls','Controls'], ['evidence','Evidence'],
 ];
 let state = {tab:'overview', filters:{pair_type:null, level:null, flag:null}, claims:null};
@@ -257,7 +257,7 @@ $('sheet').addEventListener('click', e => { if(e.target.id==='sheet') closeSheet
 async function render(){
   const v = $('view');
   v.innerHTML = '<div class="hint">loading…</div>';
-  try { await ({overview:vOverview, sources:vSources, claims:vClaims, panel:vPanel,
+  try { await ({overview:vOverview, sources:vSources, review:vReview, claims:vClaims, panel:vPanel,
                 prompts:vPrompts, controls:vControls, evidence:vEvidence}[state.tab])(v); }
   catch(e){ v.innerHTML = `<div class="card"><h2>Not available</h2><p class="sub">${esc(e.message)}</p></div>`; }
 }
@@ -485,6 +485,141 @@ async function openSteps(sourceId, title){
         </tr>`).join('')}</tbody>
       </table></div>
     </div>`);
+}
+
+let mergeSelection = new Set();
+
+async function vReview(v){
+  const d = await api('/review/queue' + (state.showReviewed ? '?include_reviewed=true' : ''));
+  const s = d.stats;
+  const chk = s.condition_checks || {};
+  v.innerHTML = `
+    <div class="card"><h2>Extraction review</h2>
+      <div class="grid">
+        <div class="stat"><div class="n num">${s.claims_live}</div><div class="l">live claims</div></div>
+        ${Object.entries(s.by_action).map(([k,n])=>
+          `<div class="stat"><div class="n num">${n}</div><div class="l">${esc(k)}</div></div>`).join('')}
+      </div>
+      <h3>Conditions run on their own capture</h3>
+      <div class="grid">
+        ${Object.entries(chk).map(([k,n])=>
+          `<div class="stat"><div class="n num">${n}</div><div class="l">${esc(k)}</div></div>`).join('')
+          || '<p class="sub">none checked yet</p>'}
+      </div>
+      <div class="note">A level 1–3 condition is supposed to hold on the capture its step came from.
+      Where it finds nothing, exactly one of three things is wrong — the condition is too narrow, the
+      step was misread, or this capture is not the one the step describes — and only a reviewer can say
+      which. Those items are listed first.</div>
+      <p style="margin-top:10px">
+        <button class="signout" onclick="state.showReviewed=!state.showReviewed;render()">
+          ${state.showReviewed?'hide reviewed':'show reviewed'}</button>
+        <button class="signout" id="mergebtn" onclick="doMerge()" style="display:none"></button>
+      </p>
+    </div>
+    ${d.items.map(c=>`
+      <div class="row">
+        <div class="top">
+          <div class="txt">${esc(c.atomic_text)}</div>
+          <input type="checkbox" onclick="toggleMerge(event,'${c.claim_id}')" title="select to merge">
+        </div>
+        <div class="meta">
+          <span class="badge">L${c.level} ${esc(c.kind)}</span>
+          ${c.reason_code?`<span class="badge">${esc(c.reason_code)}</span>`:''}
+          <span class="badge">${esc(c.source_title.slice(0,28))}</span>
+          <span class="badge mono">${esc(c.source_location.split('/').pop())}</span>
+          ${c.review_action?`<span class="badge">${esc(c.review_action)}</span>`:''}
+          ${c.flags.map(f=>`<span class="badge flag">${esc(f)}</span>`).join('')}
+        </div>
+        ${c.condition?`<pre style="margin-top:8px">${esc(c.condition.display_filter)}</pre>`:''}
+        ${c.checks.length?`<div class="meta">${c.checks.map(k=>
+          `<span class="badge ${k.holds?'':'flag'}">${esc(k.path.split('/').pop().slice(0,28))}:
+           ${k.error?'error':(k.match_count===null?'—':k.match_count.toLocaleString()+' pkts')}</span>`).join('')}</div>`:''}
+        <p class="sub" style="margin-top:8px"><i>step:</i> ${esc(c.source_step_text.slice(0,180))}</p>
+        <div class="meta" style="margin-top:9px">
+          <button class="signout" onclick="act('${c.claim_id}','accept')">Accept</button>
+          <button class="signout" onclick="openEdit('${c.claim_id}')">Edit</button>
+          <button class="signout" onclick="openSplit('${c.claim_id}')">Split</button>
+          <button class="signout" onclick="act('${c.claim_id}','reject')">Reject</button>
+        </div>
+      </div>`).join('') || '<div class="hint">nothing waiting for review</div>'}`;
+}
+
+function toggleMerge(ev, claimId){
+  ev.stopPropagation();
+  mergeSelection.has(claimId) ? mergeSelection.delete(claimId) : mergeSelection.add(claimId);
+  const b = $('mergebtn');
+  b.style.display = mergeSelection.size > 1 ? 'inline-block' : 'none';
+  b.textContent = `Merge ${mergeSelection.size} claims`;
+}
+
+async function post(path, body){
+  const r = await fetch('/api'+path, {method:'POST', headers:{'Content-Type':'application/json'},
+                                      body: JSON.stringify(body||{})});
+  if(!r.ok) throw new Error((await r.json().catch(()=>({}))).detail || r.statusText);
+  return r.json();
+}
+
+async function act(claimId, action, body){
+  try { await post('/review/'+claimId, {action, ...(body||{})}); closeSheet(); render(); }
+  catch(e){ alert(e.message); }
+}
+
+async function doMerge(){
+  const [first, ...rest] = [...mergeSelection];
+  mergeSelection = new Set();
+  await act(first, 'merge', {merge_with: rest});
+}
+
+async function openEdit(claimId){
+  const d = await api('/review/queue?include_reviewed=true');
+  const c = d.items.find(x=>x.claim_id===claimId);
+  openSheet('Edit claim', `
+    <div class="card">
+      <p class="sub">The edit is stored as a new version that supersedes this one. The agent’s original
+      stays readable — nothing is overwritten.</p>
+      <h3>Claim text</h3>
+      <textarea id="e-text" class="fltbox" style="width:100%;height:90px">${esc(c.atomic_text)}</textarea>
+      <h3>Level</h3>
+      <input id="e-level" class="fltbox" style="width:100%" value="${c.level}">
+      <h3>Display filter <span class="ci">(levels 1–3)</span></h3>
+      <input id="e-filter" class="fltbox" style="width:100%" value="${esc(c.condition?c.condition.display_filter:'')}">
+      <h3>Reason code <span class="ci">(levels 4–5)</span></h3>
+      <input id="e-reason" class="fltbox" style="width:100%" value="${esc(c.reason_code||'')}">
+      <h3>Note</h3>
+      <input id="e-note" class="fltbox" style="width:100%" placeholder="why">
+      <p style="margin-top:12px"><button class="signout" onclick="submitEdit('${claimId}')">Save as new version</button></p>
+    </div>`);
+}
+
+function submitEdit(claimId){
+  const level = parseInt($('e-level').value, 10);
+  const filter = $('e-filter').value.trim();
+  act(claimId, 'edit', {
+    notes: $('e-note').value,
+    edits: {
+      atomic_text: $('e-text').value.trim(),
+      level,
+      reason_code: $('e-reason').value.trim() || null,
+      condition: filter ? {display_filter: filter} : null,
+    },
+  });
+}
+
+function openSplit(claimId){
+  openSheet('Split claim', `
+    <div class="card">
+      <p class="sub">One claim per line. Each becomes a new version superseding the original —
+      one claim, one checkable condition.</p>
+      <textarea id="s-parts" class="fltbox" style="width:100%;height:140px"></textarea>
+      <h3>Note</h3><input id="s-note" class="fltbox" style="width:100%">
+      <p style="margin-top:12px"><button class="signout" onclick="submitSplit('${claimId}')">Split</button></p>
+    </div>`);
+}
+
+function submitSplit(claimId){
+  const parts = $('s-parts').value.split('\n').map(x=>x.trim()).filter(Boolean).map(text=>({atomic_text:text}));
+  if(parts.length < 2){ alert('a split needs at least two parts'); return; }
+  act(claimId, 'split', {notes: $('s-note').value, parts});
 }
 
 async function vClaims(v){
