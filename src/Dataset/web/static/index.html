@@ -122,6 +122,25 @@ nav button{flex:1;border:0;background:none;padding:9px 2px 10px;font-family:var(
 nav button.on{color:var(--accent);font-weight:600}
 nav .dot{width:17px;height:17px;border-radius:5px;background:currentColor;opacity:.9}
 .hint{font-size:12px;color:var(--faint);text-align:center;padding:14px 0}
+
+/* login gate */
+#gate{position:fixed;inset:0;z-index:100;background:var(--bg);display:none;
+      align-items:center;justify-content:center;padding:18px}
+#gate.show{display:flex}
+.gate-card{background:var(--surface);border:0.5px solid var(--border);border-radius:16px;
+           padding:26px 22px;width:100%;max-width:360px}
+.gate-card h2{font-size:19px;font-weight:600;margin-bottom:3px}
+.gate-card p{font-size:13px;color:var(--muted);margin-bottom:18px}
+.gate-card input{width:100%;padding:13px;font-size:16px;border:0.5px solid var(--border-strong);
+                 border-radius:10px;background:var(--surface-2);color:var(--text);font-family:var(--font)}
+.gate-card input:focus{outline:none;border-color:var(--accent)}
+.gate-card button{width:100%;margin-top:10px;padding:13px;border:0;border-radius:10px;
+                  background:var(--accent);color:#fff;font-size:15px;font-weight:500;
+                  cursor:pointer;font-family:var(--font)}
+.gate-card button:disabled{opacity:.55}
+.gate-err{color:var(--bad);font-size:13px;margin-top:10px;min-height:18px}
+.signout{border:0.5px solid var(--border);background:var(--surface);color:var(--muted);
+         border-radius:8px;padding:6px 12px;font-size:13px;cursor:pointer;font-family:var(--font)}
 a{color:var(--accent)}
 </style>
 </head>
@@ -143,6 +162,17 @@ a{color:var(--accent)}
 
 <nav id="tabs"></nav>
 
+<div id="gate"><div class="gate-card">
+  <h2>PAnGEA Dataset</h2>
+  <p id="gate-sub">This dashboard is reachable by every device on the tailnet, so it asks for a password.</p>
+  <form onsubmit="submitLogin(event)">
+    <input type="password" id="gate-pw" placeholder="password" autocomplete="current-password"
+           autocapitalize="off" autocorrect="off">
+    <button type="submit" id="gate-go">Sign in</button>
+  </form>
+  <div class="gate-err" id="gate-err"></div>
+</div></div>
+
 <div class="sheet" id="sheet"><div class="sheet-inner">
   <div class="sheet-bar"><b id="sheet-title"></b><button class="x" onclick="closeSheet()">×</button></div>
   <div id="sheet-body"></div>
@@ -150,7 +180,7 @@ a{color:var(--accent)}
 
 <script>
 const TABS = [
-  ['overview','Overview'], ['claims','Claims'], ['panel','Panel'],
+  ['overview','Overview'], ['sources','Sources'], ['claims','Claims'], ['panel','Panel'],
   ['prompts','Prompts'], ['controls','Controls'], ['evidence','Evidence'],
 ];
 let state = {tab:'overview', filters:{pair_type:null, level:null, flag:null}, claims:null};
@@ -162,8 +192,39 @@ const num = (x, d=2) => x==null ? '—' : Number(x).toFixed(d);
 
 async function api(path){
   const r = await fetch('/api'+path);
+  if(r.status===401 || r.status===503){
+    // Either the session expired or the server has no password yet. Both
+    // mean "no data for you", and both are answered by the same gate.
+    const d = await r.json().catch(()=>({}));
+    showGate(d.configured===false ? 'unconfigured' : '');
+    throw new Error(d.detail || 'authentication required');
+  }
   if(!r.ok) throw new Error((await r.json().catch(()=>({detail:r.statusText}))).detail);
   return r.json();
+}
+
+function showGate(mode){
+  $('gate').classList.add('show');
+  if(mode==='unconfigured'){
+    $('gate-sub').textContent = 'No password is set on the server yet. Run ./pangea set-password on the host, then reload.';
+    $('gate-pw').disabled = true; $('gate-go').disabled = true;
+  }
+}
+async function submitLogin(ev){
+  ev.preventDefault();
+  const button = $('gate-go'), err = $('gate-err');
+  button.disabled = true; err.textContent = '';
+  try{
+    const r = await fetch('/api/login', {method:'POST', headers:{'Content-Type':'application/json'},
+                                         body: JSON.stringify({password: $('gate-pw').value})});
+    if(!r.ok){ err.textContent = (await r.json().catch(()=>({}))).detail || 'sign-in failed'; return; }
+    $('gate').classList.remove('show'); $('gate-pw').value = '';
+    render();
+  } finally { button.disabled = false; }
+}
+async function signOut(){
+  await fetch('/api/logout', {method:'POST'});
+  location.reload();
 }
 function verdictPill(v){ return `<span class="pill ${v?'v-'+v:'v-none'}">${esc(v||'no majority')}</span>`; }
 // Every rate is shown with its n and its interval: a bare percentage over
@@ -192,7 +253,7 @@ $('sheet').addEventListener('click', e => { if(e.target.id==='sheet') closeSheet
 async function render(){
   const v = $('view');
   v.innerHTML = '<div class="hint">loading…</div>';
-  try { await ({overview:vOverview, claims:vClaims, panel:vPanel,
+  try { await ({overview:vOverview, sources:vSources, claims:vClaims, panel:vPanel,
                 prompts:vPrompts, controls:vControls, evidence:vEvidence}[state.tab])(v); }
   catch(e){ v.innerHTML = `<div class="card"><h2>Not available</h2><p class="sub">${esc(e.message)}</p></div>`; }
 }
@@ -244,7 +305,69 @@ async function vOverview(v){
     <div class="card"><h2>Export</h2>
       <p class="sub"><a href="/api/export/claims.csv">claims.csv</a> · <a href="/api/export/claims.json">claims.json</a>
       · <a href="/api/manifest">run manifest</a> · <a href="/api/docs">API</a></p>
+      <p style="margin-top:12px"><button class="signout" onclick="signOut()">Sign out</button></p>
     </div>`;
+}
+
+async function vSources(v){
+  const rows = await api('/sources');
+  const chk = (c) => `<span class="badge ${c.status==='pass'?'':'flag'}">${esc(c.status)}</span>`;
+  v.innerHTML = `
+    <p class="sub" style="margin-bottom:8px">${rows.length} registered source${rows.length===1?'':'s'} ·
+       ${rows.reduce((n,r)=>n+r.steps_total,0)} verbatim steps ·
+       ${rows.reduce((n,r)=>n+r.captures.length,0)} captures</p>
+    ${rows.map(r=>`
+      <div class="card">
+        <div class="top" style="display:flex;justify-content:space-between;gap:10px">
+          <b>${esc(r.title)}</b>
+          <span class="badge ${r.check_counts.fail?'flag':''}">${
+            Object.entries(r.check_counts).map(([k,n])=>`${n} ${k}`).join(' · ')}</span>
+        </div>
+        <p class="sub mono" style="margin-top:4px">${esc(r.origin)}</p>
+        <div class="meta" style="margin-top:7px">
+          <span class="badge">licence ${esc(r.license)}</span>
+          <span class="badge" onclick="openSteps('${r.source_id}','${esc(r.title).replace(/'/g,"")}')"
+                style="cursor:pointer">${r.steps_total} steps ›</span>
+          ${r.captures.length?`<span class="badge">${r.captures.length} capture${r.captures.length===1?'':'s'}</span>`
+                             :'<span class="badge flag">no capture</span>'}
+        </div>
+        ${r.captures.length?`<div class="scroll"><table style="margin-top:8px">
+          <thead><tr><th>capture</th><th>packets</th><th>size</th><th>both directions</th></tr></thead>
+          <tbody>${r.captures.map(c=>`<tr>
+            <td class="mono">${esc(c.path.split('/').pop())}</td>
+            <td class="num">${c.packet_count==null?'<span class="badge flag">uncounted</span>':c.packet_count.toLocaleString()}</td>
+            <td class="num">${(c.size_bytes/1e6).toFixed(1)} MB</td>
+            <td>${c.capture_metadata.both_directions===null?'<span class="badge flag">unknown</span>'
+                  :(c.capture_metadata.both_directions?'yes':'no')}</td>
+          </tr>`).join('')}</tbody></table></div>`:''}
+        <h3>Verification checklist</h3>
+        <table><tbody>${r.checks.map(c=>`<tr>
+          <td>${chk(c)}</td><td>${esc(c.item)}<div class="ci">${esc(c.notes||'')}</div></td>
+        </tr>`).join('')}</tbody></table>
+        ${r.urls.length?`<h3>Links from source.md</h3>${r.urls.map(u=>`<p class="sub mono">${esc(u)}</p>`).join('')}`:''}
+      </div>`).join('')}
+    <div class="card"><h2>What this view does not claim</h2>
+      <p class="sub">Registered is not verified. “Every step located in the capture” and the keep/drop
+      decision are manual and still unverified for every source. Licences were not inferred: a source
+      whose terms are not written down says UNVERIFIED.</p>
+    </div>`;
+}
+
+async function openSteps(sourceId, title){
+  const steps = await api('/source/'+sourceId+'/steps');
+  openSheet('Steps, as transcribed', `
+    <div class="card"><h2>${esc(title)}</h2>
+      <p class="sub">${steps.length} rows, verbatim from the source. Nothing inferred — these are not
+      yet atomic claims; turning them into claims with executable conditions is the extraction agent’s job.</p>
+      <div class="scroll"><table>
+        <thead><tr><th>#</th><th>order</th><th>step</th><th>file</th></tr></thead>
+        <tbody>${steps.map(s=>`<tr>
+          <td class="num">${s.row_number}</td><td class="num">${esc(s.step_order)}</td>
+          <td>${esc(s.text)}<div class="ci">${esc(Object.entries(s.fields).filter(([k])=>k!=='description'&&k!=='attack_step').map(([k,x])=>k+'='+x).join(' · ').slice(0,160))}</div></td>
+          <td class="mono">${esc(s.origin_file.split('/').pop())}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>
+    </div>`);
 }
 
 async function vClaims(v){
@@ -475,8 +598,11 @@ async function vEvidence(v){
 state.tab = (location.hash.replace('#/','') || 'overview');
 if(!TABS.some(([k])=>k===state.tab)) state.tab = 'overview';
 renderTabs();
-api('/overview').then(d => { if(d.run) $('runline').textContent = d.run.run_id + ' · ' + (d.run.manifest.label||'run'); });
-render();
+fetch('/api/session').then(r=>r.json()).then(s => {
+  if(!s.configured) showGate('unconfigured');
+  else if(!s.authenticated) showGate('');
+  else render();
+}).catch(()=>render());
 window.addEventListener('hashchange', () => { const t = location.hash.replace('#/',''); if(t && t!==state.tab) go(t); });
 </script>
 </body>

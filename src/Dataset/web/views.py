@@ -286,6 +286,73 @@ def overview(db: Database, run_id: str | None = None) -> dict[str, Any]:
     }
 
 
+def sources(db: Database) -> list[dict[str, Any]]:
+    """
+    The source registry with its verification checklist.
+
+    Nothing is summarised into a single green tick: a source is shown with
+    the counts of what passed, what failed and what nobody has checked yet,
+    because "6 sources registered" and "6 sources verified" are very
+    different statements and only the first one is true today.
+    """
+    rows: list[dict[str, Any]] = []
+    for source in db.query("SELECT * FROM sources ORDER BY title"):
+        source_id = source["source_id"]
+        checks = [dict(c) for c in db.query(
+            "SELECT item, status, notes, pcap_id FROM verification_checks WHERE source_id = ? ORDER BY rowid",
+            (source_id,),
+        )]
+        captures = []
+        for pcap in db.query("SELECT * FROM pcaps WHERE source_id = ? ORDER BY path", (source_id,)):
+            captures.append(
+                {
+                    "pcap_id": pcap["pcap_id"],
+                    "path": pcap["path"],
+                    "sha256": pcap["sha256"],
+                    "size_bytes": pcap["size_bytes"],
+                    "packet_count": pcap["packet_count"],
+                    "capture_metadata": json.loads(pcap["capture_metadata"]),
+                }
+            )
+        steps = db.query(
+            "SELECT origin_file, COUNT(*) n FROM source_steps WHERE source_id = ? GROUP BY origin_file",
+            (source_id,),
+        )
+        rows.append(
+            {
+                "source_id": source_id,
+                "title": source["title"],
+                "origin": source["origin"],
+                "license": source["license"],
+                "urls": json.loads(source["urls"]),
+                "notes": source["notes"],
+                "steps_total": sum(row["n"] for row in steps),
+                "steps_by_file": [{"file": row["origin_file"], "n": row["n"]} for row in steps],
+                "captures": captures,
+                "checks": checks,
+                "check_counts": dict(Counter(check["status"] for check in checks)),
+            }
+        )
+    return rows
+
+
+def source_steps(db: Database, source_id: str) -> list[dict[str, Any]]:
+    """The steps exactly as transcribed, with the whole original row."""
+    return [
+        {
+            "step_id": row["step_id"],
+            "origin_file": row["origin_file"],
+            "row_number": row["row_number"],
+            "step_order": row["step_order"],
+            "text": row["text"],
+            "fields": json.loads(row["fields"]),
+        }
+        for row in db.query(
+            "SELECT * FROM source_steps WHERE source_id = ? ORDER BY origin_file, row_number", (source_id,)
+        )
+    ]
+
+
 def claims_table(db: Database, run_id: str | None = None) -> list[dict[str, Any]]:
     run = load_run(db, run_id)
     if not run:

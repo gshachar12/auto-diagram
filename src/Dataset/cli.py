@@ -66,6 +66,26 @@ def cmd_demo(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_ingest(args: argparse.Namespace) -> int:
+    """Register the dataset folders under pcaps/datasets/."""
+    from .ingest import ingest_datasets
+    from .pcap import PcapService, PcapServiceError
+
+    db = Database(args.db).initialise()
+    config = Config.load(args.config_dir)
+    try:
+        service = PcapService.from_config(config, db=db)
+    except PcapServiceError as exc:
+        print(f"warning: {exc}\n  captures will be registered without a packet count.", file=sys.stderr)
+        service = None
+    try:
+        summary = ingest_datasets(db=db, datasets_dir=args.datasets_dir, service=service)
+    finally:
+        db.close()
+    print(json.dumps(summary, indent=2))
+    return 0
+
+
 def cmd_status(args: argparse.Namespace) -> int:
     if not Path(args.db).exists():
         print(f"no database at {args.db}; run `pangea demo` first", file=sys.stderr)
@@ -101,6 +121,41 @@ def cmd_config(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_set_password(args: argparse.Namespace) -> int:
+    """
+    Set the dashboard password.
+
+    Read from $PANGEA_PASSWORD when set (so it can be scripted without the
+    password appearing in a command line, where `ps` would show it),
+    otherwise prompted for. `--generate` makes one up and prints it once.
+    """
+    import getpass
+
+    from .paths import data_dir
+    from .web.auth import Auth, AuthError, generate_passphrase
+
+    store = Auth(data_dir() / "auth.json")
+    if args.generate:
+        password = generate_passphrase()
+    elif os.environ.get("PANGEA_PASSWORD"):
+        password = os.environ["PANGEA_PASSWORD"]
+    else:
+        password = getpass.getpass("new dashboard password: ")
+        if password != getpass.getpass("repeat: "):
+            print("passwords did not match", file=sys.stderr)
+            return 2
+    try:
+        store.set_password(password)
+    except AuthError as exc:
+        print(str(exc), file=sys.stderr)
+        return 2
+    print(f"password set in {store.path} (mode 0600)")
+    if args.generate:
+        print(f"\n    {password}\n")
+        print("Shown once. Existing sessions on every device have been signed out.")
+    return 0
+
+
 def cmd_doctor(args: argparse.Namespace) -> int:
     """Check the things that silently break this experiment on a new host."""
     tshark = _resolve_tshark()
@@ -115,6 +170,7 @@ def cmd_doctor(args: argparse.Namespace) -> int:
         ("git commit", git_commit(), True),
         ("tshark", version or "NOT FOUND -- the PCAP service cannot run", bool(tshark)),
         ("data dir", str(data_dir()), True),
+        ("dashboard password", *_password_state()),
     ]
     width = max(len(name) for name, _, _ in checks)
     for name, detail, ok in checks:
@@ -145,6 +201,15 @@ def cmd_serve(args: argparse.Namespace) -> int:
     return 0
 
 
+def _password_state() -> tuple[str, bool]:
+    from .paths import data_dir
+    from .web.auth import Auth
+
+    if Auth(data_dir() / "auth.json").configured:
+        return "set", True
+    return "NOT SET -- the dashboard will serve no data; run `./pangea set-password`", False
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="pangea", description="PAnGEA Dataset Creator")
     parser.add_argument("--db", default=str(db_path()), help="dataset database (default: %(default)s)")
@@ -166,7 +231,15 @@ def build_parser() -> argparse.ArgumentParser:
     serve.add_argument("--i-know", action="store_true", help="allow a non-loopback bind")
     serve.set_defaults(func=cmd_serve)
 
+    ingest = sub.add_parser("ingest", help="register the dataset folders under pcaps/datasets/")
+    ingest.add_argument("--datasets-dir", default="pcaps/datasets")
+    ingest.set_defaults(func=cmd_ingest)
+
     sub.add_parser("status", help="what is stored").set_defaults(func=cmd_status)
+    password = sub.add_parser("set-password", help="set the dashboard password")
+    password.add_argument("--generate", action="store_true", help="generate one and print it once")
+    password.set_defaults(func=cmd_set_password)
+
     sub.add_parser("config", help="show the configuration and what is still unset").set_defaults(func=cmd_config)
     sub.add_parser("doctor", help="check the environment").set_defaults(func=cmd_doctor)
     return parser

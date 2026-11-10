@@ -126,7 +126,11 @@ class CaptureMetadata(Record):
     """
 
     vantage_point: str
-    both_directions: bool
+    # None means "not established yet". A capture whose direction coverage
+    # is unknown must not be recorded as one-directional, and must not be
+    # recorded as bidirectional either: absence claims are judged against
+    # this field, so a guess here becomes a wrong verdict later.
+    both_directions: bool | None = None
     known_gaps: list[str] = Field(default_factory=list)
     notes: str = ""
 

@@ -40,13 +40,19 @@ def db(seeded):
 
 
 @pytest.fixture(scope="module")
-def client(seeded, monkeypatch_module=None):
+def client(seeded):
     import os
+
+    from Dataset.web.auth import Auth
 
     _, directory = seeded
     os.environ["PANGEA_DATA_DIR"] = str(directory)
     (directory / "dataset.db").write_bytes((directory / "demo.db").read_bytes())
-    yield TestClient(create_app())
+    store = Auth(directory / "auth.json")
+    store.set_password("tests-only-password")
+    api = TestClient(create_app(store))
+    api.post("/api/login", json={"password": "tests-only-password"})
+    yield api
     os.environ.pop("PANGEA_DATA_DIR", None)
 
 
@@ -188,14 +194,16 @@ def test_the_dashboard_never_calls_a_number_correct_or_ground_truth(client):
     # the page itself. "ground truth" may appear only where it is denied.
     page = client.get("/").text.lower()
     assert "silver" in page
-    for forbidden in ("ground truth", "correct"):
-        position = page.find(forbidden)
-        while position != -1:
+    import re
+
+    # Word boundaries, so an HTML attribute like autocorrect="off" is not a
+    # claim about a result.
+    for forbidden in (r"\bground truth\b", r"\bcorrect\b"):
+        for match in re.finditer(forbidden, page):
             # Allowed only where the page denies the word, as in the banner
             # ("not ground truth", "never as correct").
-            preceding = page[max(0, position - 40):position]
-            assert "not" in preceding or "never" in preceding, page[max(0, position - 80):position + 20]
-            position = page.find(forbidden, position + 1)
+            preceding = page[max(0, match.start() - 40):match.start()]
+            assert "not" in preceding or "never" in preceding, page[max(0, match.start() - 80):match.end() + 20]
 
 
 def test_export_csv_has_a_header_and_one_row_per_pair(client):

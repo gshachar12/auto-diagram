@@ -18,6 +18,7 @@ SEED_ROWS: list[tuple[str, dict]] = [
     ("sources", dict(source_id="src_1", title="t", created_at=utc_now())),
     ("pcaps", dict(pcap_id="pcap_1", source_id="src_1", path="p", sha256="h", size_bytes=1, capture_metadata="{}", created_at=utc_now())),
     ("verification_checks", dict(check_id="chk_1", source_id="src_1", item="link", status="pass", created_at=utc_now())),
+    ("source_steps", dict(step_id="stp_1", source_id="src_1", origin_file="steps.csv", row_number=1, text="a step", created_at=utc_now())),
     ("claims", dict(claim_id="clm_1", source_id="src_1", source_location="l", source_step_text="s", atomic_text="a", level=1, kind="existential", created_at=utc_now())),
     ("claim_reviews", dict(review_id="rev_1", claim_id="clm_1", action="accept", created_at=utc_now())),
     ("pairs", dict(pair_id="pair_1", claim_id="clm_1", pair_type="source", pcap_id="pcap_1", expected="SUPPORTED", expected_basis="author", level=1, created_at=utc_now())),

@@ -23,15 +23,26 @@ import json
 from pathlib import Path
 from typing import Any
 
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import Body, FastAPI, HTTPException, Request, Response
 from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse
 from fastapi.staticfiles import StaticFiles
 
-from ..paths import db_path
+from ..paths import data_dir, db_path
 from ..storage.db import Database
 from . import views
+from .auth import COOKIE_NAME, Auth, AuthError
 
 STATIC_DIR = Path(__file__).resolve().parent / "static"
+
+#: Reachable without a session. The page itself is an empty shell -- it
+#: holds no data and fetches everything through /api, which is gated -- so
+#: serving it to an unauthenticated visitor gives nothing away and lets the
+#: login form be the page's own gate rather than a redirect dance.
+PUBLIC_PATHS = frozenset({"/", "/healthz", "/api/login", "/api/session", "/favicon.ico"})
+
+
+def auth_store() -> Auth:
+    return Auth(data_dir() / "auth.json")
 
 
 def _db() -> Database:
@@ -49,8 +60,62 @@ def _read(fn, *args, **kwargs) -> Any:
         db.close()
 
 
-def create_app() -> FastAPI:
+def create_app(auth: Auth | None = None) -> FastAPI:
     app = FastAPI(title="PAnGEA Dataset Creator", docs_url="/api/docs", redoc_url=None)
+    app.state.auth = auth
+
+    def current_auth() -> Auth:
+        # Resolved per request rather than at import: `set-password` may run
+        # while the server is up, and the next request should see it.
+        return app.state.auth or auth_store()
+
+    @app.middleware("http")
+    async def require_session(request: Request, call_next):
+        path = request.url.path
+        if path in PUBLIC_PATHS or path.startswith("/static/"):
+            return await call_next(request)
+        store = current_auth()
+        if not store.configured:
+            # Fail closed: an unconfigured deployment serves no data at all.
+            return JSONResponse(
+                {"detail": "no password set on the server; run `./pangea set-password`", "configured": False},
+                status_code=503,
+            )
+        if not store.check_token(request.cookies.get(COOKIE_NAME)):
+            return JSONResponse({"detail": "authentication required"}, status_code=401)
+        return await call_next(request)
+
+    @app.get("/api/session")
+    def session(request: Request) -> dict[str, bool]:
+        store = current_auth()
+        return {
+            "configured": store.configured,
+            "authenticated": store.configured and store.check_token(request.cookies.get(COOKIE_NAME)),
+        }
+
+    @app.post("/api/login")
+    def login(request: Request, response: Response, password: str = Body(..., embed=True)) -> dict[str, bool]:
+        store = current_auth()
+        client = request.client.host if request.client else "-"
+        try:
+            ok = store.verify_password(password, client=client)
+        except AuthError as exc:
+            # A lockout and an unconfigured server are different problems,
+            # and the page says which rather than a generic failure.
+            status = 429 if "attempts" in str(exc) else 503
+            raise HTTPException(status_code=status, detail=str(exc))
+        if not ok:
+            raise HTTPException(status_code=401, detail="wrong password")
+        response.set_cookie(
+            COOKIE_NAME, store.issue_token(), httponly=True, samesite="lax",
+            max_age=14 * 24 * 3600, path="/",
+        )
+        return {"authenticated": True}
+
+    @app.post("/api/logout")
+    def logout(response: Response) -> dict[str, bool]:
+        response.delete_cookie(COOKIE_NAME, path="/")
+        return {"authenticated": False}
 
     @app.get("/", include_in_schema=False)
     def index() -> FileResponse:
@@ -89,6 +154,17 @@ def create_app() -> FastAPI:
         if not row:
             raise HTTPException(status_code=404, detail=f"no call {call_id}")
         return row
+
+    @app.get("/api/sources")
+    def sources() -> list[dict[str, Any]]:
+        return _read(views.sources)
+
+    @app.get("/api/source/{source_id}/steps")
+    def source_steps(source_id: str) -> list[dict[str, Any]]:
+        steps = _read(views.source_steps, source_id)
+        if not steps:
+            raise HTTPException(status_code=404, detail=f"no steps for {source_id}")
+        return steps
 
     @app.get("/api/panel")
     def panel(run_id: str | None = None) -> dict[str, Any]:

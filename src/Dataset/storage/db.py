@@ -26,12 +26,13 @@ import sqlite3
 from pathlib import Path
 from typing import Any, Iterable
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 
 RAW_TABLES: tuple[str, ...] = (
     "sources",
     "pcaps",
     "verification_checks",
+    "source_steps",
     "claims",
     "claim_reviews",
     "pairs",
@@ -103,6 +104,23 @@ CREATE TABLE IF NOT EXISTS verification_checks (
     decided_by TEXT NOT NULL DEFAULT 'agent',
     created_at TEXT NOT NULL
 );
+
+-- Steps exactly as the source states them, one row per row/arrow/bullet.
+-- Raw input to the extraction agent, kept apart from `claims`: a claim is
+-- an atomic, checkable statement the agent derived, a step is what the
+-- authors wrote. Conflating them would lose the ability to show both.
+CREATE TABLE IF NOT EXISTS source_steps (
+    step_id     TEXT PRIMARY KEY,
+    source_id   TEXT NOT NULL REFERENCES sources(source_id),
+    origin_file TEXT NOT NULL,
+    row_number  INTEGER NOT NULL,
+    step_order  TEXT NOT NULL DEFAULT '',
+    text        TEXT NOT NULL,
+    fields      TEXT NOT NULL DEFAULT '{}',
+    created_at  TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_source_steps_source ON source_steps(source_id, origin_file, row_number);
 
 -- ----------------------------------------------------------------- claims
 CREATE TABLE IF NOT EXISTS claims (

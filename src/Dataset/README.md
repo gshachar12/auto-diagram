@@ -14,6 +14,8 @@ be used later by the analysis only, as a sensitivity comparison.
 ```bash
 ./pangea doctor     # check python, git, tshark, data dir
 ./pangea demo       # seed the reproducible demo dataset (no API calls, no cost)
+./pangea ingest     # register pcaps/datasets/ (real captures, counted with tshark)
+./pangea set-password   # the dashboard password (--generate to make one up)
 ./pangea serve      # the dashboard, on http://127.0.0.1:8800
 ./pangea status     # what is stored
 ./pangea config     # configuration, its hash, and what is still UNSET
@@ -80,7 +82,10 @@ overrides it.
 | `models/base.py` | the provider-agnostic adapter interface and the answer parser |
 | `models/mock.py` | MockModel: correct, wrong, abstaining, malformed, fabricating, failing |
 | `demo/` | the seeded synthetic dataset |
-| `cli.py` | `init`, `demo`, `status`, `config`, `doctor` |
+| `pcap/service.py` | the only thing that runs tshark: `summary`, `query`, and the limits |
+| `ingest.py` | `pcaps/datasets/` → sources, verbatim steps, counted captures, checklist |
+| `web/` | the read-only dashboard, its read model and its login |
+| `cli.py` | `init`, `demo`, `ingest`, `set-password`, `serve`, `status`, `config`, `doctor` |
 
 ## The rules this code enforces, not just documents
 
@@ -127,8 +132,57 @@ service will meet. Their packet counts stay `NULL` and a
 `verification_checks` row records them as unverified, because nothing has
 opened the files yet — that is B1.
 
+## PCAP service (B1)
+
+`pcap/service.py` is the only place that runs tshark. The display filter it
+runs is, in the experiment, written by a model — untrusted input reaching a
+subprocess — so:
+
+- **No shell, ever.** tshark is invoked with an argument list, so there is
+  nothing for `;`, backticks or `$( )` to break out of.
+- **Filters are compiled, not inspected.** Rather than denylisting
+  characters (`;` and `"` are legal in display filters), the filter is
+  compiled against an empty capture; anything tshark exits non-zero on is
+  refused, whatever wording it used. A filter starting with `-` is also
+  refused, since it would be read as an option.
+- **Captures live in a jail.** Paths are resolved through symlinks and must
+  land inside the configured roots.
+- **Everything is bounded.** Timeout, a cap on bytes read and a cap on
+  packets returned; a truncated scan says it is truncated rather than
+  lying about the count.
+
+Results are cached by (capture sha256, filter, limit) — by content, so two
+names for one file share an entry and an edited file never hits a stale one.
+
+## Source registry (`./pangea ingest`)
+
+Registers every folder under `pcaps/datasets/`: the steps transcribed
+verbatim into `source_steps` (never into `claims` — turning a step into an
+atomic claim with a condition is the extraction agent's job), the captures
+with a real packet count read by the PCAP service, and a verification
+checklist per source.
+
+It does not improve on its sources. Licences are `UNVERIFIED` unless stated;
+`both_directions` stays unknown rather than being guessed, because absence
+claims are judged against it; a folder with no capture is still registered
+with a failed "sample capture obtained" check. Where `source.md` states a
+packet count, it is cross-checked against tshark's — currently 3 for 3.
+
+## Login
+
+The dashboard asks for one password (PBKDF2-SHA256, 600k rounds, stdlib) and
+issues an HMAC-signed session cookie. It **fails closed**: with no password
+file, every data endpoint returns 503. Five wrong attempts from one address
+start a doubling lockout. Changing the password rotates the session secret,
+signing every device out.
+
+The cookie is not `Secure`, because this host has no HTTPS (`tailscale
+serve` is disabled by the tailnet administrator) and a Secure cookie would
+never be sent. The password therefore crosses the tailnet in clear text.
+That is a real limitation, not an oversight.
+
 ## Not here yet
 
-B1 PCAP service · B2 source registry, extraction agent, claims review ·
-B3 pair builder and mutation validation · B4 prompt builder, real model
-adapters, runner · B5 analysis · B6 dashboard · B7 pilot and full run.
+B2 extraction agent and claims review · B3 pair builder and mutation
+validation · B4 prompt builder, real model adapters, runner · B5 analysis ·
+B7 pilot and full run.
