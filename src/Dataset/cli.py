@@ -25,6 +25,8 @@ from .demo import seed_demo
 from .manifest import git_commit
 from .paths import data_dir, db_path, results_path
 from .storage.db import Database
+from .steps_file import (SOURCES_DIR, json_schema, render_csv, render_markdown,
+                         steps_files, validate_file)
 from .storage.repository import Repository
 
 
@@ -133,9 +135,30 @@ def cmd_review(args: argparse.Namespace) -> int:
 
 def cmd_models(args: argparse.Namespace) -> int:
     """Which panel members could actually be called right now."""
-    from .models.providers import ProviderError, build_adapter
+    import httpx
+
+    from .models.providers import ProviderError, build_adapter, list_remote_models
 
     config = Config.load(args.config_dir)
+    if args.discover:
+        # One entry per provider is enough: the catalogue is per key, not
+        # per configured model.
+        seen: set[str] = set()
+        for spec in config.models:
+            if spec.adapter == "mock" or spec.adapter in seen:
+                continue
+            seen.add(spec.adapter)
+            raw = config.model_raw.get(spec.model_id, {})
+            print(f"\n{spec.adapter}:")
+            try:
+                adapter = build_adapter(spec, {**raw, "model_name": raw.get("model_name") or "discover"})
+                adapter.api_key()
+                for name in list_remote_models(adapter):
+                    print(f"  {name}")
+            except (ProviderError, httpx.HTTPError) as exc:
+                print(f"  unavailable: {exc}")
+        return 0
+
     for spec in config.models:
         raw = config.model_raw.get(spec.model_id, {})
         if spec.adapter == "mock":
@@ -343,6 +366,54 @@ def cmd_serve(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_steps(args: argparse.Namespace) -> int:
+    """Validate, render or print the schema for sources/<paper>/steps.json.
+
+    `validate` is the gate: JSON is the source of truth, so a file that does
+    not pass it has no business being rendered into a table someone reads.
+    `render` therefore validates first and refuses to write from a bad file.
+    """
+    root = Path(args.repo_root) if args.repo_root else None
+
+    if args.steps_command == "schema":
+        print(json.dumps(json_schema(), indent=2))
+        return 0
+
+    paths = [Path(p) for p in args.paths] if args.paths else steps_files(root)
+    if not paths:
+        print(f"no steps.json found under {SOURCES_DIR}/")
+        return 1
+
+    failed = 0
+    for path in paths:
+        doc, problems = validate_file(path, root)
+        if problems:
+            failed += 1
+            print(f"FAIL {path}  ({len(problems)} problem{'s' if len(problems) != 1 else ''})")
+            for problem in problems:
+                print(f"       {problem.where}: {problem.message}")
+            continue
+
+        assert doc is not None
+        flagged = sum(1 for step in doc.steps if step.needs_review)
+        found = sum(1 for step in doc.steps if step.pcap_check.status == "found")
+        print(f"OK   {path}  {len(doc.steps)} steps, {found} found in the capture, "
+              f"{flagged} flagged for review")
+
+        if args.steps_command == "render":
+            out = path.with_name("steps.md")
+            out.write_text(render_markdown(doc), encoding="utf-8")
+            print(f"       wrote {out}")
+            if args.csv:
+                csv_out = path.with_name("steps.csv")
+                csv_out.write_text(render_csv(doc), encoding="utf-8")
+                print(f"       wrote {csv_out}")
+
+    if failed:
+        print(f"\n{failed} of {len(paths)} file(s) failed validation")
+    return 1 if failed else 0
+
+
 def _password_state() -> tuple[str, bool]:
     from .paths import data_dir
     from .web.auth import Auth
@@ -387,7 +458,12 @@ def build_parser() -> argparse.ArgumentParser:
     review.add_argument("--limit", type=int, default=20)
     review.set_defaults(func=cmd_review)
 
-    sub.add_parser("models", help="which panel members can be called").set_defaults(func=cmd_models)
+    models_cmd = sub.add_parser("models", help="which panel members can be called")
+    models_cmd.add_argument(
+        "--discover", action="store_true",
+        help="ask each provider which model ids it accepts (needs that provider's key)",
+    )
+    models_cmd.set_defaults(func=cmd_models)
 
     prompts_cmd = sub.add_parser("prompts", help="the frozen prompt variants")
     prompts_cmd.add_argument("--show", default=None, help="render one variant")
@@ -409,6 +485,18 @@ def build_parser() -> argparse.ArgumentParser:
     password.set_defaults(func=cmd_set_password)
 
     sub.add_parser("config", help="show the configuration and what is still unset").set_defaults(func=cmd_config)
+    steps = sub.add_parser("steps", help="validate and render the per-paper steps.json files")
+    steps.add_argument("--repo-root", default=None, help="repository root (default: the package's)")
+    steps_sub = steps.add_subparsers(dest="steps_command", required=True)
+    for name, helptext in (("validate", "check every steps.json against the schema and the capture"),
+                           ("render", "regenerate steps.md from steps.json")):
+        one = steps_sub.add_parser(name, help=helptext)
+        one.add_argument("paths", nargs="*", help="steps.json files (default: all of them)")
+        if name == "render":
+            one.add_argument("--csv", action="store_true", help="also derive steps.csv")
+    steps_sub.add_parser("schema", help="print the JSON Schema").set_defaults(paths=[])
+    steps.set_defaults(func=cmd_steps, csv=False)
+
     sub.add_parser("doctor", help="check the environment").set_defaults(func=cmd_doctor)
     return parser
 

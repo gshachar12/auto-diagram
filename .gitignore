@@ -215,3 +215,9 @@ output/Demo.mov
 
 # PAnGEA Dataset Creator: generated data (append-only results, SQLite)
 data/
+
+# Steps files: captures stay out of git history. sources/<paper>/steps.json
+# references a capture by path + sha256; the bytes are fetched, not committed.
+sources/**/*.pcap
+sources/**/*.pcapng
+sources/**/*.cap

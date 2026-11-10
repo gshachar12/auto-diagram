@@ -1,0 +1,353 @@
+{
+  "$defs": {
+    "Paper": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "authors": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Authors"
+        },
+        "venue": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Venue"
+        },
+        "year": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Year"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Url"
+        },
+        "license": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "License"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "authors",
+        "venue",
+        "year",
+        "url",
+        "license"
+      ],
+      "title": "Paper",
+      "type": "object"
+    },
+    "PcapCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "found",
+            "not_found",
+            "unchecked"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "packets": {
+          "items": {
+            "type": "integer"
+          },
+          "title": "Packets",
+          "type": "array"
+        },
+        "filter": {
+          "title": "Filter",
+          "type": "string"
+        },
+        "note": {
+          "title": "Note",
+          "type": "string"
+        }
+      },
+      "required": [
+        "status",
+        "filter",
+        "note"
+      ],
+      "title": "PcapCheck",
+      "type": "object"
+    },
+    "PcapRef": {
+      "additionalProperties": false,
+      "properties": {
+        "file": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "File"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Sha256"
+        },
+        "size_bytes": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Size Bytes"
+        },
+        "packet_count": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Packet Count"
+        },
+        "origin_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Origin Url"
+        },
+        "matches_figure": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Matches Figure"
+        },
+        "match_note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Match Note"
+        }
+      },
+      "required": [
+        "file",
+        "sha256",
+        "size_bytes",
+        "packet_count",
+        "origin_url",
+        "matches_figure",
+        "match_note"
+      ],
+      "title": "PcapRef",
+      "type": "object"
+    },
+    "Step": {
+      "additionalProperties": false,
+      "properties": {
+        "step_id": {
+          "title": "Step Id",
+          "type": "string"
+        },
+        "seq": {
+          "title": "Seq",
+          "type": "integer"
+        },
+        "phase": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Phase"
+        },
+        "source_location": {
+          "title": "Source Location",
+          "type": "string"
+        },
+        "verbatim": {
+          "title": "Verbatim",
+          "type": "string"
+        },
+        "normalized": {
+          "title": "Normalized",
+          "type": "string"
+        },
+        "actor": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Actor"
+        },
+        "target": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Target"
+        },
+        "protocol": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Protocol"
+        },
+        "step_type": {
+          "enum": [
+            "message",
+            "internal",
+            "outcome",
+            "other"
+          ],
+          "title": "Step Type",
+          "type": "string"
+        },
+        "compound": {
+          "title": "Compound",
+          "type": "boolean"
+        },
+        "pcap_check": {
+          "$ref": "#/$defs/PcapCheck"
+        },
+        "extracted_by": {
+          "enum": [
+            "agent",
+            "human"
+          ],
+          "title": "Extracted By",
+          "type": "string"
+        },
+        "needs_review": {
+          "title": "Needs Review",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "step_id",
+        "seq",
+        "phase",
+        "source_location",
+        "verbatim",
+        "normalized",
+        "actor",
+        "target",
+        "protocol",
+        "step_type",
+        "compound",
+        "pcap_check",
+        "extracted_by",
+        "needs_review"
+      ],
+      "title": "Step",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "paper": {
+      "$ref": "#/$defs/Paper"
+    },
+    "pcap": {
+      "$ref": "#/$defs/PcapRef"
+    },
+    "steps": {
+      "items": {
+        "$ref": "#/$defs/Step"
+      },
+      "title": "Steps",
+      "type": "array"
+    }
+  },
+  "required": [
+    "paper",
+    "pcap",
+    "steps"
+  ],
+  "title": "PAnGEA steps file",
+  "type": "object",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "One steps.json per paper: the attack steps exactly as the paper or its diagram presents them, the paper's capture, and a per-step check against it."
+}

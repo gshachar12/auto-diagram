@@ -179,6 +179,48 @@ claims are judged against it; a folder with no capture is still registered
 with a failed "sample capture obtained" check. Where `source.md` states a
 packet count, it is cross-checked against tshark's — currently 3 for 3.
 
+## Steps files (`sources/<paper_id>/steps.json`)
+
+The uniform replacement for the per-paper CSVs under `pcaps/datasets/`, which
+had a different column set in every folder and so could not be validated,
+diffed or joined.
+
+```bash
+pangea steps validate          # every file, against the schema and the capture
+pangea steps render --csv      # regenerate steps.md (and steps.csv) from the JSON
+pangea steps schema            # the JSON Schema, generated from the model
+```
+
+One file per paper: `paper`, `pcap`, and `steps[]`. Each step carries the
+paper's own numbering and phase name, where it came from, the paper's wording,
+one paraphrase in a fixed template, and a check against the capture.
+
+| rule | how it is enforced |
+|---|---|
+| the paper's wording wins | `verbatim` is a diagram label or a sentence, copied; the paraphrase lives only in `normalized`, as `ACTOR -> TARGET: action [protocol; fields]` |
+| one step is one arrow | a step that does several things stays one step with `compound: true`; splitting into atomic claims is `extract`'s job |
+| unknown is a value | every field is always present; `null` plus `needs_review`, never an omission and never a guess |
+| the capture decides | a `pcap_check` of `found` is rejected unless it carries the packet numbers **and** the display filter that found them |
+| the format is uniform | field order is part of the schema, so a reordered file fails |
+
+The validator also rejects a duplicate `step_id`, a gap in `seq`, a `step_id`
+that does not follow `<paper_id>-S%02d`, a value outside the closed lists, a
+packet number past the capture's `packet_count`, a missing capture, a size
+mismatch, and a **`sha256` mismatch** — without which every cited packet number
+could be about a different file.
+
+`steps.schema.json` under `schemas_json/` is generated from the pydantic model
+and a test fails if the committed copy has drifted from it.
+
+**JSON is the source of truth.** `steps.md` carries a generated-by banner and
+is rewritten by `steps render`; `render` validates first and refuses to write a
+table from a file that does not pass. A CSV, if one is wanted, is derived with
+the same columns rather than maintained.
+
+Captures are referenced by path and `sha256`, never copied into
+`sources/`, and `.gitignore` keeps captures out of that tree.
+
+
 ## Login
 
 The dashboard asks for one password (PBKDF2-SHA256, 600k rounds, stdlib) and
@@ -256,9 +298,23 @@ cost `null` for any model with no configured price.
 Keys go in `.env` at the repo root — gitignored, and sourced by `./pangea`:
 
 ```bash
-printf 'ANTHROPIC_API_KEY=...\n' >> .env && chmod 600 .env
-./pangea models        # says which members are ready
+printf 'ANTHROPIC_API_KEY=...\n' >> .env && chmod 600 .env   # one line per provider
+./pangea models              # which members are configured
+./pangea models --discover   # ask each provider which model ids it accepts
 ```
+
+`./pangea models` saying "ready" means a key is present and a model name is
+pinned — not that the key is valid. Only a call can tell you that.
+
+For OpenAI and Google, two things are needed: the key in `.env`
+(`OPENAI_API_KEY`, `GEMINI_API_KEY`) and a real `model_name` in
+`config/models.yaml`, which ships as `UNSET`. Use `--discover` to get the
+provider's own current list rather than a published one, which goes stale,
+and set `version` to the same exact string so the manifest records what ran.
+
+Google deprecates sampling parameters on its newer models; set
+`omit_temperature: true` on that entry if the provider rejects or ignores
+`temperature`.
 
 `config/models.yaml` ships the OpenAI and Google entries with
 `model_name: UNSET`, because their current identifiers were not verified

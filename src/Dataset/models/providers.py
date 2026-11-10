@@ -85,6 +85,9 @@ class HttpModelAdapter:
     backoff_seconds: float = 2.0
     max_tool_calls: int = 6
     client: httpx.Client | None = None
+    #: Some providers have deprecated sampling parameters on their newer
+    #: models. Set per model in config/models.yaml rather than guessed at.
+    omit_temperature: bool = False
     price_per_mtok_in: float | None = None
     price_per_mtok_out: float | None = None
     _usage: dict[str, int] = field(default_factory=lambda: {"tokens_in": 0, "tokens_out": 0})
@@ -312,8 +315,8 @@ class GoogleAdapter(HttpModelAdapter):
                 "contents": contents,
                 "systemInstruction": {"parts": [{"text": request.system_prompt}]},
                 "generationConfig": {
-                    "temperature": request.temperature,
                     "maxOutputTokens": request.max_output_tokens,
+                    **({} if self.omit_temperature else {"temperature": request.temperature}),
                 },
             }
             if tools:
@@ -345,6 +348,34 @@ class GoogleAdapter(HttpModelAdapter):
         return "(tool-call limit reached before the model answered)"
 
 
+def list_remote_models(adapter: HttpModelAdapter) -> list[str]:
+    """
+    Ask the provider which model ids it will accept.
+
+    Published model lists go stale fast and a wrong id fails only at call
+    time, so the authoritative answer is the provider's own catalogue. Read
+    only, and it costs nothing.
+    """
+    client = adapter.client or httpx.Client(timeout=adapter.timeout_seconds)
+    if isinstance(adapter, AnthropicAdapter):
+        response = client.get("https://api.anthropic.com/v1/models?limit=100", headers=adapter._headers())
+        response.raise_for_status()
+        return sorted(item["id"] for item in response.json().get("data", []))
+    if isinstance(adapter, OpenAIAdapter):
+        response = client.get("https://api.openai.com/v1/models", headers=adapter._headers())
+        response.raise_for_status()
+        return sorted(item["id"] for item in response.json().get("data", []))
+    if isinstance(adapter, GoogleAdapter):
+        response = client.get(f"{GoogleAdapter.base_url}?pageSize=200", headers=adapter._headers())
+        response.raise_for_status()
+        return sorted(
+            item["name"].removeprefix("models/")
+            for item in response.json().get("models", [])
+            if "generateContent" in (item.get("supportedGenerationMethods") or ["generateContent"])
+        )
+    raise ProviderError(f"no model listing for {type(adapter).__name__}")
+
+
 ADAPTERS: dict[str, type[HttpModelAdapter]] = {
     "anthropic": AnthropicAdapter,
     "openai": OpenAIAdapter,
@@ -369,6 +400,7 @@ def build_adapter(
         model_name=raw.get("model_name") or "UNSET",
         tool_executor=tool_executor,
         client=client,
+        omit_temperature=bool(raw.get("omit_temperature", False)),
         price_per_mtok_in=raw.get("price_per_mtok_in"),
         price_per_mtok_out=raw.get("price_per_mtok_out"),
         **overrides,
