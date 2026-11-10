@@ -18,6 +18,10 @@ be used later by the analysis only, as a sensitivity comparison.
 ./pangea extract    # steps -> atomic claims, conditions run on the source capture
 ./pangea review     # the claims review queue
 ./pangea set-password   # the dashboard password (--generate to make one up)
+./pangea models     # which panel members can actually be called
+./pangea prompts    # the frozen prompt variants (--show <label> renders one)
+./pangea run --dry-run   # the plan and an estimate; calls nothing
+./pangea run        # models x prompts x pairs x repeats
 ./pangea serve      # the dashboard, on http://127.0.0.1:8800
 ./pangea status     # what is stored
 ./pangea config     # configuration, its hash, and what is still UNSET
@@ -88,6 +92,9 @@ overrides it.
 | `ingest.py` | `pcaps/datasets/` → sources, verbatim steps, counted captures, checklist |
 | `extraction.py` | steps → atomic claims, levels, conditions; conditions run on the capture |
 | `review.py` | accept / edit / split / merge / reject, as new versions |
+| `prompts/` | the frozen variants, the criteria text, and the leak scanner |
+| `models/providers.py` | Anthropic / OpenAI / Google over httpx, with the tool loop |
+| `runner.py` | the plan, the leak gate, resume, pause, retries, cost estimates |
 | `web/` | the read-only dashboard, its read model and its login |
 | `cli.py` | `init`, `demo`, `ingest`, `set-password`, `serve`, `status`, `config`, `doctor` |
 
@@ -213,6 +220,50 @@ versions whose `supersedes` points at what they replace, marked `human`; the
 agent's original stays readable forever. The queue's state is derived from
 `claim_reviews` rows, not from a flag. A rejected claim keeps its row and
 simply never becomes a pair.
+
+## Prompts, adapters and the run (B4)
+
+**Prompt variants are frozen and hashed.** Six of them, each changing
+exactly one dimension away from `base` (wording, structure, role, label
+order) plus the control with no criteria at all. The criteria text is
+byte-identical wherever it appears — only its presentation changes, which
+is the only way "the prompt effect" means anything. Editing `criteria.md`
+changes every hash, and therefore produces a new run.
+
+**The leak gate runs before every run, not only in the tests.** Each
+(pair, variant) that would be sent is rendered and scanned for the expected
+verdict, the pair type, the claim's provenance, the source paper and any
+Preprocessor cluster; one hit refuses the whole run. The template is
+innocent until an item is interpolated into it, which is why the check is
+on rendered text.
+
+**Adapters** for Anthropic, OpenAI and Google over plain `httpx` — one
+endpoint each, no vendor SDKs, so the pinned model string is the only thing
+that decides what ran. Keys are read per call from the environment and never
+written to a config, a manifest, a result row or a log line; a transport
+error reports only the exception class, because a URL can carry a key. A
+missing key, an UNSET model name, an HTTP error, a tool failure and a
+refusal are all *results* with `error` set, never crashes.
+
+**The run** is idempotent (keyed by run × pair × model × prompt × repeat,
+enforced by the database), resumable, pausable between units, shuffled with
+the run seed so order effects cannot line up with any model or item, and
+dry-runnable: `--dry-run` prints the plan with token estimates and leaves
+cost `null` for any model with no configured price.
+
+### Giving the system an API key
+
+Keys go in `.env` at the repo root — gitignored, and sourced by `./pangea`:
+
+```bash
+printf 'ANTHROPIC_API_KEY=...\n' >> .env && chmod 600 .env
+./pangea models        # says which members are ready
+```
+
+`config/models.yaml` ships the OpenAI and Google entries with
+`model_name: UNSET`, because their current identifiers were not verified
+here and an invented or aliased name makes a run unreproducible. Fill them
+in before using those providers.
 
 ## Not here yet
 

@@ -1,0 +1,58 @@
+# Prompt variants: FROZEN before the run, hashed, never added to or removed
+# from after results are seen.
+#
+# Each variant changes exactly ONE dimension away from `base`. The criteria
+# text is identical in all of them -- it is included verbatim from
+# criteria.md -- and only its presentation changes. The control is the
+# exception that the design calls for: no criteria at all, which is how the
+# question "do the criteria help?" gets an answer.
+#
+# What a variant may NOT contain is checked mechanically, not by reading:
+# see prompts/leaks.py. The expected verdict, the pair type, the claim's
+# provenance, the source paper and any Preprocessor cluster are all absent
+# from every rendered prompt, by test.
+
+prompt_set_version: 1
+
+variants:
+  - label: base
+    dimension: base
+    role: null
+    criteria_style: numbered
+    label_order: [SUPPORTED, REFUTED, NOT_VERIFIABLE]
+    wording: a
+
+  - label: wording_b
+    dimension: wording
+    role: null
+    criteria_style: numbered
+    label_order: [SUPPORTED, REFUTED, NOT_VERIFIABLE]
+    wording: b
+
+  - label: structure_xml
+    dimension: structure
+    role: null
+    criteria_style: xml
+    label_order: [SUPPORTED, REFUTED, NOT_VERIFIABLE]
+    wording: a
+
+  - label: role_analyst
+    dimension: role
+    role: "You are a network forensics analyst."
+    criteria_style: numbered
+    label_order: [SUPPORTED, REFUTED, NOT_VERIFIABLE]
+    wording: a
+
+  - label: labels_reversed
+    dimension: label_order
+    role: null
+    criteria_style: numbered
+    label_order: [NOT_VERIFIABLE, REFUTED, SUPPORTED]
+    wording: a
+
+  - label: control_no_criteria
+    dimension: control
+    role: null
+    criteria_style: none
+    label_order: [SUPPORTED, REFUTED, NOT_VERIFIABLE]
+    wording: a

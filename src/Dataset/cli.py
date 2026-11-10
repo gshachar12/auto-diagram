@@ -131,6 +131,103 @@ def cmd_review(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_models(args: argparse.Namespace) -> int:
+    """Which panel members could actually be called right now."""
+    from .models.providers import ProviderError, build_adapter
+
+    config = Config.load(args.config_dir)
+    for spec in config.models:
+        raw = config.model_raw.get(spec.model_id, {})
+        if spec.adapter == "mock":
+            state = "ready (scripted, no API call)"
+        else:
+            try:
+                adapter = build_adapter(spec, raw)
+                adapter.check_ready()
+                state = f"ready ({raw.get('model_name')})"
+            except ProviderError as exc:
+                state = f"NOT READY -- {exc}"
+        print(f"{spec.model_id:16s} {spec.family:10s} {spec.adapter:10s} {state}")
+    return 0
+
+
+def cmd_prompts(args: argparse.Namespace) -> int:
+    from .prompts import PromptBuilder
+
+    builder = PromptBuilder()
+    print(f"prompt set version {builder.set_version}, hash {builder.set_hash[:16]}")
+    for variant in builder.variants:
+        print(f"  {variant.label:22s} {variant.dimension:12s} hash {builder.prompt_hash(variant)[:16]}")
+    if args.show:
+        rendered = builder.render(
+            builder.variant(args.show),
+            claim_text="<the claim goes here>",
+            capture={"packet_count": 0, "closed_world": {"both_directions": None}},
+            thresholds=Config.load(args.config_dir).get("thresholds"),
+        )
+        print("\n--- system ---\n" + rendered.system + "\n--- user ---\n" + rendered.user)
+    return 0
+
+
+def cmd_run(args: argparse.Namespace) -> int:
+    from .pcap import PcapService, PcapServiceError
+    from .paths import results_path
+    from .runner import RunPaused, Runner
+
+    db = Database(args.db).initialise()
+    config = Config.load(args.config_dir)
+    try:
+        service = PcapService.from_config(config, db=db)
+    except PcapServiceError as exc:
+        print(f"warning: {exc}; models will get no tool results.", file=sys.stderr)
+        service = None
+
+    runner = Runner(db=db, config=config, results_path=args.results, service=service)
+    try:
+        models = args.models.split(",") if args.models else None
+        prompts = args.prompts.split(",") if args.prompts else None
+        units = runner.plan(models=models, prompts=prompts)
+
+        if args.pause:
+            from .storage.repository import Repository
+
+            if not args.run_id:
+                print("--pause needs --run-id", file=sys.stderr)
+                return 2
+            Repository(db).add_run_event(args.run_id, "paused", "asked to pause")
+            print(f"run {args.run_id} will stop after the call in flight")
+            return 0
+
+        # The leak gate runs before anything is sent, every time -- not
+        # only in the test suite.
+        leaks = runner.check_no_leaks(units)
+        if leaks:
+            print(f"refusing to run: {len(leaks)} rendered prompt(s) leak", file=sys.stderr)
+            for problem in leaks[:5]:
+                print(f"  {problem['pair_id']} / {problem['prompt']}: {problem['leaks']}", file=sys.stderr)
+            return 3
+
+        if args.dry_run:
+            print(json.dumps(runner.estimate(units), indent=2))
+            return 0
+
+        run_id, _ = runner.create_run(label=args.label, units=units)
+        print(f"run {run_id}: {len(units)} units planned")
+        try:
+            summary = runner.execute(
+                run_id, units,
+                min_interval_seconds=args.min_interval,
+                on_progress=lambda i, n: print(f"  {i}/{n}", end="\r", flush=True),
+            )
+        except RunPaused as exc:
+            print(f"\n{exc}")
+            return 0
+        print("\n" + json.dumps(summary, indent=2))
+        return 0
+    finally:
+        db.close()
+
+
 def cmd_status(args: argparse.Namespace) -> int:
     if not Path(args.db).exists():
         print(f"no database at {args.db}; run `pangea demo` first", file=sys.stderr)
@@ -289,6 +386,22 @@ def build_parser() -> argparse.ArgumentParser:
     review = sub.add_parser("review", help="show the claims review queue")
     review.add_argument("--limit", type=int, default=20)
     review.set_defaults(func=cmd_review)
+
+    sub.add_parser("models", help="which panel members can be called").set_defaults(func=cmd_models)
+
+    prompts_cmd = sub.add_parser("prompts", help="the frozen prompt variants")
+    prompts_cmd.add_argument("--show", default=None, help="render one variant")
+    prompts_cmd.set_defaults(func=cmd_prompts)
+
+    run = sub.add_parser("run", help="run models x prompts x pairs x repeats")
+    run.add_argument("--dry-run", action="store_true", help="print the plan and an estimate; call nothing")
+    run.add_argument("--label", default="pilot")
+    run.add_argument("--models", default=None, help="comma-separated model ids")
+    run.add_argument("--prompts", default=None, help="comma-separated variant labels")
+    run.add_argument("--min-interval", type=float, default=0.0, help="seconds between calls to one model")
+    run.add_argument("--pause", action="store_true")
+    run.add_argument("--run-id", default=None)
+    run.set_defaults(func=cmd_run)
 
     sub.add_parser("status", help="what is stored").set_defaults(func=cmd_status)
     password = sub.add_parser("set-password", help="set the dashboard password")

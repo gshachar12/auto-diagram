@@ -60,8 +60,15 @@ class Config:
     def __init__(self, experiment: dict[str, Any], models: dict[str, Any]) -> None:
         self.experiment = experiment
         self.models_raw = models
-        self.models = [ModelSpec(**{k: v for k, v in m.items() if k != "api_key_env"}) for m in models.get("models", [])]
-        self._api_key_envs = {m["model_id"]: m.get("api_key_env") for m in models.get("models", [])}
+        spec_fields = set(ModelSpec.model_fields)
+        self.models = [
+            ModelSpec(**{k: v for k, v in entry.items() if k in spec_fields}) for entry in models.get("models", [])
+        ]
+        # Everything else about a model -- its key's variable, its exact
+        # provider model name, its prices -- stays in the raw entry, which
+        # the adapters read. None of it belongs in the record type.
+        self.model_raw = {entry["model_id"]: entry for entry in models.get("models", [])}
+        self._api_key_envs = {entry["model_id"]: entry.get("api_key_env") for entry in models.get("models", [])}
 
     @classmethod
     def load(cls, config_dir: str | Path | None = None) -> "Config":

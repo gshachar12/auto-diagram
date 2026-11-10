@@ -32,3 +32,49 @@ models:
     supports_tools: false
     temperature: 0.0
     api_key_env: null
+
+# ---------------------------------------------------------------------------
+# Real providers. Each needs its key in the environment -- the value is read
+# at call time and is never written to a config, a manifest, a result row or
+# a log line.
+#
+# `model_name` is the exact version string the provider is called with. It
+# ships as UNSET for the providers whose current identifiers were not
+# verified here: an invented or aliased model name would make the run
+# unreproducible, so the adapter refuses to call until it is filled in.
+#
+# Prices are null until confirmed against the provider's own page. A cost
+# estimate from a made-up price is worse than no estimate.
+
+  - model_id: claude-sonnet
+    family: anthropic
+    version: claude-sonnet-5-5
+    adapter: anthropic
+    model_name: claude-sonnet-5-5
+    supports_tools: true
+    temperature: 0.0
+    api_key_env: ANTHROPIC_API_KEY
+    price_per_mtok_in: null
+    price_per_mtok_out: null
+
+  - model_id: openai-primary
+    family: openai
+    version: UNSET
+    adapter: openai
+    model_name: UNSET
+    supports_tools: true
+    temperature: 0.0
+    api_key_env: OPENAI_API_KEY
+    price_per_mtok_in: null
+    price_per_mtok_out: null
+
+  - model_id: gemini-primary
+    family: google
+    version: UNSET
+    adapter: google
+    model_name: UNSET
+    supports_tools: true
+    temperature: 0.0
+    api_key_env: GEMINI_API_KEY
+    price_per_mtok_in: null
+    price_per_mtok_out: null

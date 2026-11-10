@@ -14,6 +14,15 @@ if [ -z "$PANGEA_TSHARK" ] && [ -x "$HOME/.pangea-tools/tshark/usr/bin/tshark" ]
     export PANGEA_TSHARK LD_LIBRARY_PATH
 fi
 
+# Provider keys live in .env (gitignored, 0600). Sourced here rather than
+# passed on a command line, where `ps` would show them, and never written
+# anywhere by the code that reads them.
+if [ -f "$ROOT/.env" ]; then
+    set -a
+    . "$ROOT/.env"
+    set +a
+fi
+
 PYTHONPATH="$ROOT/src${PYTHONPATH:+:$PYTHONPATH}"
 export PYTHONPATH
 exec "$ROOT/.venv/bin/python" -m Dataset.cli "$@"
