@@ -103,6 +103,7 @@ The claim-verification dataset and the multi-agent experiment live in
 ```bash
 ./pangea doctor    # check python, git, tshark and the data directory
 ./pangea demo      # seed the reproducible demo dataset (MockModel, no API cost)
+./pangea serve     # the results dashboard on http://127.0.0.1:8800
 ./pangea status    # what is stored
 pytest             # the Dataset Creator suite
 ```

@@ -122,6 +122,29 @@ def cmd_doctor(args: argparse.Namespace) -> int:
     return 0 if all(ok for _, _, ok in checks) else 1
 
 
+def cmd_serve(args: argparse.Namespace) -> int:
+    """
+    Run the dashboard.
+
+    Binds loopback by default and refuses a non-loopback bind without
+    --i-know: this host sits on a shared tailnet, and the right way to reach
+    the dashboard from a tablet is `tailscale serve` proxying to this port,
+    not a socket open to every machine on the network.
+    """
+    import uvicorn
+
+    if args.host not in ("127.0.0.1", "localhost", "::1") and not args.i_know:
+        print(
+            f"refusing to bind {args.host}: that exposes the dashboard to the whole network.\n"
+            "Use `tailscale serve` to reach it from another device, or pass --i-know.",
+            file=sys.stderr,
+        )
+        return 2
+    print(f"dashboard on http://{args.host}:{args.port}  (db: {args.db})")
+    uvicorn.run("Dataset.web.app:app", host=args.host, port=args.port, reload=args.reload, log_level="info")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="pangea", description="PAnGEA Dataset Creator")
     parser.add_argument("--db", default=str(db_path()), help="dataset database (default: %(default)s)")
@@ -135,6 +158,13 @@ def build_parser() -> argparse.ArgumentParser:
     demo.add_argument("--seed", type=int, default=None)
     demo.add_argument("--force", action="store_true", help="delete an existing database first")
     demo.set_defaults(func=cmd_demo)
+
+    serve = sub.add_parser("serve", help="run the dashboard")
+    serve.add_argument("--port", type=int, default=8800)
+    serve.add_argument("--host", default="127.0.0.1")
+    serve.add_argument("--reload", action="store_true")
+    serve.add_argument("--i-know", action="store_true", help="allow a non-loopback bind")
+    serve.set_defaults(func=cmd_serve)
 
     sub.add_parser("status", help="what is stored").set_defaults(func=cmd_status)
     sub.add_parser("config", help="show the configuration and what is still unset").set_defaults(func=cmd_config)

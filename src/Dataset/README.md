@@ -14,10 +14,50 @@ be used later by the analysis only, as a sensitivity comparison.
 ```bash
 ./pangea doctor     # check python, git, tshark, data dir
 ./pangea demo       # seed the reproducible demo dataset (no API calls, no cost)
+./pangea serve      # the dashboard, on http://127.0.0.1:8800
 ./pangea status     # what is stored
 ./pangea config     # configuration, its hash, and what is still UNSET
 pytest              # the suite (pytest.ini scopes it to src/Dataset/tests)
 ```
+
+## Dashboard
+
+`./pangea serve` runs a read-only FastAPI app and a single-page dashboard:
+Overview (counts, run manifest, warnings), Claims (filterable, tap through to
+the model-by-model matrix and from there to the stored response behind any
+number), Panel, Prompt sensitivity, Controls and leakage, Evidence quality.
+Mobile-first, so it is usable on a phone or tablet, with a dark mode.
+
+Every rate is printed with its `n` and a 95% Wilson interval; verdicts are
+reduced per model family before any majority is taken; nothing is called
+correct or ground truth, and construction-based items are described as
+"matches expected". Anything not yet computed — re-executing conditions,
+verifying cited packets, sufficiency and necessity, fabricated-packet rate —
+is shown as pending rather than filled in with a plausible number.
+
+It binds loopback. `--host` with a non-loopback address is refused without
+`--i-know`, because this machine sits on a shared tailnet.
+
+### Running it in the background and reaching it from a tablet
+
+Same pattern as the finance app on this host: pm2 keeps it running, and
+Tailscale carries it to the device.
+
+```bash
+pm2 start ./pangea --name pangea-dashboard --interpreter sh -- serve --port 8800
+pm2 save
+```
+
+Then open `http://finance-tau.tailfb309.ts.net:8800` (or
+`http://100.99.67.33:8800`) on any device signed into the same tailnet.
+`tailscale serve` — which would give HTTPS on a tidy URL — is **disabled on
+this tailnet by its administrator**, so the connection relies on tailscaled's
+userspace-networking mode forwarding an inbound tailnet connection to the
+same port on localhost. That is the same route the finance app uses.
+
+Note that this reaches the dashboard over plain HTTP and with no login, so
+every node on that tailnet can read it. The demo data is synthetic, but real
+results should get an auth gate first.
 
 `./pangea` is the launcher: it puts `src/` on `PYTHONPATH` and points
 `PANGEA_TSHARK` at the user-space Wireshark build, because tshark could not be

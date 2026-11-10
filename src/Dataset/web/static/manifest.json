@@ -1,0 +1,9 @@
+{
+  "name": "PAnGEA Dataset",
+  "short_name": "PAnGEA",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4f6f7",
+  "theme_color": "#2d7d8a",
+  "icons": []
+}

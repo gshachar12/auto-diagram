@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#2d7d8a">
+<link rel="manifest" href="/static/manifest.json">
+<title>PAnGEA Dataset</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --bg:#f4f6f7;--surface:#ffffff;--surface-2:#eef1f3;--surface-3:#e4e9ec;
+  --text:#0c1116;--muted:#5b6670;--faint:#8b949c;
+  --border:rgba(12,17,22,0.12);--border-strong:rgba(12,17,22,0.22);
+  --accent:#2d7d8a;--accent-soft:#d9eef1;
+  --ok:#1b8a59;--ok-soft:#dcf2e7;--bad:#c0413c;--bad-soft:#fae0df;
+  --nv:#5d6480;--nv-soft:#e6e8ef;--warn:#9a6a10;--warn-soft:#fbeecf;
+  --radius:12px;--font:'Inter',-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,'SF Mono',Menlo,monospace;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#0f1316;--surface:#171c20;--surface-2:#1e2429;--surface-3:#262d33;
+    --text:#eceff1;--muted:#a3adb5;--faint:#79838b;
+    --border:rgba(255,255,255,0.11);--border-strong:rgba(255,255,255,0.2);
+    --accent:#4aa9b8;--accent-soft:#143037;
+    --ok:#46c089;--ok-soft:#14301f;--bad:#e8706a;--bad-soft:#331615;
+    --nv:#9aa2bd;--nv-soft:#1e2130;--warn:#d9a13c;--warn-soft:#2e2411;
+  }
+}
+html{-webkit-text-size-adjust:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:15px;line-height:1.45;
+     padding-bottom:calc(62px + env(safe-area-inset-bottom))}
+.wrap{max-width:1040px;margin:0 auto;padding:12px 14px 24px}
+
+/* header */
+header{position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:0.5px solid var(--border);
+       padding:calc(10px + env(safe-area-inset-top)) 14px 10px}
+.hd{max-width:1040px;margin:0 auto;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.hd h1{font-size:17px;font-weight:600;letter-spacing:-0.01em}
+.hd .run{font-family:var(--mono);font-size:11px;color:var(--faint)}
+.banner{max-width:1040px;margin:8px auto 0;background:var(--warn-soft);color:var(--warn);
+        border-radius:9px;padding:8px 11px;font-size:12.5px;font-weight:500}
+
+/* cards */
+.card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius);
+      padding:14px;margin-bottom:12px}
+.card h2{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;
+         color:var(--muted);margin-bottom:10px}
+.card h3{font-size:14px;font-weight:600;margin:14px 0 6px}
+.sub{font-size:12.5px;color:var(--muted)}
+.note{font-size:12.5px;color:var(--muted);background:var(--surface-2);border-radius:9px;padding:9px 11px;margin-top:10px}
+
+/* grids */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px}
+.stat{background:var(--surface-2);border-radius:10px;padding:10px 11px}
+.stat .n{font-size:21px;font-weight:600;letter-spacing:-0.02em;font-variant-numeric:tabular-nums}
+.stat .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em;margin-top:1px}
+
+/* pills + badges */
+.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11.5px;font-weight:600;white-space:nowrap}
+.v-SUPPORTED{background:var(--ok-soft);color:var(--ok)}
+.v-REFUTED{background:var(--bad-soft);color:var(--bad)}
+.v-NOT_VERIFIABLE{background:var(--nv-soft);color:var(--nv)}
+.v-none{background:var(--warn-soft);color:var(--warn)}
+.badge{display:inline-block;padding:1px 7px;border-radius:6px;font-size:11px;font-weight:500;
+       background:var(--surface-3);color:var(--muted);white-space:nowrap}
+.flag{background:var(--warn-soft);color:var(--warn)}
+.mono{font-family:var(--mono);font-size:12px}
+.num{font-variant-numeric:tabular-nums}
+
+/* filters */
+.filters{display:flex;gap:6px;overflow-x:auto;padding:2px 0 8px;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.chip{flex:0 0 auto;padding:6px 12px;border-radius:999px;border:0.5px solid var(--border);
+      background:var(--surface);font-size:13px;color:var(--muted);cursor:pointer;font-family:var(--font)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:500}
+
+/* rows */
+.row{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius);
+     padding:11px 12px;margin-bottom:8px;cursor:pointer}
+.row:active{background:var(--surface-2)}
+.row .top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.row .txt{font-size:14px;line-height:1.35}
+.row .meta{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px;align-items:center}
+
+/* tables */
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -14px;padding:0 14px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th{text-align:left;font-weight:600;color:var(--muted);font-size:11px;text-transform:uppercase;
+   letter-spacing:0.04em;padding:6px 9px 6px 0;border-bottom:0.5px solid var(--border);white-space:nowrap}
+td{padding:7px 9px 7px 0;border-bottom:0.5px solid var(--border);vertical-align:top}
+tr.tap{cursor:pointer}
+tr.tap:active td{background:var(--surface-2)}
+.bar{height:5px;border-radius:3px;background:var(--surface-3);overflow:hidden;min-width:54px;margin-top:4px}
+.bar>i{display:block;height:100%;background:var(--accent)}
+.ci{font-size:11px;color:var(--faint);font-variant-numeric:tabular-nums}
+
+/* sheet */
+.sheet{position:fixed;inset:0;z-index:60;background:rgba(0,0,0,.45);display:none;
+       align-items:flex-end;justify-content:center}
+.sheet.show{display:flex}
+.sheet-inner{background:var(--bg);width:100%;max-width:1040px;max-height:92vh;overflow-y:auto;
+             border-radius:16px 16px 0 0;padding:14px 14px calc(26px + env(safe-area-inset-bottom))}
+@media(min-width:760px){.sheet{align-items:center}.sheet-inner{border-radius:16px;max-height:88vh}}
+.sheet-bar{position:sticky;top:0;background:var(--bg);padding-bottom:10px;display:flex;
+           justify-content:space-between;align-items:center;gap:10px;z-index:2}
+.sheet-bar b{font-size:15px}
+.x{border:0;background:var(--surface-3);color:var(--text);border-radius:999px;width:30px;height:30px;
+   font-size:17px;cursor:pointer;font-family:var(--font);line-height:1}
+pre{background:var(--surface-2);border-radius:9px;padding:11px;overflow-x:auto;
+    font-family:var(--mono);font-size:11.5px;line-height:1.45;white-space:pre-wrap;word-break:break-word}
+
+/* tab bar */
+nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background:var(--surface);
+    border-top:0.5px solid var(--border);display:flex;padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;border:0;background:none;padding:9px 2px 10px;font-family:var(--font);font-size:10.5px;
+           color:var(--faint);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px}
+nav button.on{color:var(--accent);font-weight:600}
+nav .dot{width:17px;height:17px;border-radius:5px;background:currentColor;opacity:.9}
+.hint{font-size:12px;color:var(--faint);text-align:center;padding:14px 0}
+a{color:var(--accent)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hd">
+    <h1>PAnGEA Dataset</h1>
+    <span class="run" id="runline">loading…</span>
+  </div>
+  <div class="banner" id="banner">
+    Labels here are <b>silver</b> — they are agreement between models, not ground truth.
+    Only items whose expected verdict is fixed by construction are scored, and then as
+    “matches expected”, never as “correct”.
+  </div>
+</header>
+
+<div class="wrap" id="view"><div class="hint">loading…</div></div>
+
+<nav id="tabs"></nav>
+
+<div class="sheet" id="sheet"><div class="sheet-inner">
+  <div class="sheet-bar"><b id="sheet-title"></b><button class="x" onclick="closeSheet()">×</button></div>
+  <div id="sheet-body"></div>
+</div></div>
+
+<script>
+const TABS = [
+  ['overview','Overview'], ['claims','Claims'], ['panel','Panel'],
+  ['prompts','Prompts'], ['controls','Controls'], ['evidence','Evidence'],
+];
+let state = {tab:'overview', filters:{pair_type:null, level:null, flag:null}, claims:null};
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s==null?'':s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const pct = (x, d=0) => x==null ? '—' : (100*x).toFixed(d)+'%';
+const num = (x, d=2) => x==null ? '—' : Number(x).toFixed(d);
+
+async function api(path){
+  const r = await fetch('/api'+path);
+  if(!r.ok) throw new Error((await r.json().catch(()=>({detail:r.statusText}))).detail);
+  return r.json();
+}
+function verdictPill(v){ return `<span class="pill ${v?'v-'+v:'v-none'}">${esc(v||'no majority')}</span>`; }
+// Every rate is shown with its n and its interval: a bare percentage over
+// 8 items reads like a result and is not one.
+function rate(o){
+  if(!o || o.n===0) return '<span class="ci">no items</span>';
+  return `<span class="num">${pct(o.rate,0)}</span> <span class="ci">n=${o.n} · 95% CI ${pct(o.ci_low,0)}–${pct(o.ci_high,0)}</span>`;
+}
+function bar(x){ return `<div class="bar"><i style="width:${Math.round(100*(x||0))}%"></i></div>`; }
+
+function renderTabs(){
+  $('tabs').innerHTML = TABS.map(([k,l]) =>
+    `<button class="${state.tab===k?'on':''}" onclick="go('${k}')"><span class="dot"></span>${l}</button>`).join('');
+}
+function go(tab){ state.tab = tab; location.hash = '#/'+tab; renderTabs(); render(); }
+
+function openSheet(title, html){
+  $('sheet-title').textContent = title;
+  $('sheet-body').innerHTML = html;
+  $('sheet').classList.add('show');
+}
+function closeSheet(){ $('sheet').classList.remove('show'); }
+$('sheet').addEventListener('click', e => { if(e.target.id==='sheet') closeSheet(); });
+
+// ---------------------------------------------------------------- views
+async function render(){
+  const v = $('view');
+  v.innerHTML = '<div class="hint">loading…</div>';
+  try { await ({overview:vOverview, claims:vClaims, panel:vPanel,
+                prompts:vPrompts, controls:vControls, evidence:vEvidence}[state.tab])(v); }
+  catch(e){ v.innerHTML = `<div class="card"><h2>Not available</h2><p class="sub">${esc(e.message)}</p></div>`; }
+}
+
+async function vOverview(v){
+  const d = await api('/overview');
+  if(!d.run){ v.innerHTML = '<div class="card"><h2>No run</h2><p class="sub">Run <span class="mono">./pangea demo</span> first.</p></div>'; return; }
+  $('runline').textContent = d.run.run_id + ' · ' + (d.run.manifest.label || 'run');
+  const m = d.run.manifest, c = d.counts;
+  const stat = (n,l) => `<div class="stat"><div class="n num">${n}</div><div class="l">${l}</div></div>`;
+  v.innerHTML = `
+    ${d.warnings.length ? `<div class="card"><h2>Warnings</h2>${d.warnings.map(w=>`<p class="sub">• ${esc(w)}</p>`).join('')}</div>` : ''}
+    <div class="card"><h2>Dataset</h2><div class="grid">
+      ${stat(c.sources,'sources')}${stat(c.pcaps,'captures')}${stat(c.claims,'claims')}
+      ${stat(c.pairs,'pairs')}${stat(c.calls,'calls')}${stat(c.format_errors,'format errors')}
+      ${stat(c.tool_errors,'tool errors')}${stat(c.discards,'discards')}
+    </div>
+    <h3>Pairs by type</h3><div class="grid">
+      ${Object.entries(d.pairs_by_type).map(([k,n])=>stat(n,k)).join('')}
+    </div></div>
+
+    <div class="card"><h2>Run manifest</h2>
+      <table><tbody>
+        <tr><td class="sub">git commit</td><td class="mono">${esc(m.code.git_commit)}</td></tr>
+        <tr><td class="sub">dataset version</td><td class="mono">${esc(m.code.dataset_version)}</td></tr>
+        <tr><td class="sub">config hash</td><td class="mono">${esc(m.config.config_hash.slice(0,24))}…</td></tr>
+        <tr><td class="sub">created</td><td class="mono">${esc(m.created_at)}</td></tr>
+      </tbody></table>
+      <h3>Thresholds</h3>
+      <pre>${esc(JSON.stringify(m.config.thresholds, null, 2))}</pre>
+      <h3>Captures</h3>
+      <table><thead><tr><th>pcap</th><th>sha256</th><th>packets</th></tr></thead><tbody>
+      ${m.pcaps.map(p=>`<tr><td class="mono">${esc(p.pcap_id)}</td><td class="mono">${esc(p.sha256.slice(0,16))}…</td>
+        <td>${p.packet_count==null?'<span class="badge flag">unverified</span>':p.packet_count}</td></tr>`).join('')}
+      </tbody></table>
+      <h3>Panel</h3>
+      <table><thead><tr><th>model</th><th>family</th><th>version</th><th>tools</th></tr></thead><tbody>
+      ${m.models.map(x=>`<tr><td class="mono">${esc(x.model_id)}</td><td>${esc(x.family)}</td>
+        <td class="mono">${esc(x.version)}</td><td>${x.supports_tools?'yes':'<span class="badge flag">no</span>'}</td></tr>`).join('')}
+      </tbody></table>
+    </div>
+
+    <div class="card"><h2>Not computed yet</h2>
+      ${Object.entries(d.pending).map(([k,v2])=>`<p class="sub">• <b>${esc(k.replace(/_/g,' '))}</b> — ${esc(v2)}</p>`).join('')}
+      <div class="note">These are shown as pending on purpose. A plausible-looking number here,
+      before the condition has actually been run against the capture, is exactly what this project exists to avoid.</div>
+    </div>
+
+    <div class="card"><h2>Export</h2>
+      <p class="sub"><a href="/api/export/claims.csv">claims.csv</a> · <a href="/api/export/claims.json">claims.json</a>
+      · <a href="/api/manifest">run manifest</a> · <a href="/api/docs">API</a></p>
+    </div>`;
+}
+
+async function vClaims(v){
+  const f = state.filters;
+  const q = Object.entries(f).filter(([,x])=>x).map(([k,x])=>`${k}=${encodeURIComponent(x)}`).join('&');
+  const rows = await api('/claims'+(q?'?'+q:''));
+  state.claims = rows;
+  const chip = (key,val,label) =>
+    `<button class="chip ${f[key]===val?'on':''}" onclick="setFilter('${key}',${val===null?'null':`'${val}'`})">${label}</button>`;
+  v.innerHTML = `
+    <div class="filters">
+      ${chip('pair_type',null,'all types')}${chip('pair_type','source','source')}${chip('pair_type','mutation','mutation')}
+      ${chip('pair_type','swap','swap')}${chip('pair_type','no_pcap','no pcap')}
+      ${chip('flag','FRAGILE','fragile')}${chip('flag','NO_MAJORITY','no majority')}${chip('flag','LOW_N','low n')}
+    </div>
+    <p class="sub" style="margin-bottom:8px">${rows.length} pair${rows.length===1?'':'s'} · tap a row for the model-by-model detail</p>
+    ${rows.map(r=>`
+      <div class="row" onclick="openPair('${r.pair_id}')">
+        <div class="top"><div class="txt">${esc(r.atomic_text)}</div>${verdictPill(r.panel_verdict)}</div>
+        <div class="meta">
+          <span class="badge">L${r.level} ${esc(r.kind)}</span>
+          <span class="badge">${esc(r.pair_type)}${r.mutation_type?' · '+esc(r.mutation_type):''}</span>
+          <span class="badge">expected ${esc(r.expected||'not SUPPORTED')} (${esc(r.expected_basis)})</span>
+          <span class="badge">${pct(r.vote_share,0)} of ${r.families_voting} families</span>
+          <span class="badge">entropy ${num(r.entropy_bits)} bits</span>
+          <span class="badge">conf ${num(r.mean_confidence,1)}</span>
+          <span class="badge">n=${r.n_calls}${r.n_format_errors?` · ${r.n_format_errors} fmt err`:''}</span>
+          ${r.matches_expected===null?'':`<span class="badge ${r.matches_expected?'':'flag'}">${r.matches_expected?'matches expected':'differs from expected'}</span>`}
+          ${r.flags.map(x=>`<span class="badge flag">${esc(x)}</span>`).join('')}
+        </div>
+      </div>`).join('') || '<div class="hint">nothing matches these filters</div>'}`;
+}
+function setFilter(k, val){ state.filters[k] = (state.filters[k]===val)?null:val; render(); }
+
+async function openPair(pairId){
+  const d = await api('/pair/'+pairId);
+  const s = d.summary, cl = d.claim, cap = d.capture;
+  const cond = cl.condition;
+  openSheet(`Claim · ${cl.kind} · level ${cl.level}`, `
+    <div class="card"><h2>Claim</h2>
+      <p class="txt">${esc(cl.atomic_text)}</p>
+      <div class="meta" style="margin-top:8px">
+        <span class="badge">${esc(s.pair_type)}</span>
+        <span class="badge">expected ${esc(s.expected||'not SUPPORTED')} (${esc(s.expected_basis)})</span>
+        ${verdictPill(s.panel_verdict)}
+        <span class="badge">${pct(s.vote_share,0)} of ${s.families_voting} families</span>
+        ${s.flags.map(x=>`<span class="badge flag">${esc(x)}</span>`).join('')}
+      </div>
+      <h3>Source step</h3>
+      <p class="sub">${esc(cl.source_step_text)}</p>
+      <p class="sub" style="margin-top:4px">${esc(cl.source_title)} · ${esc(cl.source_location)}</p>
+      ${cond?`<h3>Executable condition</h3><pre>${esc(cond.display_filter)}</pre>
+        <p class="sub">structured predicate (what a mutation changes):</p>
+        <pre>${esc(JSON.stringify(cond.predicate,null,2))}</pre>`:''}
+    </div>
+
+    <div class="card"><h2>Capture</h2>
+      ${cap.pcap_path?`<p class="mono">${esc(cap.pcap_path)}</p>
+      <p class="sub">sha256 ${esc((cap.pcap_sha256||'').slice(0,24))}… · packets
+        ${cap.packet_count==null?'<span class="badge flag">unverified</span>':cap.packet_count}</p>
+      <h3>Closed-world statement</h3>
+      <pre>${esc(JSON.stringify(cap.capture_metadata,null,2))}</pre>`
+      :'<p class="sub">No capture — this is a leakage probe. The expected answer is NOT_VERIFIABLE.</p>'}
+    </div>
+
+    <div class="card"><h2>Evidence</h2>
+      <div class="note">${esc(d.evidence.note)}</div>
+    </div>
+
+    <div class="card"><h2>Model × prompt × repeat</h2>
+      <div class="scroll"><table>
+        <thead><tr><th>model</th><th>prompt</th><th>rep</th><th>verdict</th><th>conf</th><th>cited</th><th>condition</th></tr></thead>
+        <tbody>${d.matrix.map(m=>`
+          <tr class="tap" onclick="openCall('${m.call_id}')">
+            <td class="mono">${esc(m.model_id)}</td>
+            <td class="mono">${esc(m.prompt_id.slice(0,10))}</td>
+            <td class="num">${m.repeat}</td>
+            <td>${m.format_error?'<span class="badge flag">format error</span>':verdictPill(m.verdict)}
+                ${m.reason_code?`<div class="ci">${esc(m.reason_code)}</div>`:''}
+                ${m.error?'<div class="ci">tool error</div>':''}</td>
+            <td class="num">${m.confidence==null?'—':m.confidence}</td>
+            <td>${m.cited_packets.length?`<span class="badge flag">${m.cited_packets.join(', ')} · unchecked</span>`:'—'}</td>
+            <td class="mono">${esc((m.condition||'').slice(0,42))}</td>
+          </tr>`).join('')}</tbody>
+      </table></div>
+      <p class="sub" style="margin-top:8px">Tap any row to read the stored response it came from.</p>
+    </div>`);
+}
+
+async function openCall(callId){
+  const c = await api('/call/'+callId);
+  openSheet('Stored response', `
+    <div class="card"><h2>Call</h2>
+      <table><tbody>
+        <tr><td class="sub">call</td><td class="mono">${esc(c.call_id)}</td></tr>
+        <tr><td class="sub">model</td><td class="mono">${esc(c.model_id)} · ${esc(c.model_version)}</td></tr>
+        <tr><td class="sub">prompt</td><td class="mono">${esc(c.prompt_id)}</td></tr>
+        <tr><td class="sub">prompt hash</td><td class="mono">${esc((c.prompt_hash||'').slice(0,24))}…</td></tr>
+        <tr><td class="sub">repeat / temp</td><td class="num">${c.repeat} / ${c.temperature}</td></tr>
+        <tr><td class="sub">tokens</td><td class="num">${c.tokens_in} in · ${c.tokens_out} out · ${c.latency_ms} ms</td></tr>
+        <tr><td class="sub">format error</td><td>${c.format_error?'<span class="badge flag">yes</span>':'no'}</td></tr>
+        ${c.error?`<tr><td class="sub">error</td><td class="mono">${esc(c.error)}</td></tr>`:''}
+      </tbody></table>
+      <h3>Raw response, as stored</h3><pre>${esc(c.raw_response)}</pre>
+      <h3>Tool calls</h3><pre>${esc(c.tool_calls)}</pre>
+    </div>`);
+}
+
+async function vPanel(v){
+  const d = await api('/panel');
+  v.innerHTML = `
+    <div class="card"><h2>Families <span class="sub">(the unit of analysis)</span></h2>
+      <div class="scroll"><table>
+        <thead><tr><th>family</th><th>matches expected</th><th>abstains</th><th>format err</th><th>self-consistency</th></tr></thead>
+        <tbody>${d.families.map(f=>`<tr>
+          <td><b>${esc(f.family)}</b></td>
+          <td>${rate(f.controls)}${bar(f.controls.rate)}</td>
+          <td class="num">${pct(f.abstention_rate,0)}</td>
+          <td class="num">${pct(f.format_error_rate,0)}</td>
+          <td class="num">${pct(f.self_consistency,0)} <span class="ci">n=${f.self_consistency_n}</span></td>
+        </tr>`).join('')}</tbody>
+      </table></div>
+      <div class="note">Two sizes of one model are not independent votes, so a verdict is reduced per family
+      before any majority is taken. “Matches expected” counts only items whose expected answer is fixed by
+      construction — it is not an accuracy against ground truth.</div>
+    </div>
+
+    <div class="card"><h2>Models</h2>
+      <div class="scroll"><table>
+        <thead><tr><th>model</th><th>family</th><th>matches expected</th><th>abstains</th><th>format err</th><th>tool err</th></tr></thead>
+        <tbody>${d.models.map(m=>`<tr>
+          <td class="mono">${esc(m.model_id)}</td><td>${esc(m.family)}</td>
+          <td>${rate(m.controls)}</td>
+          <td class="num">${pct(m.abstention_rate,0)}</td>
+          <td class="num">${pct(m.format_error_rate,0)}</td>
+          <td class="num">${pct(m.tool_error_rate,0)}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>
+    </div>
+
+    <div class="card"><h2>Pairwise family agreement</h2>
+      <div class="scroll"><table>
+        <thead><tr><th>pair of families</th><th>agreement</th></tr></thead>
+        <tbody>${d.pairwise_family_agreement.map(a=>`<tr>
+          <td>${esc(a.a)} ↔ ${esc(a.b)}</td><td>${rate(a)}${bar(a.rate)}</td></tr>`).join('')}</tbody>
+      </table></div>
+    </div>
+
+    <div class="card"><h2>Not computed yet</h2>
+      ${Object.entries(d.pending).map(([k,x])=>`<p class="sub">• <b>${esc(k.replace(/_/g,' '))}</b> — ${esc(x)}</p>`).join('')}
+    </div>`;
+}
+
+async function vPrompts(v){
+  const d = await api('/prompts');
+  v.innerHTML = `
+    <div class="card"><h2>Flip rate vs the noise floor</h2>
+      <table><tbody>
+        <tr><td class="sub">between prompts</td><td>${rate(d.prompt_flip_rate)}${bar(d.prompt_flip_rate.rate)}</td></tr>
+        <tr><td class="sub">between repeats <span class="ci">(same prompt — the sampling-noise floor)</span></td>
+            <td>${rate(d.repeat_flip_rate)}${bar(d.repeat_flip_rate.rate)}</td></tr>
+      </tbody></table>
+      <div class="note">${esc(d.note)}</div>
+    </div>
+    <div class="card"><h2>Per prompt variant</h2>
+      <div class="scroll"><table>
+        <thead><tr><th>variant</th><th>dimension</th><th>calls</th><th>SUPPORTED</th><th>abstains</th><th>format err</th></tr></thead>
+        <tbody>${d.prompts.map(p=>`<tr>
+          <td>${esc(p.label)}</td><td class="sub">${esc(p.dimension)}</td>
+          <td class="num">${p.n_calls}</td><td class="num">${pct(p.supported_rate,0)}</td>
+          <td class="num">${pct(p.abstention_rate,0)}</td><td class="num">${pct(p.format_error_rate,0)}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>
+    </div>
+    <div class="card"><h2>Not computed yet</h2>
+      ${Object.entries(d.pending).map(([k,x])=>`<p class="sub">• <b>${esc(k.replace(/_/g,' '))}</b> — ${esc(x)}</p>`).join('')}
+    </div>`;
+}
+
+async function vControls(v){
+  const d = await api('/controls');
+  v.innerHTML = `
+    <div class="card"><h2>By pair type</h2>
+      <div class="scroll"><table>
+        <thead><tr><th>type</th><th>basis</th><th>pairs</th><th>matches expected</th></tr></thead>
+        <tbody>${d.by_pair_type.map(r=>`<tr>
+          <td><b>${esc(r.pair_type)}</b></td><td class="sub">${esc(r.basis)}</td>
+          <td class="num">${r.n_pairs}</td><td>${rate(r)}${bar(r.rate)}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>
+      <div class="note">Only construction-based items are scored. A “source” pair rests on the author’s
+      claim, which is not a control, so most of them are not scored here.</div>
+    </div>
+    <div class="card"><h2>Knowledge leakage</h2>
+      <p>SUPPORTED on a pair with no capture: ${rate(d.leakage)}</p>
+      <div class="note">${esc(d.leakage.note)}</div>
+    </div>
+    <div class="card"><h2>Swaps</h2>
+      <p class="sub">${d.swaps.not_supported} of ${d.swaps.n} swaps came back not SUPPORTED.</p>
+      <div class="note">${esc(d.swaps.note)}</div>
+    </div>
+    <div class="card"><h2>Mutation survival log</h2>
+      ${d.mutation_survival_log.length
+        ? `<pre>${esc(JSON.stringify(d.mutation_survival_log,null,2))}</pre>`
+        : '<p class="sub">Empty.</p>'}
+      ${Object.entries(d.pending).map(([k,x])=>`<div class="note">${esc(x)}</div>`).join('')}
+    </div>`;
+}
+
+async function vEvidence(v){
+  const d = await api('/evidence');
+  v.innerHTML = `
+    <div class="card"><h2>Citations as reported</h2>
+      <div class="grid">
+        <div class="stat"><div class="n num">${d.citations.calls_with_citations}</div><div class="l">calls citing packets</div></div>
+        <div class="stat"><div class="n num">${d.citations.calls_total}</div><div class="l">calls</div></div>
+        <div class="stat"><div class="n num">${num(d.citations.mean_cited_packets,1)}</div><div class="l">mean cited</div></div>
+      </div>
+      <div class="note">These are the numbers the models reported. None of them has been checked against a
+      capture yet, so no packet here is verified and none is known to be fabricated.</div>
+    </div>
+    <div class="card"><h2>Not computed yet</h2>
+      ${Object.entries(d.pending).map(([k,x])=>`<p class="sub">• <b>${esc(k.replace(/_/g,' '))}</b> — ${esc(x)}</p>`).join('')}
+    </div>`;
+}
+
+// ------------------------------------------------------------------ boot
+state.tab = (location.hash.replace('#/','') || 'overview');
+if(!TABS.some(([k])=>k===state.tab)) state.tab = 'overview';
+renderTabs();
+api('/overview').then(d => { if(d.run) $('runline').textContent = d.run.run_id + ' · ' + (d.run.manifest.label||'run'); });
+render();
+window.addEventListener('hashchange', () => { const t = location.hash.replace('#/',''); if(t && t!==state.tab) go(t); });
+</script>
+</body>
+</html>
