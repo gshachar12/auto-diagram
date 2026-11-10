@@ -880,9 +880,9 @@ async function vPrompts(v){
         <p class="ci mono">${esc(x.prompt_id)} · hash ${esc(x.prompt_hash.slice(0,16))}…</p>
         <pre>${esc(x.template)}</pre>`).join('')}
       <div class="note">A solver prompt must never contain the expected verdict, the pair type, the
-      claim’s provenance, the source paper or any Preprocessor cluster. The test that scans every
-      rendered prompt for those arrives with the prompt builder (B4); these demo variants are stubs.</div>
-    </div>`
+      claim’s provenance, the source paper or any Preprocessor cluster. Every rendered prompt is
+      scanned for exactly those before a run starts, and one hit refuses the whole run.</div>
+    </div>
     <div class="card"><h2>Flip rate vs the noise floor</h2>
       <table><tbody>
         <tr><td class="sub">between prompts</td><td>${rate(d.prompt_flip_rate)}${bar(d.prompt_flip_rate.rate)}</td></tr>

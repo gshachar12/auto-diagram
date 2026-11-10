@@ -9,6 +9,8 @@ rather than filled in with something plausible.
 from __future__ import annotations
 
 import json
+import tempfile
+from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
@@ -286,3 +288,51 @@ def test_every_call_records_the_prompt_that_produced_it(db):
     # The claim is in the prompt; the expected verdict never is.
     assert raw["prompt_rendered"].strip()
     assert "expected" not in raw["prompt_rendered"].lower()
+
+
+# -- the page itself -------------------------------------------------------
+
+def test_the_dashboard_javascript_parses():
+    """
+    The whole page is one script, so a single syntax error renders nothing
+    at all -- the view sits at "loading…" forever and every tab is blank.
+    That is exactly what happened: a stray backtick closed a template
+    literal early and the dashboard was dead for two commits before anyone
+    could tell, because the server kept answering 200.
+    """
+    import re
+    import shutil
+    import subprocess
+
+    from Dataset.web.app import STATIC_DIR
+
+    node = shutil.which("node") or str(Path.home() / ".n/bin/node")
+    if not Path(node).exists():
+        pytest.skip("node is not available to parse the page")
+
+    html = (STATIC_DIR / "index.html").read_text(encoding="utf-8")
+    script = re.search(r"<script>(.*?)</script>", html, re.S)
+    assert script, "the page has no script block"
+
+    with tempfile.NamedTemporaryFile("w", suffix=".js", delete=False, encoding="utf-8") as handle:
+        handle.write(script.group(1))
+        path = handle.name
+    try:
+        result = subprocess.run([node, "--check", path], capture_output=True, text=True, timeout=60)
+        assert result.returncode == 0, result.stderr
+    finally:
+        Path(path).unlink(missing_ok=True)
+
+
+def test_every_tab_has_a_render_function():
+    """A tab with no renderer throws the moment it is opened."""
+    import re
+
+    from Dataset.web.app import STATIC_DIR
+
+    html = (STATIC_DIR / "index.html").read_text(encoding="utf-8")
+    tabs = set(re.findall(r"\['(\w+)','[^']+'\]", html))
+    dispatch = re.search(r"await \(\{(.*?)\}\[state\.tab\]\)", html, re.S)
+    assert dispatch
+    wired = set(re.findall(r"(\w+):\s*v\w+", dispatch.group(1)))
+    assert tabs == wired, f"tabs without a renderer: {tabs - wired}"
