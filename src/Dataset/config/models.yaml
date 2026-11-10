@@ -59,22 +59,35 @@ models:
 
   - model_id: openai-primary
     family: openai
-    version: UNSET
+    # A dated snapshot, not a rolling name: the experiment has to be
+    # reproducible, and `gpt-6-astra` can change under its own id.
+    version: gpt-5.5-2026-04-23
     adapter: openai
-    model_name: UNSET
+    model_name: gpt-5.5-2026-04-23
     supports_tools: true
     temperature: 0.0
+    # This model rejects any temperature but its default: "Unsupported
+    # value: 'temperature' does not support 0.0 with this model."
+    omit_temperature: true
     api_key_env: OPENAI_API_KEY
     price_per_mtok_in: null
     price_per_mtok_out: null
 
   - model_id: gemini-primary
     family: google
-    version: UNSET
+    # gemini-4-argon returns 429 (no quota on this key); 3.5-flash answers.
+    version: gemini-3.5-flash
     adapter: google
-    model_name: UNSET
+    model_name: gemini-3.5-flash
     supports_tools: true
+    # This model still accepts an explicit temperature, so it is sent and
+    # the manifest can honestly record 0.0 (checked, not assumed).
     temperature: 0.0
+    omit_temperature: false
+    # Gemini 3.x reasons before answering, and the thinking tokens come out
+    # of this budget: too small a cap returns an empty answer rather than
+    # an error.
+    max_output_tokens: 4096
     api_key_env: GEMINI_API_KEY
     price_per_mtok_in: null
     price_per_mtok_out: null

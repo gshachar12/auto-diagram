@@ -85,8 +85,11 @@ class HttpModelAdapter:
     backoff_seconds: float = 2.0
     max_tool_calls: int = 6
     client: httpx.Client | None = None
-    #: Some providers have deprecated sampling parameters on their newer
-    #: models. Set per model in config/models.yaml rather than guessed at.
+    #: Several providers now reject any temperature but their own default on
+    #: their newer models (OpenAI: "only the default (1) value is
+    #: supported"; Google has deprecated the parameter outright). When this
+    #: is set the parameter is not sent, and the manifest records that the
+    #: sampling was the provider's default rather than claiming 0.0.
     omit_temperature: bool = False
     price_per_mtok_in: float | None = None
     price_per_mtok_out: float | None = None
@@ -201,9 +204,9 @@ class AnthropicAdapter(HttpModelAdapter):
             payload: dict[str, Any] = {
                 "model": self.model_name,
                 "max_tokens": request.max_output_tokens,
-                "temperature": request.temperature,
                 "system": request.system_prompt,
                 "messages": messages,
+                **({} if self.omit_temperature else {"temperature": request.temperature}),
             }
             if tools:
                 payload["tools"] = tools
@@ -257,8 +260,8 @@ class OpenAIAdapter(HttpModelAdapter):
             payload: dict[str, Any] = {
                 "model": self.model_name,
                 "messages": messages,
-                "temperature": request.temperature,
                 "max_completion_tokens": request.max_output_tokens,
+                **({} if self.omit_temperature else {"temperature": request.temperature}),
             }
             if tools:
                 payload["tools"] = tools

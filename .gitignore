@@ -221,3 +221,10 @@ data/
 sources/**/*.pcap
 sources/**/*.pcapng
 sources/**/*.cap
+
+# Provider API keys. The glob matters: the stock ".env" rule above does not
+# cover ".env.backup" or ".env.local", and a stray backup of a key file is
+# exactly what gets committed by accident. The placeholder template is the
+# one exception -- it holds no secret.
+.env.*
+!.env.template

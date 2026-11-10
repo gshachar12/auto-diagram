@@ -267,12 +267,23 @@ class Runner:
             {"prompt_id": self.builder.prompt_id(v), "prompt_hash": self.builder.prompt_hash(v), "label": v.label}
             for v in self.builder.variants
         ]
-        models = [
-            {"model_id": m.model_id, "family": m.family, "version": m.version,
-             "temperature": m.temperature, "supports_tools": m.supports_tools}
-            for m in self.config.models
-            if m.model_id in {u.model_id for u in units}
-        ]
+        models = []
+        for m in self.config.models:
+            if m.model_id not in {u.model_id for u in units}:
+                continue
+            raw = self.config.model_raw.get(m.model_id, {})
+            omitted = bool(raw.get("omit_temperature", False))
+            models.append(
+                {
+                    "model_id": m.model_id, "family": m.family, "version": m.version,
+                    # A model that refuses a temperature ran at the
+                    # provider's default, and the manifest says so rather
+                    # than recording a number nobody sent.
+                    "temperature": None if omitted else m.temperature,
+                    "temperature_sent": not omitted,
+                    "supports_tools": m.supports_tools,
+                }
+            )
         run_id, manifest = build_manifest(
             config=self.config, pcaps=pcaps, prompts=prompts, models=models, label=label, repo_root=self.root
         )
