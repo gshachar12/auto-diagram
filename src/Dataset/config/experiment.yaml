@@ -46,5 +46,26 @@ run:
 
 analysis:
   bootstrap_resamples: 2000
+  # The bootstrap resamples PCAPs, not items: claims from one capture are
+  # not independent. Seeded, so an interval is reproducible to the digit.
+  bootstrap_seed: 20261109
   # Panel statistics treat a model family as one unit, not one vote each.
   unit: family
+  # A majority is a strict one: above this share of family-level votes.
+  majority_threshold: 0.5
+  # The survey's confidence scale, which the calibration bins follow.
+  confidence_levels: 5
+  # Below this many items a rate is still shown -- with its n and its
+  # interval -- but flagged, because a rate over two items is not a rate.
+  min_items_for_rate: 3
+  # 1.96 = 95%. The interval width is a reported parameter, not a constant
+  # buried in the code.
+  ci_z: 1.96
+  # Re-executing a condition is a full scan per capture. Captures larger
+  # than this are recorded as not re-executed, with the reason, rather
+  # than being skipped silently or scanned past the time budget.
+  max_capture_mb: 120
+  # Packets returned per re-execution, and the largest set of cited packet
+  # numbers put into one membership filter.
+  reexecution_limit: 200
+  max_cited_packets: 100

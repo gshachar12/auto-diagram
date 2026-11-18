@@ -23,6 +23,8 @@ be used later by the analysis only, as a sensitivity comparison.
 ./pangea prompts    # the frozen prompt variants (--show <label> renders one)
 ./pangea run --dry-run   # the plan and an estimate; calls nothing
 ./pangea run        # models x prompts x pairs x repeats
+./pangea analyze    # re-execute conditions and compute every metric for a run
+./pangea analysis-diff A B   # two stored analyses, metric by metric
 ./pangea serve      # the dashboard, on http://127.0.0.1:8800
 ./pangea status     # what is stored
 ./pangea config     # configuration, its hash, and what is still UNSET
@@ -97,6 +99,7 @@ overrides it.
 | `prompts/` | the frozen variants, the criteria text, and the leak scanner |
 | `models/providers.py` | Anthropic / OpenAI / Google over httpx, with the tool loop |
 | `runner.py` | the plan, the leak gate, resume, pause, retries, cost estimates |
+| `analysis/` | re-execution, evidence checks, every metric, what-if and diff |
 | `web/` | the read-only dashboard, its read model and its login |
 | `cli.py` | `init`, `demo`, `ingest`, `set-password`, `serve`, `status`, `config`, `doctor` |
 
@@ -344,6 +347,87 @@ re-validated nor replaced by a different candidate.
 
 `--max-capture-mb` skips captures too large to scan within the budget, and
 says so in the discard log rather than silently omitting them.
+
+## Analysis (B5)
+
+`./pangea analyze` is the only thing that turns stored responses into
+numbers. It calls no model and asks nothing it cannot answer from a row
+already in the database or from the capture itself.
+
+**Derived verification.** For every call it re-executes the condition the
+model wrote, through the PCAP service, and records what the capture says:
+
+| field | how it is obtained |
+|---|---|
+| `reexecuted_packets` | the condition, run on the pair's own capture |
+| `cited_verified` / `cited_unverified` | `(condition) && frame.number in {…}` — which cited packets actually satisfy the model's own condition |
+| `fabricated_count` | cited packet numbers past the end of the capture: not mis-read, not in the file |
+| `sufficiency_ok` | the condition on the cited packets alone gives the same verdict |
+| `necessity_ok` | with the cited packets removed, the verdict flips — otherwise the citation was decoration |
+
+Where a capture is missing, too large for the scan budget, or the condition
+is one tshark refuses, the row is `NULL` with a `status` and a `note` saying
+which. A `0` in any of these columns means the capture was asked and
+answered zero — the two are never conflated.
+
+**Metrics** (all of spec section 9, in `analysis_metrics`, every one with
+its `n` and an interval): raw agreement, Fleiss' κ and Gwet's AC1 over
+family-level votes; majority share, no-majority rate and per-item vote
+entropy; matches-expected rates per model, per family, per pair type and for
+the majority, with a bootstrap CI that **resamples PCAPs, not items**;
+φ and double-fault between family pairs and the effective number of votes
+that follows; self-consistency across repeats; format-error, NOT_VERIFIABLE
+and tool-failure rates; leave-one-out majority change; prompt flip rate
+against the repeat flip rate (the sampling-noise floor), the per-dimension
+flip rate and the position-bias gap; fragile items; calibration by reported
+confidence; the no_pcap SUPPORTED rate; and the evidence-quality rates
+above, plus the Jaccard of the packet sets two models' conditions actually
+match.
+
+Nothing here is called correct and nothing is called ground truth. The only
+comparison made is against an expected verdict fixed by construction, and it
+is named "matches expected" wherever it surfaces.
+
+**κ and AC1 together.** κ collapses when one verdict dominates, which is the
+expected shape of this experiment; AC1 is reported beside it, never instead.
+Where every vote falls in one category κ has no value at all, and the row
+says so rather than printing 1.0.
+
+**Variance decomposition** is reported as eta-squared per factor (item,
+PCAP, model, family, prompt, dimension, model×prompt, repeat) of the
+indicator "answered SUPPORTED". That is a one-way split, not a
+mixed-effects fit: the shares do not add to one and an item carries its
+PCAP's effect inside it. Both caveats are stored with every row. A real
+mixed-effects decomposition needs a dependency this project does not have,
+and inventing one would be worse than naming the method.
+
+**Pre-registered margins are respected.** The prompt-effect equivalence
+judgement is computed only if `thresholds.equivalence_margin` has been set;
+while it is `UNSET` the metric is stored as pending with that reason, which
+is the point of the sentinel — a margin chosen after seeing the flip rate
+decides the conclusion.
+
+**An analysis is versioned.** Its id is derived from (run id, parameters
+hash, code version), its parameters are stored with it, and re-analysing the
+same responses with the same parameters reproduces every number to the bit
+(there is a replay test). Change a parameter and a second analysis appears
+beside the first; the old one is never rewritten.
+
+```bash
+./pangea analyze                      # the newest run
+./pangea analyze --run run_9742…      # a named one
+./pangea analyze --what-if bootstrap_resamples=5000 --what-if unit=model_id
+./pangea analysis-diff ana_aaa ana_bbb
+```
+
+`--what-if` recomputes and stores **nothing**: asking what the numbers look
+like under another setting is legitimate, and leaving the answer in the
+record as though it were the analysis is not. `analysis-diff` compares two
+stored analyses metric by metric and names what changed — the parameter, the
+sample size, or only the interval.
+
+`./pangea demo` ends with a stored analysis, so the demo dashboard shows
+real derived numbers; `--no-analysis` skips it.
 
 ## Not here yet and mutation
 validation · B4 prompt builder, real model adapters, runner · B5 analysis ·

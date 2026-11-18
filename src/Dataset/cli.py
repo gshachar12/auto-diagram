@@ -19,6 +19,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+from typing import Any
 
 from .config import CONFIG_DIR, Config
 from .demo import seed_demo
@@ -64,8 +65,37 @@ def cmd_demo(args: argparse.Namespace) -> int:
     # config. An explicit --config-dir still wins.
     config = Config.load(args.config_dir or CONFIG_DIR / "demo")
     summary = seed_demo(db_path=db_file, results_path=results_file, config=config, seed=args.seed)
+
+    # The demo is meant to be a complete end-to-end example -- sources,
+    # claims, pairs, a run AND an analysis -- so the dashboard it feeds has
+    # real derived numbers rather than a page of "pending". The captures are
+    # small, so this costs seconds; --no-analysis skips it anyway.
+    if not args.no_analysis:
+        summary["analysis"] = _analyse_demo(db_file, config)
     print(json.dumps(summary, indent=2))
     return 0
+
+
+def _analyse_demo(db_file: Path, config: Config) -> dict[str, Any]:
+    """Analyse the freshly seeded run. A failure here is reported, not raised."""
+    from .analysis import AnalysisError, analyse
+    from .pcap import PcapService, PcapServiceError
+
+    db = Database(db_file)
+    try:
+        try:
+            service = PcapService.from_config(config, db=db)
+        except PcapServiceError as exc:
+            service = None
+            print(f"warning: {exc}; the demo analysis will re-execute nothing.", file=sys.stderr)
+        result = analyse(db, config=config, service=service)
+        summary = result.summary()
+        return {k: summary[k] for k in ("analysis_id", "code_version", "calls_analysed",
+                                        "call_facts_by_status", "metrics", "pending")}
+    except AnalysisError as exc:
+        return {"error": str(exc)}
+    finally:
+        db.close()
 
 
 def cmd_ingest(args: argparse.Namespace) -> int:
@@ -287,6 +317,92 @@ def cmd_pairs(args: argparse.Namespace) -> int:
     return 0
 
 
+def _what_if_overrides(pairs: list[str] | None) -> dict[str, str]:
+    """`--what-if bootstrap_resamples=500` -> {"bootstrap_resamples": "500"}."""
+    overrides: dict[str, str] = {}
+    for item in pairs or []:
+        if "=" not in item:
+            raise SystemExit(f"--what-if takes key=value, not {item!r}")
+        key, value = item.split("=", 1)
+        overrides[key.strip()] = value.strip()
+    return overrides
+
+
+def cmd_analyze(args: argparse.Namespace) -> int:
+    """
+    Re-execute the conditions and compute every metric over a stored run.
+
+    `--what-if` recomputes with different parameters and stores nothing:
+    asking what the numbers look like under another setting is legitimate,
+    and leaving the answer in the record as though it were the analysis is
+    not.
+    """
+    from .analysis import AnalysisError, analyse, what_if
+    from .pcap import PcapService, PcapServiceError
+
+    if not Path(args.db).exists():
+        print(f"no database at {args.db}; run `pangea demo` first", file=sys.stderr)
+        return 2
+
+    db = Database(args.db).initialise()
+    config = Config.load(args.config_dir)
+    try:
+        service = PcapService.from_config(config, db=db)
+        service.timeout_seconds = args.timeout
+    except PcapServiceError as exc:
+        print(f"warning: {exc}\n  conditions will not be re-executed; every evidence fact will say so.",
+              file=sys.stderr)
+        service = None
+
+    overrides = _what_if_overrides(args.what_if)
+    try:
+        if overrides:
+            result = what_if(db, run_id=args.run, overrides=overrides, config=config, service=service)
+        else:
+            result = analyse(db, run_id=args.run, config=config, service=service)
+    except AnalysisError as exc:
+        print(str(exc), file=sys.stderr)
+        db.close()
+        return 2
+
+    summary = result.summary()
+    db.close()
+    print(json.dumps(summary, indent=2))
+    if overrides:
+        print("\nwhat-if: nothing was stored.", file=sys.stderr)
+    return 0
+
+
+def cmd_analysis_diff(args: argparse.Namespace) -> int:
+    """Two stored analyses, metric by metric."""
+    from .analysis import AnalysisError, diff
+
+    db = Database(args.db)
+    try:
+        report = diff(db, args.left, args.right)
+    except AnalysisError as exc:
+        print(str(exc), file=sys.stderr)
+        return 2
+    finally:
+        db.close()
+
+    if args.json:
+        print(json.dumps(report, indent=2))
+        return 0
+    print(f"{report['left']['analysis_id']}  ->  {report['right']['analysis_id']}")
+    print(f"same run: {report['same_run']}   code version changed: {report['code_version_changed']}")
+    for path, change in report["parameter_changes"].items():
+        print(f"  parameter {path}: {change['from']} -> {change['to']}")
+    print(f"{len(report['changed'])} metric(s) changed, {report['unchanged']} unchanged, "
+          f"{len(report['added'])} added, {len(report['removed'])} removed")
+    for change in report["changed"][: args.limit]:
+        delta = "—" if change["delta"] is None else f"{change['delta']:+.4f}"
+        print(f"  {change['scope']}/{change['scope_id'][:18]:18s} {change['metric']:34s} "
+              f"{change['from']['value']} -> {change['to']['value']}  ({delta})"
+              + (f"  [{change['note']}]" if change["note"] else ""))
+    return 0
+
+
 def cmd_status(args: argparse.Namespace) -> int:
     if not Path(args.db).exists():
         print(f"no database at {args.db}; run `pangea demo` first", file=sys.stderr)
@@ -471,6 +587,7 @@ def build_parser() -> argparse.ArgumentParser:
     demo = sub.add_parser("demo", help="seed the reproducible demo dataset (MockModel, no API calls)")
     demo.add_argument("--seed", type=int, default=None)
     demo.add_argument("--force", action="store_true", help="delete an existing database first")
+    demo.add_argument("--no-analysis", action="store_true", help="seed only; do not analyse the demo run")
     demo.set_defaults(func=cmd_demo)
 
     serve = sub.add_parser("serve", help="run the dashboard")
@@ -526,6 +643,22 @@ def build_parser() -> argparse.ArgumentParser:
     pairs.add_argument("--validation-timeout", type=float, default=300.0)
     pairs.add_argument("--show-discards", type=int, default=10)
     pairs.set_defaults(func=cmd_pairs)
+
+    analyze = sub.add_parser("analyze", help="re-execute conditions and compute every metric over a run")
+    analyze.add_argument("--run", default=None, help="run id (default: the newest run)")
+    analyze.add_argument(
+        "--what-if", action="append", default=None, metavar="KEY=VALUE",
+        help="recompute with a different analysis parameter; the result is NOT stored",
+    )
+    analyze.add_argument("--timeout", type=float, default=300.0, help="seconds per tshark scan")
+    analyze.set_defaults(func=cmd_analyze)
+
+    analysis_diff = sub.add_parser("analysis-diff", help="compare two stored analyses, metric by metric")
+    analysis_diff.add_argument("left")
+    analysis_diff.add_argument("right")
+    analysis_diff.add_argument("--limit", type=int, default=25)
+    analysis_diff.add_argument("--json", action="store_true")
+    analysis_diff.set_defaults(func=cmd_analysis_diff)
 
     sub.add_parser("status", help="what is stored").set_defaults(func=cmd_status)
     password = sub.add_parser("set-password", help="set the dashboard password")

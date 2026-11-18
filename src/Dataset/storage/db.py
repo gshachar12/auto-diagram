@@ -26,7 +26,7 @@ import sqlite3
 from pathlib import Path
 from typing import Any, Iterable
 
-SCHEMA_VERSION = 5
+SCHEMA_VERSION = 6
 
 RAW_TABLES: tuple[str, ...] = (
     "sources",
@@ -290,15 +290,22 @@ CREATE TABLE IF NOT EXISTS analyses (
     created_at  TEXT NOT NULL
 );
 
+-- One row per model call in the analysed run. Every column that a
+-- capture could not answer is NULL, and `status` plus `note` say why --
+-- a 0 where the question could not be put would read as a measurement.
 CREATE TABLE IF NOT EXISTS analysis_call_facts (
     analysis_id       TEXT NOT NULL REFERENCES analyses(analysis_id),
     call_id           TEXT NOT NULL REFERENCES calls(call_id),
     reexecuted_packets TEXT NOT NULL DEFAULT '[]',
+    reexecuted_count  INTEGER,
+    truncated         INTEGER NOT NULL DEFAULT 0,
     cited_verified    TEXT NOT NULL DEFAULT '[]',
     cited_unverified  TEXT NOT NULL DEFAULT '[]',
-    fabricated_count  INTEGER NOT NULL DEFAULT 0,
+    fabricated_count  INTEGER,
     sufficiency_ok    INTEGER,
     necessity_ok      INTEGER,
+    status            TEXT NOT NULL DEFAULT 'ok',
+    note              TEXT NOT NULL DEFAULT '',
     PRIMARY KEY (analysis_id, call_id)
 );
 
@@ -392,8 +399,32 @@ class Database:
             if column not in existing:
                 self.conn.execute(f"ALTER TABLE {table} ADD COLUMN {column} {definition}")
 
+    #: Derived tables whose shape changed in a given schema version. They
+    #: are recomputable by definition, so the migration for them is to drop
+    #: and rebuild rather than to preserve rows written under an older
+    #: definition -- which is exactly the licence the raw/derived split buys.
+    _REBUILT_DERIVED: dict[int, tuple[str, ...]] = {
+        6: ("analysis_call_facts", "analysis_metrics", "analyses"),
+    }
+
+    def _stored_schema_version(self) -> int | None:
+        try:
+            row = self.conn.execute("SELECT value FROM meta WHERE key = 'schema_version'").fetchone()
+        except sqlite3.OperationalError:
+            return None  # a fresh file: no meta table yet
+        return int(row["value"]) if row else None
+
+    def _rebuild_changed_derived(self, previous: int | None) -> None:
+        if previous is None or previous >= SCHEMA_VERSION:
+            return
+        for version, tables in sorted(self._REBUILT_DERIVED.items()):
+            if previous < version:
+                for table in tables:
+                    self.conn.execute(f"DROP TABLE IF EXISTS {table}")
+
     def initialise(self) -> "Database":
         with self.conn:
+            self._rebuild_changed_derived(self._stored_schema_version())
             self.conn.executescript(_SCHEMA)
             self._add_missing_columns()
             self.conn.executescript(_append_only_triggers(RAW_TABLES))
