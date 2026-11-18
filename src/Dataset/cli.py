@@ -209,6 +209,19 @@ def cmd_prompts(args: argparse.Namespace) -> int:
 
     builder = PromptBuilder()
     print(f"prompt set version {builder.set_version}, hash {builder.set_hash[:16]}")
+    if args.register:
+        # For a run made before the runner registered its variants: the
+        # calls carry prompt ids, and without these rows nothing can say
+        # which variant changed which dimension.
+        from .runner import Runner
+
+        db = Database(args.db).initialise()
+        try:
+            added = Runner(db=db, config=Config.load(args.config_dir), results_path=args.results,
+                           builder=builder).register_prompt_variants()
+            print(f"registered {added} variant(s) in {args.db}")
+        finally:
+            db.close()
     for variant in builder.variants:
         print(f"  {variant.label:22s} {variant.dimension:12s} hash {builder.prompt_hash(variant)[:16]}")
     if args.show:
@@ -620,6 +633,10 @@ def build_parser() -> argparse.ArgumentParser:
 
     prompts_cmd = sub.add_parser("prompts", help="the frozen prompt variants")
     prompts_cmd.add_argument("--show", default=None, help="render one variant")
+    prompts_cmd.add_argument(
+        "--register", action="store_true",
+        help="store the variants in the database so a run can be read by label and dimension",
+    )
     prompts_cmd.set_defaults(func=cmd_prompts)
 
     run = sub.add_parser("run", help="run models x prompts x pairs x repeats")

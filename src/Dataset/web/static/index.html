@@ -33,12 +33,12 @@
 }
 html{-webkit-text-size-adjust:100%}
 body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:15px;line-height:1.45;
-     padding-bottom:calc(62px + env(safe-area-inset-bottom))}
+     padding-bottom:calc(24px + env(safe-area-inset-bottom))}
 .wrap{max-width:1040px;margin:0 auto;padding:12px 14px 24px}
 
 /* header */
 header{position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:0.5px solid var(--border);
-       padding:calc(10px + env(safe-area-inset-top)) 14px 10px}
+       padding:calc(10px + env(safe-area-inset-top)) 14px 0}
 .hd{max-width:1040px;margin:0 auto;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .hd h1{font-size:17px;font-weight:600;letter-spacing:-0.01em}
 .hd .run{font-family:var(--mono);font-size:11px;color:var(--faint)}
@@ -114,15 +114,19 @@ tr.tap:active td{background:var(--surface-2)}
 pre{background:var(--surface-2);border-radius:9px;padding:11px;overflow-x:auto;
     font-family:var(--mono);font-size:11.5px;line-height:1.45;white-space:pre-wrap;word-break:break-word}
 
-/* tab bar */
-nav{position:fixed;bottom:0;left:0;right:0;z-index:40;background:var(--surface);
-    border-top:0.5px solid var(--border);display:flex;padding-bottom:env(safe-area-inset-bottom);
-    overflow-x:auto;scrollbar-width:none}
-nav::-webkit-scrollbar{display:none}
-nav button{flex:1 0 auto;min-width:68px;border:0;background:none;padding:9px 2px 10px;font-family:var(--font);font-size:10.5px;
-           color:var(--faint);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px}
-nav button.on{color:var(--accent);font-weight:600}
-nav .dot{width:17px;height:17px;border-radius:5px;background:currentColor;opacity:.9}
+/* section index: jump links, not tabs. Nothing is hidden behind them --
+   every section is on the page, and these only scroll to one. */
+.jump{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding:8px 14px;max-width:1040px;margin:0 auto}
+.jump::-webkit-scrollbar{display:none}
+.jump a{flex:0 0 auto;padding:5px 11px;border-radius:999px;border:0.5px solid var(--border);
+        background:var(--surface);font-size:12.5px;color:var(--muted);text-decoration:none}
+.jump a:active{background:var(--surface-2)}
+.section{scroll-margin-top:118px;margin-bottom:26px}
+.sh{font-size:19px;font-weight:600;letter-spacing:-0.01em;margin:0 0 2px}
+/* The plain-English line under every heading: what the section is for and
+   what its numbers do not mean. Muted, so it never reads as data. */
+.caption{font-size:13px;color:var(--muted);line-height:1.5;margin:0 0 10px;max-width:70ch;
+         border-left:2px solid var(--border-strong);padding-left:10px}
 .hint{font-size:12px;color:var(--faint);text-align:center;padding:14px 0}
 
 /* login gate */
@@ -142,6 +146,18 @@ nav .dot{width:17px;height:17px;border-radius:5px;background:currentColor;opacit
 .gate-card button:disabled{opacity:.55}
 .gate-err{color:var(--bad);font-size:13px;margin-top:10px;min-height:18px}
 .filechip{cursor:pointer;background:var(--accent-soft);color:var(--accent);font-weight:500}
+/* the inline explorers: they live in the Captures section, expanded in
+   place, so nothing is behind a modal or a second page */
+.exp{border-top:0.5px solid var(--border);margin-top:10px;padding-top:10px;display:none}
+.exp.show{display:block}
+.exp h4{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;
+        color:var(--muted);margin:12px 0 6px}
+.err{color:var(--bad);font-size:13px;background:var(--bad-soft);border-radius:9px;padding:9px 11px;margin:8px 0}
+.toolrow{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:6px}
+th.sortable{cursor:pointer;user-select:none}
+th.sortable:active{color:var(--accent)}
+.colbox{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:6px}
+.colbox label{display:flex;gap:4px;align-items:center}
 .fltbox{flex:1;padding:9px 11px;border:0.5px solid var(--border-strong);border-radius:9px;
         background:var(--surface-2);color:var(--text);font-family:var(--mono);font-size:13px}
 .fltbox:focus{outline:none;border-color:var(--accent)}
@@ -165,9 +181,9 @@ a{color:var(--accent)}
   </div>
 </header>
 
-<div class="wrap" id="view"><div class="hint">loading…</div></div>
+<div class="jump" id="jump"></div>
 
-<nav id="tabs"></nav>
+<div class="wrap" id="view"><div class="hint">loading…</div></div>
 
 <div id="gate"><div class="gate-card">
   <h2>PAnGEA Dataset</h2>
@@ -186,12 +202,62 @@ a{color:var(--accent)}
 </div></div>
 
 <script>
-const TABS = [
-  ['overview','Overview'], ['sources','Sources'], ['review','Review'], ['pairs','Pairs'],
-  ['claims','Claims'], ['params','Parameters'], ['panel','Panel'], ['prompts','Prompts'],
-  ['controls','Controls'], ['evidence','Evidence'],
+// One page, one source of truth for what is on it: key, heading, the
+// plain-English caption shown under the heading, and the function that
+// fills the section. Nothing is hidden behind a tab -- the links at the
+// top only scroll.
+const SECTIONS = [
+  ['overview','Overview',
+   'What ran, on what, and under which parameters. The panel’s labels are <b>silver</b>: they record '
+   + 'where models agree, which is not the same as what is true. Only items whose expected answer is '
+   + 'fixed by construction are scored, and then as “matches expected”.', vOverview],
+  ['sources','Sources',
+   'Where the claims come from. Registered is not verified: each source shows what passed its checklist, '
+   + 'what failed, and what nobody has checked yet. A licence nobody wrote down says UNVERIFIED.', vSources],
+  ['captures','Captures and sample files',
+   'The sample files themselves, openable here. A capture shows its first packets through the read-only '
+   + 'PCAP service, which says how much of the file it is showing; a steps file opens as a table. Nothing '
+   + 'outside the configured capture roots can be reached from this page.', vCaptures],
+  ['review','Claims review',
+   'The extraction agent’s claims, waiting for a human. A condition that finds nothing on the very capture '
+   + 'its step came from is flagged, never silently dropped or kept: only a reviewer can say which of the '
+   + 'three possible mistakes it is.', vReview],
+  ['pairs','Pairs',
+   'The (claim × capture) items the panel was asked about. Every mutation had to find nothing on its '
+   + 'capture and every swap had to come back not supported before it was kept — the candidates that '
+   + 'failed are in the discard log, not missing.', vPairs],
+  ['claims','Claims and panel verdicts',
+   'One row per item: what the panel said, how divided it was, and whether that matches an expected '
+   + 'verdict where construction fixes one. Entropy is the spread of the votes, not an error bar. Tap any '
+   + 'row for the model-by-model detail and the stored response behind every number.', vClaims],
+  ['panel','Panel',
+   'How the individual members behaved and how much they agree. Agreement is not accuracy: a panel can '
+   + 'agree on an answer that construction says is wrong. κ is shown with Gwet’s AC1 beside it because κ '
+   + 'collapses when one verdict dominates, and the effective-votes figure says how many independent '
+   + 'voices the panel is really worth.', vPanel],
+  ['prompts','Prompt sensitivity',
+   'How much the answers depend on how the question was asked. The flip rate between prompts only means '
+   + 'something next to the flip rate between repeats of the same prompt, which is the sampling-noise '
+   + 'floor. “No prompt effect” cannot be proved here — only that the effect is within a margin fixed '
+   + 'before the run.', vPrompts],
+  ['controls','Controls and leakage',
+   'The items whose expected answer is fixed by construction — mutations, swaps and the no-capture '
+   + 'probes — and nothing else. A SUPPORTED verdict on an item with no capture at all means the claim '
+   + 'was recognised, not verified.', vControls],
+  ['evidence','Evidence quality',
+   'What the capture says about the evidence the models offered. The system re-runs each model’s own '
+   + 'condition: a cited packet counts as verified only if it satisfies that condition, and a cited '
+   + 'number past the end of the file is fabricated — it cannot be a mis-read packet.', vEvidence],
+  ['params','Pre-registered parameters',
+   'The thresholds the analysis depends on. They are meant to be chosen before results exist; changing '
+   + 'one after the fact cannot alter a stored run — a threshold feeds the config hash, which feeds the '
+   + 'run id — but every change is logged with how many runs already had results.', vParams],
+  ['runs','Runs and analyses',
+   'Every stored run and every stored analysis over it. An analysis is identified by its run, its '
+   + 'parameters and the analysis code version, so the same three always give the same numbers. A '
+   + 'what-if recomputes without storing anything; a diff says which metrics moved.', vRuns],
 ];
-let state = {tab:'overview', filters:{pair_type:null, level:null, flag:null}, claims:null};
+let state = {filters:{pair_type:null, level:null, flag:null, pcap_id:null}, claims:null, files:[]};
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s==null?'':s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -242,12 +308,42 @@ function rate(o){
   return `<span class="num">${pct(o.rate,0)}</span> <span class="ci">n=${o.n} · 95% CI ${pct(o.ci_low,0)}–${pct(o.ci_high,0)}</span>`;
 }
 function bar(x){ return `<div class="bar"><i style="width:${Math.round(100*(x||0))}%"></i></div>`; }
-
-function renderTabs(){
-  $('tabs').innerHTML = TABS.map(([k,l]) =>
-    `<button class="${state.tab===k?'on':''}" onclick="go('${k}')"><span class="dot"></span>${l}</button>`).join('');
+// A stored metric: value, n and interval, or the reason it has none. The
+// page has no way to print a bare number, which is the point.
+function stat(o, digits){
+  if(!o) return '<span class="ci">not computed</span>';
+  if(o.value==null) return `<span class="ci">pending — ${esc((o.detail&&(o.detail.reason||o.detail.note))||'not computed')}</span>`;
+  const value = digits==null ? pct(o.value,0) : num(o.value,digits);
+  const ci = (o.ci_low==null||o.ci_high==null) ? ''
+    : ` · 95% CI ${digits==null?pct(o.ci_low,0)+'–'+pct(o.ci_high,0):num(o.ci_low,digits)+'–'+num(o.ci_high,digits)}`;
+  return `<span class="num">${value}</span> <span class="ci">n=${o.n==null?'—':o.n}${ci}</span>`;
 }
-function go(tab){ state.tab = tab; location.hash = '#/'+tab; renderTabs(); render(); }
+// A value/CI heat cell: colour is only a reading aid, the number is the number.
+function heat(x, lo, hi){
+  if(x==null) return 'background:var(--surface-2)';
+  const t = Math.max(0, Math.min(1, (x - lo) / (hi - lo)));
+  return `background:color-mix(in srgb, var(--accent) ${Math.round(t*70)}%, var(--surface-2))`;
+}
+
+function buildSections(){
+  $('jump').innerHTML = SECTIONS.map(([k,title]) => `<a href="#sec-${k}">${title}</a>`).join('');
+  $('view').innerHTML = SECTIONS.map(([k,title,caption]) => `
+    <section class="section" id="sec-${k}">
+      <h2 class="sh">${title}</h2>
+      <p class="caption">${caption}</p>
+      <div id="body-${k}"><div class="hint">loading…</div></div>
+    </section>`).join('');
+}
+
+// Each section loads on its own and fails on its own: one endpoint being
+// unavailable must not leave the rest of the page empty.
+async function renderSection(key){
+  const entry = SECTIONS.find(([k]) => k === key);
+  const host = $('body-'+key);
+  if(!entry || !host) return;
+  try { await entry[3](host); }
+  catch(e){ host.innerHTML = `<div class="card"><h2>Not available</h2><p class="sub">${esc(e.message)}</p></div>`; }
+}
 
 function openSheet(title, html){
   $('sheet-title').textContent = title;
@@ -259,12 +355,8 @@ $('sheet').addEventListener('click', e => { if(e.target.id==='sheet') closeSheet
 
 // ---------------------------------------------------------------- views
 async function render(){
-  const v = $('view');
-  v.innerHTML = '<div class="hint">loading…</div>';
-  try { await ({overview:vOverview, sources:vSources, review:vReview, pairs:vPairs, claims:vClaims,
-                params:vParams, panel:vPanel, prompts:vPrompts, controls:vControls,
-                evidence:vEvidence}[state.tab])(v); }
-  catch(e){ v.innerHTML = `<div class="card"><h2>Not available</h2><p class="sub">${esc(e.message)}</p></div>`; }
+  buildSections();
+  await Promise.all(SECTIONS.map(([k]) => renderSection(k)));
 }
 
 async function vOverview(v){
@@ -305,17 +397,411 @@ async function vOverview(v){
       </tbody></table>
     </div>
 
-    <div class="card"><h2>Not computed yet</h2>
-      ${Object.entries(d.pending).map(([k,v2])=>`<p class="sub">• <b>${esc(k.replace(/_/g,' '))}</b> — ${esc(v2)}</p>`).join('')}
-      <div class="note">These are shown as pending on purpose. A plausible-looking number here,
-      before the condition has actually been run against the capture, is exactly what this project exists to avoid.</div>
+    <div class="card"><h2>Analysis of record</h2>
+      ${d.analysis ? `
+        <table><tbody>
+          <tr><td class="sub">analysis</td><td class="mono">${esc(d.analysis.analysis_id)}</td></tr>
+          <tr><td class="sub">code version</td><td class="mono">${esc(d.analysis.code_version)}</td></tr>
+          <tr><td class="sub">parameters hash</td><td class="mono">${esc(d.analysis.params_hash.slice(0,24))}…</td></tr>
+          <tr><td class="sub">computed</td><td class="mono">${esc(d.analysis.created_at)}</td></tr>
+          <tr><td class="sub">metrics stored</td><td class="num">${d.analysis.metrics}</td></tr>
+        </tbody></table>
+        <h3>Analysis parameters</h3>
+        <pre>${esc(JSON.stringify(d.analysis.params, null, 2))}</pre>
+        <div class="note">Every derived number on this page was read from this stored analysis, not
+        recomputed while the page loaded — so what is on the screen is what is in the record. The same
+        run, parameters and code version always give the same numbers.</div>`
+      : `<p class="sub">No analysis is stored for this run yet. Run <span class="mono">./pangea analyze</span>.</p>`}
+    </div>
+
+    <div class="card"><h2>Not computed, and why</h2>
+      ${Object.keys(d.pending).length
+        ? Object.entries(d.pending).map(([k,v2])=>`<p class="sub">• <b>${esc(k.replace(/_/g,' '))}</b> — ${esc(v2)}</p>`).join('')
+        : '<p class="sub">Everything this analysis can compute from the stored responses has been computed.</p>'}
+      <div class="note">Anything listed here is shown as pending on purpose. A plausible-looking number,
+      put where a measurement could not be made, is exactly what this project exists to avoid.</div>
     </div>
 
     <div class="card"><h2>Export</h2>
-      <p class="sub"><a href="/api/export/claims.csv">claims.csv</a> · <a href="/api/export/claims.json">claims.json</a>
-      · <a href="/api/manifest">run manifest</a> · <a href="/api/docs">API</a></p>
+      <p class="sub">Raw answers: <a href="/api/export/calls.csv">calls.csv</a> ·
+        <a href="/api/export/calls.json">calls.json</a></p>
+      <p class="sub">Derived scores: <a href="/api/export/scores.csv">scores.csv</a> ·
+        <a href="/api/export/metrics.csv">metrics.csv</a> · <a href="/api/export/scores.json">scores.json</a></p>
+      <p class="sub">Consensus table: <a href="/api/export/claims.csv">claims.csv</a> ·
+        <a href="/api/export/consensus.json">consensus.json</a></p>
+      <p class="sub">Run snapshot: <a href="/api/export/manifest.json">run-manifest.json</a> ·
+        <a href="/api/docs">API</a></p>
       <p style="margin-top:12px"><button class="signout" onclick="signOut()">Sign out</button></p>
     </div>`;
+}
+
+// ------------------------------------------------------- captures + files
+//
+// The two tools the owner actually works with. Both are inline and
+// expandable in place: a capture opens an explorer under its own row, a
+// steps file opens a table under its own row, and neither takes over the
+// page or hides the rest of it.
+
+const STARTER_FILTERS = ['dns', 'tcp.flags.syn == 1 && tcp.flags.ack == 0', 'icmp', 'arp',
+                         'tls.handshake', 'http.request'];
+let explorers = {};   // pcap_id -> {loaded, history:[], filter}
+let sheets = {};      // file index -> {rows, head, sort, query, hidden:Set, truncated, size}
+
+async function vCaptures(v){
+  const d = await api('/pcaps');
+  state.files = d.files;
+  v.innerHTML = `
+    <div class="card"><h2>Captures</h2>
+      <p class="sub">Tap a capture to open its explorer: what the file contains, a display-filter box,
+      and the packets a filter matches. Everything is read through the PCAP service — the filter is
+      compiled by tshark before it runs, the path is resolved inside the read-only capture roots, and
+      the scan is bounded by a timeout, an output cap and a limit on how often one can be started.</p>
+      ${d.captures.map(c=>`
+        <div class="row" style="cursor:default">
+          <div class="top" onclick="toggleExplorer('${c.pcap_id}')" style="cursor:pointer">
+            <div class="txt mono">${esc(c.path.split('/').pop())}
+              <div class="ci">${esc(c.path)}</div></div>
+            <span class="badge filechip" id="tog-${c.pcap_id}">explore ›</span>
+          </div>
+          <div class="meta">
+            <span class="badge">${c.packet_count==null?'uncounted':c.packet_count.toLocaleString()+' packets'}</span>
+            <span class="badge">${(c.size_bytes/1e6).toFixed(2)} MB</span>
+            <span class="badge">${c.pairs} item${c.pairs===1?'':'s'}</span>
+            ${c.source_title?`<span class="badge">${esc(c.source_title.slice(0,32))}</span>`:''}
+            <span class="badge filechip" onclick="showClaimsFor('${c.pcap_id}')">its claims and pairs ›</span>
+          </div>
+          <div class="exp" id="exp-${c.pcap_id}"></div>
+        </div>`).join('')}
+    </div>
+
+    <div class="card"><h2>Steps files and notes</h2>
+      <p class="sub">Tap a file to read it here: searchable and sortable, with the row count shown and
+      the download of the file exactly as it is on disk. A file is openable only because a row in the
+      database already names it — that list is the allowlist, so there is no way to ask this page for an
+      arbitrary path on the host.</p>
+      ${d.files.length ? d.files.map((f,i)=>`
+        <div class="row" style="cursor:default">
+          <div class="top" onclick="toggleFile(${i})" style="cursor:pointer">
+            <div class="txt mono">${esc(f.path.split('/').pop())}<div class="ci">${esc(f.path)}</div></div>
+            <span class="badge filechip" id="ftog-${i}">open ›</span>
+          </div>
+          <div class="meta">
+            <span class="badge">${esc(f.kind)}</span>
+            ${f.rows!=null?`<span class="badge">${f.rows} rows</span>`:''}
+            <a class="badge filechip" href="/api/file/download?path=${encodeURIComponent(f.path)}">download ›</a>
+          </div>
+          <div class="exp" id="fexp-${i}"></div>
+        </div>`).join('') : '<p class="sub">No steps files are registered yet.</p>'}
+    </div>`;
+}
+
+function showClaimsFor(pcapId){
+  state.filters.pcap_id = pcapId;
+  renderSection('claims');
+  location.hash = '#sec-claims';
+}
+
+// ---------------------------------------------------------- pcap explorer
+function toggleExplorer(pcapId){
+  const host = $('exp-'+pcapId), tog = $('tog-'+pcapId);
+  const showing = host.classList.toggle('show');
+  tog.textContent = showing ? 'close ×' : 'explore ›';
+  if(showing && !explorers[pcapId]){
+    explorers[pcapId] = {history: [], filter: ''};
+    loadExplorer(pcapId);
+  }
+}
+
+async function loadExplorer(pcapId){
+  const host = $('exp-'+pcapId);
+  host.innerHTML = '<p class="sub">reading the capture…</p>';
+  try{
+    const [meta, summary] = await Promise.all([
+      api('/pcap/'+pcapId+'?limit=40'),
+      api('/pcap/'+pcapId+'/summary'),
+    ]);
+    const m = meta.capture_metadata || {};
+    host.innerHTML = `
+      <h4>What this capture is</h4>
+      <table><tbody>
+        <tr><td class="sub">packets</td><td class="num">${meta.packet_count==null
+          ? '<span class="badge flag">not counted in the registry</span>'
+          : meta.packet_count.toLocaleString()}</td></tr>
+        <tr><td class="sub">sha256</td><td class="mono">${esc(meta.sha256.slice(0,32))}…</td></tr>
+        <tr><td class="sub">both directions</td><td>${m.both_directions==null
+          ? '<span class="badge flag">unknown</span>' : (m.both_directions?'yes':'no')}</td></tr>
+        <tr><td class="sub">vantage point</td><td class="sub">${esc(m.vantage_point||'')}</td></tr>
+        ${(m.known_gaps||[]).length?`<tr><td class="sub">known gaps</td>
+          <td class="sub">${esc(m.known_gaps.join(' · '))}</td></tr>`:''}
+      </tbody></table>
+      <p class="ci">An absence claim is only judged against this statement, which is why “unknown”
+      stays unknown rather than being filled in.</p>
+
+      <h4>Protocols and endpoints</h4>
+      ${summary.available ? `
+        <p class="sub">${summary.packet_count.toLocaleString()} packets${summary.duration_seconds!=null
+          ? ` over ${summary.duration_seconds.toFixed(1)} s` : ''}${summary.link_type
+          ? ` · ${esc(summary.link_type)}` : ''}</p>
+        <div class="scroll"><table>
+          <thead><tr><th>protocol</th><th>frames</th><th>bytes</th></tr></thead>
+          <tbody>${summary.protocol_hierarchy.slice(0,14).map(r=>`<tr>
+            <td style="padding-left:${r.depth*12}px" class="mono">${esc(r.protocol)}</td>
+            <td class="num">${r.frames.toLocaleString()}</td>
+            <td class="num">${r.bytes.toLocaleString()}</td></tr>`).join('')}</tbody>
+        </table></div>
+        ${summary.endpoints.length?`<div class="scroll"><table style="margin-top:8px">
+          <thead><tr><th>address</th><th>packets</th><th>bytes</th></tr></thead>
+          <tbody>${summary.endpoints.slice(0,10).map(e=>`<tr>
+            <td class="mono">${esc(e.address)}</td><td class="num">${e.packets.toLocaleString()}</td>
+            <td class="num">${e.bytes.toLocaleString()}</td></tr>`).join('')}</tbody>
+        </table></div>`:''}`
+      : `<p class="sub">${esc(summary.reason)}</p>`}
+
+      <h4>Run a display filter</h4>
+      <p class="ci">tshark compiles the filter before it runs it; a filter it refuses is shown with its
+      own words and no table, never an unfiltered one. The count is the number of matching packets in
+      the whole file; the table shows the first few, and says so.</p>
+      <div class="toolrow">
+        ${STARTER_FILTERS.map(f=>`<span class="chip" onclick="applyFilter('${pcapId}', ${JSON.stringify(f).replace(/"/g,'&quot;')})">${esc(f)}</span>`).join('')}
+      </div>
+      <form class="toolrow" onsubmit="event.preventDefault();applyFilter('${pcapId}', document.getElementById('flt-${pcapId}').value)">
+        <input id="flt-${pcapId}" class="fltbox" placeholder="e.g. dns.flags.rcode != 0"
+               autocapitalize="off" autocorrect="off" spellcheck="false" style="min-width:200px">
+        <select id="lim-${pcapId}" class="fltbox" style="flex:0 0 auto;min-width:92px">
+          <option value="20">20 rows</option><option value="40" selected>40 rows</option>
+          <option value="50">50 rows</option>
+        </select>
+        <button class="signout" type="submit">Apply</button>
+      </form>
+      <div id="hist-${pcapId}"></div>
+      <div id="out-${pcapId}">
+        <h4>First packets, unfiltered</h4>
+        ${meta.head_error?`<div class="err">${esc(meta.head_error)}</div>`:packetTable(meta.head)}
+      </div>`;
+  } catch(e){ host.innerHTML = `<div class="err">${esc(e.message)}</div>`; }
+}
+
+function renderHistory(pcapId){
+  const h = $('hist-'+pcapId);
+  const entries = explorers[pcapId].history;
+  if(!h) return;
+  h.innerHTML = entries.length ? `<div class="toolrow"><span class="ci">tried here:</span>
+    ${entries.map(f=>`<span class="chip" onclick="applyFilter('${pcapId}', ${JSON.stringify(f).replace(/"/g,'&quot;')})">${esc(f)}</span>`).join('')}</div>` : '';
+}
+
+async function applyFilter(pcapId, value){
+  value = (value||'').trim();
+  if(!value) return;
+  const box = $('flt-'+pcapId), out = $('out-'+pcapId);
+  if(box) box.value = value;
+  const limit = ($('lim-'+pcapId) || {value:40}).value;
+  out.innerHTML = '<p class="sub">scanning the capture…</p>';
+  try{
+    const r = await api(`/pcap/${pcapId}/query?limit=${encodeURIComponent(limit)}&filter=`+encodeURIComponent(value));
+    const shown = r.packets.length;
+    out.innerHTML = `
+      <h4>Result</h4>
+      <p class="sub mono">${esc(r.filter)}</p>
+      <p class="sub">${r.match_count.toLocaleString()} matching packet${r.match_count===1?'':'s'}${
+        r.truncated
+          ? ` — <b>the scan stopped at the output cap, so the real count is higher than ${r.match_count.toLocaleString()}</b>`
+          : ''} · showing ${shown}${shown < r.match_count ? ` of them (row limit ${r.limit})` : ''}${
+        r.cached ? ' · from the cache for this exact file and filter' : ''}</p>
+      ${packetTable(r.packets)}`;
+    const history = explorers[pcapId].history;
+    if(!history.includes(value)) history.unshift(value);
+    explorers[pcapId].history = history.slice(0, 8);
+    renderHistory(pcapId);
+  } catch(e){
+    out.innerHTML = `<h4>Result</h4><div class="err">${esc(e.message)}</div>
+      <p class="sub">Nothing was run against the capture, and no table is shown — a refused filter is
+      not an empty result.</p>`;
+  }
+}
+
+// ------------------------------------------------------------ file viewer
+function toggleFile(index){
+  const host = $('fexp-'+index), tog = $('ftog-'+index);
+  const showing = host.classList.toggle('show');
+  tog.textContent = showing ? 'close ×' : 'open ›';
+  if(showing && !sheets[index]) loadFileInline(index);
+}
+
+async function loadFileInline(index){
+  const file = state.files[index], host = $('fexp-'+index);
+  host.innerHTML = '<p class="sub">reading…</p>';
+  try{
+    const f = await api('/file?path='+encodeURIComponent(file.path));
+    if(file.kind !== 'csv'){
+      host.innerHTML = `<p class="sub">${(f.size_bytes/1024).toFixed(1)} kB${
+        f.truncated?' · truncated for display; the download is the whole file':''}</p>
+        <pre>${esc(f.content)}</pre>`;
+      sheets[index] = {text: true};
+      return;
+    }
+    const rows = parseCsv(f.content);
+    const head = rows.length ? rows[0] : [];
+    sheets[index] = {
+      head, rows: rows.slice(1), sort: {column: null, dir: 1}, query: '',
+      hidden: new Set(), truncated: f.truncated, size: f.size_bytes, path: file.path,
+    };
+    renderSheet(index);
+  } catch(e){ host.innerHTML = `<div class="err">${esc(e.message)}</div>`; }
+}
+
+function parseCsv(text){
+  const rows = [];
+  let row = [], cell = '', quoted = false;
+  for(let i=0;i<text.length;i++){
+    const c = text[i];
+    if(quoted){
+      if(c==='"' && text[i+1]==='"'){ cell+='"'; i++; }
+      else if(c==='"'){ quoted = false; }
+      else cell += c;
+    } else if(c==='"'){ quoted = true; }
+    else if(c===','){ row.push(cell); cell=''; }
+    else if(c==='\n'){ row.push(cell); rows.push(row); row=[]; cell=''; }
+    else if(c!=='\r'){ cell += c; }
+  }
+  if(cell||row.length){ row.push(cell); rows.push(row); }
+  return rows.filter(r => r.some(x=>x.trim()));
+}
+
+function renderSheet(index){
+  const sheet = sheets[index], host = $('fexp-'+index);
+  const query = sheet.query.toLowerCase();
+  let rows = query ? sheet.rows.filter(r => r.some(c => (c||'').toLowerCase().includes(query))) : sheet.rows;
+  if(sheet.sort.column != null){
+    const column = sheet.sort.column, dir = sheet.sort.dir;
+    rows = rows.slice().sort((a,b)=>{
+      const x = (a[column]||''), y = (b[column]||'');
+      const nx = parseFloat(x), ny = parseFloat(y);
+      const same = !isNaN(nx) && !isNaN(ny) && String(nx)===x.trim() && String(ny)===y.trim();
+      return dir * (same ? nx-ny : x.localeCompare(y));
+    });
+  }
+  const visible = sheet.head.map((_,i)=>i).filter(i => !sheet.hidden.has(i));
+  host.innerHTML = `
+    <div class="toolrow">
+      <input class="fltbox" placeholder="search this file" value="${esc(sheet.query)}"
+             oninput="sheets[${index}].query=this.value;renderSheet(${index});document.querySelector('#fexp-${index} input').focus()"
+             style="min-width:180px">
+      <span class="ci">${rows.length} of ${sheet.rows.length} row${sheet.rows.length===1?'':'s'} ·
+        ${(sheet.size/1024).toFixed(1)} kB${sheet.truncated?' · truncated for display':''}</span>
+      <a class="badge filechip" href="/api/file/download?path=${encodeURIComponent(sheet.path)}">download ›</a>
+    </div>
+    ${sheet.truncated?'<p class="ci">Only the first part of the file is shown here. The download is the whole file, unchanged.</p>':''}
+    <div class="colbox">${sheet.head.map((h,i)=>`<label>
+      <input type="checkbox" ${sheet.hidden.has(i)?'':'checked'}
+             onchange="toggleColumn(${index},${i})">${esc(h||('col '+(i+1)))}</label>`).join('')}</div>
+    <div class="scroll"><table>
+      <thead><tr>${visible.map(i=>`<th class="sortable" onclick="sortSheet(${index},${i})">
+        ${esc(sheet.head[i]||('col '+(i+1)))}${sheet.sort.column===i?(sheet.sort.dir>0?' ▲':' ▼'):''}</th>`).join('')}</tr></thead>
+      <tbody>${rows.slice(0,400).map(r=>`<tr>${visible.map(i=>`<td>${esc(r[i]||'')}</td>`).join('')}</tr>`).join('')}</tbody>
+    </table></div>
+    ${rows.length>400?`<p class="ci">showing the first 400 of ${rows.length} matching rows</p>`:''}`;
+}
+
+function toggleColumn(index, column){
+  const hidden = sheets[index].hidden;
+  hidden.has(column) ? hidden.delete(column) : hidden.add(column);
+  renderSheet(index);
+}
+function sortSheet(index, column){
+  const sort = sheets[index].sort;
+  sort.dir = (sort.column === column) ? -sort.dir : 1;
+  sort.column = column;
+  renderSheet(index);
+}
+
+// ------------------------------------------------------------ runs + analyses
+async function vRuns(v){
+  const [d, ov] = await Promise.all([api('/analyses'), api('/overview')]);
+  const rows = d.analyses;
+  v.innerHTML = `
+    <div class="card"><h2>This run</h2>
+      ${ov.run ? `<table><tbody>
+        <tr><td class="sub">run</td><td class="mono">${esc(ov.run.run_id)}</td></tr>
+        <tr><td class="sub">label</td><td>${esc(ov.run.manifest.label||'')}</td></tr>
+        <tr><td class="sub">created</td><td class="mono">${esc(ov.run.created_at)}</td></tr>
+        <tr><td class="sub">calls</td><td class="num">${ov.counts.calls}</td></tr>
+      </tbody></table>` : '<p class="sub">No run stored.</p>'}
+    </div>
+
+    <div class="card"><h2>Stored analyses</h2>
+      ${rows.length ? `<div class="scroll"><table>
+        <thead><tr><th>analysis</th><th>code</th><th>parameters</th><th>metrics</th><th>computed</th></tr></thead>
+        <tbody>${rows.map(a=>`<tr>
+          <td class="mono">${esc(a.analysis_id)}</td>
+          <td class="mono">${esc(a.code_version)}</td>
+          <td class="mono">${esc(a.params_hash.slice(0,12))}…</td>
+          <td class="num">${a.metrics}</td>
+          <td class="mono">${esc(a.created_at)}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>
+      ${rows.length>1?`<p style="margin-top:10px"><button class="signout"
+         onclick="showDiff('${rows[1].analysis_id}','${rows[0].analysis_id}')">Diff the two newest</button></p>`:''}`
+      : `<p class="sub">Nothing analysed yet. Run <span class="mono">./pangea analyze</span>.</p>`}
+      <div class="note">${esc(d.note)}</div>
+    </div>
+
+    <div class="card"><h2>What if…</h2>
+      <p class="sub">Recompute the metrics with a different analysis parameter. Nothing is stored:
+      this answers “what would the numbers look like”, it does not change what they are.</p>
+      <div style="display:flex;gap:7px;margin-top:8px;flex-wrap:wrap">
+        <input id="wi-key" class="fltbox" style="min-width:170px" value="unit"
+               autocapitalize="off" spellcheck="false">
+        <input id="wi-val" class="fltbox" style="min-width:120px" value="model_id"
+               autocapitalize="off" spellcheck="false">
+        <button class="signout" onclick="runWhatIf()">Recompute</button>
+      </div>
+      <div id="wi-out"></div>
+    </div>`;
+}
+
+async function runWhatIf(){
+  const out = $('wi-out'), key = $('wi-key').value.trim(), value = $('wi-val').value.trim();
+  if(!key) return;
+  out.innerHTML = '<p class="sub">recomputing…</p>';
+  try{
+    const r = await post('/analysis/what-if', {params: {[key]: value}});
+    out.innerHTML = `
+      <p class="sub" style="margin-top:10px">${r.changed.length} metric${r.changed.length===1?'':'s'}
+        differ from ${esc(r.compared_with||'the stored analysis')} · nothing was stored.</p>
+      <div class="scroll"><table>
+        <thead><tr><th>metric</th><th>stored</th><th>what-if</th><th>n</th></tr></thead>
+        <tbody>${r.changed.slice(0,40).map(c=>`<tr>
+          <td>${esc(c.scope)}/${esc(c.scope_id.slice(0,16))}<div class="ci">${esc(c.metric)}</div></td>
+          <td class="num">${c.stored==null?'—':num(c.stored,3)}</td>
+          <td class="num">${c.what_if==null?'—':num(c.what_if,3)}</td>
+          <td class="num">${c.n==null?'—':c.n}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>
+      <div class="note">${esc(r.note)}</div>`;
+  } catch(e){ out.innerHTML = `<p class="sub" style="color:var(--bad)">${esc(e.message)}</p>`; }
+}
+
+async function showDiff(left, right){
+  const d = await api(`/analysis/diff?left=${encodeURIComponent(left)}&right=${encodeURIComponent(right)}`);
+  openSheet('Analysis diff', `
+    <div class="card"><h2>What changed</h2>
+      <p class="sub mono">${esc(d.left.analysis_id)} → ${esc(d.right.analysis_id)}</p>
+      <p class="sub">${Object.keys(d.parameter_changes).length
+        ? Object.entries(d.parameter_changes).map(([k,c])=>`${esc(k)}: ${esc(c.from)} → ${esc(c.to)}`).join(' · ')
+        : 'Same parameters.'}${d.code_version_changed?' · analysis code version changed':''}</p>
+      <p class="sub">${d.changed.length} changed · ${d.unchanged} unchanged ·
+        ${d.added.length} added · ${d.removed.length} removed</p>
+      <div class="scroll"><table>
+        <thead><tr><th>metric</th><th>from</th><th>to</th><th>Δ</th><th>why</th></tr></thead>
+        <tbody>${d.changed.slice(0,60).map(c=>`<tr>
+          <td>${esc(c.scope)}/${esc(c.scope_id.slice(0,14))}<div class="ci">${esc(c.metric)}</div></td>
+          <td class="num">${c.from.value==null?'—':num(c.from.value,3)}</td>
+          <td class="num">${c.to.value==null?'—':num(c.to.value,3)}</td>
+          <td class="num">${c.delta==null?'—':num(c.delta,3)}</td>
+          <td class="sub">${esc(c.note)}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>
+    </div>`);
 }
 
 async function vSources(v){
@@ -377,102 +863,31 @@ async function loadFiles(rows){
       host.innerHTML = files.map(f => {
         const name = esc(f.path.split('/').pop());
         if(f.kind==='pcap')
-          return `<span class="badge filechip" onclick="openPcap('${f.pcap_id}')">pcap · ${name}
+          return `<span class="badge filechip" onclick="openCapture('${f.pcap_id}')">pcap · ${name}
                   ${f.packets!=null?`· ${f.packets.toLocaleString()} pkts`:''} ›</span>`;
-        return `<span class="badge filechip" onclick="openFile('${esc(f.path)}')">${f.kind} · ${name}
+        return `<span class="badge filechip" onclick="openFileByPath('${esc(f.path)}')">${f.kind} · ${name}
                 ${f.rows?`· ${f.rows} rows`:''} ›</span>`;
       }).join('') || '<span class="ci">no files</span>';
     } catch(e){ host.innerHTML = `<span class="ci">${esc(e.message)}</span>`; }
   }
 }
 
-function csvTable(text){
-  // Good enough for these files: quoted cells with commas inside are the
-  // only subtlety, and they do occur in the transcribed step tables.
-  const rows = [];
-  let row = [], cell = '', quoted = false;
-  for(let i=0;i<text.length;i++){
-    const c = text[i];
-    if(quoted){
-      if(c==='"' && text[i+1]==='"'){ cell+='"'; i++; }
-      else if(c==='"'){ quoted = false; }
-      else cell += c;
-    } else if(c==='"'){ quoted = true; }
-    else if(c===','){ row.push(cell); cell=''; }
-    else if(c==='\n'){ row.push(cell); rows.push(row); row=[]; cell=''; }
-    else if(c!=='\r'){ cell += c; }
-  }
-  if(cell||row.length){ row.push(cell); rows.push(row); }
-  const body = rows.filter(r => r.some(x=>x.trim()));
-  if(!body.length) return '<p class="sub">empty</p>';
-  const [head, ...rest] = body;
-  return `<div class="scroll"><table>
-    <thead><tr>${head.map(h=>`<th>${esc(h)}</th>`).join('')}</tr></thead>
-    <tbody>${rest.map(r=>`<tr>${head.map((_,i)=>`<td>${esc(r[i]||'')}</td>`).join('')}</tr>`).join('')}</tbody>
-  </table></div>`;
+// A sample opened from Sources is the same explorer the Captures section
+// has -- jumped to and expanded, rather than a second, weaker viewer.
+function openCapture(pcapId){
+  location.hash = '#sec-captures';
+  const host = $('exp-'+pcapId);
+  if(host && !host.classList.contains('show')) toggleExplorer(pcapId);
+  if(host) setTimeout(()=>host.scrollIntoView({block:'center'}), 60);
 }
 
-async function openFile(path){
-  const f = await api('/file?path='+encodeURIComponent(path));
-  openSheet(path.split('/').pop(), `
-    <div class="card">
-      <p class="sub mono">${esc(f.path)}</p>
-      <p class="sub">${(f.size_bytes/1024).toFixed(1)} kB${f.truncated?' · truncated for display':''}</p>
-      ${f.kind==='csv' ? csvTable(f.content) : `<pre>${esc(f.content)}</pre>`}
-    </div>`);
-}
-
-async function openPcap(pcapId){
-  const d = await api('/pcap/'+pcapId+'?limit=40');
-  const meta = d.capture_metadata || {};
-  openSheet(d.path.split('/').pop(), `
-    <div class="card"><h2>Capture</h2>
-      <p class="sub mono">${esc(d.path)}</p>
-      <table><tbody>
-        <tr><td class="sub">packets</td><td class="num">${d.packet_count==null?'<span class="badge flag">uncounted</span>':d.packet_count.toLocaleString()}</td></tr>
-        <tr><td class="sub">size</td><td class="num">${(d.size_bytes/1e6).toFixed(1)} MB</td></tr>
-        <tr><td class="sub">sha256</td><td class="mono">${esc(d.sha256.slice(0,32))}…</td></tr>
-        <tr><td class="sub">both directions</td><td>${meta.both_directions==null?'<span class="badge flag">unknown</span>':(meta.both_directions?'yes':'no')}</td></tr>
-        <tr><td class="sub">vantage point</td><td class="sub">${esc(meta.vantage_point||'')}</td></tr>
-      </tbody></table>
-    </div>
-    <div class="card"><h2>Run a display filter</h2>
-      <form onsubmit="runFilter(event,'${pcapId}')" style="display:flex;gap:7px">
-        <input id="flt" placeholder="e.g. tcp.flags.syn == 1" class="fltbox"
-               autocapitalize="off" autocorrect="off" spellcheck="false">
-        <button class="signout" type="submit">Run</button>
-      </form>
-      <div id="fltout"></div>
-      <div class="note">The filter is compiled by tshark before it runs, the capture is read from a
-      read-only jail, and the scan is bounded by a timeout and an output cap.</div>
-    </div>
-    <div class="card"><h2>First ${d.head.length} packets</h2>
-      ${d.head_error?`<p class="sub">${esc(d.head_error)}</p>`:packetTable(d.head)}
-    </div>`);
-}
-
-function packetTable(packets){
-  if(!packets.length) return '<p class="sub">no packets</p>';
-  return `<div class="scroll"><table>
-    <thead><tr><th>#</th><th>time</th><th>source</th><th>destination</th><th>proto</th><th>info</th></tr></thead>
-    <tbody>${packets.map(p=>`<tr>
-      <td class="num">${p.number}</td><td class="num">${p.time_epoch==null?'':Number(p.time_epoch).toFixed(3)}</td>
-      <td class="mono">${esc(p.source)}</td><td class="mono">${esc(p.destination)}</td>
-      <td>${esc(p.protocol)}</td><td class="sub">${esc((p.info||'').slice(0,80))}</td>
-    </tr>`).join('')}</tbody></table></div>`;
-}
-
-async function runFilter(ev, pcapId){
-  ev.preventDefault();
-  const out = $('fltout'), value = $('flt').value.trim();
-  if(!value) return;
-  out.innerHTML = '<p class="sub">running…</p>';
-  try{
-    const r = await api(`/pcap/${pcapId}/query?limit=40&filter=`+encodeURIComponent(value));
-    out.innerHTML = `<p class="sub" style="margin:8px 0">${r.match_count.toLocaleString()} match${r.match_count===1?'':'es'}
-      ${r.truncated?' (scan truncated at the output cap — the true count is higher)':''}
-      ${r.cached?' · from cache':''}</p>` + packetTable(r.packets);
-  } catch(e){ out.innerHTML = `<p class="sub" style="color:var(--bad)">${esc(e.message)}</p>`; }
+function openFileByPath(path){
+  location.hash = '#sec-captures';
+  const index = (state.files||[]).findIndex(f => f.path === path);
+  if(index < 0){ window.location = '/api/file/download?path='+encodeURIComponent(path); return; }
+  const host = $('fexp-'+index);
+  if(host && !host.classList.contains('show')) toggleFile(index);
+  if(host) setTimeout(()=>host.scrollIntoView({block:'center'}), 60);
 }
 
 async function openSteps(sourceId, title){
@@ -516,7 +931,7 @@ async function vReview(v){
       step was misread, or this capture is not the one the step describes — and only a reviewer can say
       which. Those items are listed first.</div>
       <p style="margin-top:10px">
-        <button class="signout" onclick="state.showReviewed=!state.showReviewed;render()">
+        <button class="signout" onclick="state.showReviewed=!state.showReviewed;renderSection('review')">
           ${state.showReviewed?'hide reviewed':'show reviewed'}</button>
         <button class="signout" id="mergebtn" onclick="doMerge()" style="display:none"></button>
       </p>
@@ -565,7 +980,7 @@ async function post(path, body){
 }
 
 async function act(claimId, action, body){
-  try { await post('/review/'+claimId, {action, ...(body||{})}); closeSheet(); render(); }
+  try { await post('/review/'+claimId, {action, ...(body||{})}); closeSheet(); renderSection('review'); }
   catch(e){ alert(e.message); }
 }
 
@@ -655,9 +1070,9 @@ async function vPairs(v){
     </div>
 
     <div class="filters">
-      <button class="chip ${!state.pairFilter?'on':''}" onclick="state.pairFilter=null;render()">all</button>
+      <button class="chip ${!state.pairFilter?'on':''}" onclick="state.pairFilter=null;renderSection('pairs')">all</button>
       ${Object.keys(d.counts).map(k=>`<button class="chip ${state.pairFilter===k?'on':''}"
-        onclick="state.pairFilter='${k}';render()">${esc(k)}</button>`).join('')}
+        onclick="state.pairFilter='${k}';renderSection('pairs')">${esc(k)}</button>`).join('')}
     </div>
     ${shown.slice(0,200).map(p=>`
       <div class="row" onclick="openPair('${p.pair_id}')">
@@ -688,6 +1103,8 @@ async function vClaims(v){
       ${chip('pair_type','swap','swap')}${chip('pair_type','no_pcap','no pcap')}
       ${chip('flag','FRAGILE','fragile')}${chip('flag','NO_MAJORITY','no majority')}${chip('flag','LOW_N','low n')}
     </div>
+    ${f.pcap_id?`<p class="sub" style="margin-bottom:8px">Showing only the items derived from one capture.
+      <span class="badge filechip" onclick="setFilter('pcap_id',null)">show all captures ×</span></p>`:''}
     <p class="sub" style="margin-bottom:8px">${rows.length} pair${rows.length===1?'':'s'} · tap a row for the model-by-model detail</p>
     ${rows.map(r=>`
       <div class="row" onclick="openPair('${r.pair_id}')">
@@ -705,7 +1122,7 @@ async function vClaims(v){
         </div>
       </div>`).join('') || '<div class="hint">nothing matches these filters</div>'}`;
 }
-function setFilter(k, val){ state.filters[k] = (state.filters[k]===val)?null:val; render(); }
+function setFilter(k, val){ state.filters[k] = (state.filters[k]===val)?null:val; renderSection('claims'); }
 
 async function openPair(pairId){
   const d = await api('/pair/'+pairId);
@@ -738,8 +1155,32 @@ async function openPair(pairId){
       :'<p class="sub">No capture — this is a leakage probe. The expected answer is NOT_VERIFIABLE.</p>'}
     </div>
 
-    <div class="card"><h2>Evidence</h2>
-      <div class="note">${esc(d.evidence.note)}</div>
+    <div class="card"><h2>Evidence, re-computed by the system</h2>
+      ${d.evidence.status==='computed' ? d.evidence.conditions.map(c=>`
+        <h3 class="mono">${esc(c.condition)}</h3>
+        <p class="sub">written by ${esc(c.models.join(', '))}</p>
+        ${c.status!=='ok' ? `<p class="sub"><span class="badge flag">${esc(c.status)}</span> ${esc(c.note)}</p>` : `
+          <p class="sub">${c.match_count==null?'—':c.match_count.toLocaleString()} packet${c.match_count===1?'':'s'}
+            satisfy this condition${c.packets.length < (c.match_count||0)
+              ? ` · showing the first ${c.packets.length}` : ''}${c.truncated?' · scan truncated at the output cap':''}</p>
+          <div class="meta" style="margin-top:6px">
+            ${c.cited_verified.map(n=>`<span class="badge">${n} ✓ verified</span>`).join('')}
+            ${c.cited_unverified.map(n=>`<span class="badge flag">${n} ✗ cited, not verified</span>`).join('')}
+            ${c.fabricated_count?`<span class="badge flag">${c.fabricated_count} fabricated — past the end of the capture</span>`:''}
+          </div>
+          <table style="margin-top:8px"><tbody>
+            <tr><td class="sub">sufficiency <span class="ci">cited packets alone give the same verdict</span></td>
+                <td>${c.sufficiency_ok==null?'<span class="ci">not applicable</span>'
+                      :(c.sufficiency_ok?'<span class="badge">passes</span>':'<span class="badge flag">fails</span>')}</td></tr>
+            <tr><td class="sub">necessity <span class="ci">removing them takes the verdict away</span></td>
+                <td>${c.necessity_ok==null?'<span class="ci">not applicable</span>'
+                      :(c.necessity_ok?'<span class="badge">passes</span>':'<span class="badge flag">fails</span>')}</td></tr>
+          </tbody></table>
+          ${c.packets.length?`<p class="sub mono" style="margin-top:6px">packets: ${c.packets.join(', ')}</p>`:''}`}
+      `).join('') : `<p class="sub">${esc(d.evidence.note)}</p>`}
+      ${d.evidence.status==='computed' ? `<div class="note">${esc(d.evidence.note)}
+        ${d.evidence.not_executed.length?`<br>Not re-executed for some answers: ${esc(d.evidence.not_executed.join(', '))}.`:''}
+        <br>Analysis ${esc(d.evidence.analysis_id)}.</div>` : ''}
     </div>
 
     <div class="card"><h2>Model × prompt × repeat</h2>
@@ -754,7 +1195,10 @@ async function openPair(pairId){
                 ${m.reason_code?`<div class="ci">${esc(m.reason_code)}</div>`:''}
                 ${m.error?'<div class="ci">tool error</div>':''}</td>
             <td class="num">${m.confidence==null?'—':m.confidence}</td>
-            <td>${m.cited_packets.length?`<span class="badge flag">${m.cited_packets.join(', ')} · unchecked</span>`:'—'}</td>
+            <td>${m.cited_packets.length ? (m.evidence && m.evidence.status==='ok'
+                  ? `${m.evidence.cited_verified.map(n=>`<span class="badge">${n} ✓</span>`).join(' ')}
+                     ${m.evidence.cited_unverified.map(n=>`<span class="badge flag">${n} ✗</span>`).join(' ')}`
+                  : `<span class="badge flag">${m.cited_packets.join(', ')} · unchecked</span>`) : '—'}</td>
             <td class="mono">${esc((m.condition||'').slice(0,42))}</td>
           </tr>`).join('')}</tbody>
       </table></div>
@@ -851,7 +1295,7 @@ async function saveParams(){
   try {
     const r = await post('/parameters', {values, note: $('p-note').value});
     status.textContent = `saved — config hash now ${r.config_hash.slice(0,12)}…`;
-    render();
+    renderSection('params');
   } catch(e){ status.textContent = e.message; }
 }
 
@@ -879,10 +1323,11 @@ async function vPanel(v){
 
     <div class="card"><h2>Families <span class="sub">(the unit of analysis)</span></h2>
       <div class="scroll"><table>
-        <thead><tr><th>family</th><th>matches expected</th><th>abstains</th><th>format err</th><th>self-consistency</th></tr></thead>
+        <thead><tr><th>family</th><th>matches expected</th><th>bootstrap by capture</th><th>abstains</th><th>format err</th><th>self-consistency</th></tr></thead>
         <tbody>${d.families.map(f=>`<tr>
           <td><b>${esc(f.family)}</b></td>
           <td>${rate(f.controls)}${bar(f.controls.rate)}</td>
+          <td>${stat(f.controls_bootstrap)}</td>
           <td class="num">${pct(f.abstention_rate,0)}</td>
           <td class="num">${pct(f.format_error_rate,0)}</td>
           <td class="num">${pct(f.self_consistency,0)} <span class="ci">n=${f.self_consistency_n}</span></td>
@@ -890,15 +1335,18 @@ async function vPanel(v){
       </table></div>
       <div class="note">Two sizes of one model are not independent votes, so a verdict is reduced per family
       before any majority is taken. “Matches expected” counts only items whose expected answer is fixed by
-      construction — it is not an accuracy against ground truth.</div>
+      construction — it is not an accuracy against ground truth. The first interval is Wilson, by item; the
+      bootstrap column resamples whole captures, because claims about one capture are not independent, and
+      it is the wider and more honest of the two.</div>
     </div>
 
     <div class="card"><h2>Models</h2>
       <div class="scroll"><table>
-        <thead><tr><th>model</th><th>family</th><th>matches expected</th><th>abstains</th><th>format err</th><th>tool err</th></tr></thead>
+        <thead><tr><th>model</th><th>family</th><th>matches expected</th><th>bootstrap by capture</th><th>abstains</th><th>format err</th><th>tool err</th></tr></thead>
         <tbody>${d.models.map(m=>`<tr>
           <td class="mono">${esc(m.model_id)}</td><td>${esc(m.family)}</td>
           <td>${rate(m.controls)}</td>
+          <td>${stat(m.controls_bootstrap)}</td>
           <td class="num">${pct(m.abstention_rate,0)}</td>
           <td class="num">${pct(m.format_error_rate,0)}</td>
           <td class="num">${pct(m.tool_error_rate,0)}</td>
@@ -914,9 +1362,61 @@ async function vPanel(v){
       </table></div>
     </div>
 
-    <div class="card"><h2>Not computed yet</h2>
+    <div class="card"><h2>Agreement across the panel</h2>
+      <table><tbody>
+        <tr><td class="sub">raw agreement</td><td>${stat(d.agreement_overall.raw_agreement)}</td></tr>
+        <tr><td class="sub">Fleiss’ κ</td><td>${stat(d.agreement_overall.fleiss_kappa,2)}</td></tr>
+        <tr><td class="sub">Gwet’s AC1</td><td>${stat(d.agreement_overall.gwet_ac1,2)}</td></tr>
+        <tr><td class="sub">effective votes</td><td>${stat(d.effective_votes,2)}
+          <div class="ci">of ${d.effective_votes&&d.effective_votes.detail&&d.effective_votes.detail.voters||'—'} families</div></td></tr>
+        <tr><td class="sub">mean error correlation</td><td>${stat(d.mean_error_correlation,2)}</td></tr>
+        <tr><td class="sub">majority matches expected</td><td>${stat(d.majority_matches_expected)}</td></tr>
+      </tbody></table>
+      <div class="note">κ and AC1 answer the same question differently: κ compares the observed
+      agreement with what chance would give, and collapses when nearly every verdict is the same
+      category — which is why AC1 is shown beside it and neither is shown alone. Effective votes is
+      N ÷ (1 + (N−1)ρ): how many independent voices a correlated panel is actually worth.</div>
+    </div>
+
+    <div class="card"><h2>Error correlation and pairwise agreement</h2>
+      ${d.error_correlation.length ? `<div class="scroll"><table>
+        <thead><tr><th>pair of families</th><th>agreement</th><th>φ</th><th>double fault</th></tr></thead>
+        <tbody>${d.error_correlation.map(r=>`<tr>
+          <td>${esc(r.a)} ↔ ${esc(r.b)}</td>
+          <td style="${heat(r.agreement&&r.agreement.value,0,1)}">${stat(r.agreement)}</td>
+          <td style="${heat(r.phi&&r.phi.value,-1,1)}">${stat(r.phi,2)}</td>
+          <td>${stat(r.double_fault)}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>` : '<p class="sub">Not computed — no analysis is stored for this run.</p>'}
+      <div class="note">φ measures whether two families get the same items wrong, and double fault is
+      how often they are wrong together. φ is undefined where one of them never differs from the
+      expected verdict: that reads as “not computable”, never as “no correlation”.</div>
+    </div>
+
+    <div class="card"><h2>Leave one family out</h2>
+      <div class="scroll"><table>
+        <thead><tr><th>family</th><th>majority changes without it</th></tr></thead>
+        <tbody>${d.families.map(f=>`<tr><td>${esc(f.family)}</td>
+          <td>${stat(f.leave_one_out)}${bar(f.leave_one_out&&f.leave_one_out.value)}</td></tr>`).join('')}</tbody>
+      </table></div>
+      <div class="note">A high figure here means the panel’s verdicts depend on one member, which is
+      what the family-level reduction exists to make visible.</div>
+    </div>
+
+    <div class="card"><h2>Calibration on control items</h2>
+      ${d.calibration.length ? `<div class="scroll"><table>
+        <thead><tr><th>reported confidence</th><th>matches expected</th><th></th></tr></thead>
+        <tbody>${d.calibration.map(c=>`<tr>
+          <td>${esc(c.scope_id)} of 5</td><td>${stat(c)}</td><td style="min-width:120px">${bar(c.value)}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>` : '<p class="sub">Not computed — no analysis is stored for this run.</p>'}
+      <div class="note">A well-calibrated panel’s bars rise from left to right. Bins with few items say
+      so in their n; a bin of three answers is not evidence of anything.</div>
+    </div>
+
+    ${Object.keys(d.pending).length ? `<div class="card"><h2>Not computed, and why</h2>
       ${Object.entries(d.pending).map(([k,x])=>`<p class="sub">• <b>${esc(k.replace(/_/g,' '))}</b> — ${esc(x)}</p>`).join('')}
-    </div>`;
+    </div>` : ''}`;
 }
 
 async function vPrompts(v){
@@ -939,6 +1439,12 @@ async function vPrompts(v){
         <tr><td class="sub">between prompts</td><td>${rate(d.prompt_flip_rate)}${bar(d.prompt_flip_rate.rate)}</td></tr>
         <tr><td class="sub">between repeats <span class="ci">(same prompt — the sampling-noise floor)</span></td>
             <td>${rate(d.repeat_flip_rate)}${bar(d.repeat_flip_rate.rate)}</td></tr>
+        <tr><td class="sub">excess over the floor</td><td>${stat(d.flip_rate_excess)}</td></tr>
+        <tr><td class="sub">within the pre-registered margin</td>
+            <td>${d.within_margin && d.within_margin.value!=null
+                  ? (d.within_margin.value ? '<span class="badge">yes</span>' : '<span class="badge flag">no</span>')
+                    + ` <span class="ci">margin ${esc(String((d.within_margin.detail||{}).margin))}</span>`
+                  : stat(d.within_margin)}</td></tr>
       </tbody></table>
       <div class="note">${esc(d.note)}</div>
     </div>
@@ -952,9 +1458,49 @@ async function vPrompts(v){
         </tr>`).join('')}</tbody>
       </table></div>
     </div>
-    <div class="card"><h2>Not computed yet</h2>
+    <div class="card"><h2>Effect per dimension</h2>
+      ${d.by_dimension && d.by_dimension.length ? `<div class="scroll"><table>
+        <thead><tr><th>dimension changed</th><th>verdict flips vs the reference variant</th><th></th></tr></thead>
+        <tbody>${d.by_dimension.map(r=>`<tr>
+          <td>${esc(r.scope_id)}<div class="ci">reference: ${esc((r.detail&&r.detail.reference)||'base')}</div></td>
+          <td>${stat(r)}</td><td style="min-width:120px">${bar(r.value)}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>` : '<p class="sub">Not computed — no analysis is stored for this run.</p>'}
+      <div class="note">Each variant changes exactly one thing about how the question is put, and the
+      criteria text itself is byte-identical in all of them. A flip here is therefore about the
+      presentation, not about what was asked.</div>
+    </div>
+
+    <div class="card"><h2>Position bias</h2>
+      <p>${stat(d.position_bias)}</p>
+      <div class="note">The gap between the SUPPORTED rate with the three verdict labels in their usual
+      order and with that order reversed. A model reading the claim rather than the layout should show
+      no gap; an interval that comfortably spans zero is the result to hope for here.</div>
+    </div>
+
+    <div class="card"><h2>Where the variation sits</h2>
+      ${d.variance && d.variance.length ? `<div class="scroll"><table>
+        <thead><tr><th>factor</th><th>share of variance</th><th></th></tr></thead>
+        <tbody>${d.variance.map(r=>`<tr>
+          <td>${esc(r.scope_id.replace(/_/g,' '))}</td><td>${stat(r)}</td>
+          <td style="min-width:120px">${bar(r.value)}</td>
+        </tr>`).join('')}</tbody>
+      </table></div>` : '<p class="sub">Not computed — no analysis is stored for this run.</p>'}
+      <div class="note">Read this as a rough ranking, not as a decomposition: it is eta-squared per
+      factor of the indicator “answered SUPPORTED”, from a one-way split. The shares do not add to one,
+      and an item carries its capture’s effect inside it. A proper mixed-effects decomposition needs a
+      dependency this project does not have, and labelling eta-squared as one would be dishonest.</div>
+    </div>
+
+    <div class="card"><h2>Fragile items</h2>
+      <p>${stat(d.fragile_item_rate)}</p>
+      <div class="note">Items whose majority verdict changes with the prompt. Their labels are not to be
+      relied on, however confident the models sounded; they are flagged FRAGILE in the claims table.</div>
+    </div>
+
+    ${Object.keys(d.pending).length ? `<div class="card"><h2>Not computed, and why</h2>
       ${Object.entries(d.pending).map(([k,x])=>`<p class="sub">• <b>${esc(k.replace(/_/g,' '))}</b> — ${esc(x)}</p>`).join('')}
-    </div>`;
+    </div>` : ''}`;
 }
 
 async function vControls(v){
@@ -970,9 +1516,17 @@ async function vControls(v){
       </table></div>
       <div class="note">Only construction-based items are scored. A “source” pair rests on the author’s
       claim, which is not a control, so most of them are not scored here.</div>
+      ${d.bootstrap_by_pair_type && d.bootstrap_by_pair_type.length ? `
+        <h3>With an interval that resamples captures</h3>
+        <table><tbody>${d.bootstrap_by_pair_type.map(r=>`<tr>
+          <td class="sub">${esc(r.scope_id)}</td><td>${stat(r)}</td></tr>`).join('')}</tbody></table>
+        <div class="note">Claims about one capture are not independent, so this interval resamples whole
+        captures rather than items. It is wider than the Wilson interval above, and more honest.</div>` : ''}
     </div>
     <div class="card"><h2>Knowledge leakage</h2>
       <p>SUPPORTED on a pair with no capture: ${rate(d.leakage)}</p>
+      ${d.leakage_analysis?`<p class="sub">From the stored analysis — by item: ${stat(d.leakage_analysis)}</p>`:''}
+      ${d.leakage_by_call?`<p class="sub">By individual answer: ${stat(d.leakage_by_call)}</p>`:''}
       <div class="note">${esc(d.leakage.note)}</div>
     </div>
     <div class="card"><h2>Swaps</h2>
@@ -982,7 +1536,8 @@ async function vControls(v){
     <div class="card"><h2>Mutation survival log</h2>
       ${d.mutation_survival_log.length
         ? `<pre>${esc(JSON.stringify(d.mutation_survival_log,null,2))}</pre>`
-        : '<p class="sub">Empty.</p>'}
+        : '<p class="sub">No mutation candidate survived its capture check in this dataset — the ones that did are listed here when they occur.</p>'}
+      <div class="note">${esc(d.validation_note)}</div>
       ${Object.entries(d.pending).map(([k,x])=>`<div class="note">${esc(x)}</div>`).join('')}
     </div>`;
 }
@@ -996,24 +1551,47 @@ async function vEvidence(v){
         <div class="stat"><div class="n num">${d.citations.calls_total}</div><div class="l">calls</div></div>
         <div class="stat"><div class="n num">${num(d.citations.mean_cited_packets,1)}</div><div class="l">mean cited</div></div>
       </div>
-      <div class="note">These are the numbers the models reported. None of them has been checked against a
-      capture yet, so no packet here is verified and none is known to be fabricated.</div>
+      <div class="note">These are the numbers the models reported, before anything checked them.</div>
     </div>
-    <div class="card"><h2>Not computed yet</h2>
-      ${Object.entries(d.pending).map(([k,x])=>`<p class="sub">• <b>${esc(k.replace(/_/g,' '))}</b> — ${esc(x)}</p>`).join('')}
-    </div>`;
+
+    ${d.status==='computed' ? `
+    <div class="card"><h2>What the capture says</h2>
+      <table><tbody>
+        ${d.rates.map(r=>`<tr>
+          <td class="sub">${esc(r.metric.replace(/_/g,' '))}
+            <div class="ci">${esc((r.detail&&r.detail.definition)||'')}</div></td>
+          <td>${stat(r)}${bar(r.value)}</td></tr>`).join('')}
+        <tr><td class="sub">conditions actually re-executed
+          <div class="ci">the rest say why in the claim detail, and are not counted as zero</div></td>
+          <td>${stat(d.coverage)}</td></tr>
+      </tbody></table>
+      <div class="note">${esc(d.note)}</div>
+    </div>
+
+    <div class="card"><h2>Do two models’ conditions match the same packets?</h2>
+      <p>Mean Jaccard across all model pairs: ${stat(d.jaccard_mean,2)}</p>
+      ${d.jaccard_pairs.length?`<div class="scroll"><table>
+        <thead><tr><th>pair of models</th><th>Jaccard of the re-executed packet sets</th></tr></thead>
+        <tbody>${d.jaccard_pairs.map(r=>`<tr>
+          <td>${esc(r.scope_id.replace('|',' ↔ '))}</td>
+          <td style="${heat(r.value,0,1)}">${stat(r,2)}</td></tr>`).join('')}</tbody>
+      </table></div>`:''}
+      <div class="note">Two models agreeing on a verdict while their conditions match different packets
+      have not agreed on the evidence. Two models that each matched nothing are not counted as agreeing
+      either — that pair has no Jaccard at all.</div>
+    </div>` : `
+    <div class="card"><h2>Not computed, and why</h2>
+      ${Object.entries(d.pending||{}).map(([k,x])=>`<p class="sub">• <b>${esc(k.replace(/_/g,' '))}</b> — ${esc(x)}</p>`).join('')}
+    </div>`}`;
 }
 
 // ------------------------------------------------------------------ boot
-state.tab = (location.hash.replace('#/','') || 'overview');
-if(!TABS.some(([k])=>k===state.tab)) state.tab = 'overview';
-renderTabs();
+buildSections();
 fetch('/api/session').then(r=>r.json()).then(s => {
   if(!s.configured) showGate('unconfigured');
   else if(!s.authenticated) showGate('');
   else render();
 }).catch(()=>render());
-window.addEventListener('hashchange', () => { const t = location.hash.replace('#/',''); if(t && t!==state.tab) go(t); });
 </script>
 </body>
 </html>

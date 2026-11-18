@@ -270,9 +270,28 @@ def params() -> AnalysisParams:
     )
 
 
+@pytest.fixture(scope="module")
+def query_cache(tmp_path_factory):
+    """
+    A capture-query cache shared by this module's tests.
+
+    The PCAP service caches by (file hash, filter, limit), so pointing every
+    test at one cache database means the same scan of the same capture is
+    run once for the whole file rather than once per test. It changes no
+    result -- a cache hit returns exactly what the scan returned -- and it
+    takes minutes off the suite, because tshark's start-up dominates a
+    29-packet capture.
+    """
+    from Dataset.storage.db import Database as DatabaseType
+
+    database = DatabaseType(tmp_path_factory.mktemp("qcache") / "cache.db").initialise()
+    yield database
+    database.close()
+
+
 @pytest.fixture
-def service(db) -> PcapService:
-    return PcapService(allowed_roots=[REPO_ROOT / "pcaps"], db=db)
+def service(query_cache) -> PcapService:
+    return PcapService(allowed_roots=[REPO_ROOT / "pcaps"], db=query_cache)
 
 
 # -- re-execution, sufficiency and necessity --------------------------------

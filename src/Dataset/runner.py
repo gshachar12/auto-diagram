@@ -260,8 +260,49 @@ class Runner:
 
     # -- the run -----------------------------------------------------------
 
+    def register_prompt_variants(self) -> int:
+        """
+        Write the frozen variants into `prompt_variants`, if they are not there.
+
+        Without this a run stores only prompt ids, and every later reader --
+        the dashboard's prompt section, the analysis's per-dimension effect,
+        the position-bias gap -- has no way to know which variant changed
+        what. An id that is already stored is left alone: the table is raw
+        and append-only, and the run manifest carries the authoritative
+        hash in any case.
+        """
+        existing = {row["prompt_id"] for row in self.db.query("SELECT prompt_id FROM prompt_variants")}
+        added = 0
+        for variant in self.builder.variants:
+            prompt_id = self.builder.prompt_id(variant)
+            if prompt_id in existing:
+                continue
+            # The variant rendered with a placeholder claim and no capture:
+            # the same skeleton `./pangea prompts --show` prints, which is
+            # what "the variant's text" can mean when every item renders
+            # different words.
+            skeleton = self.builder.render(
+                variant, claim_text="<the claim goes here>", capture=None,
+                thresholds=self.config.get("thresholds"),
+            )
+            self.db.insert(
+                "prompt_variants",
+                dict(
+                    prompt_id=prompt_id,
+                    dimension=variant.dimension,
+                    label=variant.label,
+                    template=skeleton.full_text,
+                    prompt_hash=self.builder.prompt_hash(variant),
+                    config_version=int(self.config.get("config_version", 1)),
+                    created_at=utc_now(),
+                ),
+            )
+            added += 1
+        return added
+
     def create_run(self, *, label: str, units: list[Unit]) -> tuple[str, dict[str, Any]]:
         self.config.require_frozen()
+        self.register_prompt_variants()
         pcaps = [dict(row) for row in self.db.query("SELECT pcap_id, sha256, packet_count FROM pcaps")]
         prompts = [
             {"prompt_id": self.builder.prompt_id(v), "prompt_hash": self.builder.prompt_hash(v), "label": v.label}

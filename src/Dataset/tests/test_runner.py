@@ -191,3 +191,26 @@ def test_the_run_id_changes_when_a_threshold_changes(runner, seeded, tmp_path):
     other = Runner(db=db, config=changed, results_path=tmp_path / "y.jsonl")
     second, _ = other.create_run(label="test", units=units)
     assert second != first  # a config change is a new run, not an edit
+
+
+def test_a_run_registers_the_variants_it_used(runner):
+    """
+    Without this, a stored run carries prompt ids and nothing else.
+
+    The dashboard's prompt section and the analysis's per-dimension effect
+    both key off `prompt_variants`; a run whose variants were never written
+    down can only be read as a list of hashes.
+    """
+    db = runner.db
+    units = runner.plan(models=["mock-a"], prompts=["base", "labels_reversed"])
+    runner.create_run(label="test", units=units)
+    rows = {row["prompt_id"]: dict(row) for row in db.query("SELECT * FROM prompt_variants")}
+    for variant in runner.builder.variants:
+        stored = rows[runner.builder.prompt_id(variant)]
+        assert stored["label"] == variant.label
+        assert stored["dimension"] == variant.dimension
+        assert stored["prompt_hash"] == runner.builder.prompt_hash(variant)
+        assert stored["template"]
+    # Registering twice must not fail: the table is append-only, and an id
+    # already stored is left exactly as it is.
+    assert runner.register_prompt_variants() == 0

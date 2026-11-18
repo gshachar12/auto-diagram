@@ -17,10 +17,14 @@ The read model behind the dashboard.
       expected verdict is fixed by construction, and even there the wording
       is "matches expected", never "correct".
 
-  What is deliberately NOT here: re-executing a model's condition on the
-  capture, verifying cited packets, sufficiency and necessity. Those need
-  the PCAP service and the analysis service (B1/B5). The views report them
-  as pending rather than inventing them.
+  Where the numbers come from. Anything that can be read straight off the
+  stored calls is computed here. Anything that needed the capture -- the
+  re-executed conditions, the verified citations, sufficiency and
+  necessity -- and anything whose interval has to resample PCAPs comes from
+  a stored analysis (B5), read back by `analysis_context`. If no analysis
+  has been stored for a run, those sections say so and stay empty: a view
+  never recomputes an analysis on the fly, because then the number on the
+  screen would not be the number in the record.
 """
 from __future__ import annotations
 
@@ -29,6 +33,9 @@ import math
 from collections import Counter, defaultdict
 from typing import Any, Iterable
 
+from ..analysis import expected_outcome as _analysis_expected_outcome
+from ..analysis import latest_analysis, list_analyses, load_call_facts, load_metrics
+from ..analysis.metrics import ItemView
 from ..storage.db import Database
 
 VERDICTS = ("SUPPORTED", "REFUTED", "NOT_VERIFIABLE")
@@ -161,20 +168,23 @@ def _family_votes(calls: list[dict[str, Any]]) -> dict[str, str]:
 
 def _expected_outcome(pair: dict[str, Any], panel_verdict: str | None) -> bool | None:
     """
-    Whether the panel matched what construction fixed.
+    Whether a verdict matched what construction fixed, by the analysis's own rule.
 
-    A swap has no expected verdict -- it is scored as "not SUPPORTED",
-    because calling it REFUTED would assume a closed world on a capture the
-    claim never came from. Anything with no construction-based expectation
-    returns None and is never scored.
+    Deliberately delegated rather than reimplemented: the dashboard and the
+    analysis scoring the same item differently is the kind of drift nobody
+    notices until the two disagree in public, so there is one rule and this
+    is a thin adapter from a row to it.
+
+    (The rule: a swap is scored as "not SUPPORTED", since REFUTED would
+    assume a closed world on a capture the claim never came from, and
+    anything resting on an author's claim is not scored at all.)
     """
-    if panel_verdict is None:
-        return None
-    if pair["pair_type"] == "swap":
-        return panel_verdict != "SUPPORTED"
-    if pair["expected_basis"] != "construction" or not pair["expected"]:
-        return None
-    return panel_verdict == pair["expected"]
+    item = ItemView(
+        pair_id=pair["pair_id"], pcap_id=pair.get("pcap_id"), pair_type=pair["pair_type"],
+        expected=pair.get("expected"), expected_basis=pair.get("expected_basis") or "none",
+        level=int(pair.get("level") or 1),
+    )
+    return _analysis_expected_outcome(item, panel_verdict)
 
 
 def summarise_pair(pair: dict[str, Any], calls: list[dict[str, Any]]) -> dict[str, Any]:
@@ -215,6 +225,9 @@ def summarise_pair(pair: dict[str, Any], calls: list[dict[str, Any]]) -> dict[st
         "kind": pair["kind"],
         "pair_type": pair["pair_type"],
         "mutation_type": pair["mutation_type"],
+        # Carried so the Captures section can hand the reader the items
+        # derived from one capture without a second query.
+        "pcap_id": pair["pcap_id"],
         "expected": pair["expected"],
         "expected_basis": pair["expected_basis"],
         "source_title": pair["source_title"],
@@ -243,6 +256,84 @@ def _cited(call: dict[str, Any]) -> list[int]:
     return [p for p in packets if isinstance(p, int)]
 
 
+# -- reading a stored analysis --------------------------------------------
+
+def analysis_context(db: Database, run_id: str | None = None, analysis_id: str | None = None) -> dict[str, Any]:
+    """
+    The analysis a view should read: a named one, or the newest for the run.
+
+    Returns an empty context rather than raising when nothing has been
+    analysed yet, so every view can say "not analysed yet" in its own words
+    instead of failing.
+    """
+    if analysis_id:
+        row = db.one("SELECT * FROM analyses WHERE analysis_id = ?", (analysis_id,))
+        record = dict(row) if row else None
+        if record:
+            record["params"] = json.loads(record["params"])
+    else:
+        record = latest_analysis(db, run_id)
+    if not record:
+        return {"analysis": None, "metrics": {}}
+    return {"analysis": record, "metrics": load_metrics(db, record["analysis_id"])}
+
+
+def _stat(metrics: dict, scope: str, scope_id: str, metric: str) -> dict[str, Any] | None:
+    """
+    One stored metric, in the shape the page's `rate()` helper reads.
+
+    `rate` is the name the dashboard uses for the value, and `n`, `ci_low`
+    and `ci_high` always travel with it -- the page has no way to render a
+    bare proportion, which is the point.
+    """
+    row = metrics.get((scope, scope_id, metric))
+    if row is None:
+        return None
+    return {
+        "metric": metric, "scope": scope, "scope_id": scope_id,
+        "rate": row["value"], "value": row["value"], "n": row["n"],
+        "ci_low": row["ci_low"], "ci_high": row["ci_high"], "detail": row["detail"],
+    }
+
+
+def _stats_in_scope(metrics: dict, scope: str, metric: str) -> list[dict[str, Any]]:
+    """Every stored row of one metric within one scope, sorted by scope id."""
+    return [
+        _stat(metrics, scope, scope_id, name)
+        for (scope_name, scope_id, name) in sorted(metrics)
+        if scope_name == scope and name == metric
+    ]
+
+
+def _analysis_header(context: dict[str, Any]) -> dict[str, Any] | None:
+    """What the page shows about the analysis a number came from."""
+    record = context.get("analysis")
+    if not record:
+        return None
+    pending = sorted(
+        f"{scope_id if scope == 'run' else scope}:{metric}"
+        for (scope, scope_id, metric), row in context["metrics"].items()
+        if row["value"] is None and row["detail"].get("status") == "pending"
+    )
+    return {
+        "analysis_id": record["analysis_id"],
+        "run_id": record["run_id"],
+        "code_version": record["code_version"],
+        "params_hash": record["params_hash"],
+        "params": record["params"],
+        "created_at": record["created_at"],
+        "metrics": len(context["metrics"]),
+        "pending": pending,
+    }
+
+
+NOT_ANALYSED = (
+    "No analysis has been stored for this run yet. Run `./pangea analyze` -- these numbers are "
+    "read from a stored, versioned analysis rather than recomputed on the fly, so that what is on "
+    "the screen is what is in the record."
+)
+
+
 # -- the views ------------------------------------------------------------
 
 def overview(db: Database, run_id: str | None = None) -> dict[str, Any]:
@@ -258,11 +349,36 @@ def overview(db: Database, run_id: str | None = None) -> dict[str, Any]:
     if run["manifest"]["code"]["git_commit"].endswith("-dirty"):
         warnings.append("This run was made from an uncommitted working tree (git commit marked dirty).")
     if uncounted:
-        warnings.append(f"{uncounted} capture(s) have no verified packet count -- the PCAP service (B1) has not run.")
+        warnings.append(
+            f"{uncounted} capture(s) carry no packet count in the registry (`./pangea ingest` reads it "
+            f"with tshark). The analysis reads the count from the file itself where it needs one, and "
+            f"records no fabrication figure for a capture whose length it could not establish."
+        )
     if unverified:
         warnings.append(f"{unverified} verification checklist item(s) are still unverified.")
     if run["manifest"].get("label") == "demo":
         warnings.append("DEMO dataset: synthetic claims, scripted MockModel answers. Not a result.")
+
+    context = analysis_context(db, run["run_id"])
+    header = _analysis_header(context)
+    if header is None:
+        warnings.append(NOT_ANALYSED)
+        pending = {"analysis": "no analysis is stored for this run; run `./pangea analyze`"}
+    else:
+        pending = {
+            metric: (row["detail"].get("reason") or "not computed")
+            for (scope, _scope_id, metric), row in sorted(context["metrics"].items())
+            if row["value"] is None and row["detail"].get("status") == "pending"
+        }
+        facts = db.one(
+            "SELECT COUNT(*) n FROM analysis_call_facts WHERE analysis_id = ? AND status != 'ok'",
+            (header["analysis_id"],),
+        )["n"]
+        if facts:
+            pending["evidence_for_some_calls"] = (
+                f"{facts} call(s) could not be re-executed against a capture; each one says why "
+                f"in the claim detail rather than being counted as zero"
+            )
 
     return {
         "run": {"run_id": run["run_id"], "created_at": run["created_at"], "manifest": run["manifest"]},
@@ -277,11 +393,16 @@ def overview(db: Database, run_id: str | None = None) -> dict[str, Any]:
             "discards": db.count("discards"),
         },
         "pairs_by_type": dict(Counter(p["pair_type"] for p in pairs.values())),
-        "pending": {
-            "evidence_recomputation": "analysis service (B5)",
-            "packet_verification": "PCAP service (B1)",
-            "mutation_validation": "pair builder (B3)",
-        },
+        "analysis": header,
+        "analyses": [
+            {k: a[k] for k in ("analysis_id", "code_version", "params_hash", "created_at", "metrics")}
+            for a in list_analyses(db, run["run_id"])
+        ],
+        # Only what really has not been computed, with the reason the
+        # analysis itself gave. A stale "pending" naming a milestone that
+        # has since landed is worse than no note at all: it tells the
+        # reader to distrust a number that is in fact there.
+        "pending": pending,
         "warnings": warnings,
     }
 
@@ -368,6 +489,60 @@ def source_files(db: Database, source_id: str) -> list[dict[str, Any]]:
             }
         )
     return files
+
+
+def samples(db: Database) -> dict[str, Any]:
+    """
+    Every capture and every text file the dataset refers to, in one list.
+
+    Built from rows, not from a directory listing: a sample is openable in
+    the dashboard only because some row already names it, which is the same
+    allowlist the file reader enforces. Captures are never served as bytes
+    -- they are read through the PCAP service, bounded, and the viewer says
+    how much of the file it is showing.
+    """
+    captures = []
+    for row in db.query(
+        """
+        SELECT pc.*, s.title AS source_title
+          FROM pcaps pc LEFT JOIN sources s ON s.source_id = pc.source_id
+         ORDER BY pc.path
+        """
+    ):
+        record = dict(row)
+        captures.append(
+            {
+                "pcap_id": record["pcap_id"],
+                "source_id": record["source_id"],
+                "source_title": record["source_title"],
+                "path": record["path"],
+                "sha256": record["sha256"],
+                "size_bytes": record["size_bytes"],
+                "packet_count": record["packet_count"],
+                "capture_metadata": json.loads(record["capture_metadata"]),
+                "pairs": db.one(
+                    "SELECT COUNT(*) n FROM pairs WHERE pcap_id = ?", (record["pcap_id"],)
+                )["n"],
+            }
+        )
+
+    files = []
+    for row in db.query(
+        """
+        SELECT origin_file, source_id, COUNT(*) n FROM source_steps
+         GROUP BY origin_file, source_id ORDER BY origin_file
+        """
+    ):
+        files.append({"path": row["origin_file"], "kind": "csv", "rows": row["n"], "source_id": row["source_id"]})
+    for row in db.query("SELECT source_id, origin, title FROM sources WHERE origin != '' ORDER BY title"):
+        # `origin` is a folder for an ingested source and a sentence for a
+        # seeded demo one. Only the first kind names a file, and offering
+        # the second as one produces a link that can only 404.
+        if " " in row["origin"]:
+            continue
+        files.append({"path": f"{row['origin']}/source.md", "kind": "markdown", "rows": None,
+                      "source_id": row["source_id"]})
+    return {"captures": captures, "files": files}
 
 
 def readable_paths(db: Database) -> set[str]:
@@ -473,6 +648,11 @@ def pair_detail(db: Database, pair_id: str, run_id: str | None = None) -> dict[s
         return {}
     calls = [c for c in load_calls(db, run["run_id"]) if c["pair_id"] == pair_id]
     summary = summarise_pair(pair, calls)
+    context = analysis_context(db, run["run_id"])
+    facts = (
+        load_call_facts(db, context["analysis"]["analysis_id"], [c["call_id"] for c in calls])
+        if context["analysis"] else {}
+    )
 
     matrix = []
     for call in sorted(calls, key=lambda c: (c["model_id"], c["prompt_id"], c["repeat"])):
@@ -501,6 +681,9 @@ def pair_detail(db: Database, pair_id: str, run_id: str | None = None) -> dict[s
                 "latency_ms": call["latency_ms"],
                 "tokens_in": call["tokens_in"],
                 "tokens_out": call["tokens_out"],
+                # What the capture said about this answer. Absent rather
+                # than zeroed when the analysis could not ask.
+                "evidence": facts.get(call["call_id"]),
             }
         )
 
@@ -525,15 +708,58 @@ def pair_detail(db: Database, pair_id: str, run_id: str | None = None) -> dict[s
             "capture_metadata": pair["capture_metadata"],
         },
         "matrix": matrix,
-        "evidence": {
-            "status": "pending",
-            "note": (
-                "Re-executing each model's condition on the capture, checking the cited packets "
-                "and running the sufficiency and necessity tests needs the PCAP service (B1) and "
-                "the analysis service (B5). Until then the cited packets below are shown as the "
-                "models reported them and are marked unchecked."
-            ),
-        },
+        "evidence": _pair_evidence(context, facts, matrix),
+    }
+
+
+def _pair_evidence(context: dict[str, Any], facts: dict[str, Any], matrix: list[dict[str, Any]]) -> dict[str, Any]:
+    """
+    The system's own reading of the capture for one item.
+
+    The packet table is grouped by the condition that produced it, not by
+    the model: several models usually write the same filter, and showing
+    the same scan once -- with the models that asked for it -- is both
+    shorter and more honest about how much independent evidence there is.
+    """
+    if not context["analysis"]:
+        return {"status": "pending", "analysis_id": None, "conditions": [], "note": NOT_ANALYSED}
+
+    grouped: dict[str, dict[str, Any]] = {}
+    for cell in matrix:
+        fact = cell["evidence"]
+        if not fact:
+            continue
+        key = cell["condition"] or "(no condition)"
+        entry = grouped.setdefault(
+            key,
+            {
+                "condition": key, "models": [], "status": fact["status"], "note": fact["note"],
+                "match_count": fact["reexecuted_count"], "truncated": fact["truncated"],
+                "packets": [], "cited_verified": [], "cited_unverified": [],
+                "fabricated_count": fact["fabricated_count"],
+                "sufficiency_ok": fact["sufficiency_ok"], "necessity_ok": fact["necessity_ok"],
+            },
+        )
+        entry["models"].append(cell["model_id"])
+        entry["packets"] = sorted(set(entry["packets"]) | set(fact["reexecuted_packets"]))
+        entry["cited_verified"] = sorted(set(entry["cited_verified"]) | set(fact["cited_verified"]))
+        entry["cited_unverified"] = sorted(set(entry["cited_unverified"]) | set(fact["cited_unverified"]))
+
+    for entry in grouped.values():
+        entry["models"] = sorted(set(entry["models"]))
+
+    unexplained = sorted({f["status"] for f in facts.values() if f["status"] != "ok"})
+    return {
+        "status": "computed" if any(e["status"] == "ok" for e in grouped.values()) else "unavailable",
+        "analysis_id": context["analysis"]["analysis_id"],
+        "conditions": [grouped[key] for key in sorted(grouped)],
+        "not_executed": unexplained,
+        "note": (
+            "Each table below is the system re-running that condition on this capture -- not what "
+            "the model reported. A cited packet that does not satisfy the model's own condition is "
+            "marked \u201ccited, not verified\u201d. Sufficiency asks whether the cited packets alone "
+            "still give the verdict; necessity asks whether removing them takes it away."
+        ),
     }
 
 
@@ -628,16 +854,59 @@ def panel(db: Database, run_id: str | None = None) -> dict[str, Any]:
                  "ci_low": low, "ci_high": high}
             )
 
+    context = analysis_context(db, run["run_id"])
+    metrics = context["metrics"]
+    header = _analysis_header(context)
+
+    # The analysis's own figures, which the Wilson intervals above cannot
+    # give: an interval that resamples captures, the error correlation
+    # between families, and what the panel is worth once that correlation
+    # is taken into account.
+    for row in models:
+        row["controls_bootstrap"] = _stat(metrics, "model", row["model_id"], "matches_expected_rate")
+        row["self_consistency_analysis"] = _stat(metrics, "model", row["model_id"], "self_consistency")
+    for row in families:
+        row["controls_bootstrap"] = _stat(metrics, "family", row["family"], "matches_expected_rate")
+        row["leave_one_out"] = _stat(metrics, "unit", row["family"], "leave_one_out_majority_change_rate")
+
+    correlation = []
+    for (scope, scope_id, metric) in sorted(metrics):
+        if scope == "unit_pair" and metric == "error_phi":
+            left, _, right = scope_id.partition("|")
+            correlation.append(
+                {
+                    "a": left, "b": right,
+                    "phi": _stat(metrics, scope, scope_id, "error_phi"),
+                    "double_fault": _stat(metrics, scope, scope_id, "double_fault"),
+                    "agreement": _stat(metrics, scope, scope_id, "agreement"),
+                }
+            )
+
     return {
         "models": models,
         "families": families,
         "pairwise_family_agreement": agreement,
-        "pending": {
-            "error_correlation": "analysis service (B5)",
-            "calibration": "analysis service (B5)",
-            "leave_one_out": "analysis service (B5)",
-            "bootstrap_ci_by_pcap": "analysis service (B5); the intervals here are Wilson, by item",
+        "analysis": header,
+        "error_correlation": correlation,
+        "effective_votes": _stat(metrics, "run", run["run_id"], "effective_votes"),
+        "mean_error_correlation": _stat(metrics, "run", run["run_id"], "mean_error_correlation"),
+        "majority_matches_expected": _stat(metrics, "run", run["run_id"], "majority_matches_expected_rate"),
+        "calibration": [
+            _stat(metrics, "confidence_bin", str(level), "matches_expected_rate")
+            for level in range(1, 6)
+            if _stat(metrics, "confidence_bin", str(level), "matches_expected_rate")
+        ],
+        "agreement_overall": {
+            "raw_agreement": _stat(metrics, "run", run["run_id"], "raw_agreement"),
+            "fleiss_kappa": _stat(metrics, "run", run["run_id"], "fleiss_kappa"),
+            "gwet_ac1": _stat(metrics, "run", run["run_id"], "gwet_ac1"),
         },
+        "pending": {} if header else {"analysis": NOT_ANALYSED},
+        "note": (
+            "The interval beside \u201cmatches expected\u201d in the table is Wilson, by item. The "
+            "bootstrap column resamples whole captures instead, because claims about one capture "
+            "are not independent, and is the wider and more honest of the two."
+        ),
     }
 
 
@@ -697,6 +966,9 @@ def prompt_sensitivity(db: Database, run_id: str | None = None) -> dict[str, Any
 
     flip_low, flip_high = wilson_interval(prompt_flips, prompt_comparable)
     noise_low, noise_high = wilson_interval(repeat_flips, len(repeat_comparable))
+    context = analysis_context(db, run["run_id"])
+    metrics = context["metrics"]
+    header = _analysis_header(context)
     return {
         "prompt_flip_rate": {
             "flips": prompt_flips, "n": prompt_comparable,
@@ -711,15 +983,28 @@ def prompt_sensitivity(db: Database, run_id: str | None = None) -> dict[str, Any
         "prompts": prompt_rows,
         "note": (
             "A 'no prompt effect' claim cannot be proved here. These two rates can only show "
-            "whether the prompt effect is small relative to the sampling noise floor, and the "
-            "equivalence margin that would make that judgement is still UNSET in the config."
+            "whether the prompt effect is small relative to the sampling-noise floor, and that "
+            "judgement needs an equivalence margin fixed before the run."
         ),
-        "pending": {"variance_decomposition": "analysis service (B5)", "position_bias": "prompt builder (B4)"},
+        "analysis": header,
+        "flip_rate_excess": _stat(metrics, "run", run["run_id"], "prompt_flip_rate_excess"),
+        "within_margin": _stat(metrics, "run", run["run_id"], "prompt_effect_within_margin"),
+        "by_dimension": _stats_in_scope(metrics, "dimension", "flip_rate_vs_reference"),
+        "by_variant": _stats_in_scope(metrics, "prompt", "flip_rate_vs_reference"),
+        "position_bias": _stat(metrics, "run", run["run_id"], "position_bias_gap"),
+        "variance": _stats_in_scope(metrics, "factor", "variance_explained_eta2"),
+        "fragile_item_rate": _stat(metrics, "run", run["run_id"], "fragile_item_rate"),
+        "pending": {} if header else {"analysis": NOT_ANALYSED},
     }
 
 
 def controls(db: Database, run_id: str | None = None) -> dict[str, Any]:
-    """Accuracy by pair type, and the leakage indicator."""
+    """Matches-expected by pair type, and the leakage indicator."""
+    run = load_run(db, run_id)
+    run_key = run["run_id"] if run else ""
+    context = analysis_context(db, run_key or None)
+    metrics = context["metrics"]
+    header = _analysis_header(context)
     rows = claims_table(db, run_id)
     by_type: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for row in rows:
@@ -762,19 +1047,30 @@ def controls(db: Database, run_id: str | None = None) -> dict[str, Any]:
         "mutation_survival_log": [
             dict(row) for row in db.query("SELECT * FROM discards WHERE kind = 'mutation' ORDER BY created_at")
         ],
-        "pending": {"mutation_validation": "pair builder (B3): no mutation has been mechanically validated yet"},
+        "analysis": header,
+        # Every mutation and swap kept was validated against its capture
+        # when the pair was built (B3); the ones that failed are in the
+        # discard log above, not missing.
+        "validation_note": (
+            "Every mutation below found nothing on its capture and every swap came back not "
+            "supported when the pair was built -- that is the condition for keeping one. The "
+            "candidates that failed those checks are in the discard log on the Pairs section."
+        ),
+        "bootstrap_by_pair_type": _stats_in_scope(metrics, "pair_type", "majority_matches_expected_rate"),
+        "leakage_analysis": _stat(metrics, "run", run_key, "no_pcap_supported_rate"),
+        "leakage_by_call": _stat(metrics, "run", run_key, "no_pcap_supported_rate_by_call"),
+        "pending": {} if header else {"analysis": NOT_ANALYSED},
     }
 
 
 def evidence_quality(db: Database, run_id: str | None = None) -> dict[str, Any]:
     """
-    Deliberately mostly empty.
+    What the capture said about the evidence the models offered.
 
-    Fabricated-packet rate, cited-and-verified rate, sufficiency/necessity
-    pass rates and evidence-set Jaccard all require re-executing conditions
-    against the capture. Reporting a plausible-looking number here before
-    that exists would be exactly the kind of unfounded figure this project
-    is built to avoid.
+    Every rate here needed a condition to be re-executed, so all of it
+    comes from a stored analysis. Without one the section says so and
+    shows only what the models themselves reported, clearly labelled as
+    unverified -- which is what it was before anything checked it.
     """
     run = load_run(db, run_id)
     if not run:
@@ -782,18 +1078,44 @@ def evidence_quality(db: Database, run_id: str | None = None) -> dict[str, Any]:
     calls = load_calls(db, run["run_id"])
     cited = [len(_cited(call)) for call in calls]
     with_citations = [c for c in cited if c]
+    context = analysis_context(db, run["run_id"])
+    metrics = context["metrics"]
+    header = _analysis_header(context)
+    run_key = run["run_id"]
+
+    citations = {
+        "calls_with_citations": len(with_citations),
+        "calls_total": len(calls),
+        "mean_cited_packets": sum(with_citations) / len(with_citations) if with_citations else None,
+    }
+    if not header:
+        return {
+            "citations": citations,
+            "status": "pending",
+            "analysis": None,
+            "pending": {"everything_below": NOT_ANALYSED},
+        }
+
     return {
-        "citations": {
-            "calls_with_citations": len(with_citations),
-            "calls_total": len(calls),
-            "mean_cited_packets": sum(with_citations) / len(with_citations) if with_citations else None,
-        },
-        "status": "pending",
-        "pending": {
-            "fabricated_packet_rate": "needs the PCAP service (B1) + analysis (B5)",
-            "cited_and_verified_rate": "needs the PCAP service (B1) + analysis (B5)",
-            "sufficiency_pass_rate": "needs the analysis service (B5)",
-            "necessity_pass_rate": "needs the analysis service (B5)",
-            "evidence_set_jaccard": "needs the analysis service (B5)",
-        },
+        "citations": citations,
+        "status": "computed",
+        "analysis": header,
+        "coverage": _stat(metrics, "run", run_key, "reexecution_coverage"),
+        "rates": [
+            row for row in (
+                _stat(metrics, "run", run_key, "fabricated_packet_call_rate"),
+                _stat(metrics, "run", run_key, "cited_and_verified_rate"),
+                _stat(metrics, "run", run_key, "cited_unverified_rate"),
+                _stat(metrics, "run", run_key, "sufficiency_pass_rate"),
+                _stat(metrics, "run", run_key, "necessity_pass_rate"),
+            ) if row
+        ],
+        "jaccard_mean": _stat(metrics, "run", run_key, "evidence_jaccard_mean"),
+        "jaccard_pairs": _stats_in_scope(metrics, "model_pair", "evidence_jaccard"),
+        "pending": {},
+        "note": (
+            "A cited packet counts as verified only if it satisfies the model's own condition when "
+            "the system re-runs it. A fabricated packet is one whose number is past the end of the "
+            "capture: it cannot be a mis-read packet, it is not in the file."
+        ),
     }

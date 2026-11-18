@@ -49,13 +49,16 @@ from ..ids import content_hash, file_sha256
 from ..storage.db import Database
 from ..storage.repository import utc_now
 
-#: Fields returned for each matching packet, in this order.
+#: Fields returned for each matching packet, in this order. `frame.len` is
+#: here because a packet table without a length is hard to read: a 1514-byte
+#: frame and a bare ACK look the same otherwise.
 PACKET_FIELDS: tuple[str, ...] = (
     "frame.number",
     "frame.time_epoch",
     "_ws.col.Source",
     "_ws.col.Destination",
     "_ws.col.Protocol",
+    "frame.len",
     "_ws.col.Info",
 )
 
@@ -105,6 +108,7 @@ class Packet:
     source: str
     destination: str
     protocol: str
+    length: int | None
     info: str
 
     def as_dict(self) -> dict[str, Any]:
@@ -114,6 +118,7 @@ class Packet:
             "source": self.source,
             "destination": self.destination,
             "protocol": self.protocol,
+            "length": self.length,
             "info": self.info,
         }
 
@@ -543,7 +548,11 @@ def _parse_packet_line(line: str) -> Packet:
         epoch = float(parts[1])
     except ValueError:
         epoch = None
-    return Packet(number, epoch, parts[2], parts[3], parts[4], parts[5])
+    try:
+        length: int | None = int(parts[5])
+    except ValueError:
+        length = None
+    return Packet(number, epoch, parts[2], parts[3], parts[4], length, parts[6])
 
 
 def _parse_io_stat(text: str) -> tuple[int | None, float | None, float | None]:

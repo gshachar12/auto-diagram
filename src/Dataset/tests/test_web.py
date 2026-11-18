@@ -22,15 +22,49 @@ from Dataset.web import views
 from Dataset.web.app import create_app
 
 
+def _tshark_available() -> bool:
+    from Dataset.pcap import PcapServiceError
+
+    try:
+        from Dataset.pcap.service import resolve_tshark
+
+        resolve_tshark()
+        return True
+    except PcapServiceError:
+        return False
+
+
 @pytest.fixture(scope="module")
 def seeded(tmp_path_factory):
+    """
+    The demo dataset, with a stored analysis where tshark allows one.
+
+    The analysis is part of the fixture because the dashboard reads its
+    derived numbers rather than recomputing them: a page tested against a
+    database with no analysis would only ever exercise the "not analysed
+    yet" path, which is the easy half.
+    """
     directory = tmp_path_factory.mktemp("web")
+    config = Config.load(CONFIG_DIR / "demo")
     summary = seed_demo(
         db_path=directory / "demo.db",
         results_path=directory / "results.jsonl",
-        config=Config.load(CONFIG_DIR / "demo"),
+        config=config,
     )
+    summary["analysis_id"] = None
+    if _tshark_available():
+        from Dataset.analysis import AnalysisParams, analyse
+
+        database = Database(directory / "demo.db").initialise()
+        try:
+            params = AnalysisParams.from_config(config).with_overrides({"bootstrap_resamples": 40})
+            summary["analysis_id"] = analyse(database, config=config, params=params).analysis_id
+        finally:
+            database.close()
     return summary, directory
+
+
+needs_analysis = pytest.mark.skipif(not _tshark_available(), reason="the analysis needs tshark")
 
 
 @pytest.fixture(scope="module")
@@ -131,18 +165,119 @@ def test_pair_detail_traces_back_to_stored_calls(db):
         assert raw["raw_response"]  # the response behind the number exists
 
 
-def test_cited_packets_are_marked_unchecked_until_the_analysis_exists(db):
-    detail = views.pair_detail(db, views.claims_table(db)[0]["pair_id"])
-    assert detail["evidence"]["status"] == "pending"
-    assert "PCAP service" in detail["evidence"]["note"]
+@needs_analysis
+def test_the_claim_detail_shows_the_system_recomputed_packets(db):
+    """
+    The most important view: what the capture says, beside what was said.
+
+    The packet table here is the system re-running the model's own
+    condition -- never the packets the model reported -- and a cited packet
+    that does not satisfy that condition is listed separately.
+    """
+    detail = next(
+        views.pair_detail(db, row["pair_id"])
+        for row in views.claims_table(db) if row["pair_type"] != "no_pcap"
+    )
+    assert detail["evidence"]["status"] in ("computed", "unavailable")
+    assert detail["evidence"]["analysis_id"]
+    executed = [c for c in detail["evidence"]["conditions"] if c["status"] == "ok"]
+    assert executed, "at least one condition must have been re-executed"
+    for entry in executed:
+        assert entry["match_count"] is not None
+        assert set(entry["cited_verified"]) & set(entry["cited_unverified"]) == set()
 
 
-def test_evidence_quality_refuses_to_invent_verification_numbers(db):
+@needs_analysis
+def test_a_call_the_capture_could_not_answer_is_null_not_zero(db):
+    """A no_pcap item has no evidence, and the view says so rather than scoring it."""
+    row = next(r for r in views.claims_table(db) if r["pair_type"] == "no_pcap")
+    detail = views.pair_detail(db, row["pair_id"])
+    for cell in detail["matrix"]:
+        if cell["evidence"]:
+            assert cell["evidence"]["status"] != "ok"
+            assert cell["evidence"]["reexecuted_count"] is None
+            assert cell["evidence"]["note"]
+
+
+@needs_analysis
+def test_evidence_quality_reports_every_rate_with_its_n(db):
     data = views.evidence_quality(db)
-    assert data["status"] == "pending"
-    assert "fabricated_packet_rate" in data["pending"]
-    # Nothing that looks like a verified rate may be present.
-    assert "cited_and_verified_rate" not in data["citations"]
+    assert data["status"] == "computed"
+    names = {row["metric"] for row in data["rates"]}
+    assert {"fabricated_packet_call_rate", "cited_and_verified_rate",
+            "sufficiency_pass_rate", "necessity_pass_rate"} <= names
+    for row in data["rates"]:
+        assert row["n"] is not None
+        if row["value"] is not None:
+            assert row["ci_low"] is not None and row["ci_high"] is not None
+    assert data["coverage"]["value"] is not None
+
+
+def test_evidence_quality_says_so_when_nothing_has_been_analysed(db, tmp_path):
+    """Without a stored analysis the section stays empty rather than guessing."""
+    from Dataset.storage.db import Database as DatabaseType
+
+    bare = DatabaseType(tmp_path / "bare.db").initialise()
+    try:
+        for table in ("analysis_metrics", "analysis_call_facts", "analyses"):
+            bare.clear_derived(table)
+        # Copy nothing: an empty database has no run at all, which is the
+        # other end of the same path.
+        assert views.evidence_quality(bare) == {}
+    finally:
+        bare.close()
+
+
+@needs_analysis
+def test_the_panel_reports_error_correlation_calibration_and_effective_votes(db):
+    data = views.panel(db)
+    assert data["analysis"]["analysis_id"]
+    assert data["error_correlation"], "a stored analysis must supply the pairwise correlation"
+    for row in data["error_correlation"]:
+        for key in ("phi", "double_fault", "agreement"):
+            assert row[key] is None or row[key]["n"] is not None
+    assert data["effective_votes"] is not None
+    assert data["calibration"]
+    for row in data["calibration"]:
+        assert row["n"] is not None
+    # kappa is never shown without AC1 beside it.
+    assert data["agreement_overall"]["fleiss_kappa"] is not None
+    assert data["agreement_overall"]["gwet_ac1"] is not None
+    assert data["pending"] == {}
+
+
+@needs_analysis
+def test_prompt_sensitivity_reports_the_dimension_effect_and_position_bias(db):
+    data = views.prompt_sensitivity(db)
+    assert data["analysis"]["analysis_id"]
+    assert data["flip_rate_excess"]["n"] is not None
+    assert data["variance"], "the variance factors come from the stored analysis"
+    # The demo has no label-order variant, so position bias must be pending
+    # with its reason -- not reported as zero.
+    assert data["position_bias"]["value"] is None
+    assert data["position_bias"]["detail"]["reason"]
+
+
+@needs_analysis
+def test_the_controls_view_no_longer_blames_an_unfinished_milestone(db):
+    data = views.controls(db)
+    assert "mutation_validation" not in data["pending"]
+    assert "found nothing on its capture" in data["validation_note"]
+    assert data["bootstrap_by_pair_type"]
+    for row in data["bootstrap_by_pair_type"]:
+        assert row["n"] is not None
+
+
+@needs_analysis
+def test_the_overview_pending_list_names_only_what_is_really_missing(db):
+    data = views.overview(db)
+    assert data["analysis"]["analysis_id"]
+    # The stale notes that blamed B1, B3 and B4 for work that has landed.
+    assert "packet_verification" not in data["pending"]
+    assert "mutation_validation" not in data["pending"]
+    assert "evidence_recomputation" not in data["pending"]
+    for reason in data["pending"].values():
+        assert reason and reason != "not computed"
 
 
 def test_panel_reduces_to_families_and_reports_n(db):
@@ -173,11 +308,82 @@ def test_controls_report_leakage_with_its_n(db):
 @pytest.mark.parametrize(
     "path",
     ["/", "/healthz", "/api/overview", "/api/claims", "/api/panel", "/api/prompts",
-     "/api/controls", "/api/evidence", "/api/manifest", "/api/export/claims.csv",
-     "/api/export/claims.json"],
+     "/api/controls", "/api/evidence", "/api/manifest", "/api/pcaps", "/api/analyses",
+     "/api/export/claims.csv", "/api/export/claims.json", "/api/export/calls.csv",
+     "/api/export/calls.json", "/api/export/consensus.json", "/api/export/manifest.json"],
 )
 def test_endpoint_responds(client, path):
     assert client.get(path).status_code == 200
+
+
+@needs_analysis
+@pytest.mark.parametrize(
+    "path", ["/api/analysis", "/api/export/scores.csv", "/api/export/scores.json", "/api/export/metrics.csv"]
+)
+def test_the_analysis_endpoints_respond(client, path):
+    assert client.get(path).status_code == 200
+
+
+@needs_analysis
+def test_the_analysis_endpoint_serves_the_stored_metrics(client):
+    payload = client.get("/api/analysis").json()
+    assert payload["analysis"]["analysis_id"]
+    assert payload["metrics"]
+    for row in payload["metrics"]:
+        assert set(row) >= {"scope", "scope_id", "metric", "value", "n", "ci_low", "ci_high", "detail"}
+    only_run = client.get("/api/analysis?scope=run").json()["metrics"]
+    assert only_run and all(row["scope"] == "run" for row in only_run)
+
+
+@needs_analysis
+def test_a_what_if_through_the_api_stores_nothing(client):
+    before = client.get("/api/analyses").json()["analyses"]
+    payload = client.post("/api/analysis/what-if", json={"params": {"majority_threshold": 0.95}}).json()
+    assert payload["persisted"] is False
+    assert "stored" in payload["note"] or "not for changing" in payload["note"]
+    after = client.get("/api/analyses").json()["analyses"]
+    assert [a["analysis_id"] for a in before] == [a["analysis_id"] for a in after]
+
+
+def test_a_what_if_with_an_unknown_parameter_is_refused(client):
+    assert client.post("/api/analysis/what-if", json={"params": {"nonsense": 1}}).status_code == 400
+    assert client.post("/api/analysis/what-if", json={}).status_code == 400
+
+
+@needs_analysis
+def test_a_diff_of_an_analysis_with_itself_reports_no_change(client):
+    analysis_id = client.get("/api/analyses").json()["latest"]
+    report = client.get(f"/api/analysis/diff?left={analysis_id}&right={analysis_id}").json()
+    assert report["changed"] == []
+    assert report["unchanged"] > 0
+
+
+def test_a_diff_of_something_unstored_is_a_404(client):
+    assert client.get("/api/analysis/diff?left=ana_a&right=ana_b").status_code == 404
+
+
+def test_the_captures_list_names_every_registered_capture(client, db):
+    payload = client.get("/api/pcaps").json()
+    assert len(payload["captures"]) == db.count("pcaps")
+    for capture in payload["captures"]:
+        assert capture["sha256"] and capture["path"]
+    assert all(not f["path"].startswith("/") for f in payload["files"])
+
+
+def test_the_exports_cover_answers_scores_consensus_and_the_manifest(client):
+    calls = client.get("/api/export/calls.json").json()
+    assert calls and "raw_response" in calls[0]
+    consensus = client.get("/api/export/consensus.json").json()
+    assert consensus and "panel_verdict" in consensus[0]
+    manifest = client.get("/api/export/manifest.json").json()
+    assert manifest["manifest"]["code"]["git_commit"]
+    # Parsed, not split on newlines: a stored response contains them.
+    import csv as csv_module
+    import io as io_module
+
+    rows = list(csv_module.DictReader(io_module.StringIO(client.get("/api/export/calls.csv").text)))
+    assert len(rows) == len(calls)
+    assert rows[0]["call_id"] and rows[0]["raw_response"] is not None
 
 
 def test_claims_filters_narrow_the_result(client):
@@ -258,6 +464,81 @@ def test_a_hostile_filter_through_the_api_is_a_400(client, db):
     assert response.status_code == 400
 
 
+def test_the_capture_summary_describes_the_file_or_says_why_not(client, db):
+    pcap_id = db.one("SELECT pcap_id FROM pcaps ORDER BY size_bytes LIMIT 1")["pcap_id"]
+    payload = client.get(f"/api/pcap/{pcap_id}/summary").json()
+    if payload["available"]:
+        assert payload["packet_count"] > 0
+        assert payload["protocol_hierarchy"]
+    else:
+        # A capture too large to dissect says so; it never returns an empty
+        # protocol list as though the file held nothing.
+        assert payload["reason"]
+
+
+def test_a_refused_filter_shows_tsharks_own_words_and_no_table(client, db):
+    pcap_id = db.one("SELECT pcap_id FROM pcaps ORDER BY size_bytes LIMIT 1")["pcap_id"]
+    response = client.get(f"/api/pcap/{pcap_id}/query", params={"filter": "nonsense.field == "})
+    assert response.status_code == 400
+    assert "refused" in response.json()["detail"]
+    assert "packets" not in response.json()
+
+
+def test_the_filter_box_is_rate_limited_per_capture(client, db):
+    """
+    A filter is a full read of the file, so the explorer gets a ceiling.
+
+    The limit is configuration (`pcap_tool.max_queries_per_minute`) and it
+    is charged only for a scan that actually ran: a filter tshark refused
+    never touched the capture.
+    """
+    pcap_id = db.one("SELECT pcap_id FROM pcaps ORDER BY size_bytes DESC LIMIT 1")["pcap_id"]
+    first = client.get(f"/api/pcap/{pcap_id}/query", params={"filter": "tcp"})
+    assert first.status_code in (200, 429, 503)
+    if first.status_code != 200:
+        pytest.skip("the capture could not be scanned here")
+    second = client.get(f"/api/pcap/{pcap_id}/query", params={"filter": "udp"})
+    assert second.status_code == 429
+    assert "scan" in second.json()["detail"]
+    # While the ceiling holds, nothing reaches the capture at all -- the
+    # budget is only charged for a scan that actually ran, so a refused
+    # filter never costs the reader the next few seconds.
+
+
+def test_a_text_file_can_be_downloaded_as_it_is_on_disk(client, db):
+    path = next(iter(views.readable_paths(db) - {row["path"] for row in db.query("SELECT path FROM pcaps")}))
+    response = client.get("/api/file/download", params={"path": path})
+    assert response.status_code in (200, 404)  # 404 only if the file is not on this host
+    assert client.get("/api/file/download", params={"path": "/etc/passwd"}).status_code == 404
+    capture = db.one("SELECT path FROM pcaps")["path"]
+    assert client.get("/api/file/download", params={"path": capture}).status_code == 415
+
+
+def test_the_claims_table_can_be_narrowed_to_one_capture(client, db):
+    pcap_id = db.one("SELECT pcap_id FROM pcaps")["pcap_id"]
+    rows = client.get("/api/claims", params={"pcap_id": pcap_id}).json()
+    assert rows
+    assert all(row["pcap_id"] == pcap_id for row in rows)
+    assert len(rows) < len(client.get("/api/claims").json())
+
+
+def test_the_captures_section_carries_the_explorer_and_the_file_viewer():
+    """
+    The two tools live inline in the Captures section, with their controls
+    explained where they are used.
+    """
+    from Dataset.web.app import STATIC_DIR
+
+    html = (STATIC_DIR / "index.html").read_text(encoding="utf-8")
+    for needed in ("STARTER_FILTERS", "applyFilter(", "renderHistory(", "renderSheet(",
+                   "sortSheet(", "toggleColumn(", "showClaimsFor("):
+        assert needed in html, needed
+    # The truncation statement is not optional: a capped scan must never
+    # read as the whole count.
+    assert "the real count is higher than" in html
+    assert "file/download" in html
+
+
 def test_a_missing_capture_is_a_404(client):
     assert client.get("/api/pcap/pcap_nope").status_code == 404
 
@@ -324,15 +605,38 @@ def test_the_dashboard_javascript_parses():
         Path(path).unlink(missing_ok=True)
 
 
-def test_every_tab_has_a_render_function():
-    """A tab with no renderer throws the moment it is opened."""
+def test_every_section_has_a_caption_and_a_renderer():
+    """
+    One scrolling page, and every section on it explains itself.
+
+    The caption is not decoration: a reader who has not read the spec has
+    no way to know that a vote share is agreement rather than accuracy, and
+    a dashboard that does not say so invites exactly the reading the whole
+    project is built to prevent.
+    """
     import re
 
     from Dataset.web.app import STATIC_DIR
 
     html = (STATIC_DIR / "index.html").read_text(encoding="utf-8")
-    tabs = set(re.findall(r"\['(\w+)','[^']+'\]", html))
-    dispatch = re.search(r"await \(\{(.*?)\}\[state\.tab\]\)", html, re.S)
-    assert dispatch
-    wired = set(re.findall(r"(\w+):\s*v\w+", dispatch.group(1)))
-    assert tabs == wired, f"tabs without a renderer: {tabs - wired}"
+    sections = re.findall(r"\n  \['(\w+)','([^']+)',\n", html)
+    assert len(sections) >= 10, sections
+    entries = re.findall(r"\['(\w+)','[^']+',\n(.*?)\n   \+? ?'?[^\n]*?, (v\w+)\]", html, re.S)
+    assert len(entries) == len(sections), "every section needs a caption and a render function"
+    for key, caption, renderer in entries:
+        assert len(caption) > 40, f"{key} has no real caption"
+        assert f"function {renderer}(" in html, f"{key} names a renderer that does not exist"
+
+
+def test_the_page_has_no_hidden_tabs():
+    """Everything is on one page; the links at the top only scroll to it."""
+    from Dataset.web.app import STATIC_DIR
+
+    html = (STATIC_DIR / "index.html").read_text(encoding="utf-8")
+    assert "<nav" not in html
+    assert 'id="jump"' in html
+    # The sections exist once, as the template the script builds them from,
+    # and nowhere as a pane that something could hide.
+    assert html.count('<section class="section"') == 1
+    assert "buildSections()" in html
+    assert "state.tab" not in html

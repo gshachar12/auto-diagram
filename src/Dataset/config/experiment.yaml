@@ -34,6 +34,15 @@ pcap_tool:
   # Captures may only be read from inside these roots (read-only jail).
   allowed_roots:
     - pcaps
+  # How often the dashboard's filter box may start a scan. A display filter
+  # on a 680k-packet capture is a full read of the file, so an interactive
+  # explorer needs a ceiling or one impatient reader can keep tshark busy
+  # for everyone.
+  max_queries_per_minute: 20
+  # The protocol hierarchy and the endpoint list are full reads too, so the
+  # summary panel is offered only for captures below this size; a larger one
+  # says so instead of blocking the page.
+  max_summary_mb: 80
 
 run:
   repeats: 2

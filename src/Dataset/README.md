@@ -31,20 +31,78 @@ be used later by the analysis only, as a sensitivity comparison.
 pytest              # the suite (pytest.ini scopes it to src/Dataset/tests)
 ```
 
-## Dashboard
+## Dashboard (B6)
 
-`./pangea serve` runs a read-only FastAPI app and a single-page dashboard:
-Overview (counts, run manifest, warnings), Claims (filterable, tap through to
-the model-by-model matrix and from there to the stored response behind any
-number), Panel, Prompt sensitivity, Controls and leakage, Evidence quality.
+`./pangea serve` runs a read-only FastAPI app and **one scrolling page** —
+no tabs, nothing hidden behind a pane. The links at the top only scroll:
+Overview, Sources, Captures and sample files, Claims review, Pairs, Claims
+and panel verdicts, Panel, Prompt sensitivity, Controls and leakage,
+Evidence quality, Pre-registered parameters, Runs and analyses.
 Mobile-first, so it is usable on a phone or tablet, with a dark mode.
 
-Every rate is printed with its `n` and a 95% Wilson interval; verdicts are
-reduced per model family before any majority is taken; nothing is called
-correct or ground truth, and construction-based items are described as
-"matches expected". Anything not yet computed — re-executing conditions,
-verifying cited packets, sufficiency and necessity, fabricated-packet rate —
-is shown as pending rather than filled in with a plausible number.
+**Every section says what it is for**, in one or two plain-English lines
+under its heading, in a muted caption that cannot be mistaken for data —
+including what the numbers do *not* mean. A reader who has never seen the
+spec should not have to guess that a vote share is agreement rather than
+accuracy.
+
+**The derived numbers are read from a stored analysis**, not recomputed
+while the page loads, so what is on the screen is what is in the record.
+The Overview names the analysis, its code version and its parameters; where
+no analysis has been stored the sections say so instead of filling in.
+Every rate carries its `n` and an interval — the page has no way to print a
+bare proportion — and where the analysis could not compute something, the
+reason it gave is shown in its place. Nothing is called correct or ground
+truth; construction-based items are described as "matches expected".
+
+**Claim detail** shows the system's own reading of the capture beside the
+models': the packets each condition actually matches when re-run, cited
+packets marked verified or **"cited, not verified"**, fabricated numbers,
+and the sufficiency and necessity results — grouped by condition, because
+several models usually write the same filter and showing one scan once is
+more honest about how much independent evidence there is.
+
+**The Captures section is a working tool, not a preview.** Each capture
+expands in place into an explorer:
+
+- what the file is — packet count, hash, and its closed-world statement,
+  with `both_directions: unknown` left unknown, since absence claims are
+  judged against it;
+- its protocol hierarchy and busiest endpoints, for captures under
+  `pcap_tool.max_summary_mb` (reading them dissects every packet, so a
+  larger file says so rather than tying up tshark while someone waits);
+- a display-filter box with one-click starters (`dns`, a SYN-without-ACK
+  filter, `icmp`, `arp`, `tls.handshake`, `http.request`), a row limit, and
+  a short history of the filters tried this session;
+- the result: the match count over the **whole** file, the first N packets
+  as a table (no., time, source, destination, protocol, length, info), the
+  row limit stated, and — when the scan hit the output cap — a sentence
+  saying the real count is higher. A filter tshark refuses is shown in
+  tshark's own words with **no table**: a refusal must never look like an
+  empty result, and there is no fallback to an unfiltered scan;
+- a link to the claims and pairs derived from that capture.
+
+Every filter goes through `pcap/service.py` — argument list, no shell,
+compiled-not-inspected validation, the path jail, the timeout and the
+output cap — and results are cached by (sha256, filter, limit). Scans are
+also rate-limited per capture (`pcap_tool.max_queries_per_minute`), because
+one impatient reader and a 680k-packet file would otherwise keep tshark
+busy for everyone; a refused filter is not charged for, since it never
+touched the capture.
+
+Steps files and notes open the same way: a searchable, sortable table with
+column visibility and the row count, a note when the file was truncated for
+display, and a download of the file exactly as it is on disk. A file is
+reachable only because a row already names it, which is the allowlist;
+captures are never served as bytes.
+
+**Exports**, as the spec asks: raw answers (`calls.csv/json`), derived
+scores (`scores.csv/json`, `metrics.csv`), the consensus table
+(`claims.csv`, `consensus.json`) and the run snapshot
+(`run-manifest.json`). `/api/analysis`, `/api/analyses`,
+`/api/analysis/what-if` and `/api/analysis/diff` serve the analysis itself;
+the what-if endpoint is the one place the dashboard computes anything, and
+it stores nothing and says so.
 
 It binds loopback. `--host` with a non-loopback address is refused without
 `--i-know`, because this machine sits on a shared tailnet.
@@ -429,6 +487,19 @@ sample size, or only the interval.
 `./pangea demo` ends with a stored analysis, so the demo dashboard shows
 real derived numbers; `--no-analysis` skips it.
 
-## Not here yet and mutation
-validation · B4 prompt builder, real model adapters, runner · B5 analysis ·
-B7 pilot and full run.
+## Not here yet
+
+**B7: the pilot and the full run.** Everything before it has landed — the
+PCAP service and the source registry (B1), extraction and review (B2), the
+pair builder with mechanical validation (B3), the prompt variants, the
+provider adapters and the runner (B4), the analysis service (B5) and the
+dashboard (B6).
+
+What B7 needs first, and this code cannot supply:
+
+- the owner's values for δ, τ, the quantity thresholds and the equivalence
+  margin — they ship as `UNSET`, every run refuses to start until they are
+  set, and the prompt-effect judgement stays pending until the margin is;
+- a human pass over the claims review queue, since the extraction agent's
+  decomposition is reviewed, not trusted;
+- the pilot's own captures, which are excluded from the final analysis.
