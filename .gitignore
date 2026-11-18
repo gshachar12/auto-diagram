@@ -228,3 +228,9 @@ sources/**/*.cap
 # one exception -- it holds no secret.
 .env.*
 !.env.template
+
+# Third-party capture datasets (pcaps/datasets/): downloaded corpora, not this
+# project's work, and several files exceed GitHub's 100 MB hard limit. They stay
+# on disk and are referenced by path and sha256 from the dataset database, which
+# is what makes a capture identifiable -- not its presence in git history.
+pcaps/datasets/
